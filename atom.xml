@@ -4,7 +4,7 @@
   <title><![CDATA[Konstantin's home page.]]></title>
   <link href="http://xni.github.io/atom.xml" rel="self"/>
   <link href="http://xni.github.io/"/>
-  <updated>2014-01-15T01:06:33+04:00</updated>
+  <updated>2014-01-15T01:18:26+04:00</updated>
   <id>http://xni.github.io/</id>
   <author>
     <name><![CDATA[Konstantin Nikitin]]></name>
@@ -19,6 +19,8 @@
     <updated>2014-01-15T00:30:49+04:00</updated>
     <id>http://xni.github.io/blog/2014/01/15/my-first-post-to-this-blog</id>
     <content type="html"><![CDATA[<p>This is my first post to this blog. I have been waiting for this blog platform for so long, and I found it accidentially in a footer of <a href="https://insouciant.org/">insouciant.org</a>.</p>
+
+<p>And, of course, the first change I made in templates is a <code>simple_search</code> property :&ndash;) Try it!</p>
 ]]></content>
   </entry>
   
