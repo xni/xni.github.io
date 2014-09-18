@@ -3,9 +3,12 @@
   <head><title></title></head>
   <body>
     <div id="c">Content</div>
+    <div id="v">video: <video src="http://media.w3.org/2010/05/sintel/trailer.webm"></video></div>
     <script>
       var d = document.getElementById('c');
       d.addEventListener('click', function() {d.webkitRequestFullscreen();});
+      var v = document.getElementById('v');
+      v.addEventListener('click', function() { document.querySelectorAll('video')[0].webkitEnterFullscreen(); });
     </script>
   </body>
 </html>
