@@ -1,0 +1,468 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" dir="ltr" lang="en"><head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<meta name="generator" content="MediaWiki 1.16.2">
+<link rel="shortcut icon" href="http://wiki.blender.org/favicon.ico">
+<link rel="search" type="application/opensearchdescription+xml" href="http://wiki.blender.org/opensearch_desc.php" title="BlenderWiki (en)">		<title>Doc:2.6/Manual/Textures/Mapping/UV Image Editor - BlenderWiki</title>
+		<script src="Doc_2.6_Manual_Textures_Mapping_UV%20Image%20Editor%20-%20BlenderWiki_files/ga.js" async="" type="text/javascript"></script><script type="text/javascript" src="Doc_2.6_Manual_Textures_Mapping_UV%20Image%20Editor%20-%20BlenderWiki_files/jquery-1.js"></script>
+		<script type="text/javascript" src="Doc_2.6_Manual_Textures_Mapping_UV%20Image%20Editor%20-%20BlenderWiki_files/jquery.js"></script>
+		<script type="text/javascript" src="Doc_2.6_Manual_Textures_Mapping_UV%20Image%20Editor%20-%20BlenderWiki_files/jquery_003.js"></script>
+		<script type="text/javascript" src="Doc_2.6_Manual_Textures_Mapping_UV%20Image%20Editor%20-%20BlenderWiki_files/jquery_002.js"></script>
+
+		<style type="text/css" media="screen,projection">/*<![CDATA[*/ @import "/skins/naiad/main.css?270"; /*]]>*/</style>
+		<link rel="stylesheet" type="text/css" media="print" href="Doc_2.6_Manual_Textures_Mapping_UV%20Image%20Editor%20-%20BlenderWiki_files/commonPrint.css">
+
+		<!--[if IE 7]><style type="text/css">@import "/skins/naiad/IE70Fixes.css?270";</style><![endif]-->
+		<!--[if lt IE 7]><script type="text/javascript" src="/skins/common/IEFixes.js?270"></script>
+		<meta http-equiv="imagetoolbar" content="no" /><![endif]-->
+		
+		<script type="text/javascript" src="Doc_2.6_Manual_Textures_Mapping_UV%20Image%20Editor%20-%20BlenderWiki_files/wikibits.js"><!-- wikibits js --></script>
+		<script type="text/javascript" src="Doc_2.6_Manual_Textures_Mapping_UV%20Image%20Editor%20-%20BlenderWiki_files/index.js"><!-- site js --></script>
+<link rel="stylesheet" type="text/css" href="Doc_2.6_Manual_Textures_Mapping_UV%20Image%20Editor%20-%20BlenderWiki_files/index.css">
+<link rel="stylesheet" type="text/css" href="Doc_2.6_Manual_Textures_Mapping_UV%20Image%20Editor%20-%20BlenderWiki_files/index_002.css">
+		<!-- Head Scripts -->
+<script type="text/javascript" src="Doc_2.6_Manual_Textures_Mapping_UV%20Image%20Editor%20-%20BlenderWiki_files/dtree_002.js"><!-- TreeAndMenu --></script>
+
+<script type="text/javascript" src="Doc_2.6_Manual_Textures_Mapping_UV%20Image%20Editor%20-%20BlenderWiki_files/dtree.js"><!-- BlenderTreeAndMenu --></script>
+
+<script src="Doc_2.6_Manual_Textures_Mapping_UV%20Image%20Editor%20-%20BlenderWiki_files/ajax.js"></script>
+<script src="Doc_2.6_Manual_Textures_Mapping_UV%20Image%20Editor%20-%20BlenderWiki_files/mwsuggest.js"></script>
+<script type="text/javascript">
+var _gaq = _gaq || [];
+_gaq.push(['_setAccount', 'UA-1418081-7']);
+_gaq.push(['_trackPageview']);
+(function() {
+var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+})();
+</script>
+		<link rel="shortcut icon" href="http://wiki.blender.org/skins/naiad/images/favicon.ico">
+
+
+	</head>
+<body class="mediawiki ltr ns-100 ns-subject page-Doc_2_6_Manual_Textures_Mapping_UV_Image_Editor">
+
+<!-- START main page container -->
+<div id="pagecontainer">
+
+	<!-- START subsection header and subnav -->
+	<div id="headerWrapper">
+		<div class="subnav boxheader">
+			<div id="left_controls">
+				<a id="logo" href="http://wiki.blender.org/index.php/Main_Page" title="Go to Main Page">
+					<img src="Doc_2.6_Manual_Textures_Mapping_UV%20Image%20Editor%20-%20BlenderWiki_files/blender_logo.png">
+				</a>
+				<ul class="external_nav">
+					<li><a href="http://www.blender.org/" title="Go to blender.org website">blender.org</a></li>
+					<li><a href="http://code.blender.org/" title="Go to blender development blog">code.blender.org</a></li>
+				</ul>
+			</div>
+			<h1 class="title_link">
+				Doc:2.6/Manual/Textures/Mapping/UV Image Editor			</h1>
+			
+						<span class="right_controls">
+				
+								
+				<a class="userid" href="http://wiki.blender.org/index.php?title=Special:UserLogin&amp;returnto=Doc:2.6/Manual/Textures/Mapping/UV_Image_Editor">Log in</a>
+				
+							</span>
+	
+		</div>
+		<div id="p-cactions" class="subnav sublevel2">
+			<div id="contentSub"><span class="subpages">&lt; <a href="http://wiki.blender.org/index.php/Doc:2.6" title="Doc:2.6">Doc:2.6</a> | <a href="http://wiki.blender.org/index.php/Doc:2.6/Manual" title="Doc:2.6/Manual">Manual</a> | <a href="http://wiki.blender.org/index.php/Doc:2.6/Manual/Textures" title="Doc:2.6/Manual/Textures">Textures</a> | <a href="http://wiki.blender.org/index.php/Doc:2.6/Manual/Textures/Mapping" title="Doc:2.6/Manual/Textures/Mapping">Mapping</a></span></div>
+			
+			<div id="dd_selectors">
+				<div id="sel_ser" class="dd_item">
+<div class="button grey">
+<p>Blender 2.6
+</p>
+</div> 
+<div class="dd_menu series">   
+<ul><li> <strong class="selflink">Blender 2.6</strong>
+</li><li> <a href="http://wiki.blender.org/index.php?title=Doc:2.4/Manual/Textures/Mapping/UV_Image_Editor&amp;action=edit&amp;redlink=1" class="new" title="Doc:2.4/Manual/Textures/Mapping/UV Image Editor (page does not exist)">Blender 2.4</a>
+</li></ul>
+</div>
+</div>
+				<div id="sel_lan" class="dd_item">
+<div class="button grey">
+<p>English
+</p>
+</div>
+<div class="dd_menu languages">   
+<ul><li> <a href="http://wiki.blender.org/index.php?title=Doc:AR/2.6/Manual/Textures/Mapping/UV_Image_Editor&amp;action=edit&amp;redlink=1" class="new" title="Doc:AR/2.6/Manual/Textures/Mapping/UV Image Editor (page does not exist)">Arabic</a>
+</li><li> <a href="http://wiki.blender.org/index.php?title=Doc:BG/2.6/Manual/Textures/Mapping/UV_Image_Editor&amp;action=edit&amp;redlink=1" class="new" title="Doc:BG/2.6/Manual/Textures/Mapping/UV Image Editor (page does not exist)">Bulgarian</a>
+</li><li> <a href="http://wiki.blender.org/index.php?title=Doc:CA/2.6/Manual/Textures/Mapping/UV_Image_Editor&amp;action=edit&amp;redlink=1" class="new" title="Doc:CA/2.6/Manual/Textures/Mapping/UV Image Editor (page does not exist)">Catalan</a>
+</li><li> <a href="http://wiki.blender.org/index.php?title=Doc:CZ/2.6/Manual/Textures/Mapping/UV_Image_Editor&amp;action=edit&amp;redlink=1" class="new" title="Doc:CZ/2.6/Manual/Textures/Mapping/UV Image Editor (page does not exist)">Czech</a>
+</li><li> <a href="http://wiki.blender.org/index.php?title=Doc:DE/2.6/Manual/Textures/Mapping/UV_Image_Editor&amp;action=edit&amp;redlink=1" class="new" title="Doc:DE/2.6/Manual/Textures/Mapping/UV Image Editor (page does not exist)">German</a>
+</li><li> <a href="http://wiki.blender.org/index.php?title=Doc:DK/2.6/Manual/Textures/Mapping/UV_Image_Editor&amp;action=edit&amp;redlink=1" class="new" title="Doc:DK/2.6/Manual/Textures/Mapping/UV Image Editor (page does not exist)">Danish</a>
+</li><li> <strong class="selflink">English</strong>
+</li><li> <a href="http://wiki.blender.org/index.php?title=Doc:EL/2.6/Manual/Textures/Mapping/UV_Image_Editor&amp;action=edit&amp;redlink=1" class="new" title="Doc:EL/2.6/Manual/Textures/Mapping/UV Image Editor (page does not exist)">Greek</a>
+</li><li> <a href="http://wiki.blender.org/index.php?title=Doc:EO/2.6/Manual/Textures/Mapping/UV_Image_Editor&amp;action=edit&amp;redlink=1" class="new" title="Doc:EO/2.6/Manual/Textures/Mapping/UV Image Editor (page does not exist)">Esperanto</a>
+</li><li> <a href="http://wiki.blender.org/index.php?title=Doc:ES/2.6/Manual/Textures/Mapping/UV_Image_Editor&amp;action=edit&amp;redlink=1" class="new" title="Doc:ES/2.6/Manual/Textures/Mapping/UV Image Editor (page does not exist)">Spanish</a>
+</li><li> <a href="http://wiki.blender.org/index.php?title=Doc:ET/2.6/Manual/Textures/Mapping/UV_Image_Editor&amp;action=edit&amp;redlink=1" class="new" title="Doc:ET/2.6/Manual/Textures/Mapping/UV Image Editor (page does not exist)">Estonian</a>
+</li><li> <a href="http://wiki.blender.org/index.php?title=Doc:FA/2.6/Manual/Textures/Mapping/UV_Image_Editor&amp;action=edit&amp;redlink=1" class="new" title="Doc:FA/2.6/Manual/Textures/Mapping/UV Image Editor (page does not exist)">Farsi</a>
+</li></ul>
+<ul><li> <a href="http://wiki.blender.org/index.php?title=Doc:FI/2.6/Manual/Textures/Mapping/UV_Image_Editor&amp;action=edit&amp;redlink=1" class="new" title="Doc:FI/2.6/Manual/Textures/Mapping/UV Image Editor (page does not exist)">Finnish</a>
+</li><li> <a href="http://wiki.blender.org/index.php?title=Doc:FR/2.6/Manual/Textures/Mapping/UV_Image_Editor&amp;action=edit&amp;redlink=1" class="new" title="Doc:FR/2.6/Manual/Textures/Mapping/UV Image Editor (page does not exist)">French</a>
+</li><li> <a href="http://wiki.blender.org/index.php?title=Doc:ID/2.6/Manual/Textures/Mapping/UV_Image_Editor&amp;action=edit&amp;redlink=1" class="new" title="Doc:ID/2.6/Manual/Textures/Mapping/UV Image Editor (page does not exist)">Indonesian</a>
+</li><li> <a href="http://wiki.blender.org/index.php?title=Doc:IT/2.6/Manual/Textures/Mapping/UV_Image_Editor&amp;action=edit&amp;redlink=1" class="new" title="Doc:IT/2.6/Manual/Textures/Mapping/UV Image Editor (page does not exist)">Italian</a>
+</li><li> <a href="http://wiki.blender.org/index.php?title=Doc:JA/2.6/Manual/Textures/Mapping/UV_Image_Editor&amp;action=edit&amp;redlink=1" class="new" title="Doc:JA/2.6/Manual/Textures/Mapping/UV Image Editor (page does not exist)">Japanese</a>
+</li><li> <a href="http://wiki.blender.org/index.php?title=Doc:KO/2.6/Manual/Textures/Mapping/UV_Image_Editor&amp;action=edit&amp;redlink=1" class="new" title="Doc:KO/2.6/Manual/Textures/Mapping/UV Image Editor (page does not exist)">Korean</a>
+</li><li> <a href="http://wiki.blender.org/index.php?title=Doc:LT/2.6/Manual/Textures/Mapping/UV_Image_Editor&amp;action=edit&amp;redlink=1" class="new" title="Doc:LT/2.6/Manual/Textures/Mapping/UV Image Editor (page does not exist)">Lithuanian</a>
+</li><li> <a href="http://wiki.blender.org/index.php?title=Doc:MK/2.6/Manual/Textures/Mapping/UV_Image_Editor&amp;action=edit&amp;redlink=1" class="new" title="Doc:MK/2.6/Manual/Textures/Mapping/UV Image Editor (page does not exist)">Macedonian</a>
+</li><li> <a href="http://wiki.blender.org/index.php?title=Doc:MN/2.6/Manual/Textures/Mapping/UV_Image_Editor&amp;action=edit&amp;redlink=1" class="new" title="Doc:MN/2.6/Manual/Textures/Mapping/UV Image Editor (page does not exist)">Mongolian</a>
+</li><li> <a href="http://wiki.blender.org/index.php?title=Doc:NL/2.6/Manual/Textures/Mapping/UV_Image_Editor&amp;action=edit&amp;redlink=1" class="new" title="Doc:NL/2.6/Manual/Textures/Mapping/UV Image Editor (page does not exist)">Dutch</a>
+</li><li> <a href="http://wiki.blender.org/index.php?title=Doc:PL/2.6/Manual/Textures/Mapping/UV_Image_Editor&amp;action=edit&amp;redlink=1" class="new" title="Doc:PL/2.6/Manual/Textures/Mapping/UV Image Editor (page does not exist)">Polish</a>
+</li><li> <a href="http://wiki.blender.org/index.php?title=Doc:PT/2.6/Manual/Textures/Mapping/UV_Image_Editor&amp;action=edit&amp;redlink=1" class="new" title="Doc:PT/2.6/Manual/Textures/Mapping/UV Image Editor (page does not exist)">Portuguese</a>
+</li></ul>
+<ul><li> <a href="http://wiki.blender.org/index.php?title=Doc:RO/2.6/Manual/Textures/Mapping/UV_Image_Editor&amp;action=edit&amp;redlink=1" class="new" title="Doc:RO/2.6/Manual/Textures/Mapping/UV Image Editor (page does not exist)">Romanian</a>
+</li><li> <a href="http://wiki.blender.org/index.php?title=Doc:RU/2.6/Manual/Textures/Mapping/UV_Image_Editor&amp;action=edit&amp;redlink=1" class="new" title="Doc:RU/2.6/Manual/Textures/Mapping/UV Image Editor (page does not exist)">Russian</a>
+</li><li> <a href="http://wiki.blender.org/index.php?title=Doc:SR/2.6/Manual/Textures/Mapping/UV_Image_Editor&amp;action=edit&amp;redlink=1" class="new" title="Doc:SR/2.6/Manual/Textures/Mapping/UV Image Editor (page does not exist)">Serbian</a>
+</li><li> <a href="http://wiki.blender.org/index.php?title=Doc:SV/2.6/Manual/Textures/Mapping/UV_Image_Editor&amp;action=edit&amp;redlink=1" class="new" title="Doc:SV/2.6/Manual/Textures/Mapping/UV Image Editor (page does not exist)">Swedish</a>
+</li><li> <a href="http://wiki.blender.org/index.php?title=Doc:TH/2.6/Manual/Textures/Mapping/UV_Image_Editor&amp;action=edit&amp;redlink=1" class="new" title="Doc:TH/2.6/Manual/Textures/Mapping/UV Image Editor (page does not exist)">Thai</a>
+</li><li> <a href="http://wiki.blender.org/index.php?title=Doc:TR/2.6/Manual/Textures/Mapping/UV_Image_Editor&amp;action=edit&amp;redlink=1" class="new" title="Doc:TR/2.6/Manual/Textures/Mapping/UV Image Editor (page does not exist)">Turkish</a>
+</li><li> <a href="http://wiki.blender.org/index.php/Doc:UK/2.6/Manual/Textures/Mapping/UV_Image_Editor" title="Doc:UK/2.6/Manual/Textures/Mapping/UV Image Editor">Ukrainian</a>
+</li><li> <a href="http://wiki.blender.org/index.php?title=Doc:ZH/2.6/Manual/Textures/Mapping/UV_Image_Editor&amp;action=edit&amp;redlink=1" class="new" title="Doc:ZH/2.6/Manual/Textures/Mapping/UV Image Editor (page does not exist)">Chinese</a>
+</li></ul>
+</div>
+</div>
+							
+			</div>
+			
+			
+								
+			<ul id="content_actions">
+					   										<li id="ca-nstab-doc" class="selected">
+							 <a href="http://wiki.blender.org/index.php/Doc:2.6/Manual/Textures/Mapping/UV_Image_Editor">Doc page</a>
+						</li>
+						   										<li id="ca-talk" class="new">
+							 <a href="http://wiki.blender.org/index.php?title=Doc_talk:2.6/Manual/Textures/Mapping/UV_Image_Editor&amp;action=edit&amp;redlink=1">Discussion</a>
+						</li>
+						   										<li id="ca-viewsource">
+							 <a href="http://wiki.blender.org/index.php?title=Doc:2.6/Manual/Textures/Mapping/UV_Image_Editor&amp;action=edit">View source</a>
+						</li>
+						   										<li id="ca-history">
+							 <a href="http://wiki.blender.org/index.php?title=Doc:2.6/Manual/Textures/Mapping/UV_Image_Editor&amp;action=history">History</a>
+						</li>
+								</ul><div id="extras_two" class="dd_item">
+				<div class="button grey"><p>Page</p></div>
+				<div class="dd_menu extras_two">
+				
+					<ul>
+									   							   							   							   											
+												<li id="t-whatlinkshere">
+							<a href="http://wiki.blender.org/index.php/Special:WhatLinksHere/Doc:2.6/Manual/Textures/Mapping/UV_Image_Editor">What links here</a>
+						</li>
+														<li id="t-recentchangeslinked">
+								<a href="http://wiki.blender.org/index.php/Special:RecentChangesLinked/Doc:2.6/Manual/Textures/Mapping/UV_Image_Editor">Related changes</a>
+							</li>
+														<li id="t-permalink"><a href="http://wiki.blender.org/index.php?title=Doc:2.6/Manual/Textures/Mapping/UV_Image_Editor&amp;oldid=242088">Permanent link</a></li>					</ul>
+					
+				</div>
+        	</div>
+			
+		</div>
+	</div>
+        <!-- END subsection header and subnav -->
+
+	<div id="globalWrapper">
+		<div class="" id="col-content">
+			<div id="content">
+				<a name="top" id="top"></a>
+								<div id="bodyContent">
+					<h3 id="siteSub">From BlenderWiki</h3>
+					
+															<div id="jump-to-nav">Jump to: <a href="#column-one">navigation</a>, <a href="#searchInput">search</a></div>					
+					<!-- START content -->
+					<div id="PDF-start"></div>
+<script>if (window.showTocToggle) { var tocShowText = "show"; var tocHideText = "hide"; showTocToggle(); } </script>
+<h1> <span class="mw-headline" id="The_UV.2FImage_Editor_for_texturing"> The UV/Image Editor for texturing</span></h1>
+<div class="thumb tright"><div class="thumbinner" style="width:602px;"><a href="http://wiki.blender.org/index.php/File:Doc-26-Textures-UV-Image-Editor-Texturing-Main.png" class="image"><img alt="" src="Doc_2.6_Manual_Textures_Mapping_UV%20Image%20Editor%20-%20BlenderWiki_files/600px-Doc-26-Textures-UV-Image-Editor-Texturing-Main.png" class="thumbimage" height="435" width="600"></a>  <div class="thumbcaption"><div class="magnify"><a href="http://wiki.blender.org/index.php/File:Doc-26-Textures-UV-Image-Editor-Texturing-Main.png" class="internal" title="Enlarge"><img src="Doc_2.6_Manual_Textures_Mapping_UV%20Image%20Editor%20-%20BlenderWiki_files/magnify-clip.png" alt="" height="11" width="15"></a></div>UV/Image Editor window for texturing</div></div></div>
+<p>The UV/Image Editor is where you will be editing the UVs. This is an 
+overview of the tools found there. Using the UV editor is explained more
+ in depth in the next sections.
+<br style="clear:both;">
+</p>
+<h2> <span class="mw-headline" id="Header_Bar"> Header Bar </span></h2>
+<div class="center"><div class="thumb tnone"><div class="thumbinner" style="width:902px;"><a href="http://wiki.blender.org/index.php/File:Doc-26-Textures-UV-Image-Editor-Texturing-Header.png" class="image"><img alt="" src="Doc_2.6_Manual_Textures_Mapping_UV%20Image%20Editor%20-%20BlenderWiki_files/900px-Doc-26-Textures-UV-Image-Editor-Texturing-Header.png" class="thumbimage" height="24" width="900"></a>  <div class="thumbcaption"><div class="magnify"><a href="http://wiki.blender.org/index.php/File:Doc-26-Textures-UV-Image-Editor-Texturing-Header.png" class="internal" title="Enlarge"><img src="Doc_2.6_Manual_Textures_Mapping_UV%20Image%20Editor%20-%20BlenderWiki_files/magnify-clip.png" alt="" height="11" width="15"></a></div>UV/Image Editor Header</div></div></div></div>
+<p>The header bar contains several menus and options for working with UVs
+</p>
+<dl><dt><b>View</b> menu
+</dt><dd>Tools for <a href="http://wiki.blender.org/index.php/Doc:2.6/Manual/Textures/Mapping/UV_Image_Editor#Navigating_in_UV_Space" title="Doc:2.6/Manual/Textures/Mapping/UV Image Editor">Navigating</a>,
+ working with the editor and controlling how things are displayed. The 
+properties panel has display options and manipulation tools. When an 
+image is being used, image properties are displayed. The Scopes panel is
+ used when working with Images. It contains different image visualizers
+</dd><dt><b>Select</b> menu
+</dt><dd>Tools for <a href="http://wiki.blender.org/index.php/Doc:2.6/Manual/Textures/Mapping/UV/Layout_Editing#Selecting" title="Doc:2.6/Manual/Textures/Mapping/UV/Layout Editing">Selecting UVs</a>.
+</dd><dt><b>Image</b> menu
+</dt><dd>This contains options for when <a href="http://wiki.blender.org/index.php/Doc:2.6/Manual/Textures/Mapping/UV/Applying_Image" title="Doc:2.6/Manual/Textures/Mapping/UV/Applying Image">Working with Images</a> and <a href="http://wiki.blender.org/index.php/Doc:2.6/Manual/Textures/Painting" title="Doc:2.6/Manual/Textures/Painting">Painting Textures</a>.
+</dd><dt><b>UVs</b> menu
+</dt><dd>Contains tools for <a href="http://wiki.blender.org/index.php/Doc:2.6/Manual/Textures/Mapping/UV/Unwrapping" title="Doc:2.6/Manual/Textures/Mapping/UV/Unwrapping">Unwrapping Meshes</a> and <a href="http://wiki.blender.org/index.php/Doc:2.6/Manual/Textures/Mapping/UV/Layout_Editing" title="Doc:2.6/Manual/Textures/Mapping/UV/Layout Editing">Editing Uvs</a>.
+</dd></dl>
+<p><br style="clear:both;">
+</p>
+<dl><dt><a href="http://wiki.blender.org/index.php/File:Doc-26-Textures-UV-Image-Editor-Texturing-Image-Selector-Btn.png" class="image"><img alt="Doc-26-Textures-UV-Image-Editor-Texturing-Image-Selector-Btn.png" src="Doc_2.6_Manual_Textures_Mapping_UV%20Image%20Editor%20-%20BlenderWiki_files/Doc-26-Textures-UV-Image-Editor-Texturing-Image-Selector-Btn.png" height="26" width="236"></a> <i>Image Selector Menu</i>
+</dt><dd>Select the image to apply when <a href="http://wiki.blender.org/index.php/Doc:2.6/Manual/Textures/Mapping/UV/Applying_Image" title="Doc:2.6/Manual/Textures/Mapping/UV/Applying Image">Working with Images</a>.
+</dd><dt><a href="http://wiki.blender.org/index.php/File:Doc-26-Textures-UV-Image-Editor-Texturing-Pin-Btn.png" class="image"><img alt="Doc-26-Textures-UV-Image-Editor-Texturing-Pin-Btn.png" src="Doc_2.6_Manual_Textures_Mapping_UV%20Image%20Editor%20-%20BlenderWiki_files/Doc-26-Textures-UV-Image-Editor-Texturing-Pin-Btn.png" height="24" width="25"></a> <a href="http://wiki.blender.org/index.php/Doc:2.6/Manual/Textures/Mapping/UV/Applying_Image" title="Doc:2.6/Manual/Textures/Mapping/UV/Applying Image">Pin Image</a>
+</dt><dd>Displays current image regardless of selected object.
+</dd><dt><a href="http://wiki.blender.org/index.php/File:Doc-26-Textures-UV-Image-Editor-Texturing-Pivot-Btn.png" class="image"><img alt="Doc-26-Textures-UV-Image-Editor-Texturing-Pivot-Btn.png" src="Doc_2.6_Manual_Textures_Mapping_UV%20Image%20Editor%20-%20BlenderWiki_files/Doc-26-Textures-UV-Image-Editor-Texturing-Pivot-Btn.png" height="25" width="41"></a> <a href="http://wiki.blender.org/index.php/Doc:2.6/Manual/Textures/Mapping/UV/Layout_Editing#Pivot_Points" title="Doc:2.6/Manual/Textures/Mapping/UV/Layout Editing">Pivot Point Selector</a>
+</dt><dd>Similar to working with Pivot Points in the 3D view.
+</dd><dt><a href="http://wiki.blender.org/index.php/File:Doc-26-Textures-UV-Image-Editor-Texturing-Syncsel-Btn.png" class="image"><img alt="Doc-26-Textures-UV-Image-Editor-Texturing-Syncsel-Btn.png" src="Doc_2.6_Manual_Textures_Mapping_UV%20Image%20Editor%20-%20BlenderWiki_files/Doc-26-Textures-UV-Image-Editor-Texturing-Syncsel-Btn.png" height="24" width="24"></a> <a href="http://wiki.blender.org/index.php/Doc:2.6/Manual/Textures/Mapping/UV/Layout_Editing#Selecting_Uvs" title="Doc:2.6/Manual/Textures/Mapping/UV/Layout Editing">Sync Selection</a>
+</dt><dd>Keeps UV and Mesh component selections in sync.
+</dd><dt><a href="http://wiki.blender.org/index.php/File:Doc-26-Textures-UV-Image-Editor-Texturing-Selmodes-Btn.png" class="image"><img alt="Doc-26-Textures-UV-Image-Editor-Texturing-Selmodes-Btn.png" src="Doc_2.6_Manual_Textures_Mapping_UV%20Image%20Editor%20-%20BlenderWiki_files/Doc-26-Textures-UV-Image-Editor-Texturing-Selmodes-Btn.png" height="25" width="86"></a> <a href="http://wiki.blender.org/index.php/Doc:2.6/Manual/Textures/Mapping/UV/Layout_Editing#Selecting_Uvs" title="Doc:2.6/Manual/Textures/Mapping/UV/Layout Editing">Selection Modes</a></dt><dd>
+</dd></dl>
+<ul><li>Vertex
+</li><li>Edge
+</li><li>Face
+</li><li>Island
+</li></ul>
+<dl><dt><a href="http://wiki.blender.org/index.php/File:Doc-26-Textures-UV-Image-Editor-Texturing-Stickyselmodes-Btn.png" class="image"><img alt="Doc-26-Textures-UV-Image-Editor-Texturing-Stickyselmodes-Btn.png" src="Doc_2.6_Manual_Textures_Mapping_UV%20Image%20Editor%20-%20BlenderWiki_files/Doc-26-Textures-UV-Image-Editor-Texturing-Stickyselmodes-Btn.png" height="25" width="40"></a> <b><a href="http://wiki.blender.org/index.php/Doc:2.6/Manual/Textures/Mapping/UV/Layout_Editing#Selecting_Uvs" title="Doc:2.6/Manual/Textures/Mapping/UV/Layout Editing">Sticky Selection Mode</a></b>
+</dt><dd>When Sync Selection is disabled, these options control how UVs are selected.
+</dd><dt><a href="http://wiki.blender.org/index.php/File:Doc-26-Textures-UV-Image-Editor-Texturing-Proportedit-Btn.png" class="image"><img alt="Doc-26-Textures-UV-Image-Editor-Texturing-Proportedit-Btn.png" src="Doc_2.6_Manual_Textures_Mapping_UV%20Image%20Editor%20-%20BlenderWiki_files/Doc-26-Textures-UV-Image-Editor-Texturing-Proportedit-Btn.png" height="24" width="39"></a> <b><a href="http://wiki.blender.org/index.php/Doc:2.6/Manual/Textures/Mapping/UV/Layout_Editing" title="Doc:2.6/Manual/Textures/Mapping/UV/Layout Editing">Proportional Editing</a></b>
+</dt><dd>Works like <a href="http://wiki.blender.org/index.php/Doc:2.6/Manual/3D_interaction/Transform_Control/Proportional_Edit" title="Doc:2.6/Manual/3D interaction/Transform Control/Proportional Edit">Proportional Editing in the 3d view</a>
+</dd><dt><a href="http://wiki.blender.org/index.php/File:Doc-26-Textures-UV-Image-Editor-Texturing-Uvsnap-Btn.png" class="image"><img alt="Doc-26-Textures-UV-Image-Editor-Texturing-Uvsnap-Btn.png" src="Doc_2.6_Manual_Textures_Mapping_UV%20Image%20Editor%20-%20BlenderWiki_files/Doc-26-Textures-UV-Image-Editor-Texturing-Uvsnap-Btn.png" height="25" width="60"></a> <b><a href="http://wiki.blender.org/index.php/Doc:2.6/Manual/Textures/Mapping/UV/Layout_Editing#Snapping" title="Doc:2.6/Manual/Textures/Mapping/UV/Layout Editing">UV Snapping</a></b>
+</dt><dd>Similar to Snapping in the 3D View
+</dd><dt><a href="http://wiki.blender.org/index.php/File:Doc-26-Textures-UV-Image-Editor-Texturing-Active-Uvmap-Btn.png" class="image"><img alt="Doc-26-Textures-UV-Image-Editor-Texturing-Active-Uvmap-Btn.png" src="Doc_2.6_Manual_Textures_Mapping_UV%20Image%20Editor%20-%20BlenderWiki_files/Doc-26-Textures-UV-Image-Editor-Texturing-Active-Uvmap-Btn.png" height="24" width="135"></a> <b><a href="http://wiki.blender.org/index.php/Doc:2.6/Manual/Textures/Mapping/UV/Layout_Management" title="Doc:2.6/Manual/Textures/Mapping/UV/Layout Management">Active UV Texture Map Selector</a></b>
+</dt><dd>Select which UV texture to use
+</dd><dt><a href="http://wiki.blender.org/index.php/File:Doc-26-Textures-UV-Image-Editor-Texturing-Image-Channels-Btn.png" class="image"><img alt="Doc-26-Textures-UV-Image-Editor-Texturing-Image-Channels-Btn.png" src="Doc_2.6_Manual_Textures_Mapping_UV%20Image%20Editor%20-%20BlenderWiki_files/Doc-26-Textures-UV-Image-Editor-Texturing-Image-Channels-Btn.png" height="24" width="66"></a> <b>Image Channels to Draw</b>
+</dt><dd>Set the image to be displayed with <span class="literal">Color</span>, <span class="literal">Color and Alpha</span>, or just <span class="literal">Alpha</span>.
+</dd><dt><a href="http://wiki.blender.org/index.php/File:Doc-26-Textures-UV-Image-Editor-Texturing-Autoupdate-Btn.png" class="image"><img alt="Doc-26-Textures-UV-Image-Editor-Texturing-Autoupdate-Btn.png" src="Doc_2.6_Manual_Textures_Mapping_UV%20Image%20Editor%20-%20BlenderWiki_files/Doc-26-Textures-UV-Image-Editor-Texturing-Autoupdate-Btn.png" height="24" width="27"></a> <b>Auto Update Other Affected Windows</b>
+</dt><dd> Update other affected windows space automatically to reflect changes during interactive operations such as transfom.
+</dd></dl>
+<p><br style="clear:both;">
+</p>
+<h2> <span class="mw-headline" id="Properties_Panel"> Properties Panel </span></h2>
+<div class="thumb tright"><div class="thumbinner" style="width:233px;"><a href="http://wiki.blender.org/index.php/File:Doc-26-Textures-UV-Image-Editor-Texturing-Properties-panel.png" class="image"><img alt="" src="Doc_2.6_Manual_Textures_Mapping_UV%20Image%20Editor%20-%20BlenderWiki_files/Doc-26-Textures-UV-Image-Editor-Texturing-Properties-panel.png" class="thumbimage" height="703" width="231"></a>  <div class="thumbcaption"><div class="magnify"><a href="http://wiki.blender.org/index.php/File:Doc-26-Textures-UV-Image-Editor-Texturing-Properties-panel.png" class="internal" title="Enlarge"><img src="Doc_2.6_Manual_Textures_Mapping_UV%20Image%20Editor%20-%20BlenderWiki_files/magnify-clip.png" alt="" height="11" width="15"></a></div>UV/Image Editor Properties panel</div></div></div>
+<dl><dt><b>UV Vertex</b>
+</dt><dd><a href="http://wiki.blender.org/index.php/Doc:2.6/Manual/Textures/Mapping/UV/Layout_Editing" title="Doc:2.6/Manual/Textures/Mapping/UV/Layout Editing">Transform Properties</a> for select UVs
+</dd><dt><b>Grease Pencil</b>
+</dt><dd>Similar to <a href="http://wiki.blender.org/index.php/Doc:2.6/Manual/3D_interaction/Sketching" title="Doc:2.6/Manual/3D interaction/Sketching">Grease Pencil</a> in the 3d view.
+</dd><dt><b>Image</b>
+</dt><dd>Contains the properties of the current <a href="http://wiki.blender.org/index.php/Doc:2.6/Manual/Textures/Mapping/UV/Applying_Image" title="Doc:2.6/Manual/Textures/Mapping/UV/Applying Image">Image</a>
+</dd><dt><b>Display</b>
+</dt><dd>Controls display options for UVs and additional settings for when <a href="http://wiki.blender.org/index.php/Doc:2.6/Manual/Textures/Mapping/UV/Applying_Image" title="Doc:2.6/Manual/Textures/Mapping/UV/Applying Image">Working with Images</a>.
+</dd></dl>
+<h3> <span class="mw-headline" id="Display_Options"> Display Options </span></h3>
+<p>You can set how UVs are displayed in the <span class="literal">Display Panel</span>:
+</p>
+<dl><dt><i>Aspect Ratio</i>
+</dt><dd>Display Aspect for this image. Does not affect rendering.
+</dd></dl>
+<dl><dt><i>Coordinates</i>
+</dt><dd>Display UV coordinates
+<dl><dt><i>Repeat</i>
+</dt><dd>Draw the image repeated outside of the main view.
+</dd><dt><i>Normalized</i>
+</dt><dd>Display UV coordinates from 0.0 to 1.0 rather then in pixels
+</dd></dl>
+</dd></dl>
+<dl><dt><i>Cursor Location</i>
+</dt><dd>2D cursor location for this view
+</dd></dl>
+<dl><dt><span class="literal">Outline</span>/<span class="literal">Dash</span>/<span class="literal">Black</span>/<span class="literal">White</span>
+</dt><dd>Sets how UV edges are displayed
+</dd></dl>
+<dl><dt><span class="literal">Draw Faces</span>
+</dt><dd>Draw faces over the image
+</dd><dt><span class="literal">Smooth</span>
+</dt><dd>Makes edges appeared Antialiased
+</dd><dt><span class="literal">Modified</span>
+</dt><dd>Show results of modifiers in the UV display
+</dd><dt><span class="literal">Stretch</span>
+</dt><dd>Shows how much of a difference there is between UV coordinates 
+and 3D coordinates. Blue means low distortion, while Red means high 
+distortion. Choose to display the distortion of <span class="literal">Angles</span> or the <span class="literal">Area</span>.
+</dd></dl>
+<p><br style="clear:both;">
+</p>
+<h2> <span class="mw-headline" id="Navigating_in_UV_Space"> Navigating in UV Space </span></h2>
+<p>Panning can be done by clicking the <span class="hotkeybg"><span class="hotkey" style="padding-left: 3px;">MMB <a href="http://wiki.blender.org/index.php/File:Template-MMB.png" class="image"><img alt="Template-MMB.png" src="Doc_2.6_Manual_Textures_Mapping_UV%20Image%20Editor%20-%20BlenderWiki_files/Template-MMB.png" height="15" width="12"></a></span></span> and dragging.
+</p><p>Zooming can be done by scrolling <span class="hotkeybg"><span class="hotkey" style="padding-left: 3px;">MMB <a href="http://wiki.blender.org/index.php/File:Template-MMB.png" class="image"><img alt="Template-MMB.png" src="Doc_2.6_Manual_Textures_Mapping_UV%20Image%20Editor%20-%20BlenderWiki_files/Template-MMB.png" height="15" width="12"></a></span></span> up or down. Also, as in the 3D view, you can use <span class="hotkeybg"><span class="hotkey">+ NumPad</span></span> or <span class="hotkeybg"><span class="hotkey">- NumPad</span></span> to zoom.
+</p><p>The following shortcuts are available, and through the <span class="literal">View Menu</span>:
+</p>
+<ul><li>Zoom 1:8 <span class="hotkeybg"><span class="hotkey">8 NumPad</span></span>
+</li><li>Zoom 1:4 <span class="hotkeybg"><span class="hotkey">4 NumPad</span></span>
+</li><li>Zoom 1:2 <span class="hotkeybg"><span class="hotkey">2 NumPad</span></span>
+</li><li>Zoom 1:1 <span class="hotkeybg"><span class="hotkey">1 NumPad</span></span>
+</li><li>Zoom 2:1 <span class="hotkeybg"><span class="hotkey">⇧ Shift</span><span class="hotkey">2 NumPad</span></span>
+</li><li>Zoom 4:1 <span class="hotkeybg"><span class="hotkey">⇧ Shift</span><span class="hotkey">4 NumPad</span></span>
+</li><li>Zoom 8:1 <span class="hotkeybg"><span class="hotkey">⇧ Shift</span><span class="hotkey">8 NumPad</span></span>
+</li></ul>
+<ul><li>View All <span class="hotkeybg"><span class="hotkey">↖ Home</span></span>
+</li><li>View Center <span class="hotkeybg"><span class="hotkey">. NumPad</span></span>
+</li></ul>
+<p><br style="clear:both;">
+<br style="clear:both;">
+</p>
+<!-- 
+NewPP limit report
+Preprocessor node count: 1291/1000000
+Post-expand include size: 11484/2097152 bytes
+Template argument size: 454/2097152 bytes
+Expensive parser function count: 0/100
+-->
+
+<!-- Saved in parser cache with key mediawiki_1_16_2_live_110303-mediawiki_:pcache:idhash:57768-0!1!0!!en!2!edit=0 and timestamp 20140821205817 -->
+<div class="printfooter">
+Retrieved from "<a href="http://wiki.blender.org/index.php/Doc:2.6/Manual/Textures/Mapping/UV_Image_Editor">http://wiki.blender.org/index.php/Doc:2.6/Manual/Textures/Mapping/UV_Image_Editor</a>"</div>
+					<div id="catlinks"><div id="catlinks" class="catlinks catlinks-allhidden"></div></div>					<!-- END content -->
+					
+					<div class="visualClear"></div>
+				</div>
+			</div>
+		</div>
+		
+		<!-- START column left -->
+		<div id="column-one">
+		
+			<div id="navtree_selector">
+<div class="dd_button"><p>Doc:2.6/Manual</p></div>
+<div class="dd_content">
+<ul><li class="area-start"> <span>Unversioned</span>
+</li><li> <a href="http://wiki.blender.org/index.php/Main_Page" title="Main Page">Main Page</a>
+</li><li class="area-end"> <a href="http://wiki.blender.org/index.php/Dev:Contents" title="Dev:Contents">Blender Development</a>
+</li><li class="area-start"> <span>Blender 2.6</span>
+</li><li> <a href="http://wiki.blender.org/index.php/Doc:2.6/Manual" title="Doc:2.6/Manual">User Manual</a>
+</li><li> <a href="http://wiki.blender.org/index.php/Doc:2.6/Tutorials" title="Doc:2.6/Tutorials">Tutorials</a>
+</li><li> <a href="http://wiki.blender.org/index.php/Doc:2.6/Books" title="Doc:2.6/Books">Books</a>
+</li><li> <a href="http://wiki.blender.org/index.php/Extensions:2.6/Py/Scripts" title="Extensions:2.6/Py/Scripts">Scripts</a>
+</li><li> <a href="http://www.blender.org/documentation/blender_python_api_2_70a_release" class="external text" rel="nofollow">2.70a Python API <i>(external link)</i></a>
+</li><li class="area-end"> <a href="http://wiki.blender.org/index.php/Dev:2.6" title="Dev:2.6">Blender Development</a>
+</li><li class="area-start"> <span>Blender 2.5</span>
+</li><li> <a href="http://www.blender.org/documentation/blender_python_api_2_59_release" class="external text" rel="nofollow">2.59 Python API <i>(external link)</i></a>
+</li><li class="area-end"> <a href="http://wiki.blender.org/index.php/Dev:2.5" title="Dev:2.5">Blender Development</a>
+</li><li class="area-start"> <span>Blender 2.4</span>
+</li><li> <a href="http://wiki.blender.org/index.php/Doc:2.4/Manual" title="Doc:2.4/Manual">User Manual</a>
+</li><li> <a href="http://wiki.blender.org/index.php/Doc:2.4/Tutorials" title="Doc:2.4/Tutorials">Tutorials</a>
+</li><li> <a href="http://wiki.blender.org/index.php/Doc:2.4/Books" title="Doc:2.4/Books">Books</a>
+</li><li> <a href="http://wiki.blender.org/index.php/Extensions:2.4/Py/Scripts" title="Extensions:2.4/Py/Scripts">Scripts</a>
+</li><li> <a href="http://www.blender.org/documentation/249PythonDoc" class="external text" rel="nofollow">2.49 Python API <i>(external link)</i></a>
+</li><li> <a href="http://wiki.blender.org/index.php/Dev:2.4" title="Dev:2.4">Blender Development</a>
+</li></ul>
+</div>
+</div>
+				
+			<div style="height: 605px;" id="scrollbar2">
+				
+				<div class="viewport">
+					<div class="overview">
+						<!-- START navtree -->
+												<!-- END navtree -->
+					</div>
+				</div>
+			</div>
+				
+		</div>
+		<!-- END column left -->
+		
+		<!-- START column right -->
+		<div id="column-two">
+			<div id="scrollbar1">
+				<div style="height: 637px;" class="scrollbar disable"><div style="height: 637px;" class="track"><div style="top: 0px; height: 637px;" class="thumb"><div class="end"></div></div></div></div>
+				<div style="height: 637px;" class="viewport">
+					<div style="top: 0px;" class="overview">
+			<!-- START TOC -->
+						<div class="port" id="toc">
+				    <div id="toctitle"><h2>Contents</h2></div>
+<ul id="toc-ul">
+<li class="toclevel-1"><a href="#The_UV.2FImage_Editor_for_texturing"><span class="tocnumber">1</span> <span class="toctext">The UV/Image Editor for texturing</span></a>
+<ul>
+<li class="toclevel-2"><a href="#Header_Bar"><span class="tocnumber">1.1</span> <span class="toctext">Header Bar</span></a></li>
+<li class="toclevel-2"><a href="#Properties_Panel"><span class="tocnumber">1.2</span> <span class="toctext">Properties Panel</span></a>
+<ul>
+<li class="toclevel-3"><a href="#Display_Options"><span class="tocnumber">1.2.1</span> <span class="toctext">Display Options</span></a></li>
+</ul>
+</li>
+<li class="toclevel-2"><a href="#Navigating_in_UV_Space"><span class="tocnumber">1.3</span> <span class="toctext">Navigating in UV Space</span></a></li>
+</ul>
+</li>
+</ul>
+			</div>
+						<!-- END TOC -->
+					</div>
+				</div>
+			</div>
+			
+		</div>
+		<!-- END column left -->
+	
+	</div>
+	<div class="visualClear"></div>
+	<div id="footer" class="boxbg">
+
+
+	<form action="/index.php/Special:Search" id="searchform">
+		<div id="p-search-div">
+			<input onfocus="if (this.value == 'quick search...') {this.value=''}; this.style.color='#000'" onblur="if (this.value == '') {this.value = 'quick search...'; this.style.color='#999';}" value="quick search..." id="searchInput" name="search" autocomplete="off" type="text">
+			<!-- <input type="hidden" value="en" id="searchLang" name="searchLang"> -->
+			<!-- <input type="hidden" value="" id="searchSer" name="searchSer"> -->
+			<button type="submit" title="Quick search" name="fulltext" id="searchGoButton"><img src="Doc_2.6_Manual_Textures_Mapping_UV%20Image%20Editor%20-%20BlenderWiki_files/magnifier.png"></button>
+		</div>
+		
+	</form>
+	
+			
+	<div id="wiki_dd" class="dd_item">
+		<div class="button grey">
+			<p>Wiki</p>
+		</div>
+		<div class="dd_menu wiki">
+
+			<ul>
+									<li id="n-Report-a-wiki-bug">
+						<a href="http://projects.blender.org/tracker/?atid=510&amp;group_id=163&amp;func=browse">
+						Report a wiki bug</a>
+					</li>
+									<li id="n-Wiki-Guidelines">
+						<a href="http://wiki.blender.org/index.php/Meta:Guides/Writer_Guide">
+						Wiki Guidelines</a>
+					</li>
+							</ul>
+			
+			<ul>
+				
+			</ul>
+		
+			<ul>
+				<li id="t-specialpages"><a href="http://wiki.blender.org/index.php/Special:SpecialPages">Special pages</a></li>				
+									<li id="n-Categories">
+						<a href="http://wiki.blender.org/index.php/Special:Categories">
+						Categories</a>
+					</li>					<li id="n-Popular-pages">
+						<a href="http://wiki.blender.org/index.php/Special:PopularPages">
+						Popular pages</a>
+					</li>					<li id="n-New-files">
+						<a href="http://wiki.blender.org/index.php/Special:NewFiles">
+						New files</a>
+					</li>					<li id="n-New-pages">
+						<a href="http://wiki.blender.org/index.php/Special:NewPages">
+						New pages</a>
+					</li>					<li id="n-recentchanges">
+						<a href="http://wiki.blender.org/index.php/Special:RecentChanges">
+						Recent changes</a>
+					</li>			</ul>
+
+			<ul>
+							</ul>
+			
+		</div>
+	</div>
+	
+
+				<a title="Powered by mediawiki.org" class="poweredbyico" href="http://www.mediawiki.org/">
+					<img src="Doc_2.6_Manual_Textures_Mapping_UV%20Image%20Editor%20-%20BlenderWiki_files/poweredby_mediawiki.png" alt="power">
+				</a>
+ 			<ul class="links">
+						<li id="viewcount">This page has been accessed 3,100 times.</li>
+			</ul>
+         			    
+		</div>
+		
+	
+<script>if (window.runOnloadHook) runOnloadHook();</script>
+</div>
+<!-- Served in 0.306 secs. -->
+
+</body><!-- Cached 20140821205817 --></html>

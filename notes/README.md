@@ -1,6 +1,8 @@
 Notes
 -----
 * [.DS_Store](.DS_Store)
+* [Doc_2.6_Manual_Textures_Mapping_UV Image Editor - BlenderWiki.html](Doc_2.6_Manual_Textures_Mapping_UV%20Image%20Editor%20-%20BlenderWiki.html)
+* [Forever For Now - UML Diagrams Using Graphviz Dot.html](Forever%20For%20Now%20-%20UML%20Diagrams%20Using%20Graphviz%20Dot.html)
 * [Getting Started with Deep Learning and Python - PyImageSearch.html](Getting%20Started%20with%20Deep%20Learning%20and%20Python%20-%20PyImageSearch.html)
 * [JS_monomorphism.pdf](JS_monomorphism.pdf)
 * [Management of Application Dependencies in YARN - Hortonworks.html](Management%20of%20Application%20Dependencies%20in%20YARN%20-%20Hortonworks.html)
