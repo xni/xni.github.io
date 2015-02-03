@@ -1,0 +1,838 @@
+<!DOCTYPE html>
+<!-- saved from url=(0075)http://hortonworks.com/blog/management-of-application-dependencies-in-yarn/ -->
+<html class="js wf-opensans-n4-active wf-opensans-n3-active wf-active"><link rel="stylesheet" href="http://hortonworks.com/wp-content/themes/hortonworks/css/override.css"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><script type="text/javascript" src="./Management of Application Dependencies in YARN - Hortonworks_files/menu171.js"></script><script async="" src="./Management of Application Dependencies in YARN - Hortonworks_files/fbds.js"></script><script async="" src="./Management of Application Dependencies in YARN - Hortonworks_files/prum.min.js"></script>
+	<meta property="twitter:account_id" content="288500051">
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Management of Application Dependencies in YARN - Hortonworks</title>
+	<link rel="profile" href="http://gmpg.org/xfn/11">
+	<link rel="pingback" href="http://hortonworks.com/xmlrpc.php">
+	<link rel="alternate" type="application/rss+xml" title="RSS" href="http://feeds.feedburner.com/hortonworks/feed">
+	<link rel="shortcut icon" href="http://hortonworks.com/wp-content/themes/hortonworks/images/icons/favicon.ico">
+
+	<!-- Template is : single.php -->
+
+	
+<!-- This site is optimized with the Yoast WordPress SEO plugin v1.7.1 - https://yoast.com/wordpress/plugins/seo/ -->
+<meta name="description" content="Description of application dependency management in YARN for Apache Hadoop.">
+<link rel="canonical" href="./Management of Application Dependencies in YARN - Hortonworks_files/Management of Application Dependencies in YARN - Hortonworks.html">
+<meta property="og:locale" content="en_US">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Management of Application Dependencies in YARN - Hortonworks">
+<meta property="og:description" content="Description of application dependency management in YARN for Apache Hadoop.">
+<meta property="og:url" content="http://hortonworks.com/blog/management-of-application-dependencies-in-yarn/">
+<meta property="og:site_name" content="Hortonworks">
+<meta property="article:section" content="HDP 2.0">
+<meta property="article:section" content="YARN">
+<meta property="article:published_time" content="2013-10-21T11:00:43+00:00">
+<meta property="article:modified_time" content="2014-11-17T15:36:27+00:00">
+<meta property="og:updated_time" content="2014-11-17T15:36:27+00:00">
+<meta property="og:image" content="http://hortonworks.com/wp-content/themes/hortonworks/images/layout/content/hworks_FB.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:description" content="Description of application dependency management in YARN for Apache Hadoop.">
+<meta name="twitter:title" content="Management of Application Dependencies in YARN - Hortonworks">
+<meta name="twitter:site" content="@hortonworks">
+<meta name="twitter:domain" content="Hortonworks">
+<meta name="twitter:creator" content="@hortonworks">
+<!-- / Yoast WordPress SEO plugin. -->
+
+<link rel="alternate" type="application/rss+xml" title="Hortonworks » Management of Application Dependencies in YARN Comments Feed" href="http://hortonworks.com/blog/management-of-application-dependencies-in-yarn/feed/">
+<link rel="stylesheet" id="bbp-default-css" href="./Management of Application Dependencies in YARN - Hortonworks_files/bbpress.css" type="text/css" media="screen">
+<link rel="stylesheet" id="wp-syntax-css-css" href="./Management of Application Dependencies in YARN - Hortonworks_files/wp-syntax.css" type="text/css" media="all">
+<link rel="stylesheet" id="hwx-base-css" href="./Management of Application Dependencies in YARN - Hortonworks_files/base.css" type="text/css" media="all">
+<link rel="stylesheet" id="jetpack_css-css" href="./Management of Application Dependencies in YARN - Hortonworks_files/jetpack.css" type="text/css" media="all">
+<script type="text/javascript" async="" src="./Management of Application Dependencies in YARN - Hortonworks_files/inpage_linkid.js" id="undefined"></script><script type="text/javascript" async="" src="./Management of Application Dependencies in YARN - Hortonworks_files/munchkin.js"></script><script type="text/javascript" async="" src="./Management of Application Dependencies in YARN - Hortonworks_files/insight.min.js"></script><script async="" type="text/javascript" src="./Management of Application Dependencies in YARN - Hortonworks_files/rtp.min.js"></script><script type="text/javascript" async="" src="./Management of Application Dependencies in YARN - Hortonworks_files/ga.js"></script><script type="text/javascript" async="" src="./Management of Application Dependencies in YARN - Hortonworks_files/munchkin.js"></script><script async="" src="./Management of Application Dependencies in YARN - Hortonworks_files/gtm.js"></script><script src="./Management of Application Dependencies in YARN - Hortonworks_files/webfont.js" type="text/javascript" async=""></script><script src="./Management of Application Dependencies in YARN - Hortonworks_files/webfont.js" type="text/javascript" async=""></script><script src="./Management of Application Dependencies in YARN - Hortonworks_files/webfont.js" type="text/javascript" async=""></script><script src="./Management of Application Dependencies in YARN - Hortonworks_files/webfont.js" type="text/javascript" async=""></script><script type="text/javascript" src="./Management of Application Dependencies in YARN - Hortonworks_files/jquery.js"></script>
+<script type="text/javascript" src="./Management of Application Dependencies in YARN - Hortonworks_files/jquery-migrate.min.js"></script>
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="http://hortonworks.com/xmlrpc.php?rsd">
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="http://hortonworks.com/wp-includes/wlwmanifest.xml"> 
+<link rel="shortlink" href="http://hortonworks.com/?p=41039">
+<style type="text/css" id="syntaxhighlighteranchor"></style>
+
+	<!-- Marketo Analytics -->
+<script type="text/javascript">
+(function() {
+	var didInit = false;
+	function initMunchkin() {
+	if(didInit === false) {
+		didInit = true;
+		Munchkin.init('549-QAL-086');
+	}
+	}
+	var s = document.createElement('script');
+	s.type = 'text/javascript';
+	s.async = true;
+	s.src = '//munchkin.marketo.net/munchkin-beta.js';
+	s.onreadystatechange = function() {
+	if (this.readyState == 'complete' || this.readyState == 'loaded') {
+		initMunchkin();
+	}
+	};
+	s.onload = initMunchkin;
+	document.getElementsByTagName('head')[0].appendChild(s);
+})();
+</script><script type="text/javascript" async="" src="./Management of Application Dependencies in YARN - Hortonworks_files/munchkin-beta.js"></script>
+
+<!-- Google Font Roboto Slab -->
+<script type="text/javascript">
+WebFontConfig = {
+	google: { families: [ 'Roboto+Slab:400,300:latin' ] }
+};
+(function() {
+	var wf = document.createElement('script');
+	wf.src = ('https:' == document.location.protocol ? 'https' : 'http') +
+	'://ajax.googleapis.com/ajax/libs/webfont/1/webfont.js';
+	wf.type = 'text/javascript';
+	wf.async = 'true';
+	var s = document.getElementsByTagName('script')[0];
+	s.parentNode.insertBefore(wf, s);
+})();
+</script>
+
+<!-- Google Font Permanent Marker -->
+<script type="text/javascript">
+WebFontConfig = {
+	google: { families: [ 'Permanent+Marker::latin' ] }
+};
+(function() {
+	var wf = document.createElement('script');
+	wf.src = ('https:' == document.location.protocol ? 'https' : 'http') +
+	'://ajax.googleapis.com/ajax/libs/webfont/1/webfont.js';
+	wf.type = 'text/javascript';
+	wf.async = 'true';
+	var s = document.getElementsByTagName('script')[0];
+	s.parentNode.insertBefore(wf, s);
+})();
+</script>
+
+<!-- Google Font Cabin -->
+<script type="text/javascript">
+WebFontConfig = {
+	google: { families: [ 'Cabin:400,700:latin' ] }
+};
+(function() {
+	var wf = document.createElement('script');
+	wf.src = ('https:' == document.location.protocol ? 'https' : 'http') +
+	'://ajax.googleapis.com/ajax/libs/webfont/1/webfont.js';
+	wf.type = 'text/javascript';
+	wf.async = 'true';
+	var s = document.getElementsByTagName('script')[0];
+	s.parentNode.insertBefore(wf, s);
+})();
+</script>
+
+
+	<!-- Google Font Open Sans -->
+	<script type="text/javascript">
+	WebFontConfig = {
+		google: { families: [ 'Open+Sans:400,300:latin' ] }
+	};
+	(function() {
+		var wf = document.createElement('script');
+		wf.src = ('https:' == document.location.protocol ? 'https' : 'http') +
+		'://ajax.googleapis.com/ajax/libs/webfont/1/webfont.js';
+		wf.type = 'text/javascript';
+		wf.async = 'true';
+		var s = document.getElementsByTagName('script')[0];
+		s.parentNode.insertBefore(wf, s);
+	})();
+	</script><link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Open+Sans:400,300&subset=latin">
+
+
+<link type="text/css" href="./Management of Application Dependencies in YARN - Hortonworks_files/jquery-ui-insightera-custom-1.5.css" rel="stylesheet"><script type="text/javascript" src="chrome-extension://phfplpepeojlgfgdfgfgfnmgakolcgoa/js/injected.js"></script><link rel="stylesheet" type="text/css" href="./Management of Application Dependencies in YARN - Hortonworks_files/widget010.old.css" media="all"><link rel="stylesheet" type="text/css" href="./Management of Application Dependencies in YARN - Hortonworks_files/widget010.old.32.css" media="all"></head>
+<body class="single single-post postid-41039 single-format-standard slug_management-of-application-dependencies-in-yarn view-mode-normal js">
+
+<noscript>&lt;iframe src="//www.googletagmanager.com/ns.html?id=GTM-PC8GGM" height="0" width="0" style="display:none;visibility:hidden"&gt;&lt;/iframe&gt;</noscript>
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start': new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0], j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src= '//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f); })(window,document,'script','lsfDataLayer','GTM-PC8GGM');</script>
+
+<!--[if lt IE 9]>
+        <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+<![endif]-->
+
+<div id="canvas">
+
+	
+	<nav class="navigation relative">
+		<!-- This is the mobile nav -->
+		<div class="search">
+			<form action="http://hortonworks.com/search-results" method="GET">
+				<input type="text" name="search" placeholder="Search">
+				<button type="submit"><span class="icon-search"></span></button>
+			</form>
+		</div>
+		<div class="menu-header-new-container"><ul id="menu-header-new" class="menu"><li id="menu-item-54226" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children menu-item-54226"><a href="http://hortonworks.com/customers/">Solutions</a>
+<ul class="sub-menu">
+	<li id="menu-item-64856" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-64856"><a href="http://hortonworks.com/data-first/">Data First Enterprise</a></li>
+	<li id="menu-item-54193" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-54193"><a href="http://hortonworks.com/hadoop-modern-data-architecture/">Build a Modern Data Architecture</a></li>
+	<li id="menu-item-64857" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-64857"><a href="http://hortonworks.com/solutions/advanced-analytic-apps/">Advanced Analytic Applications</a></li>
+	<li id="menu-item-64858" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-64858"><a href="http://hortonworks.com/solutions/data-architecture-optimization/">Data Architecture Optimization</a></li>
+	<li id="menu-item-55289" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-55289"><a href="http://hortonworks.com/hadoop/">What is Hadoop?</a></li>
+</ul>
+</li>
+<li id="menu-item-54187" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children menu-item-54187"><a href="http://hortonworks.com/hdp/">HDP</a>
+<ul class="sub-menu">
+	<li id="menu-item-54218" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-54218"><a href="http://hortonworks.com/hdp/whats-new/">What’s New</a></li>
+	<li id="menu-item-54197" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-54197"><a href="http://hortonworks.com/hdp/docs/">Docs</a></li>
+	<li id="menu-item-55191" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-55191"><a href="http://hortonworks.com/products/hortonworks-sandbox/">HDP Sandbox</a></li>
+</ul>
+</li>
+<li id="menu-item-54188" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children menu-item-54188"><a href="http://hortonworks.com/why-hortonworks/">Why Hortonworks?</a>
+<ul class="sub-menu">
+	<li id="menu-item-55220" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-55220"><a href="http://hortonworks.com/labs/">Innovation in the Open</a></li>
+	<li id="menu-item-54195" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-54195"><a href="http://hortonworks.com/customers/">Customers</a></li>
+	<li id="menu-item-54225" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-54225"><a href="http://hortonworks.com/partners/">Partners</a></li>
+	<li id="menu-item-55192" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-55192"><a href="http://hortonworks.com/support/">Enterprise Support</a></li>
+</ul>
+</li>
+<li id="menu-item-54191" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children menu-item-54191"><a href="http://hortonworks.com/get-started/">Get Started</a>
+<ul class="sub-menu">
+	<li id="menu-item-54221" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-54221"><a href="http://hortonworks.com/training/">Training &amp; Classes</a></li>
+	<li id="menu-item-54200" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-54200"><a href="http://hortonworks.com/products/hortonworks-sandbox/">HDP Sandbox</a></li>
+	<li id="menu-item-54216" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-54216"><a href="http://hortonworks.com/tutorials/">Tutorials</a></li>
+</ul>
+</li>
+<li id="menu-item-54190" class="menu-item menu-item-type-post_type menu-item-object-page current_page_parent menu-item-54190"><a href="http://hortonworks.com/blog/">Blog</a></li>
+<li id="menu-item-61497" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-61497"><a href="http://hortonworks.com/careers/">Careers</a></li>
+<li id="menu-item-54224" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-54224"><a href="http://hortonworks.com/about-us/management-team/">Leadership Team</a></li>
+<li id="menu-item-64859" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-64859"><a href="http://investors.hortonworks.com/">Investor Relations</a></li>
+<li id="menu-item-55190" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-55190"><a href="http://hortonworks.com/webinars/">Upcoming Webinars</a></li>
+<li id="menu-item-54291" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-54291"><a href="http://hortonworks.com/contact/">Office &amp; Contacts</a></li>
+</ul></div>	</nav>
+
+	<div id="navbar">
+		<section class="ps" id="blacknav">
+			<div>
+							</div>
+		</section>
+
+		<section class="ps" id="header">
+			<div>
+				<!-- <div class="blacklinks"><a href="/about/">About</a> &nbsp;|&nbsp; <a href="/blog/">Blog</a></div> -->
+
+				<!-- #logo -->
+				<div id="logo"><a title="Hortonworks Logo" href="http://hortonworks.com/"><img src="./Management of Application Dependencies in YARN - Hortonworks_files/hortonworks-logo-wht.png" alt="Hortonworks Logo"></a></div>
+
+				<!-- Nav -->
+				<nav id="main" class="navigation">
+					<a href="http://hortonworks.com/blog/management-of-application-dependencies-in-yarn/#menu" class="menu-link"><span class="icon-menu"></span></a>
+					<div class="menu-header-navigation-container">
+
+						<aside id="header-tools" class="pop-over" style="display: none;">
+							<form action="http://hortonworks.com/search-results" method="GET" class="tool-form search-form" style="display: none;">
+								<fieldset>
+									<input type="text" name="search" placeholder="Search">
+									<button type="submit"><span class="icon-search"></span></button>
+								</fieldset>
+							</form>
+							<div class="language-form tool-form" style="display: none;">
+								<div class="statement">
+									<span class="icon-language"></span>
+									<div id="smt-lang-selector"><ul class="smt-menu" style="display: block;"><li class="smt-trigger"><a class="smt-trigger-link"><span class="smt-lang">ENGLISH</span></a><ul><li class="smt-item"><a class="smt-link" href="http://hortonworks.com/blog/management-of-application-dependencies-in-yarn/?smtNoRedir=1" style="display: block;">English</a></li><li class="smt-item"><a class="smt-link" href="http://fr.hortonworks.com/blog/management-of-application-dependencies-in-yarn/" style="display: block;">Français</a></li><li class="smt-item"><a class="smt-link" href="http://zh.hortonworks.com/blog/management-of-application-dependencies-in-yarn/" style="display: block;">中文</a></li><li class="smt-item"><a class="smt-link" href="http://ko.hortonworks.com/blog/management-of-application-dependencies-in-yarn/" style="display: block;">한국어</a></li><li class="smt-item"><a class="smt-link" href="http://br.hortonworks.com/blog/management-of-application-dependencies-in-yarn/" style="display: block;">Português (Brasil)</a></li><li class="smt-item"><a class="smt-link" href="http://de.hortonworks.com/blog/management-of-application-dependencies-in-yarn/" style="display: block;">Deutsch</a></li><li class="smt-item"><a class="smt-link" href="http://jp.hortonworks.com/blog/management-of-application-dependencies-in-yarn/" style="display: block;">日本語</a></li></ul></li></ul></div>
+								</div>
+							</div>
+
+							
+								<form class="login-form tool-form" name="loginform" action="http://hortonworks.com/wp-login.php?wpe-login=hortonworks" method="post" style="display: none;">
+									<span class="icon-profile"></span>
+									<fieldset>
+										<input name="log" type="text" placeholder="Username">
+										<input name="pwd" type="password" placeholder="Password">
+										<input type="hidden" name="redirect_to" value="http://hortonworks.com">
+										<button>Sign In</button>
+										<a href="http://hortonworks.com/wp-login.php?action=lostpassword" class="forgot">Forgot?</a>
+									</fieldset>
+								</form>
+
+								<div class="login-fail tool-form" style="display: none;">
+									<span class="icon-profile"></span> Login failed, please try again.
+								</div>
+
+							
+							<a href="http://hortonworks.com/blog/management-of-application-dependencies-in-yarn/#" class="close"><span class="icon-close"></span></a>
+						</aside>
+
+						<ul id="fat-nav" class="menu">
+							<li id="menu-item-1" class="menu-item menu-item-has-children"><a href="http://hortonworks.com/hadoop-modern-data-architecture/" class="menu-item-link">Solutions
+								<!-- <span class="subhead">Build a Modern Data Architecture</span> --></a>
+								<ul class="sub-menu tall col-5">
+									<li><a href="http://hortonworks.com/data-first/" class="menu-item-link">The Data-First Enterprise
+										<span class="subhead">Transform your Business with Big Data</span></a></li>
+									<li><a href="http://hortonworks.com/hadoop-modern-data-architecture/" class="menu-item-link">Build a Modern Data Architecture
+										<span class="subhead">Integrate Hadoop with Existing Systems</span></a></li>
+									<li><a href="http://hortonworks.com/solutions/data-architecture-optimization/" class="menu-item-link">Data Architecture Optimization
+										<span class="subhead">Modernize Your Architecture, Reduce Costs</span></a></li>
+									<li><a href="http://hortonworks.com/solutions/advanced-analytic-apps/" class="menu-item-link">Advanced Analytic Applications
+										<span class="subhead">New Types of Data, New Opportunities</span></a></li>
+									<li><a href="http://hortonworks.com/hadoop/" class="menu-item-link">What is Hadoop?
+										<span class="subhead">Discover the technology of Enterprise Hadoop</span></a></li>
+									<!--
+									<li class="download">
+										<a href="http://info.hortonworks.com/data-lake-hadoop-whitepaper.html" class="menu-item-link"><span class="uptext">Download the </span>Modern Data Architecture Whitepaper</a>
+									</li>
+									-->
+								</ul>
+							</li>
+							<li id="menu-item-2" class="menu-item menu-item-has-children"><a href="http://hortonworks.com/hdp/" class="menu-item-link">Products
+								<!-- <span class="subhead">Hortonworks Data Platform</span> --></a>
+								<ul class="sub-menu col-5">
+									<li><a href="http://hortonworks.com/hdp/" class="menu-item-link">Hortonworks Data Platform
+											<span class="subhead">One open platform for all data and any workload</span></a></li>
+									<li><a href="http://hortonworks.com/hdp/whats-new/" class="menu-item-link">What's New
+											<span class="subhead">The latest in HDP 2.2</span></a></li>
+									<li><a href="http://hortonworks.com/hdp/downloads/" class="menu-item-link">Download &amp; Install
+											<span class="subhead">Available on Windows &amp; Unix</span></a></li>
+									<li><a href="http://hortonworks.com/hdp/addons/" class="menu-item-link">Add-ons
+											<span class="subhead">Third-party connectors, technical previews and more</span></a></li>
+									<li><a href="http://hortonworks.com/labs/" class="menu-item-link">Labs
+											<span class="subhead">Innovation and investment from Hortonworks</span></a></li>
+									<!-- <li><a href="/hdp/archive/" class="menu-item-link">Archive
+											<span class="subhead">Previous versions of HDP and components</span></a></li> -->
+								</ul>
+							</li>
+							<li id="menu-item-3" class="menu-item menu-item-has-children"><a href="http://hortonworks.com/why-hortonworks/" class="menu-item-link">Services
+									<!-- <span class="subhead">Open Leadership,<br>Enterprise Rigor</span> --></a>
+								<ul class="sub-menu col-5">
+									<li><a href="http://hortonworks.com/why-hortonworks/" class="menu-item-link">Why Hortonworks?
+											<span class="subhead">Building 100% open-source enterprise Hadoop</span></a></li>
+									<li><a href="http://hortonworks.com/support/" class="menu-item-link">Enterprise Support
+											<span class="subhead">Direct connection to the architects and experts of Apache Hadoop</span></a></li>
+									<li><a href="http://hortonworks.com/customers/" class="menu-item-link">Customers
+											<span class="subhead">Data-first enterprises that do Hadoop</span></a></li>
+									<li><a href="http://hortonworks.com/training/" class="menu-item-link">Training
+											<span class="subhead">Live training developed by the core architects of Apache Hadoop</span></a></li>
+									<li class="highlight"><a href="http://hortonworks.com/contact/" class="menu-item-link">Contact Us
+											<span class="subhead">Talk with us! </span></a></li>
+								</ul>
+							</li>
+							<li id="menu-item-5" class="menu-item menu-item-has-children"><a href="http://hortonworks.com/partners/" class="menu-item-link">Partners
+									<!-- <span class="subhead">Support & Training<br>&nbsp;</span>--></a>
+								<ul class="sub-menu col-5" style="display: none;">
+									<li><a href="http://hortonworks.com/partners/" class="menu-item-link">Overview
+											<span class="subhead">Learn about our partner program</span></a></li>
+									<li><a href="http://hortonworks.com/partners/ecosystem/" class="menu-item-link">Technology Partners
+											<span class="subhead">Find the integrations for your data center</span></a></li>
+									<li><a href="http://hortonworks.com/partners/hadoop-consultants/" class="menu-item-link">Systems Integrators
+											<span class="subhead">Partners to help you make the most of Hadoop</span></a></li>
+									<li><a href="http://hortonworks.com/partners/certified-technology-program/" class="menu-item-link">Certification
+											<span class="subhead">HDP Certification ensures interoperability</span></a></li>
+									<li><a href="http://hortonworks.com/partners/resources/" class="menu-item-link">Resources
+											<span class="subhead">Portal &amp; learning resources for current partners</span></a></li>
+								</ul>
+							</li>
+							<li id="menu-item-4" class="menu-item menu-item-has-children"><a href="http://hortonworks.com/get-started/" class="menu-item-link">Get Started
+								<!-- <span class="subhead">Tutorials, Sandbox, Docs, and more</span> --></a>
+								<ul class="sub-menu col-5">
+									<li><a href="http://hortonworks.com/get-started/" class="menu-item-link">Get Started
+											<span class="subhead">for Developers, Administrators, and Data Analysts</span></a></li>
+									<li class="highlight"><a href="http://hortonworks.com/sandbox/" class="menu-item-link highlight">HDP Sandbox
+											<span class="subhead">Try HDP on a virtual machine</span></a></li>
+									<li><a href="http://hortonworks.com/tutorials/" class="menu-item-link">Tutorials
+											<span class="subhead">Step by step guides to get you started</span></a></li>
+									<li><a href="http://hortonworks.com/hdp/docs/" class="menu-item-link">Documentation
+											<span class="subhead">Installation, Operations Guides</span></a></li>
+									<li><a href="http://hortonworks.com/community/forums/" class="menu-item-link">Forums
+											<span class="subhead">Join the community of HDP users</span></a></li>
+								</ul>
+							</li>
+							<li id="menu-item-6" class="menu-item menu-item-has-children"><a href="http://hortonworks.com/blog/" class="menu-item-link">Resources
+								<!-- <span class="subhead">Support & Training<br>&nbsp;</span>--></a>
+								<ul class="sub-menu col-4">
+									<li><a href="http://hortonworks.com/blog/" class="menu-item-link">Blog
+										<span class="subhead">Announcements, ecosystem news &amp; more</span></a> </li>
+									<li><a href="http://hortonworks.com/webinars/" class="menu-item-link">Webinars
+										 <span class="subhead">Upcoming presentations &amp; Archives</span></a></li>
+									<li><a href="http://hortonworks.com/events/" class="menu-item-link">Events
+										 <span class="subhead">Connect with us at these upcoming events</span></a> </li>
+									<li><a href="http://investors.hortonworks.com/" class="menu-item-link">Investor Relations
+											<span class="subhead">Financial info, news, and services for investors</span></a> </li>
+								</ul>
+							</li>
+						</ul>
+						<div class="tools">
+							<ul class="tools-list">
+								<li class="hide-small"><a class="open" data-tool="search" href="http://hortonworks.com/blog/management-of-application-dependencies-in-yarn/#" title="search"><span class="icon-search"></span></a></li>
+								<li><a class="open" data-tool="language" href="http://hortonworks.com/blog/management-of-application-dependencies-in-yarn/#" title="change language"><span class="icon-language"></span></a></li>
+								<li class="hide-small"><a class="open" data-tool="profile" href="http://hortonworks.com/blog/management-of-application-dependencies-in-yarn/#" title="login"><span class="icon-profile"></span></a></li>
+							</ul>
+						</div>
+					</div>
+				</nav><!-- End of #main -->
+
+			</div>
+		</section>
+	</div>
+
+	
+	<div class="mainbody">
+<!-- Test from Dev Box --> 
+<style>
+
+    .ps.titlebar > div       { }
+
+    .post_meta              { margin:-10px 0px 40px; font-size:110%;  }
+    .post_meta .avatar      { display:none;  }
+    .post_meta .avatar img  { border-radius:50px; border:3px double #999; }
+    .post_author            { display:inline; }
+    .post_date              { display:inline; }
+    .share                  { margin:10px 0px 0px; }
+
+    .aside .partner .logo img   { width:100%; }
+    .aside .partner         { margin:15px 0px 30px; }
+    .aside .partner .more   { margin:5px 0px;}
+
+    .follow_us              { margin:20px 0px; }
+
+</style>
+<section class="ps titlebar">
+    <div>
+        <div class="breadcrumb">
+            <a href="http://hortonworks.com/blog">Blog</a> » <a href="http://hortonworks.com/blog/type/dev/" rel="tag">From the Dev Team</a>        </div>
+                <h1 class="wordy">Management of Application Dependencies in YARN</h1>
+        <div class="subtitle"></div>
+
+
+    </div>
+</section>
+<div class="lowerbody clearfix">
+    <section class="ps">
+        <div class="clearfix">
+                        <div class="main col-3-4">
+                <div class="maincontent">
+
+                    <div class="post_meta">
+                        <div class="avatar"><img alt="" src="./Management of Application Dependencies in YARN - Hortonworks_files/ffbd0bfd35281a8b2de47bedcacb40d1" class="avatar avatar-100 photo" height="100" width="100"></div>
+                        <div class="post_author">By <a href="http://hortonworks.com/blog/author/vinod_kumar_vavilapalli/" title="Posts by Vinod Kumar Vavilapalli" class="url fn" rel="author">Vinod Kumar Vavilapalli</a></div> on                        <div class="post_date">October 21st, 2013</div>
+                        <div class="share">
+                            <div class="addthis_toolbox addthis_default_style addthis_32x32_style">
+                                <a class="addthis_button_facebook at300b" title="Facebook" href="http://hortonworks.com/blog/management-of-application-dependencies-in-yarn/#"><span class=" at300bs at15nc at15t_facebook"><span class="at_a11y">Share on facebook</span></span></a>
+                                <a class="addthis_button_twitter at300b" title="Tweet" href="http://hortonworks.com/blog/management-of-application-dependencies-in-yarn/#"><span class=" at300bs at15nc at15t_twitter"><span class="at_a11y">Share on twitter</span></span></a>
+                                <a class="addthis_button_linkedin at300b" href="http://www.addthis.com/bookmark.php?v=300&winname=addthis&pub=ra-51eefdcb485124d8&source=tbx32-300&lng=en-us&s=linkedin&url=http%3A%2F%2Fhortonworks.com%2Fblog%2Fmanagement-of-application-dependencies-in-yarn%2F&title=Management%20of%20Application%20Dependencies%20in%20YARN%20-%20Hortonworks&ate=AT-ra-51eefdcb485124d8/-/-/54c5252caea4d1a8/2&frommenu=1&uid=54c5252c41fd3a5d&ct=1&pre=http%3A%2F%2Fhortonworks.com%2Fblog%2Fresource-localization-in-yarn-deep-dive%2F&tt=0&captcha_provider=nucaptcha" target="_blank" title="LinkedIn"><span class=" at300bs at15nc at15t_linkedin"><span class="at_a11y">Share on linkedin</span></span></a>
+                                <a class="addthis_button_google_plusone_share at300b" href="http://www.addthis.com/bookmark.php?v=300&winname=addthis&pub=ra-51eefdcb485124d8&source=tbx32-300&lng=en-us&s=google_plusone_share&url=http%3A%2F%2Fhortonworks.com%2Fblog%2Fmanagement-of-application-dependencies-in-yarn%2F&title=Management%20of%20Application%20Dependencies%20in%20YARN%20-%20Hortonworks&ate=AT-ra-51eefdcb485124d8/-/-/54c5252caea4d1a8/3&frommenu=1&uid=54c5252c993c89b3&ct=1&pre=http%3A%2F%2Fhortonworks.com%2Fblog%2Fresource-localization-in-yarn-deep-dive%2F&tt=0&captcha_provider=nucaptcha" target="_blank" title="Google+"><span class=" at300bs at15nc at15t_google_plusone_share"><span class="at_a11y">Share on google_plusone_share</span></span></a>
+                                                                    <a class="addthis_button_reddit at300b" href="http://www.addthis.com/bookmark.php?v=300&winname=addthis&pub=ra-51eefdcb485124d8&source=tbx32-300&lng=en-us&s=reddit&url=http%3A%2F%2Fhortonworks.com%2Fblog%2Fmanagement-of-application-dependencies-in-yarn%2F&title=Management%20of%20Application%20Dependencies%20in%20YARN%20-%20Hortonworks&ate=AT-ra-51eefdcb485124d8/-/-/54c5252caea4d1a8/4&frommenu=1&uid=54c5252c51ef4b57&ct=1&pre=http%3A%2F%2Fhortonworks.com%2Fblog%2Fresource-localization-in-yarn-deep-dive%2F&tt=0&captcha_provider=nucaptcha" target="_blank" title="Reddit"><span class=" at300bs at15nc at15t_reddit"><span class="at_a11y">Share on reddit</span></span></a>
+                                    <a class="addthis_button_hackernews at300b" href="http://www.addthis.com/bookmark.php?v=300&winname=addthis&pub=ra-51eefdcb485124d8&source=tbx32-300&lng=en-us&s=hackernews&url=http%3A%2F%2Fhortonworks.com%2Fblog%2Fmanagement-of-application-dependencies-in-yarn%2F&title=Management%20of%20Application%20Dependencies%20in%20YARN%20-%20Hortonworks&ate=AT-ra-51eefdcb485124d8/-/-/54c5252caea4d1a8/5&frommenu=1&uid=54c5252cb8da245c&ct=1&pre=http%3A%2F%2Fhortonworks.com%2Fblog%2Fresource-localization-in-yarn-deep-dive%2F&tt=0&captcha_provider=nucaptcha" target="_blank" title="Hacker News"><span class=" at300bs at15nc at15t_hackernews"><span class="at_a11y">Share on hackernews</span></span></a>
+                                                            <div class="atclear"></div></div>
+                        </div>
+                    </div>
+
+                    <!-- Meta information : Date, Who Posted it, Sharing buttons. -->
+                    <div class="featured_image"></div>
+                    <p><em>This post is authored by Omkar Vinit Joshi with Vinod Kumar Vavilapalli and is the 8th post in the multi-part blog series on Apache Hadoop YARN – a general-purpose, distributed, application management framework that supersedes the classic Apache Hadoop MapReduce framework for processing data in Hadoop clusters. Other posts in this series:&nbsp;</em></p>
+<ul>
+<li><em><a href="http://hortonworks.com/blog/introducing-apache-hadoop-yarn/">Introducing Apache Hadoop YARN</a></em></li>
+<li><em><a href="http://hortonworks.com/blog/apache-hadoop-yarn-background-and-an-overview/">Apache Hadoop YARN – Background and an Overview</a></em></li>
+<li><em><a href="http://hortonworks.com/blog/apache-hadoop-yarn-concepts-and-applications/">Apache Hadoop YARN – Concepts and Applications</a></em></li>
+<li><em><a href="http://hortonworks.com/blog/apache-hadoop-yarn-resourcemanager/">Apache Hadoop YARN – ResourceManager</a></em></li>
+<li><em><a href="http://hortonworks.com/blog/apache-hadoop-yarn-nodemanager/">Apache Hadoop YARN – NodeManager</a></em></li>
+<li><em><a href="http://hortonworks.com/blog/running-existing-applications-on-hadoop-2-yarn/">Running existing applications on Hadoop 2 YARN</a></em></li>
+<li><em><a href="http://hortonworks.com/blog/stabilizing-yarn-apis-for-apache-hadoop-2-beta-and-beyond/">Stabilizing YARN APIs for Apache Hadoop 2&nbsp;</a></em></li>
+</ul>
+<h3>Introduction</h3>
+<p>In YARN, applications perform their work by running containers, which today map to processes on the underlying operating system. More often than that, containers have dependencies on files for execution. These files are either required at startup or may be during runtime – just once or more number of times. For example, to launch a simple java program as a container, we need a jar file and potentially more jars as dependencies. Instead of forcing every application to either access (mostly just reading) these files remotely every time or manage the files themselves, YARN gives the applications the ability to <em>localize</em> these files.</p>
+<p>At the time of starting a container, an ApplicationMaster (AM) can specify all the files that a container will require and thus should be localized. Once specified, YARN takes care of the localization by itself and hides all the complications involved in securely copying, managing and later deleting these files.</p>
+<p>In the remainder of this post, we’ll explain the basic concepts about this functionality.</p>
+<h3>LocalResources: Definitions</h3>
+<p>Here are some definitions to begin with:</p>
+<p><strong>Localization.</strong>&nbsp;Localization is the process of copying/download remote resources onto the local file-system. Instead of always accessing a resource remotely, it is copied to the local machine which can then be accessed locally.</p>
+<p><strong>LocalResource.&nbsp;</strong>LocalResource represents a file/library required to run a container. The NodeManager is responsible for localizing the resource prior to launching the container. For each LocalResource, Applications can specify:</p>
+<ul>
+<li><strong>URL</strong>: Remote location from where a LocalResource has to be downloaded</li>
+<li><strong>Size</strong>: Size in bytes of the LocalResource</li>
+<li>Last-modification <strong>timestamp</strong> of the resource on the remote file-system before container-start.</li>
+<li><strong>LocalResourceType</strong>: Specifies the type of a resource localized by the NodeManager – FILE, ARCHIVE and PATTERN</li>
+<li><strong>Pattern</strong>: the pattern that should be used to extract entries from the archive (only used when type is PATTERN).</li>
+<li><strong>LocalResourceVisibility</strong>: Specifies the visibility of a resource localized by the NodeManager. The visibility can be one of PUBLIC, PRIVATE and APPLICATION</li>
+</ul>
+<p>What files can a container request for localization? One can use any kind of files that are meant to be read-only by the containers. Typical examples of LocalResources include:</p>
+<ul>
+<li>Libraries required for starting the container such as a jar file</li>
+<li>Configuration files required to configure the container once started (remote service urls, application default configs etc).</li>
+<li>A static dictionary file.</li>
+</ul>
+<p>The following are some examples of bad candidates for LocalResources:</p>
+<ul>
+<li>Shared files that external components may potentially update in future and current containers wish to track these changes,</li>
+<li>Files that applications themselves directly want to update or</li>
+<li>File through which an application plans to share the updated information with external services.</li>
+</ul>
+<h4>Other related definitions</h4>
+<ul>
+<li><strong>ResourceLocalizationService</strong>: As previously described in the <a href="http://hortonworks.com/blog/apache-hadoop-yarn-nodemanager/">post about NodeManager</a>, ResourceLocalizationService is the service inside NodeManager that is responsible for securely downloading and organizing various file resources needed by containers. It tries its best to distribute the files across all the available disks, enforces access control restrictions of the downloaded files and puts appropriate usage limits on them.</li>
+<li><strong>DeletionService</strong>: A service that runs inside the NodeManager and deletes local paths as and when instructed to do so.</li>
+<li><strong>Localizer</strong>: The actual thread or process that does Localization. There are two types of Localizers – PublicLocalizer for PUBLIC resources and ContainerLocalizers for PRIVATE and APPLICATION resources.</li>
+<li><strong>LocalCache</strong>: NodeManager maintains and manages serveral local-cache of all the files downloaded. The resources are uniquely identified based on the remote-url originally used while copying that file.</li>
+</ul>
+<h2>LocalResource time-stamps</h2>
+<p>As mentioned above, NodeManager tracks the last-modification timestamp of each LocalResource before container-start. Before downloading, NodeManager checks that the files haven’t changed in the interim. This is a way of giving a consistent view at the LocalResources – an application can use the very same file-contents all the time it runs without worrying about data corruption issues due to concurrent writers to the same file.</p>
+<p>Once the file is copied from its remote location to one of the NodeManager’s local disks, it loses any connection to the original file other than the URL (used while copying). Any future modifications to the remote file are NOT tracked and hence if an external system has to update the remote resource – it should be done via versioning. YARN will fail containers that depend on modified remote resources to prevent inconsistencies.</p>
+<p>Note that ApplicationMaster specifies the resource time-stamps to a NodeManager while starting any container on that node. Similarly, for the container running the ApplicationMaster itself, the client has to populate the time-stamps for all the resources that ApplicationMaster needs.</p>
+<p>In case of a MapReduce application, the MapReduce JobClient determines the modification-timestamps of the resources needed by MapReduce ApplicationMaster. The ApplicationMaster itself then sets the timestamps for the resources needed by the MapReduce tasks.</p>
+<h2>LocalResource Types</h2>
+<p>Each LocalResource can be of one of the following types:</p>
+<ul>
+<li><strong>FILE.&nbsp;</strong>&nbsp;A regular file, either textual or binary</li>
+<li><strong>ARCHIVE.</strong>&nbsp;An archive, which is automatically unarchived by the NodeManager. As of now, NodeManager recognizes jars, tars, tar.gz files and .zip files.</li>
+<li><strong>PATTERN.</strong> A hybrid of ARCHIVE and FILE types. The original file is retained, and at the same time (only) part of the file is unarchived on the local-filesystem during localizaiton. Both the original file and extracted files are put in the same directory. Which contents have to extracted from the ARCHIVE and which shouldn’t be is determined by the pattern field in the LocalResource specification. Currently only jar files are supported under PATTERN type, all others are treated as a regular ARCHIVE.</li>
+</ul>
+<h2>LocalResource Visibilites</h2>
+<p>LocalResources can be of three types depending upon their specified LocalResourceVisibility, i.e depending on how visible/accessible they are on the original storage/file system.</p>
+<h4>PUBLIC</h4>
+<p>All the LocalResources (remote URLs) that are marked PUBLIC are accessible for containers of any user. Typically PUBLIC resources are those that can be accessed by anyone on the remote file-system and, following the same ACLs, are copied into public LocalCache. If in future, a container belonging to this or any other application (of this or any user) requests the same LocalResource, it is served from the LocalCache and thus not copied/downloaded again if it isn’t evicted from the LocalCache by then. All files in public cache will be owned by “yarn-user” (user which NodeManager runs as) with world-readable permissions, so that they can be shared by containers from all users whose containers are running on that node.</p>
+<h4>PRIVATE</h4>
+<p>LocalResources that are marked private are shared among all applications of the same user on the node. These LocalResourcse ar ecopied into the specific user’s (user who started the container i.e. the application submitter’s) private cache. These files are accessible to all the containers belonging to different applications but all started by the same user. These files on local file system are owned by the user and not accessible by any other user. Similar to public LocalCache, even for the application submitters, there aren’t any write permissions – the user cannot modify these files once localized. This is to avoid accidental writes to these files by one container harming other containers – all containers expect them to be in the same state as originally specified (mirroring original timestamp and/or version number).</p>
+<h4>APPLICATION</h4>
+<p>All the resources that are marked under “APPLICATION” scope are shared only amongst containers of the same application on the node. They are copied into the application specific LocalCache which is owned by the user who started the container (application-submitter). All theses files are owned by the user with read-only permissions.</p>
+<h4>Notes on LocalResource Visibilities</h4>
+<p>Note that ApplicationMaster specifies this resource visibility to a NodeManager while starting the container – Node manager itself doesn’t make any decision and classify resources. Similarly, for the container running the ApplicationMaster itself, the client has to specify visibilities for all the resources that ApplicationMaster needs.</p>
+<p>In case of a MapReduce application, the MapReduce JobClient decides the resource-type which the corresponding ApplicationMaster then forwards to a NodeManager.</p>
+<h3>Life-time of the LocalResources</h3>
+<p>Like already mentioned, different type of LocalResources have different life-cycles:</p>
+<ul>
+<li><strong>PUBLIC</strong> LocalResources are not deleted once the container or application finishes. They are only deleted when there is a pressure on each local-directory for disk capacity. The threshold for local files is dictated by the configuration property <strong>yarn.nodemanager.localizer.cache.target-size-mb</strong> described below.</li>
+<li><strong>PRIVATE</strong> LocalResources also follow the same life-cycle as PUBLIC resources. In future, we wish to track separate thresholds for different users.</li>
+<li><strong>APPLICATION</strong> scoped LocalResources are deleted immediately after the application finishes.</li>
+</ul>
+<p>One thing of note is that for any given application, we may have multiple ApplicationAttempts and each attempt may start zero or more containers on a given node manager. When the first container belonging to an ApplicationAttempt starts, ResourceLocalizationService localizes files for that application as requested in the container’s launch context. If future containers request more such resources then they all will be localized. If one ApplicationAttempt finishes/fails and another is started, ResourceLocalizationService doesn’t do anything w.r.t the previously localized resources. However when eventually the application finishes, ResourceManager communicates that information to NodeManagers which in turn clear the application LocalCache. In summary, APPLICATION LocalResources are truly application scoped and not ApplicationAttempt scoped.</p>
+<h3>Conclusion</h3>
+<p>That ends our coverage of the basic concepts that application writers will need to know about LocalResources. LocalResources are a very useful feature that application writers can exploit to declare their startup and runtime dependencies. In the next post, we’ll delve deep into how the localization process itself actually takes place in the NodeManager.</p>
+
+                    <div class="share">
+                        Share on :
+                        <div class="addthis_toolbox addthis_default_style addthis_32x32_style">
+                            <a class="addthis_button_facebook at300b" title="Facebook" href="http://hortonworks.com/blog/management-of-application-dependencies-in-yarn/#"><span class=" at300bs at15nc at15t_facebook"><span class="at_a11y">Share on facebook</span></span></a>
+                            <a class="addthis_button_twitter at300b" title="Tweet" href="http://hortonworks.com/blog/management-of-application-dependencies-in-yarn/#"><span class=" at300bs at15nc at15t_twitter"><span class="at_a11y">Share on twitter</span></span></a>
+                            <a class="addthis_button_linkedin at300b" href="http://www.addthis.com/bookmark.php?v=300&winname=addthis&pub=ra-51eefdcb485124d8&source=tbx32-300&lng=en-us&s=linkedin&url=http%3A%2F%2Fhortonworks.com%2Fblog%2Fmanagement-of-application-dependencies-in-yarn%2F&title=Management%20of%20Application%20Dependencies%20in%20YARN%20-%20Hortonworks&ate=AT-ra-51eefdcb485124d8/-/-/54c5252caea4d1a8/6&frommenu=1&uid=54c5252c2036d43c&ct=1&pre=http%3A%2F%2Fhortonworks.com%2Fblog%2Fresource-localization-in-yarn-deep-dive%2F&tt=0&captcha_provider=nucaptcha" target="_blank" title="LinkedIn"><span class=" at300bs at15nc at15t_linkedin"><span class="at_a11y">Share on linkedin</span></span></a>
+                            <a class="addthis_button_google_plusone_share at300b" href="http://www.addthis.com/bookmark.php?v=300&winname=addthis&pub=ra-51eefdcb485124d8&source=tbx32-300&lng=en-us&s=google_plusone_share&url=http%3A%2F%2Fhortonworks.com%2Fblog%2Fmanagement-of-application-dependencies-in-yarn%2F&title=Management%20of%20Application%20Dependencies%20in%20YARN%20-%20Hortonworks&ate=AT-ra-51eefdcb485124d8/-/-/54c5252caea4d1a8/7&frommenu=1&uid=54c5252cce0fe11e&ct=1&pre=http%3A%2F%2Fhortonworks.com%2Fblog%2Fresource-localization-in-yarn-deep-dive%2F&tt=0&captcha_provider=nucaptcha" target="_blank" title="Google+"><span class=" at300bs at15nc at15t_google_plusone_share"><span class="at_a11y">Share on google_plusone_share</span></span></a>
+                                                            <a class="addthis_button_reddit at300b" href="http://www.addthis.com/bookmark.php?v=300&winname=addthis&pub=ra-51eefdcb485124d8&source=tbx32-300&lng=en-us&s=reddit&url=http%3A%2F%2Fhortonworks.com%2Fblog%2Fmanagement-of-application-dependencies-in-yarn%2F&title=Management%20of%20Application%20Dependencies%20in%20YARN%20-%20Hortonworks&ate=AT-ra-51eefdcb485124d8/-/-/54c5252caea4d1a8/8&frommenu=1&uid=54c5252cad4ead06&ct=1&pre=http%3A%2F%2Fhortonworks.com%2Fblog%2Fresource-localization-in-yarn-deep-dive%2F&tt=0&captcha_provider=nucaptcha" target="_blank" title="Reddit"><span class=" at300bs at15nc at15t_reddit"><span class="at_a11y">Share on reddit</span></span></a>
+                                <a class="addthis_button_hackernews at300b" href="http://www.addthis.com/bookmark.php?v=300&winname=addthis&pub=ra-51eefdcb485124d8&source=tbx32-300&lng=en-us&s=hackernews&url=http%3A%2F%2Fhortonworks.com%2Fblog%2Fmanagement-of-application-dependencies-in-yarn%2F&title=Management%20of%20Application%20Dependencies%20in%20YARN%20-%20Hortonworks&ate=AT-ra-51eefdcb485124d8/-/-/54c5252caea4d1a8/9&frommenu=1&uid=54c5252c0434d673&ct=1&pre=http%3A%2F%2Fhortonworks.com%2Fblog%2Fresource-localization-in-yarn-deep-dive%2F&tt=0&captcha_provider=nucaptcha" target="_blank" title="Hacker News"><span class=" at300bs at15nc at15t_hackernews"><span class="at_a11y">Share on hackernews</span></span></a>
+                                                    <div class="atclear"></div></div>
+                    </div>
+
+                    <p class="categories">Categorized by :<br><a href="http://hortonworks.com/blog/category/hdp2-cat/" rel="category tag">HDP 2.0</a> <a href="http://hortonworks.com/blog/category/yarn/" rel="category tag">YARN</a></p>
+
+                </div>
+                
+<div id="comments">
+    
+    
+    
+    <div class="labels-on-top">
+        								<div id="respond" class="comment-respond">
+				<h3 id="reply-title" class="comment-reply-title">Leave a Reply <small><a rel="nofollow" id="cancel-comment-reply-link" href="http://hortonworks.com/blog/management-of-application-dependencies-in-yarn/#respond" style="display:none;">Cancel reply</a></small></h3>
+									<form action="http://hortonworks.com/wp-comments-post.php" method="post" id="commentform" class="comment-form">
+						<noscript>JavaScript and Cookies are required to submit comments. Please enable JavaScript and Cookies before proceeding.</noscript>													<p class="comment-notes"><span id="email-notes">Your email address will not be published.</span> Required fields are marked <span class="required">*</span></p>							<p class="comment-form-author"><label for="author">Name <span class="required">*</span></label> <input id="author" name="author" type="text" value="" size="30" aria-required="true"></p>
+<p class="comment-form-email"><label for="email">Email <span class="required">*</span></label> <input id="email" name="email" type="text" value="" size="30" aria-describedby="email-notes" aria-required="true"></p>
+<p class="comment-form-url"><label for="url">Website</label> <input id="url" name="url" type="text" value="" size="30"><input type="hidden" name="a0LpT8O2Glic" value="4307982e71"></p>
+												<p class="comment-form-comment"><label for="comment">Comment</label> <textarea id="comment" name="comment" cols="45" rows="8" aria-describedby="form-allowed-tags" aria-required="true"></textarea></p>						<p class="comment_warning">If you have specific technical questions, please post them in the <a href="http://hortonworks.com/community/forums/">Forums</a></p><p class="form-allowed-tags">You may use these <abbr title="HyperText Markup Language">HTML</abbr> tags and attributes:  <code>&lt;a href="" title=""&gt; &lt;abbr title=""&gt; &lt;acronym title=""&gt; &lt;b&gt; &lt;blockquote cite=""&gt; &lt;cite&gt; &lt;code&gt; &lt;del datetime=""&gt; &lt;em&gt; &lt;i&gt; &lt;q cite=""&gt; &lt;strike&gt; &lt;strong&gt; </code></p>						<p class="form-submit">
+							<input name="submit" type="submit" id="submit" class="submit" value="Post Comment">
+							<input type="hidden" name="comment_post_ID" value="41039" id="comment_post_ID">
+<input type="hidden" name="comment_parent" id="comment_parent" value="0">
+						</p>
+						<p style="display: none;"><input type="hidden" id="akismet_comment_nonce" name="akismet_comment_nonce" value="4ff175f1c7"></p><p class="comment-subscription-form"><input type="checkbox" name="subscribe_comments" id="subscribe_comments" value="subscribe" style="width: auto; -moz-appearance: checkbox; -webkit-appearance: checkbox;"> <label class="subscribe-label" id="subscribe-label" for="subscribe_comments">Notify me of follow-up comments by email.</label></p><p class="comment-subscription-form"><input type="checkbox" name="subscribe_blog" id="subscribe_blog" value="subscribe" style="width: auto; -moz-appearance: checkbox; -webkit-appearance: checkbox;"> <label class="subscribe-label" id="subscribe-blog-label" for="subscribe_blog">Notify me of new posts by email.</label></p><p style="display: none;"></p>					<input type="hidden" id="ak_js" name="ak_js" value="1422206251813"></form>
+							</div><!-- #respond -->
+			    </div>
+</div><!-- #comments -->
+            </div>
+
+                        <div class="col-1-4 aside right">
+
+                <div class="insightera_promo" id="insightera_promo"><h3>Get The Latest!</h3>
+<div class="webinar"><strong><a title="http://info.hortonworks.com/industry-series-registration.html" href="http://info.hortonworks.com/industry-series-registration.html?utm_medium=website&utm_campaign=insightera">Industry Solutions with Hadoop</a></strong></div>
+<div>Email series: How can Hadoop help you reveal the value in your data?</div>
+<div>&nbsp;</div>
+<div class="register"><a class="btn" href="http://info.hortonworks.com/industry-series-registration.html?utm_medium=website&utm_campaign=insightera" target="_blank">Sign Up Now</a></div></div><div class="related_pages widget"><h3>Related Pages</h3><div class="related_page"><b><a href="http://hortonworks.com/get-started/yarn/">Building YARN Apps for Hadoop</a></b><br>YARN is the data operating system of Hadoop that enables you to process data simultaneously in multiple ways.… <a href="http://hortonworks.com/get-started/yarn/" class="read-more">Read More</a></div><div class="related_page"><b><a href="http://hortonworks.com/labs/yarn/">YARN, the Hadoop Operating System</a></b><br>Apache Hadoop YARN is the data operating system for Hadoop 2.… <a href="http://hortonworks.com/labs/yarn/" class="read-more">Read More</a></div><div class="related_page"><b><a href="http://hortonworks.com/hadoop/yarn/">Hadoop YARN</a></b><br>Part of the core Hadoop project, YARN is the architectural center of Hadoop that allows multiple data processing engines such as interactive SQL, real-time streaming, data science and batch processing to handle data stored in a single platform, unlocking an entirely new approach to analytics.… <a href="http://hortonworks.com/hadoop/yarn/" class="read-more">Read More</a></div></div><div class="related_posts widget"><h3>Recently in the Blog</h3><ul class="related_posts"><li class="post">
+                    		<div class="title"><a href="http://hortonworks.com/blog/announcing-apache-falcon-0-6-0/">Announcing Apache Falcon 0.6.0</a></div>
+                    		<div class="date">January 7, 2015</div>
+                    		<div class="author">Venkatesh Seetharam</div>
+                    	  </li><li class="post">
+                    		<div class="title"><a href="http://hortonworks.com/blog/top-ten-popular-blogs-2014/">Top Ten Popular Hadoop Blog Posts of 2014</a></div>
+                    		<div class="date">December 30, 2014</div>
+                    		<div class="author">Jules S. Damji</div>
+                    	  </li><li class="post">
+                    		<div class="title"><a href="http://hortonworks.com/blog/discover-hdp-2-2-apache-kafka-apache-storm-stream-data-processing/">Discover HDP 2.2: Apache Kafka and Apache Storm for Stream Data Processing</a></div>
+                    		<div class="date">December 18, 2014</div>
+                    		<div class="author">Jules S. Damji</div>
+                    	  </li><li class="post">
+                    		<div class="title"><a href="http://hortonworks.com/blog/announcing-apache-storm-0-9-3/">Announcing Apache Storm 0.9.3</a></div>
+                    		<div class="date">December 18, 2014</div>
+                    		<div class="author">Taylor Goetz</div>
+                    	  </li><li class="post">
+                    		<div class="title"><a href="http://hortonworks.com/blog/accelerating-adoption-enterprise-hadoop/">Further Accelerating the Adoption of Enterprise Hadoop</a></div>
+                    		<div class="date">December 17, 2014</div>
+                    		<div class="author">John Kreisa</div>
+                    	  </li><li class="post">
+                    		<div class="title"><a href="http://hortonworks.com/blog/announcing-apache-slider-0-60-0/">Announcing Apache Slider 0.60.0</a></div>
+                    		<div class="date">December 16, 2014</div>
+                    		<div class="author">Steve Loughran</div>
+                    	  </li><li class="post">
+                    		<div class="title"><a href="http://hortonworks.com/blog/announcing-apache-knox-gateway-0-5-0/">Announcing Apache Knox Gateway 0.5.0</a></div>
+                    		<div class="date">December 9, 2014</div>
+                    		<div class="author">Larry McCay</div>
+                    	  </li><li class="post">
+                    		<div class="title"><a href="http://hortonworks.com/blog/want-new-ways-optimize-big-data-workloads/">Want New Ways to Optimize Your Big Data Workloads?</a></div>
+                    		<div class="date">December 3, 2014</div>
+                    		<div class="author">Ajay Singh</div>
+                    	  </li>   </ul></div>
+                                <div class="follow_us">
+                    <span class="leader">Follow us on : </span>
+                    <ul class="social-icons-list">
+                        <li><a href="http://hortonworks.com/blog/typedev/feed/"><img src="./Management of Application Dependencies in YARN - Hortonworks_files/rss-content.gif" alt="Subsrcribe to our RSS Feed"></a></li>
+                        <li><a href="http://facebook.com/hortonworks/" target="_blank"><img src="./Management of Application Dependencies in YARN - Hortonworks_files/facebook-content.gif" alt="Hortonworks Facebook"></a></li>
+                        <li><a href="http://twitter.com/#!/hortonworks" target="_blank"><img src="./Management of Application Dependencies in YARN - Hortonworks_files/twitter-content.gif" alt="Hortonworks Twitter"></a></li>
+                        <li><a href="http://www.linkedin.com/company/hortonworks" target="_blank"><img src="./Management of Application Dependencies in YARN - Hortonworks_files/linkedin-content.gif" alt="Hortonworks LinkedIn"></a></li>
+                    </ul>
+                </div>
+
+            </div>
+                    </div>
+    </section>
+</div>
+
+
+</div><!-- End mainbody early -->
+<section class="ps light-grey bottom_drawer">
+    <div>
+        <div class="three hitters">
+            <div id="drawer_1"><div class="promo">
+<div class="icon"></div>
+<div class="title">Hortonworks Data Platform</div>
+<div class="desc">The Hortonworks Data Platform is a 100% open source distribution of Apache Hadoop that is truly enterprise grade having been built, tested and hardened with enterprise rigor.</div>
+<div class="cta"><a href="http://hortonworks.com/hdp/">Discover HDP</a></div>
+</div></div><div id="drawer_2"><div class="promo">
+<div class="icon"></div>
+<div class="title">Get started with Sandbox</div>
+<div class="desc">Hortonworks Sandbox is a self-contained virtual machine with Apache Hadoop pre-configured alongside a set of hands-on, step-by-step Hadoop tutorials.</div>
+<div class="cta"><a href="http://hortonworks.com/products/sandbox/">Try Sandbox</a></div>
+</div></div><div id="drawer_3"><div class="promo">
+<div class="title">Modern Data Architecture</div>
+<div class="desc">Tackle the challenges of big data. Hadoop integrates with existing EDW, RDBMS and MPP systems to deliver lower cost, higher capacity infrastructure.</div>
+<div class="cta"><a href="http://hortonworks.com/mda/">Learn More</a></div>
+</div></div>        </div>
+    </div>
+</section>
+<div> <!-- This is just a stand-in for the mainbody div tag that was closed above, but will also get closed in the footer. -->
+
+</div><!-- end mainbody -->
+
+
+<section class="ps" id="newsletter_signup">
+	<div class="newsletter_signup_wrapper">
+		<div class="container">
+			<form method="GET" action="http://hortonworks.com/marketo-ajax/" name="newsletter" id="footer_newsletter">
+					<span>Stay up to date!</span>
+					<input type="text" name="email" id="email" placeholder="Leave your email for updates" value="">
+					<input type="button" id="submit" value="Subscribe" onclick="_gaq.push([&#39;_trackEvent&#39;, &#39;Subscribe to Newsletter&#39;,&#39;Form Submission&#39;,&#39;Subscribe to newsletter&#39;]);">
+			</form>
+			<div class="form_loading" style="text-align:center; padding:20px; display:none;"><img src="./Management of Application Dependencies in YARN - Hortonworks_files/ajax-loader-orange2.gif" alt="loading bar"></div>
+			<p class="form_success">Thank you for subscribing!</p>
+		</div>
+	</div>
+</section>
+
+<section class="ps" id="fat_footer">
+	<div>
+		<ul class="menu">
+			<li><b>About Us</b>
+				<ul class="sub-menu">
+					<li><a href="http://hortonworks.com/about-us/management-team/">Management Team</a></li>
+					<li><a href="http://hortonworks.com/about-us/board-of-directors/">Board of Directors</a></li>
+					<li><a href="http://hortonworks.com/about-us/founders/">Founders</a></li>
+					<li><a href="http://hortonworks.com/careers/">Careers</a></li>
+				</ul>
+			</li>
+			<li><b>Press</b>
+				<ul class="sub-menu">
+					<li><a href="http://hortonworks.com/press-releases/">Press Releases</a></li>
+					<li><a href="http://hortonworks.com/in-the-press/">In the Press</a></li>
+				</ul>
+			</li>
+			<li><b>Partners</b>
+				<ul class="sub-menu">
+					<li><a href="http://hortonworks.com/partners/hadoop-consultants/">Systems Integrators</a></li>
+					<li><a href="http://hortonworks.com/partners/ecosystem/">Technology Partners</a></li>
+					<li><a href="http://hortonworks.com/partners/strategic-resell-partners/">Resellers</a></li>
+					<li><a href="http://hortonworks.com/partners/certified-technology-program/">Certification</a></li>
+					<li><a href="http://hortonworks.com/partners/become-a-partner/">Become a Partner</a></li>
+				</ul>
+			</li>
+			<li><b>Connect</b>
+				<ul class="sub-menu">
+					<li><a href="http://hortonworks.com/blog/">Blog</a></li>
+					<li><a href="http://hortonworks.com/webinars/">Webinars</a></li>
+					<li><a href="http://hortonworks.com/events/">Events</a></li>
+					<li><a href="http://info.hortonworks.com/MDA-Roadshow-2014.html">MDA Roadshow</a></li>
+				</ul>
+			</li>
+			<li><b>Contact</b>
+				<ul class="sub-menu">
+					<li><a href="http://hortonworks.com/contact/">Contact</a></li>
+				</ul>
+				<div class="tel">+1 408 916-4121 <br><span style="font-size:70%; font-weight:normal; color:rgba(255, 255, 255, 0.4)">1 855 8-HORTON</span></div>
+				<ul class="social-icons-list">
+					<li><a href="http://facebook.com/hortonworks/" target="_blank"><img src="./Management of Application Dependencies in YARN - Hortonworks_files/facebook-footer.gif" alt="Hortonworks Facebook"></a></li>
+					<li><a href="http://twitter.com/#!/hortonworks" target="_blank"><img src="./Management of Application Dependencies in YARN - Hortonworks_files/twitter-footer.gif" alt="Hortonworks Twitter"></a></li>
+					<li><a href="http://www.linkedin.com/company/hortonworks" target="_blank"><img src="./Management of Application Dependencies in YARN - Hortonworks_files/linkedin-footer.gif" alt="Hortonworks LinkedIn"></a></li>
+				</ul>
+			</li>
+		</ul>
+
+		<div class="sock">
+			<div class="logo"><a title="Hortonworks - Develops, Distributes and Supports Enterprise Apache Hadoop." href="http://hortonworks.com/">Hortonworks - Develops, Distributes and Supports Enterprise Apache Hadoop.</a></div>
+			<p class="copy">© 2011-2014 Hortonworks Inc. All Rights Reserved.<br>
+				Hadoop and the Hadoop elephant logo are trademarks of the Apache Software Foundation.<br>
+				<a href="http://hortonworks.com/agreements/privacy-policy/" title="Privacy Policy">Privacy Policy</a> |
+				<a href="http://hortonworks.com/agreements/terms-of-service/" title="Terms of Service">Terms of Service</a>
+			</p>
+		</div>
+	</div>
+</section>
+</div>
+
+<div id="options_panel" style="top:320px; right:-169px; width:375px;">
+	<ul>
+		<li class="chat-to-sales"></li>
+ 		<li class="contact-box"><a href="http://hortonworks.com/marketo-contact-sales/?view-mode=compact" class="contact-us-launch fancybox.iframe">Contact Us <i class="fa fa-pencil-square-o"></i></a></li>
+	</ul>
+</div>
+
+
+<script language="javascript" type="text/javascript">var sfjq$ = jQuery.noConflict(), $ = jQuery.noConflict();</script><script type="text/javascript" src="./Management of Application Dependencies in YARN - Hortonworks_files/form.js"></script>
+<script type="text/javascript">
+/* <![CDATA[ */
+var AIA = {"ajaxurl":"http:\/\/hortonworks.com\/wp-admin\/admin-ajax.php"};
+/* ]]> */
+</script>
+<script type="text/javascript" src="./Management of Application Dependencies in YARN - Hortonworks_files/aia.js"></script>
+<script type="text/javascript" src="./Management of Application Dependencies in YARN - Hortonworks_files/plugins.js"></script>
+<script type="text/javascript" src="./Management of Application Dependencies in YARN - Hortonworks_files/scripts.js"></script>
+<script type="text/javascript">
+/* <![CDATA[ */
+var obj_localize = {"submitSuccess":"Thank You for providing your information","themePath":"http:\/\/hortonworks.com\/wp-content\/plugins\/intercept-gate\/formProcessing.php"};
+/* ]]> */
+</script>
+<script type="text/javascript" src="./Management of Application Dependencies in YARN - Hortonworks_files/link_update.js"></script>
+
+<div style="display:none;">
+	</div>
+
+<!-- Load our overrides.css in a validation friendly way -->
+<script>
+	var cb = function() {
+		var l = document.createElement('link'); l.rel = 'stylesheet';
+		l.href = 'http://hortonworks.com/wp-content/themes/hortonworks/css/override.css';
+		var h = document.getElementsByTagName('head')[0]; h.parentNode.insertBefore(l, h);
+	};
+	var raf = requestAnimationFrame || mozRequestAnimationFrame || webkitRequestAnimationFrame || msRequestAnimationFrame;
+	if (raf) raf(cb);
+	else window.addEventListener('load', cb);
+</script>
+
+<!-- Just in case Marketo Munchkin didn't load right, lets check for it and load again here if it didn't -->
+<script type="text/javascript">
+	if ( typeof mktoMunchkin != 'function' || typeof mktoMunchkinFunction != 'function' ) {
+		document.write(unescape("%3Cscript src='//munchkin.marketo.net/munchkin-beta.js' type='text/javascript'%3E%3C/script%3E"));
+	}
+</script><script src="./Management of Application Dependencies in YARN - Hortonworks_files/munchkin-beta.js" type="text/javascript"></script>
+
+<!-- Marketo Analytics : Must Load Before Marketo -->
+<script>mktoMunchkin("549-QAL-086");</script>
+
+<!-- Google Analytics -->
+<script type="text/javascript">
+	var _gaq = _gaq || [];
+	var pluginUrl = '//www.google-analytics.com/plugins/ga/inpage_linkid.js';
+	_gaq.push(['_require', 'inpage_linkid', pluginUrl]);
+	_gaq.push(['_setAccount', 'UA-22950817-1']);
+	_gaq.push(['_setDomainName', '.hortonworks.com']);
+	_gaq.push(['_trackPageview']);
+	/*
+			// SetCustomeVar's allow us to group pages in GA.
+			_gaq.push(['_setCustomVar',
+			1,                  // This custom var is set to slot #1.  Required parameter.
+			'Section',          // The top-level name for your online content categories.  Required parameter.
+			'High level sell',  // Sets the value of "Section" to "Life & Style" for this particular aricle.  Required parameter.
+			3                   // Sets the scope to page-level.  Optional parameter.
+			]);
+
+			// This would allow us to assign categories to each page.
+			 _gaq.push(['_setCustomVar', 2, 'Category',  'Hive',  3   ]);
+	*/
+	(function() {
+		var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+		ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+		var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+	})();
+</script>
+
+<!-- Non essential, tracking, cookieing stuff below here -->
+
+<!-- Insightera Scripts :  RTP tag -->
+<script type="text/javascript">
+	(function(c,h,a,f,i){c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+		c[a].a=i;var g=h.createElement("script");g.async=true;g.type="text/javascript";
+		g.src=f+'?rh='+c.location.hostname+'&aid='+i;var b=h.getElementsByTagName("script")[0];b.parentNode.insertBefore(g,b);
+	})(window,document,"rtp","/wp-content/themes/hortonworks/js/libs/rtp.min.js","hortonworks");
+
+	rtp('send','view');
+	rtp('get', 'campaign',true);
+</script>
+<!-- End of RTP tag -->
+
+<!-- Bizo Retargetting : Lauren -->
+<script type="text/javascript">
+	_bizo_data_partner_id = "6008";
+	(function() {
+		var s = document.getElementsByTagName("script")[0];
+		var b = document.createElement("script");
+		b.type = "text/javascript";
+		b.async = true;
+		b.src = (window.location.protocol === "https:" ? "https://sjs" : "http://js") + ".bizographics.com/insight.min.js";
+		s.parentNode.insertBefore(b, s);
+	})();
+</script>
+<noscript>
+		&lt;img height="1" width="1" alt="" style="display:none;" src="//www.bizographics.com/collect/?pid=6008&amp;amp;fmt=gif" /&gt;
+</noscript>
+
+
+<!-- Smartling Language Detector -->
+<script type="text/javascript">
+	var smtId = "1b5fd90c4";
+	var smtDefaultStyles = false; /* set to false to use your own css */
+	var smtRedirect = true;
+	var smtProt = (("https:" == document.location.protocol) ? "https://" : "http://");
+	document.write(unescape("%3Cscript src='" + smtProt + "cdn01.smartling.com/ls/" + smtId + ".js' type='text/javascript'%3E%3C/script%3E"));
+</script><script src="./Management of Application Dependencies in YARN - Hortonworks_files/1b5fd90c4.js" type="text/javascript"></script>
+
+<!-- Pingdom RUM -->
+<script>
+	var _prum = [['id', '544ef94fabe53db12aa05f65'],
+		['mark', 'firstbyte', (new Date()).getTime()]];
+	(function() {
+		var s = document.getElementsByTagName('script')[0]
+			, p = document.createElement('script');
+		p.async = 'async';
+		p.src = '//rum-static.pingdom.net/prum.min.js';
+		s.parentNode.insertBefore(p, s);
+	})();
+</script>
+
+<!-- Facebook Retargetting - Added for Masha Nov 12, 2014 -->
+<script>(function() {
+		var _fbq = window._fbq || (window._fbq = []);
+		if (!_fbq.loaded) {
+			var fbds = document.createElement('script');
+			fbds.async = true;
+			fbds.src = '//connect.facebook.net/en_US/fbds.js';
+			var s = document.getElementsByTagName('script')[0];
+			s.parentNode.insertBefore(fbds, s);
+			_fbq.loaded = true;
+		}
+		_fbq.push(['addPixelId', '828241047198292']);
+	})();
+	window._fbq = window._fbq || [];
+	window._fbq.push(['track', 'PixelInitialized', {}]);
+</script>
+<noscript>&lt;img height="1" width="1" alt="" style="display:none" src="https://www.facebook.com/tr?id=828241047198292&amp;amp;ev=PixelInitialized" /&gt;</noscript>
+
+<script type="text/javascript">var addthis_config = {"data_track_addressbar":false};</script>
+<script type="text/javascript" src="./Management of Application Dependencies in YARN - Hortonworks_files/addthis_widget.js"></script><div id="_atssh" style="visibility: hidden; height: 1px; width: 1px; position: absolute; top: -9999px; z-index: 100000;"><iframe id="_atssh625" title="AddThis utility frame" style="height: 1px; width: 1px; position: absolute; top: 0px; z-index: 100000; border: 0px; left: 0px;" src="./Management of Application Dependencies in YARN - Hortonworks_files/sh186.html"></iframe></div><script type="text/javascript" src="./Management of Application Dependencies in YARN - Hortonworks_files/core181.js"></script>
+<script src="./Management of Application Dependencies in YARN - Hortonworks_files/saved_resource" type="text/javascript"></script><img src="./Management of Application Dependencies in YARN - Hortonworks_files/seg" width="1" height="1" border="0" alt="" style="display: none;"><img src="./Management of Application Dependencies in YARN - Hortonworks_files/seg(1)" width="1" height="1" border="0" alt="" style="display: none;"><img src="./Management of Application Dependencies in YARN - Hortonworks_files/l" width="1" height="1" border="0" alt="" style="display: none;"><script type="text/javascript" id="">try{var myVar=setInterval(function(){myTimer()},500)}catch(e$$12){console.log("GTM Error: "+e$$12)}function myTimer(){0!=$("[id^\x3dlpchat-container]").length&&($("[id^\x3dlpchat-container]").on("click",function(){lsfDataLayer.push({event:"chatKPI"})}),myStopFunction())}function myStopFunction(){clearInterval(myVar)};</script><div style="display: inline-block; position: absolute; width: auto; padding-left: 0px; padding-right: 0px; margin-left: 0px; margin-right: 0px; visibility: hidden;"></div></body></html>

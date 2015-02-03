@@ -1,0 +1,849 @@
+<!DOCTYPE html>
+<!-- saved from url=(0068)http://hortonworks.com/blog/resource-localization-in-yarn-deep-dive/ -->
+<html class="js wf-opensans-n4-active wf-opensans-n3-active wf-active"><link rel="stylesheet" href="http://hortonworks.com/wp-content/themes/hortonworks/css/override.css"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><script type="text/javascript" src="./Resource Localization in YARN  Deep Dive - Hortonworks_files/menu171.js"></script><script async="" src="./Resource Localization in YARN  Deep Dive - Hortonworks_files/fbds.js"></script><script async="" src="./Resource Localization in YARN  Deep Dive - Hortonworks_files/prum.min.js"></script>
+	<meta property="twitter:account_id" content="288500051">
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Resource Localization in YARN: Deep Dive - Hortonworks</title>
+	<link rel="profile" href="http://gmpg.org/xfn/11">
+	<link rel="pingback" href="http://hortonworks.com/xmlrpc.php">
+	<link rel="alternate" type="application/rss+xml" title="RSS" href="http://feeds.feedburner.com/hortonworks/feed">
+	<link rel="shortcut icon" href="http://hortonworks.com/wp-content/themes/hortonworks/images/icons/favicon.ico">
+
+	<!-- Template is : single.php -->
+
+	
+<!-- This site is optimized with the Yoast WordPress SEO plugin v1.7.1 - https://yoast.com/wordpress/plugins/seo/ -->
+<meta name="description" content="We&#39;ll dig deeper into the innards explaining how the localization happens inside NodeManager for Apache Hadoop YARN and Hadoop 2">
+<link rel="canonical" href="./Resource Localization in YARN  Deep Dive - Hortonworks_files/Resource Localization in YARN  Deep Dive - Hortonworks.html">
+<meta property="og:locale" content="en_US">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Resource Localization in YARN: Deep Dive - Hortonworks">
+<meta property="og:description" content="We&#39;ll dig deeper into the innards explaining how the localization happens inside NodeManager for Apache Hadoop YARN and Hadoop 2">
+<meta property="og:url" content="http://hortonworks.com/blog/resource-localization-in-yarn-deep-dive/">
+<meta property="og:site_name" content="Hortonworks">
+<meta property="article:section" content="HDP 2.0">
+<meta property="article:section" content="YARN">
+<meta property="article:published_time" content="2013-11-07T14:05:34+00:00">
+<meta property="article:modified_time" content="2014-11-17T15:36:24+00:00">
+<meta property="og:updated_time" content="2014-11-17T15:36:24+00:00">
+<meta property="og:image" content="http://hortonworks.com/wp-content/uploads/2013/11/yarn1.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:description" content="We&#39;ll dig deeper into the innards explaining how the localization happens inside NodeManager for Apache Hadoop YARN and Hadoop 2">
+<meta name="twitter:title" content="Resource Localization in YARN: Deep Dive - Hortonworks">
+<meta name="twitter:site" content="@hortonworks">
+<meta name="twitter:domain" content="Hortonworks">
+<meta name="twitter:creator" content="@hortonworks">
+<!-- / Yoast WordPress SEO plugin. -->
+
+<link rel="alternate" type="application/rss+xml" title="Hortonworks » Resource Localization in YARN: Deep Dive Comments Feed" href="http://hortonworks.com/blog/resource-localization-in-yarn-deep-dive/feed/">
+<link rel="stylesheet" id="bbp-default-css" href="./Resource Localization in YARN  Deep Dive - Hortonworks_files/bbpress.css" type="text/css" media="screen">
+<link rel="stylesheet" id="wp-syntax-css-css" href="./Resource Localization in YARN  Deep Dive - Hortonworks_files/wp-syntax.css" type="text/css" media="all">
+<link rel="stylesheet" id="hwx-base-css" href="./Resource Localization in YARN  Deep Dive - Hortonworks_files/base.css" type="text/css" media="all">
+<link rel="stylesheet" id="jetpack_css-css" href="./Resource Localization in YARN  Deep Dive - Hortonworks_files/jetpack.css" type="text/css" media="all">
+<script type="text/javascript" async="" src="./Resource Localization in YARN  Deep Dive - Hortonworks_files/inpage_linkid.js" id="undefined"></script><script type="text/javascript" async="" src="./Resource Localization in YARN  Deep Dive - Hortonworks_files/munchkin.js"></script><script type="text/javascript" async="" src="./Resource Localization in YARN  Deep Dive - Hortonworks_files/insight.min.js"></script><script async="" type="text/javascript" src="./Resource Localization in YARN  Deep Dive - Hortonworks_files/rtp.min.js"></script><script type="text/javascript" async="" src="./Resource Localization in YARN  Deep Dive - Hortonworks_files/ga.js"></script><script type="text/javascript" async="" src="./Resource Localization in YARN  Deep Dive - Hortonworks_files/munchkin.js"></script><script async="" src="./Resource Localization in YARN  Deep Dive - Hortonworks_files/gtm.js"></script><script src="./Resource Localization in YARN  Deep Dive - Hortonworks_files/webfont.js" type="text/javascript" async=""></script><script src="./Resource Localization in YARN  Deep Dive - Hortonworks_files/webfont.js" type="text/javascript" async=""></script><script src="./Resource Localization in YARN  Deep Dive - Hortonworks_files/webfont.js" type="text/javascript" async=""></script><script src="./Resource Localization in YARN  Deep Dive - Hortonworks_files/webfont.js" type="text/javascript" async=""></script><script type="text/javascript" src="./Resource Localization in YARN  Deep Dive - Hortonworks_files/jquery.js"></script>
+<script type="text/javascript" src="./Resource Localization in YARN  Deep Dive - Hortonworks_files/jquery-migrate.min.js"></script>
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="http://hortonworks.com/xmlrpc.php?rsd">
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="http://hortonworks.com/wp-includes/wlwmanifest.xml"> 
+<link rel="shortlink" href="http://hortonworks.com/?p=43253">
+<style type="text/css" id="syntaxhighlighteranchor"></style>
+
+	<!-- Marketo Analytics -->
+<script type="text/javascript">
+(function() {
+	var didInit = false;
+	function initMunchkin() {
+	if(didInit === false) {
+		didInit = true;
+		Munchkin.init('549-QAL-086');
+	}
+	}
+	var s = document.createElement('script');
+	s.type = 'text/javascript';
+	s.async = true;
+	s.src = '//munchkin.marketo.net/munchkin-beta.js';
+	s.onreadystatechange = function() {
+	if (this.readyState == 'complete' || this.readyState == 'loaded') {
+		initMunchkin();
+	}
+	};
+	s.onload = initMunchkin;
+	document.getElementsByTagName('head')[0].appendChild(s);
+})();
+</script><script type="text/javascript" async="" src="./Resource Localization in YARN  Deep Dive - Hortonworks_files/munchkin-beta.js"></script>
+
+<!-- Google Font Roboto Slab -->
+<script type="text/javascript">
+WebFontConfig = {
+	google: { families: [ 'Roboto+Slab:400,300:latin' ] }
+};
+(function() {
+	var wf = document.createElement('script');
+	wf.src = ('https:' == document.location.protocol ? 'https' : 'http') +
+	'://ajax.googleapis.com/ajax/libs/webfont/1/webfont.js';
+	wf.type = 'text/javascript';
+	wf.async = 'true';
+	var s = document.getElementsByTagName('script')[0];
+	s.parentNode.insertBefore(wf, s);
+})();
+</script>
+
+<!-- Google Font Permanent Marker -->
+<script type="text/javascript">
+WebFontConfig = {
+	google: { families: [ 'Permanent+Marker::latin' ] }
+};
+(function() {
+	var wf = document.createElement('script');
+	wf.src = ('https:' == document.location.protocol ? 'https' : 'http') +
+	'://ajax.googleapis.com/ajax/libs/webfont/1/webfont.js';
+	wf.type = 'text/javascript';
+	wf.async = 'true';
+	var s = document.getElementsByTagName('script')[0];
+	s.parentNode.insertBefore(wf, s);
+})();
+</script>
+
+<!-- Google Font Cabin -->
+<script type="text/javascript">
+WebFontConfig = {
+	google: { families: [ 'Cabin:400,700:latin' ] }
+};
+(function() {
+	var wf = document.createElement('script');
+	wf.src = ('https:' == document.location.protocol ? 'https' : 'http') +
+	'://ajax.googleapis.com/ajax/libs/webfont/1/webfont.js';
+	wf.type = 'text/javascript';
+	wf.async = 'true';
+	var s = document.getElementsByTagName('script')[0];
+	s.parentNode.insertBefore(wf, s);
+})();
+</script>
+
+
+	<!-- Google Font Open Sans -->
+	<script type="text/javascript">
+	WebFontConfig = {
+		google: { families: [ 'Open+Sans:400,300:latin' ] }
+	};
+	(function() {
+		var wf = document.createElement('script');
+		wf.src = ('https:' == document.location.protocol ? 'https' : 'http') +
+		'://ajax.googleapis.com/ajax/libs/webfont/1/webfont.js';
+		wf.type = 'text/javascript';
+		wf.async = 'true';
+		var s = document.getElementsByTagName('script')[0];
+		s.parentNode.insertBefore(wf, s);
+	})();
+	</script><link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Open+Sans:400,300&subset=latin">
+
+
+<link type="text/css" href="./Resource Localization in YARN  Deep Dive - Hortonworks_files/jquery-ui-insightera-custom-1.5.css" rel="stylesheet"><script type="text/javascript" src="chrome-extension://phfplpepeojlgfgdfgfgfnmgakolcgoa/js/injected.js"></script><link rel="stylesheet" type="text/css" href="./Resource Localization in YARN  Deep Dive - Hortonworks_files/widget010.old.css" media="all"><link rel="stylesheet" type="text/css" href="./Resource Localization in YARN  Deep Dive - Hortonworks_files/widget010.old.32.css" media="all"></head>
+<body class="single single-post postid-43253 single-format-standard slug_resource-localization-in-yarn-deep-dive view-mode-normal js">
+
+<noscript>&lt;iframe src="//www.googletagmanager.com/ns.html?id=GTM-PC8GGM" height="0" width="0" style="display:none;visibility:hidden"&gt;&lt;/iframe&gt;</noscript>
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start': new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0], j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src= '//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f); })(window,document,'script','lsfDataLayer','GTM-PC8GGM');</script>
+
+<!--[if lt IE 9]>
+        <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+<![endif]-->
+
+<div id="canvas">
+
+	
+	<nav class="navigation relative">
+		<!-- This is the mobile nav -->
+		<div class="search">
+			<form action="http://hortonworks.com/search-results" method="GET">
+				<input type="text" name="search" placeholder="Search">
+				<button type="submit"><span class="icon-search"></span></button>
+			</form>
+		</div>
+		<div class="menu-header-new-container"><ul id="menu-header-new" class="menu"><li id="menu-item-54226" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children menu-item-54226"><a href="http://hortonworks.com/customers/">Solutions</a>
+<ul class="sub-menu">
+	<li id="menu-item-64856" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-64856"><a href="http://hortonworks.com/data-first/">Data First Enterprise</a></li>
+	<li id="menu-item-54193" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-54193"><a href="http://hortonworks.com/hadoop-modern-data-architecture/">Build a Modern Data Architecture</a></li>
+	<li id="menu-item-64857" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-64857"><a href="http://hortonworks.com/solutions/advanced-analytic-apps/">Advanced Analytic Applications</a></li>
+	<li id="menu-item-64858" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-64858"><a href="http://hortonworks.com/solutions/data-architecture-optimization/">Data Architecture Optimization</a></li>
+	<li id="menu-item-55289" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-55289"><a href="http://hortonworks.com/hadoop/">What is Hadoop?</a></li>
+</ul>
+</li>
+<li id="menu-item-54187" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children menu-item-54187"><a href="http://hortonworks.com/hdp/">HDP</a>
+<ul class="sub-menu">
+	<li id="menu-item-54218" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-54218"><a href="http://hortonworks.com/hdp/whats-new/">What’s New</a></li>
+	<li id="menu-item-54197" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-54197"><a href="http://hortonworks.com/hdp/docs/">Docs</a></li>
+	<li id="menu-item-55191" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-55191"><a href="http://hortonworks.com/products/hortonworks-sandbox/">HDP Sandbox</a></li>
+</ul>
+</li>
+<li id="menu-item-54188" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children menu-item-54188"><a href="http://hortonworks.com/why-hortonworks/">Why Hortonworks?</a>
+<ul class="sub-menu">
+	<li id="menu-item-55220" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-55220"><a href="http://hortonworks.com/labs/">Innovation in the Open</a></li>
+	<li id="menu-item-54195" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-54195"><a href="http://hortonworks.com/customers/">Customers</a></li>
+	<li id="menu-item-54225" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-54225"><a href="http://hortonworks.com/partners/">Partners</a></li>
+	<li id="menu-item-55192" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-55192"><a href="http://hortonworks.com/support/">Enterprise Support</a></li>
+</ul>
+</li>
+<li id="menu-item-54191" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children menu-item-54191"><a href="http://hortonworks.com/get-started/">Get Started</a>
+<ul class="sub-menu">
+	<li id="menu-item-54221" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-54221"><a href="http://hortonworks.com/training/">Training &amp; Classes</a></li>
+	<li id="menu-item-54200" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-54200"><a href="http://hortonworks.com/products/hortonworks-sandbox/">HDP Sandbox</a></li>
+	<li id="menu-item-54216" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-54216"><a href="http://hortonworks.com/tutorials/">Tutorials</a></li>
+</ul>
+</li>
+<li id="menu-item-54190" class="menu-item menu-item-type-post_type menu-item-object-page current_page_parent menu-item-54190"><a href="http://hortonworks.com/blog/">Blog</a></li>
+<li id="menu-item-61497" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-61497"><a href="http://hortonworks.com/careers/">Careers</a></li>
+<li id="menu-item-54224" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-54224"><a href="http://hortonworks.com/about-us/management-team/">Leadership Team</a></li>
+<li id="menu-item-64859" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-64859"><a href="http://investors.hortonworks.com/">Investor Relations</a></li>
+<li id="menu-item-55190" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-55190"><a href="http://hortonworks.com/webinars/">Upcoming Webinars</a></li>
+<li id="menu-item-54291" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-54291"><a href="http://hortonworks.com/contact/">Office &amp; Contacts</a></li>
+</ul></div>	</nav>
+
+	<div id="navbar">
+		<section class="ps" id="blacknav">
+			<div>
+							</div>
+		</section>
+
+		<section class="ps" id="header">
+			<div>
+				<!-- <div class="blacklinks"><a href="/about/">About</a> &nbsp;|&nbsp; <a href="/blog/">Blog</a></div> -->
+
+				<!-- #logo -->
+				<div id="logo"><a title="Hortonworks Logo" href="http://hortonworks.com/"><img src="./Resource Localization in YARN  Deep Dive - Hortonworks_files/hortonworks-logo-wht.png" alt="Hortonworks Logo"></a></div>
+
+				<!-- Nav -->
+				<nav id="main" class="navigation">
+					<a href="http://hortonworks.com/blog/resource-localization-in-yarn-deep-dive/#menu" class="menu-link"><span class="icon-menu"></span></a>
+					<div class="menu-header-navigation-container">
+
+						<aside id="header-tools" class="pop-over" style="display: none;">
+							<form action="http://hortonworks.com/search-results" method="GET" class="tool-form search-form" style="display: none;">
+								<fieldset>
+									<input type="text" name="search" placeholder="Search">
+									<button type="submit"><span class="icon-search"></span></button>
+								</fieldset>
+							</form>
+							<div class="language-form tool-form" style="display: none;">
+								<div class="statement">
+									<span class="icon-language"></span>
+									<div id="smt-lang-selector"><ul class="smt-menu" style="display: block;"><li class="smt-trigger"><a class="smt-trigger-link"><span class="smt-lang">ENGLISH</span></a><ul><li class="smt-item"><a class="smt-link" href="http://hortonworks.com/blog/resource-localization-in-yarn-deep-dive/?smtNoRedir=1" style="display: block;">English</a></li><li class="smt-item"><a class="smt-link" href="http://fr.hortonworks.com/blog/resource-localization-in-yarn-deep-dive/" style="display: block;">Français</a></li><li class="smt-item"><a class="smt-link" href="http://zh.hortonworks.com/blog/resource-localization-in-yarn-deep-dive/" style="display: block;">中文</a></li><li class="smt-item"><a class="smt-link" href="http://ko.hortonworks.com/blog/resource-localization-in-yarn-deep-dive/" style="display: block;">한국어</a></li><li class="smt-item"><a class="smt-link" href="http://br.hortonworks.com/blog/resource-localization-in-yarn-deep-dive/" style="display: block;">Português (Brasil)</a></li><li class="smt-item"><a class="smt-link" href="http://de.hortonworks.com/blog/resource-localization-in-yarn-deep-dive/" style="display: block;">Deutsch</a></li><li class="smt-item"><a class="smt-link" href="http://jp.hortonworks.com/blog/resource-localization-in-yarn-deep-dive/" style="display: block;">日本語</a></li></ul></li></ul></div>
+								</div>
+							</div>
+
+							
+								<form class="login-form tool-form" name="loginform" action="http://hortonworks.com/wp-login.php?wpe-login=hortonworks" method="post" style="display: none;">
+									<span class="icon-profile"></span>
+									<fieldset>
+										<input name="log" type="text" placeholder="Username">
+										<input name="pwd" type="password" placeholder="Password">
+										<input type="hidden" name="redirect_to" value="http://hortonworks.com">
+										<button>Sign In</button>
+										<a href="http://hortonworks.com/wp-login.php?action=lostpassword" class="forgot">Forgot?</a>
+									</fieldset>
+								</form>
+
+								<div class="login-fail tool-form" style="display: none;">
+									<span class="icon-profile"></span> Login failed, please try again.
+								</div>
+
+							
+							<a href="http://hortonworks.com/blog/resource-localization-in-yarn-deep-dive/#" class="close"><span class="icon-close"></span></a>
+						</aside>
+
+						<ul id="fat-nav" class="menu">
+							<li id="menu-item-1" class="menu-item menu-item-has-children"><a href="http://hortonworks.com/hadoop-modern-data-architecture/" class="menu-item-link">Solutions
+								<!-- <span class="subhead">Build a Modern Data Architecture</span> --></a>
+								<ul class="sub-menu tall col-5">
+									<li><a href="http://hortonworks.com/data-first/" class="menu-item-link">The Data-First Enterprise
+										<span class="subhead">Transform your Business with Big Data</span></a></li>
+									<li><a href="http://hortonworks.com/hadoop-modern-data-architecture/" class="menu-item-link">Build a Modern Data Architecture
+										<span class="subhead">Integrate Hadoop with Existing Systems</span></a></li>
+									<li><a href="http://hortonworks.com/solutions/data-architecture-optimization/" class="menu-item-link">Data Architecture Optimization
+										<span class="subhead">Modernize Your Architecture, Reduce Costs</span></a></li>
+									<li><a href="http://hortonworks.com/solutions/advanced-analytic-apps/" class="menu-item-link">Advanced Analytic Applications
+										<span class="subhead">New Types of Data, New Opportunities</span></a></li>
+									<li><a href="http://hortonworks.com/hadoop/" class="menu-item-link">What is Hadoop?
+										<span class="subhead">Discover the technology of Enterprise Hadoop</span></a></li>
+									<!--
+									<li class="download">
+										<a href="http://info.hortonworks.com/data-lake-hadoop-whitepaper.html" class="menu-item-link"><span class="uptext">Download the </span>Modern Data Architecture Whitepaper</a>
+									</li>
+									-->
+								</ul>
+							</li>
+							<li id="menu-item-2" class="menu-item menu-item-has-children"><a href="http://hortonworks.com/hdp/" class="menu-item-link">Products
+								<!-- <span class="subhead">Hortonworks Data Platform</span> --></a>
+								<ul class="sub-menu col-5">
+									<li><a href="http://hortonworks.com/hdp/" class="menu-item-link">Hortonworks Data Platform
+											<span class="subhead">One open platform for all data and any workload</span></a></li>
+									<li><a href="http://hortonworks.com/hdp/whats-new/" class="menu-item-link">What's New
+											<span class="subhead">The latest in HDP 2.2</span></a></li>
+									<li><a href="http://hortonworks.com/hdp/downloads/" class="menu-item-link">Download &amp; Install
+											<span class="subhead">Available on Windows &amp; Unix</span></a></li>
+									<li><a href="http://hortonworks.com/hdp/addons/" class="menu-item-link">Add-ons
+											<span class="subhead">Third-party connectors, technical previews and more</span></a></li>
+									<li><a href="http://hortonworks.com/labs/" class="menu-item-link">Labs
+											<span class="subhead">Innovation and investment from Hortonworks</span></a></li>
+									<!-- <li><a href="/hdp/archive/" class="menu-item-link">Archive
+											<span class="subhead">Previous versions of HDP and components</span></a></li> -->
+								</ul>
+							</li>
+							<li id="menu-item-3" class="menu-item menu-item-has-children"><a href="http://hortonworks.com/why-hortonworks/" class="menu-item-link">Services
+									<!-- <span class="subhead">Open Leadership,<br>Enterprise Rigor</span> --></a>
+								<ul class="sub-menu col-5">
+									<li><a href="http://hortonworks.com/why-hortonworks/" class="menu-item-link">Why Hortonworks?
+											<span class="subhead">Building 100% open-source enterprise Hadoop</span></a></li>
+									<li><a href="http://hortonworks.com/support/" class="menu-item-link">Enterprise Support
+											<span class="subhead">Direct connection to the architects and experts of Apache Hadoop</span></a></li>
+									<li><a href="http://hortonworks.com/customers/" class="menu-item-link">Customers
+											<span class="subhead">Data-first enterprises that do Hadoop</span></a></li>
+									<li><a href="http://hortonworks.com/training/" class="menu-item-link">Training
+											<span class="subhead">Live training developed by the core architects of Apache Hadoop</span></a></li>
+									<li class="highlight"><a href="http://hortonworks.com/contact/" class="menu-item-link">Contact Us
+											<span class="subhead">Talk with us! </span></a></li>
+								</ul>
+							</li>
+							<li id="menu-item-5" class="menu-item menu-item-has-children"><a href="http://hortonworks.com/partners/" class="menu-item-link">Partners
+									<!-- <span class="subhead">Support & Training<br>&nbsp;</span>--></a>
+								<ul class="sub-menu col-5">
+									<li><a href="http://hortonworks.com/partners/" class="menu-item-link">Overview
+											<span class="subhead">Learn about our partner program</span></a></li>
+									<li><a href="http://hortonworks.com/partners/ecosystem/" class="menu-item-link">Technology Partners
+											<span class="subhead">Find the integrations for your data center</span></a></li>
+									<li><a href="http://hortonworks.com/partners/hadoop-consultants/" class="menu-item-link">Systems Integrators
+											<span class="subhead">Partners to help you make the most of Hadoop</span></a></li>
+									<li><a href="http://hortonworks.com/partners/certified-technology-program/" class="menu-item-link">Certification
+											<span class="subhead">HDP Certification ensures interoperability</span></a></li>
+									<li><a href="http://hortonworks.com/partners/resources/" class="menu-item-link">Resources
+											<span class="subhead">Portal &amp; learning resources for current partners</span></a></li>
+								</ul>
+							</li>
+							<li id="menu-item-4" class="menu-item menu-item-has-children"><a href="http://hortonworks.com/get-started/" class="menu-item-link">Get Started
+								<!-- <span class="subhead">Tutorials, Sandbox, Docs, and more</span> --></a>
+								<ul class="sub-menu col-5">
+									<li><a href="http://hortonworks.com/get-started/" class="menu-item-link">Get Started
+											<span class="subhead">for Developers, Administrators, and Data Analysts</span></a></li>
+									<li class="highlight"><a href="http://hortonworks.com/sandbox/" class="menu-item-link highlight">HDP Sandbox
+											<span class="subhead">Try HDP on a virtual machine</span></a></li>
+									<li><a href="http://hortonworks.com/tutorials/" class="menu-item-link">Tutorials
+											<span class="subhead">Step by step guides to get you started</span></a></li>
+									<li><a href="http://hortonworks.com/hdp/docs/" class="menu-item-link">Documentation
+											<span class="subhead">Installation, Operations Guides</span></a></li>
+									<li><a href="http://hortonworks.com/community/forums/" class="menu-item-link">Forums
+											<span class="subhead">Join the community of HDP users</span></a></li>
+								</ul>
+							</li>
+							<li id="menu-item-6" class="menu-item menu-item-has-children"><a href="http://hortonworks.com/blog/" class="menu-item-link">Resources
+								<!-- <span class="subhead">Support & Training<br>&nbsp;</span>--></a>
+								<ul class="sub-menu col-4">
+									<li><a href="http://hortonworks.com/blog/" class="menu-item-link">Blog
+										<span class="subhead">Announcements, ecosystem news &amp; more</span></a> </li>
+									<li><a href="http://hortonworks.com/webinars/" class="menu-item-link">Webinars
+										 <span class="subhead">Upcoming presentations &amp; Archives</span></a></li>
+									<li><a href="http://hortonworks.com/events/" class="menu-item-link">Events
+										 <span class="subhead">Connect with us at these upcoming events</span></a> </li>
+									<li><a href="http://investors.hortonworks.com/" class="menu-item-link">Investor Relations
+											<span class="subhead">Financial info, news, and services for investors</span></a> </li>
+								</ul>
+							</li>
+						</ul>
+						<div class="tools">
+							<ul class="tools-list">
+								<li class="hide-small"><a class="open" data-tool="search" href="http://hortonworks.com/blog/resource-localization-in-yarn-deep-dive/#" title="search"><span class="icon-search"></span></a></li>
+								<li><a class="open" data-tool="language" href="http://hortonworks.com/blog/resource-localization-in-yarn-deep-dive/#" title="change language"><span class="icon-language"></span></a></li>
+								<li class="hide-small"><a class="open" data-tool="profile" href="http://hortonworks.com/blog/resource-localization-in-yarn-deep-dive/#" title="login"><span class="icon-profile"></span></a></li>
+							</ul>
+						</div>
+					</div>
+				</nav><!-- End of #main -->
+
+			</div>
+		</section>
+	</div>
+
+	
+	<div class="mainbody">
+<!-- Test from Dev Box --> 
+<style>
+
+    .ps.titlebar > div       { }
+
+    .post_meta              { margin:-10px 0px 40px; font-size:110%;  }
+    .post_meta .avatar      { display:none;  }
+    .post_meta .avatar img  { border-radius:50px; border:3px double #999; }
+    .post_author            { display:inline; }
+    .post_date              { display:inline; }
+    .share                  { margin:10px 0px 0px; }
+
+    .aside .partner .logo img   { width:100%; }
+    .aside .partner         { margin:15px 0px 30px; }
+    .aside .partner .more   { margin:5px 0px;}
+
+    .follow_us              { margin:20px 0px; }
+
+</style>
+<section class="ps titlebar">
+    <div>
+        <div class="breadcrumb">
+            <a href="http://hortonworks.com/blog">Blog</a> » <a href="http://hortonworks.com/blog/type/dev/" rel="tag">From the Dev Team</a>        </div>
+                <h1 class="wordy">Resource Localization in YARN: Deep Dive</h1>
+        <div class="subtitle"></div>
+
+
+    </div>
+</section>
+<div class="lowerbody clearfix">
+    <section class="ps">
+        <div class="clearfix">
+                        <div class="main col-3-4">
+                <div class="maincontent">
+
+                    <div class="post_meta">
+                        <div class="avatar"><img alt="" src="./Resource Localization in YARN  Deep Dive - Hortonworks_files/ffbd0bfd35281a8b2de47bedcacb40d1" class="avatar avatar-100 photo" height="100" width="100"></div>
+                        <div class="post_author">By <a href="http://hortonworks.com/blog/author/vinod_kumar_vavilapalli/" title="Posts by Vinod Kumar Vavilapalli" class="url fn" rel="author">Vinod Kumar Vavilapalli</a></div> on                        <div class="post_date">November 7th, 2013</div>
+                        <div class="share">
+                            <div class="addthis_toolbox addthis_default_style addthis_32x32_style">
+                                <a class="addthis_button_facebook at300b" title="Facebook" href="http://hortonworks.com/blog/resource-localization-in-yarn-deep-dive/#"><span class=" at300bs at15nc at15t_facebook"><span class="at_a11y">Share on facebook</span></span></a>
+                                <a class="addthis_button_twitter at300b" title="Tweet" href="http://hortonworks.com/blog/resource-localization-in-yarn-deep-dive/#"><span class=" at300bs at15nc at15t_twitter"><span class="at_a11y">Share on twitter</span></span></a>
+                                <a class="addthis_button_linkedin at300b" href="http://www.addthis.com/bookmark.php?v=300&winname=addthis&pub=ra-51eefdcb485124d8&source=tbx32-300&lng=en-us&s=linkedin&url=http%3A%2F%2Fhortonworks.com%2Fblog%2Fresource-localization-in-yarn-deep-dive%2F&title=Resource%20Localization%20in%20YARN%3A%20Deep%20Dive%20-%20Hortonworks&ate=AT-ra-51eefdcb485124d8/-/-/54c524b6b5ab1b95/2&frommenu=1&uid=54c524b670b60e2d&ct=1&pre=http%3A%2F%2Fyandex.ru%2Fclck%2Fjsredir%3Ffrom%3Dyandex.ru%253Byandsearch%253Bweb%253B%253B%26text%3D%26etext%3D580.EkSW7r90Czn2yHJDTkhymtGVmN1pbiZoj_hzrXFta4MYLkv0nCHpp-nQg3uvkBPMacjNVJBeOrtnPiD9tH90pw.6c7217d5b1f191e7c222337b21a50b2282f39864%26uuid%3D%26state%3DAiuY0DBWFJ4ePaEse6rgeAjgs2pI3DW99KUdgowt9XsGes-COYeAth2IRvSLLvl4OWtz7kzaHcteHTPAEHpF4UoQTZuTq0gXBJuIV0mHx4rvl4jsM8K8x_yGbZ4RM_aWFwZXg8MwF9u16_gWK1TeD0TJlQSx9XCS7J-fOZ3pnjfHw-PMA2jFPNmVJSCtp1X1YDdDPpPJSFCrUN77GSwdBJ9gdN52_zO2P5rxfdLxI5CfrD-vn-DuGi9ltqeIclYcw41eHPiYGB0%26data%3DUlNrNmk5WktYejR0eWJFYk1Ldmtxdm84RWY0bDJrdUVZbHlKRnlaQTltMHdqNlFTamdNQTdMLXlaaFBOcUdka3lfWnV5QURBMGVfQUdzemxRNHJMNGJRQTVUVHNLSzdRVjlJamduVFhRbzZTT1BqSTdvRG1jbjQ1LU1wZURKbHV0MlNXQUxOQUpzTzF0NDlFZjA2V0doLUlKM2ZDZzdkeHVFODRuWFBibVJZ%26b64e%3D2%26sign%3D3f14aafcb98c758338e5bed62cf1917e%26keyno%3D0%26l10n%3Dru%26cts%3D1422206130517%26mc%3D2.9477027792200903&tt=0&captcha_provider=nucaptcha" target="_blank" title="LinkedIn"><span class=" at300bs at15nc at15t_linkedin"><span class="at_a11y">Share on linkedin</span></span></a>
+                                <a class="addthis_button_google_plusone_share at300b" href="http://www.addthis.com/bookmark.php?v=300&winname=addthis&pub=ra-51eefdcb485124d8&source=tbx32-300&lng=en-us&s=google_plusone_share&url=http%3A%2F%2Fhortonworks.com%2Fblog%2Fresource-localization-in-yarn-deep-dive%2F&title=Resource%20Localization%20in%20YARN%3A%20Deep%20Dive%20-%20Hortonworks&ate=AT-ra-51eefdcb485124d8/-/-/54c524b6b5ab1b95/3&frommenu=1&uid=54c524b63be39091&ct=1&pre=http%3A%2F%2Fyandex.ru%2Fclck%2Fjsredir%3Ffrom%3Dyandex.ru%253Byandsearch%253Bweb%253B%253B%26text%3D%26etext%3D580.EkSW7r90Czn2yHJDTkhymtGVmN1pbiZoj_hzrXFta4MYLkv0nCHpp-nQg3uvkBPMacjNVJBeOrtnPiD9tH90pw.6c7217d5b1f191e7c222337b21a50b2282f39864%26uuid%3D%26state%3DAiuY0DBWFJ4ePaEse6rgeAjgs2pI3DW99KUdgowt9XsGes-COYeAth2IRvSLLvl4OWtz7kzaHcteHTPAEHpF4UoQTZuTq0gXBJuIV0mHx4rvl4jsM8K8x_yGbZ4RM_aWFwZXg8MwF9u16_gWK1TeD0TJlQSx9XCS7J-fOZ3pnjfHw-PMA2jFPNmVJSCtp1X1YDdDPpPJSFCrUN77GSwdBJ9gdN52_zO2P5rxfdLxI5CfrD-vn-DuGi9ltqeIclYcw41eHPiYGB0%26data%3DUlNrNmk5WktYejR0eWJFYk1Ldmtxdm84RWY0bDJrdUVZbHlKRnlaQTltMHdqNlFTamdNQTdMLXlaaFBOcUdka3lfWnV5QURBMGVfQUdzemxRNHJMNGJRQTVUVHNLSzdRVjlJamduVFhRbzZTT1BqSTdvRG1jbjQ1LU1wZURKbHV0MlNXQUxOQUpzTzF0NDlFZjA2V0doLUlKM2ZDZzdkeHVFODRuWFBibVJZ%26b64e%3D2%26sign%3D3f14aafcb98c758338e5bed62cf1917e%26keyno%3D0%26l10n%3Dru%26cts%3D1422206130517%26mc%3D2.9477027792200903&tt=0&captcha_provider=nucaptcha" target="_blank" title="Google+"><span class=" at300bs at15nc at15t_google_plusone_share"><span class="at_a11y">Share on google_plusone_share</span></span></a>
+                                                                    <a class="addthis_button_reddit at300b" href="http://www.addthis.com/bookmark.php?v=300&winname=addthis&pub=ra-51eefdcb485124d8&source=tbx32-300&lng=en-us&s=reddit&url=http%3A%2F%2Fhortonworks.com%2Fblog%2Fresource-localization-in-yarn-deep-dive%2F&title=Resource%20Localization%20in%20YARN%3A%20Deep%20Dive%20-%20Hortonworks&ate=AT-ra-51eefdcb485124d8/-/-/54c524b6b5ab1b95/4&frommenu=1&uid=54c524b6ec8ce378&ct=1&pre=http%3A%2F%2Fyandex.ru%2Fclck%2Fjsredir%3Ffrom%3Dyandex.ru%253Byandsearch%253Bweb%253B%253B%26text%3D%26etext%3D580.EkSW7r90Czn2yHJDTkhymtGVmN1pbiZoj_hzrXFta4MYLkv0nCHpp-nQg3uvkBPMacjNVJBeOrtnPiD9tH90pw.6c7217d5b1f191e7c222337b21a50b2282f39864%26uuid%3D%26state%3DAiuY0DBWFJ4ePaEse6rgeAjgs2pI3DW99KUdgowt9XsGes-COYeAth2IRvSLLvl4OWtz7kzaHcteHTPAEHpF4UoQTZuTq0gXBJuIV0mHx4rvl4jsM8K8x_yGbZ4RM_aWFwZXg8MwF9u16_gWK1TeD0TJlQSx9XCS7J-fOZ3pnjfHw-PMA2jFPNmVJSCtp1X1YDdDPpPJSFCrUN77GSwdBJ9gdN52_zO2P5rxfdLxI5CfrD-vn-DuGi9ltqeIclYcw41eHPiYGB0%26data%3DUlNrNmk5WktYejR0eWJFYk1Ldmtxdm84RWY0bDJrdUVZbHlKRnlaQTltMHdqNlFTamdNQTdMLXlaaFBOcUdka3lfWnV5QURBMGVfQUdzemxRNHJMNGJRQTVUVHNLSzdRVjlJamduVFhRbzZTT1BqSTdvRG1jbjQ1LU1wZURKbHV0MlNXQUxOQUpzTzF0NDlFZjA2V0doLUlKM2ZDZzdkeHVFODRuWFBibVJZ%26b64e%3D2%26sign%3D3f14aafcb98c758338e5bed62cf1917e%26keyno%3D0%26l10n%3Dru%26cts%3D1422206130517%26mc%3D2.9477027792200903&tt=0&captcha_provider=nucaptcha" target="_blank" title="Reddit"><span class=" at300bs at15nc at15t_reddit"><span class="at_a11y">Share on reddit</span></span></a>
+                                    <a class="addthis_button_hackernews at300b" href="http://www.addthis.com/bookmark.php?v=300&winname=addthis&pub=ra-51eefdcb485124d8&source=tbx32-300&lng=en-us&s=hackernews&url=http%3A%2F%2Fhortonworks.com%2Fblog%2Fresource-localization-in-yarn-deep-dive%2F&title=Resource%20Localization%20in%20YARN%3A%20Deep%20Dive%20-%20Hortonworks&ate=AT-ra-51eefdcb485124d8/-/-/54c524b6b5ab1b95/5&frommenu=1&uid=54c524b6fca11dc4&ct=1&pre=http%3A%2F%2Fyandex.ru%2Fclck%2Fjsredir%3Ffrom%3Dyandex.ru%253Byandsearch%253Bweb%253B%253B%26text%3D%26etext%3D580.EkSW7r90Czn2yHJDTkhymtGVmN1pbiZoj_hzrXFta4MYLkv0nCHpp-nQg3uvkBPMacjNVJBeOrtnPiD9tH90pw.6c7217d5b1f191e7c222337b21a50b2282f39864%26uuid%3D%26state%3DAiuY0DBWFJ4ePaEse6rgeAjgs2pI3DW99KUdgowt9XsGes-COYeAth2IRvSLLvl4OWtz7kzaHcteHTPAEHpF4UoQTZuTq0gXBJuIV0mHx4rvl4jsM8K8x_yGbZ4RM_aWFwZXg8MwF9u16_gWK1TeD0TJlQSx9XCS7J-fOZ3pnjfHw-PMA2jFPNmVJSCtp1X1YDdDPpPJSFCrUN77GSwdBJ9gdN52_zO2P5rxfdLxI5CfrD-vn-DuGi9ltqeIclYcw41eHPiYGB0%26data%3DUlNrNmk5WktYejR0eWJFYk1Ldmtxdm84RWY0bDJrdUVZbHlKRnlaQTltMHdqNlFTamdNQTdMLXlaaFBOcUdka3lfWnV5QURBMGVfQUdzemxRNHJMNGJRQTVUVHNLSzdRVjlJamduVFhRbzZTT1BqSTdvRG1jbjQ1LU1wZURKbHV0MlNXQUxOQUpzTzF0NDlFZjA2V0doLUlKM2ZDZzdkeHVFODRuWFBibVJZ%26b64e%3D2%26sign%3D3f14aafcb98c758338e5bed62cf1917e%26keyno%3D0%26l10n%3Dru%26cts%3D1422206130517%26mc%3D2.9477027792200903&tt=0&captcha_provider=nucaptcha" target="_blank" title="Hacker News"><span class=" at300bs at15nc at15t_hackernews"><span class="at_a11y">Share on hackernews</span></span></a>
+                                                            <div class="atclear"></div></div>
+                        </div>
+                    </div>
+
+                    <!-- Meta information : Date, Who Posted it, Sharing buttons. -->
+                    <div class="featured_image"></div>
+                    <p>This post is authored by Omkar Vinit Joshi with Vinod Kumar Vavilapalli and is the ninth post in the multi-part blog series on <a href="http://hortonworks.com/labs/yarn">Apache Hadoop YARN</a> – a general-purpose, distributed, application management framework that supersedes the classic Apache Hadoop MapReduce framework for processing data in Hadoop clusters. Other posts in this series:</p>
+<ul>
+<li><a href="http://hortonworks.com/blog/introducing-apache-hadoop-yarn/">Introducing Apache Hadoop YARN</a></li>
+<li><a href="http://hortonworks.com/blog/apache-hadoop-yarn-background-and-an-overview/">Apache Hadoop YARN – Background and an Overview</a></li>
+<li><a href="http://hortonworks.com/blog/apache-hadoop-yarn-concepts-and-applications/">Apache Hadoop YARN – Concepts and Applications</a></li>
+<li><a href="http://hortonworks.com/blog/apache-hadoop-yarn-resourcemanager/">Apache Hadoop YARN – ResourceManager</a></li>
+<li><a href="http://hortonworks.com/blog/apache-hadoop-yarn-nodemanager/">Apache Hadoop YARN – NodeManager</a></li>
+<li><a href="http://hortonworks.com/blog/running-existing-applications-on-hadoop-2-yarn/">Running existing applications on Hadoop 2 YARN</a></li>
+<li><a href="http://hortonworks.com/blog/stabilizing-yarn-apis-for-apache-hadoop-2-beta-and-beyond/">Stabilizing YARN APIs for Apache Hadoop 2&nbsp;</a></li>
+<li><a href="http://hortonworks.com/blog/management-of-application-dependencies-in-yarn/">Management of Application Dependencies</a></li>
+<li><a href="http://hortonworks.com/blog/resource-localization-in-yarn-deep-dive">Resource Localization in YARN: Deep Dive</a></li>
+</ul>
+<h3>Introduction</h3>
+<p>In the <a href="http://hortonworks.com/blog/management-of-application-dependencies-in-yarn/">previous post</a>, we explained the basic concepts of LocalResources and resource localization in YARN. In this post, we’ll dig deeper into the innards explaining how the localization happens inside NodeManager.</p>
+<h3>Recap of definitions</h3>
+<p>A brief recap of some definitions follows.</p>
+<ul>
+<li><strong>Localization</strong>: Localization is the process of copying/download remote resources onto the local file-system. Instead of always accessing a resource remotely, it is copied to the local machine which can then be accessed locally.</li>
+<li><strong>LocalResource</strong>: LocalResource represents a file/library required to run a container. The NodeManager is responsible for localizing the resource prior to launching the container. For each LocalResource, Applications can specify
+<ul>
+<li><strong>URL</strong>: Remote location from where a LocalResource has to be downloaded</li>
+<li><strong>Size</strong>: Size in bytes of the LocalResource</li>
+<li>Creation <strong>timestamp</strong> of the resource on the remote file-system</li>
+<li><strong>LocalResourceType</strong>: Specifies the type of a resource localized by the NodeManager – FILE, ARCHIVE and PATTERN</li>
+<li><strong>Pattern</strong>: the pattern that should be used to extract entries from the archive (only used when type is PATTERN).</li>
+<li><strong>LocalResourceVisibility</strong>: Specifies the visibility of a resource localized by the NodeManager. The visibility can be one of PUBLIC, PRIVATE and APPLICATION</li>
+</ul>
+</li>
+<li><strong>ResourceLocalizationService</strong>: The service inside NodeManager that is responsible for localization.</li>
+<li><strong>DeletionService</strong>: A service that runs inside the NodeManager and deletes local paths as and when instructed to do so.</li>
+<li><strong>Localizer</strong>: The actual thread or process that does Localization. There are two types of Localizers – PublicLocalizer for PUBLIC resources and ContainerLocalizers for PRIVATE and APPLICATION resources.</li>
+<li><strong>LocalCache</strong>: NodeManager maintains and manages serveral local-cache of all the files downloaded. The resources are uniquely identified based on the remote-url originally used while copying that file.</li>
+</ul>
+<h3>How localization works</h3>
+<p>As you recall from the previous post, there are three types of LocalResources – PUBLIC, PRIVATE and APPLICATION specific resources. PUBLIC LocalResources are localized separately by the NodeManager from PRIVATE/APPLICATION LocalResources because of security implications.</p>
+<h4>Localization of PUBLIC resources</h4>
+<p>Localization of PUBLIC resources is taken care of by a pool of threads called PublicLocalizers.</p>
+<ul>
+<li>PublicLocalizers run inside the address-space of the NodeManager itself.</li>
+<li>The number of PublicLocalizer threads is controlled by the configuration property <strong>yarn.nodemanager.localizer.fetch.thread-count</strong> – maximum parallelism during downloading of PUBLIC resources is equal to this thread count.</li>
+<li>While localizing PUBLIC resources, the localizer validates that all the requested resources are indeed PUBLIC by checking their permissions on the remote file-system. Any LocalResource that doesn’t fit that condition is rejected for localization.</li>
+<li>Each PublicLocalizer uses credentials passed as part of ContainerLaunchContext to securely copy the resources from the remote file-system.</li>
+</ul>
+<h4>Localization of PRIVATE/APPLICATON resources</h4>
+<p>Localization of PRIVATE/APPLICATION resources is not done inside the NodeManager and hence is not centralized. The process is a little involved and is outlined below:</p>
+<ul>
+<li>Localization of these resources happen in a separate process called ContainerLocalizer.</li>
+<li>Every ContainerLocalizer process is managed by a single thread in NodeManager called LocalizerRunner. Every container will trigger one LocalizerRunner if it has any resources that are not yet downloaded.</li>
+<li>LocalResourcesTracker is a per-user or per-application object that tracks all the LocalResources for a given user or an application.</li>
+<li>When a container first requests a PRIVATE/APPLICATION LocalResource, if it is not found in LocalResourcesTracker (or found but in INITIALIZED state) then it is added to pending-resources list.
+<ul>
+<li>A LocalizerRunner may( or may not) get created depending on the need for downloading something new.</li>
+<li>The LocalResources is added to its LocalizerRunner’s pending-resources list.</li>
+</ul>
+</li>
+<li>One requirement for NodeManager in secure mode is to download/copy these resources as the application-submitter and not as a yarn-user (privileged user). Therefore LocalizerRunner starts a LinuxContainerExecutor(LCE) (a process running as application-submitter) which then execs a ContainerLocalizer to download these resources.
+<ul>
+<li>Once started, ContainerLocalizer starts heartbeating with the NodeManager process.</li>
+<li>On each heartbeat, LocalizerRunner either assigns one resource at a time to a ContainerLocalizer or asks it to die. ContainerLocalizer informs LocalizerRunner about the status of the download.</li>
+<li>If it fails to download a resource, then that particular resource is removed from LocalResourcesTracker and the container eventually is marked as failed. When this happens LocalizerRunners stops the running ContainerLocalizers and exits.</li>
+<li>If it is a successful download, then LocalizerRunner gives a ContainerLocalizer another resource again and again until all pending resources are successfully downloaded.</li>
+</ul>
+</li>
+<li>At present, each ContainerLocalizer doesn’t support parallel download of mutliple PRIVATE/APPLICATION resources which we are trying to fix via <a href="https://issues.apache.org/jira/browse/YARN-574" class="ext-link" target="_blank">YARN-574</a>.</li>
+</ul>
+<p>Note that because of the above, the maximum parallelism that we can get at present is the number of containers requested for same user on same node manager at THAT point of time. This in the worst case is one when an ApplicationMaster itself is starting. So if AM needs any resources to be localized then today they will be downloaded serially before its container starts.</p>
+<h2>Target locations of LocalResources</h2>
+<p>On each of the NodeManager machines, LocalResources are ultimately localized in the following target directories, under each local-directory:</p>
+<ul>
+<li><strong>PUBLIC:</strong> <code>&lt;local-dir&gt;/filecache</code></li>
+<li><strong>PRIVATE:</strong> <code>&lt;local-dir&gt;/usercache//filecache</code></li>
+<li><strong>APPLICATION:</strong> <code>&lt;local-dir&gt;/usercache//appcache/&lt;app-id&gt;/</code></li>
+</ul>
+<p><img class="alignnone  wp-image-43255" alt="yarn1" src="./Resource Localization in YARN  Deep Dive - Hortonworks_files/yarn1.png" width="673" height="393"></p>
+<h2>Configuration for resources’ localization</h2>
+<p>Administrators can control various things related to resource-localization by setting or changing certain configuration parameters in <em>yarn-site.xml</em> when starting a NodeManager.</p>
+<ul>
+<li><strong>yarn.nodemanager.local-dirs</strong>: This is a comma separated list of local-directories that one can configure to be used for copying files during localization. The idea behind allowing multiple directories is to use multiple disks for localization – it helps both fail-over (one/few disk(s) going bad doesn’t affect all containers) and load balancing (no single disk is bottlenecked with writes). Thus, individual directories should be configured if possible on different local disks.</li>
+<li><strong>yarn.nodemanager.local-cache.max-files-per-directory</strong>: Limits the maximum number of files which will be localized in each of the localization directories (separately for PUBLIC / PRIVATE / APPLICATION resources). Its default value is 8192 and should not typically be assigned a large value (configure a value which is sufficiently less than the per directory maximum file limit of the underlying file-system e.g ext3).</li>
+<li><strong>yarn.nodemanager.localizer.address</strong>: The network address where ResourceLocalizationService listens to for various localizers.</li>
+<li><strong>yarn.nodemanager.localizer.client.thread-count</strong>: Limits the number of RPC threads in ResourceLocalizationService that are used for handling localization requests from Localizers. Defaults to 5, which means that by default at any point of time, only 5 Localizers will be processed while others wait in the RPC queues.</li>
+<li><strong>yarn.nodemanager.localizer.fetch.thread-count</strong>: Configures the number of threads used for localizing PUBLIC resources. Recall that localization of PUBLIC resources happens inside the NodeManager address space and thus this property limits how many threads will be spawned inside NodeManager for localization of PUBLIC resources. Defaults to 4.</li>
+<li><strong>yarn.nodemanager.delete.thread-count</strong>: Controls the number of threads used by DeletionService for deleting files. This DeletionUser is used all over the NodeManager for deleting log files as well as local cache files. Defaults to 4.</li>
+<li><strong>yarn.nodemanager.localizer.cache.target-size-mb</strong>: This decides the maximum disk space to be used for localizing resources. (At present there is no individual limit for PRIVATE / APPLICATION / PUBLIC cache. <a href="https://issues.apache.org/jira/browse/YARN-882" class="ext-link" target="_blank">YARN-882</a>). Once the total disk size of the cache exceeds this then Deletion service will try to remove files which are not used by any running containers. At present there is no limit (quota) for user cache / public cache / private cache. This limit is applicable to all the disks as a total and is not based on per disk basis.</li>
+<li><strong>yarn.nodemanager.localizer.cache.cleanup.interval-ms</strong>: After this interval resource localization service will try to delete the unused resources if total cache size exceeds the configured max-size. Unused resources are those resources which are not referenced by any running container. Every time container requests a resource, container is added into the resources’ reference list. It will remain there until container finishes avoiding accidental deletion of this resource. As a part of container resource cleanup (when container finishes) container will be removed from resources’ reference list. That is why when reference count drops to zero it is an ideal candidate for deletion. The resources will be deleted on LRU basis until current cache size drops below target size.</li>
+</ul>
+<h3>Conclusion</h3>
+<p>That concludes our exposition of resource-localization in NodeManager. It is one of the chief services offered by NodeManagers to the applications. Next time, we’ll continue with more gritty details of YARN, stay tuned.</p>
+<p><strong><a href="http://hortonworks.com/get-started/develop/">To get started with YARN, take a look at these resources</a>.</strong></p>
+
+                    <div class="share">
+                        Share on :
+                        <div class="addthis_toolbox addthis_default_style addthis_32x32_style">
+                            <a class="addthis_button_facebook at300b" title="Facebook" href="http://hortonworks.com/blog/resource-localization-in-yarn-deep-dive/#"><span class=" at300bs at15nc at15t_facebook"><span class="at_a11y">Share on facebook</span></span></a>
+                            <a class="addthis_button_twitter at300b" title="Tweet" href="http://hortonworks.com/blog/resource-localization-in-yarn-deep-dive/#"><span class=" at300bs at15nc at15t_twitter"><span class="at_a11y">Share on twitter</span></span></a>
+                            <a class="addthis_button_linkedin at300b" href="http://www.addthis.com/bookmark.php?v=300&winname=addthis&pub=ra-51eefdcb485124d8&source=tbx32-300&lng=en-us&s=linkedin&url=http%3A%2F%2Fhortonworks.com%2Fblog%2Fresource-localization-in-yarn-deep-dive%2F&title=Resource%20Localization%20in%20YARN%3A%20Deep%20Dive%20-%20Hortonworks&ate=AT-ra-51eefdcb485124d8/-/-/54c524b6b5ab1b95/6&frommenu=1&uid=54c524b6d441f5b5&ct=1&pre=http%3A%2F%2Fyandex.ru%2Fclck%2Fjsredir%3Ffrom%3Dyandex.ru%253Byandsearch%253Bweb%253B%253B%26text%3D%26etext%3D580.EkSW7r90Czn2yHJDTkhymtGVmN1pbiZoj_hzrXFta4MYLkv0nCHpp-nQg3uvkBPMacjNVJBeOrtnPiD9tH90pw.6c7217d5b1f191e7c222337b21a50b2282f39864%26uuid%3D%26state%3DAiuY0DBWFJ4ePaEse6rgeAjgs2pI3DW99KUdgowt9XsGes-COYeAth2IRvSLLvl4OWtz7kzaHcteHTPAEHpF4UoQTZuTq0gXBJuIV0mHx4rvl4jsM8K8x_yGbZ4RM_aWFwZXg8MwF9u16_gWK1TeD0TJlQSx9XCS7J-fOZ3pnjfHw-PMA2jFPNmVJSCtp1X1YDdDPpPJSFCrUN77GSwdBJ9gdN52_zO2P5rxfdLxI5CfrD-vn-DuGi9ltqeIclYcw41eHPiYGB0%26data%3DUlNrNmk5WktYejR0eWJFYk1Ldmtxdm84RWY0bDJrdUVZbHlKRnlaQTltMHdqNlFTamdNQTdMLXlaaFBOcUdka3lfWnV5QURBMGVfQUdzemxRNHJMNGJRQTVUVHNLSzdRVjlJamduVFhRbzZTT1BqSTdvRG1jbjQ1LU1wZURKbHV0MlNXQUxOQUpzTzF0NDlFZjA2V0doLUlKM2ZDZzdkeHVFODRuWFBibVJZ%26b64e%3D2%26sign%3D3f14aafcb98c758338e5bed62cf1917e%26keyno%3D0%26l10n%3Dru%26cts%3D1422206130517%26mc%3D2.9477027792200903&tt=0&captcha_provider=nucaptcha" target="_blank" title="LinkedIn"><span class=" at300bs at15nc at15t_linkedin"><span class="at_a11y">Share on linkedin</span></span></a>
+                            <a class="addthis_button_google_plusone_share at300b" href="http://www.addthis.com/bookmark.php?v=300&winname=addthis&pub=ra-51eefdcb485124d8&source=tbx32-300&lng=en-us&s=google_plusone_share&url=http%3A%2F%2Fhortonworks.com%2Fblog%2Fresource-localization-in-yarn-deep-dive%2F&title=Resource%20Localization%20in%20YARN%3A%20Deep%20Dive%20-%20Hortonworks&ate=AT-ra-51eefdcb485124d8/-/-/54c524b6b5ab1b95/7&frommenu=1&uid=54c524b63f6ea807&ct=1&pre=http%3A%2F%2Fyandex.ru%2Fclck%2Fjsredir%3Ffrom%3Dyandex.ru%253Byandsearch%253Bweb%253B%253B%26text%3D%26etext%3D580.EkSW7r90Czn2yHJDTkhymtGVmN1pbiZoj_hzrXFta4MYLkv0nCHpp-nQg3uvkBPMacjNVJBeOrtnPiD9tH90pw.6c7217d5b1f191e7c222337b21a50b2282f39864%26uuid%3D%26state%3DAiuY0DBWFJ4ePaEse6rgeAjgs2pI3DW99KUdgowt9XsGes-COYeAth2IRvSLLvl4OWtz7kzaHcteHTPAEHpF4UoQTZuTq0gXBJuIV0mHx4rvl4jsM8K8x_yGbZ4RM_aWFwZXg8MwF9u16_gWK1TeD0TJlQSx9XCS7J-fOZ3pnjfHw-PMA2jFPNmVJSCtp1X1YDdDPpPJSFCrUN77GSwdBJ9gdN52_zO2P5rxfdLxI5CfrD-vn-DuGi9ltqeIclYcw41eHPiYGB0%26data%3DUlNrNmk5WktYejR0eWJFYk1Ldmtxdm84RWY0bDJrdUVZbHlKRnlaQTltMHdqNlFTamdNQTdMLXlaaFBOcUdka3lfWnV5QURBMGVfQUdzemxRNHJMNGJRQTVUVHNLSzdRVjlJamduVFhRbzZTT1BqSTdvRG1jbjQ1LU1wZURKbHV0MlNXQUxOQUpzTzF0NDlFZjA2V0doLUlKM2ZDZzdkeHVFODRuWFBibVJZ%26b64e%3D2%26sign%3D3f14aafcb98c758338e5bed62cf1917e%26keyno%3D0%26l10n%3Dru%26cts%3D1422206130517%26mc%3D2.9477027792200903&tt=0&captcha_provider=nucaptcha" target="_blank" title="Google+"><span class=" at300bs at15nc at15t_google_plusone_share"><span class="at_a11y">Share on google_plusone_share</span></span></a>
+                                                            <a class="addthis_button_reddit at300b" href="http://www.addthis.com/bookmark.php?v=300&winname=addthis&pub=ra-51eefdcb485124d8&source=tbx32-300&lng=en-us&s=reddit&url=http%3A%2F%2Fhortonworks.com%2Fblog%2Fresource-localization-in-yarn-deep-dive%2F&title=Resource%20Localization%20in%20YARN%3A%20Deep%20Dive%20-%20Hortonworks&ate=AT-ra-51eefdcb485124d8/-/-/54c524b6b5ab1b95/8&frommenu=1&uid=54c524b68fa96579&ct=1&pre=http%3A%2F%2Fyandex.ru%2Fclck%2Fjsredir%3Ffrom%3Dyandex.ru%253Byandsearch%253Bweb%253B%253B%26text%3D%26etext%3D580.EkSW7r90Czn2yHJDTkhymtGVmN1pbiZoj_hzrXFta4MYLkv0nCHpp-nQg3uvkBPMacjNVJBeOrtnPiD9tH90pw.6c7217d5b1f191e7c222337b21a50b2282f39864%26uuid%3D%26state%3DAiuY0DBWFJ4ePaEse6rgeAjgs2pI3DW99KUdgowt9XsGes-COYeAth2IRvSLLvl4OWtz7kzaHcteHTPAEHpF4UoQTZuTq0gXBJuIV0mHx4rvl4jsM8K8x_yGbZ4RM_aWFwZXg8MwF9u16_gWK1TeD0TJlQSx9XCS7J-fOZ3pnjfHw-PMA2jFPNmVJSCtp1X1YDdDPpPJSFCrUN77GSwdBJ9gdN52_zO2P5rxfdLxI5CfrD-vn-DuGi9ltqeIclYcw41eHPiYGB0%26data%3DUlNrNmk5WktYejR0eWJFYk1Ldmtxdm84RWY0bDJrdUVZbHlKRnlaQTltMHdqNlFTamdNQTdMLXlaaFBOcUdka3lfWnV5QURBMGVfQUdzemxRNHJMNGJRQTVUVHNLSzdRVjlJamduVFhRbzZTT1BqSTdvRG1jbjQ1LU1wZURKbHV0MlNXQUxOQUpzTzF0NDlFZjA2V0doLUlKM2ZDZzdkeHVFODRuWFBibVJZ%26b64e%3D2%26sign%3D3f14aafcb98c758338e5bed62cf1917e%26keyno%3D0%26l10n%3Dru%26cts%3D1422206130517%26mc%3D2.9477027792200903&tt=0&captcha_provider=nucaptcha" target="_blank" title="Reddit"><span class=" at300bs at15nc at15t_reddit"><span class="at_a11y">Share on reddit</span></span></a>
+                                <a class="addthis_button_hackernews at300b" href="http://www.addthis.com/bookmark.php?v=300&winname=addthis&pub=ra-51eefdcb485124d8&source=tbx32-300&lng=en-us&s=hackernews&url=http%3A%2F%2Fhortonworks.com%2Fblog%2Fresource-localization-in-yarn-deep-dive%2F&title=Resource%20Localization%20in%20YARN%3A%20Deep%20Dive%20-%20Hortonworks&ate=AT-ra-51eefdcb485124d8/-/-/54c524b6b5ab1b95/9&frommenu=1&uid=54c524b602110d6a&ct=1&pre=http%3A%2F%2Fyandex.ru%2Fclck%2Fjsredir%3Ffrom%3Dyandex.ru%253Byandsearch%253Bweb%253B%253B%26text%3D%26etext%3D580.EkSW7r90Czn2yHJDTkhymtGVmN1pbiZoj_hzrXFta4MYLkv0nCHpp-nQg3uvkBPMacjNVJBeOrtnPiD9tH90pw.6c7217d5b1f191e7c222337b21a50b2282f39864%26uuid%3D%26state%3DAiuY0DBWFJ4ePaEse6rgeAjgs2pI3DW99KUdgowt9XsGes-COYeAth2IRvSLLvl4OWtz7kzaHcteHTPAEHpF4UoQTZuTq0gXBJuIV0mHx4rvl4jsM8K8x_yGbZ4RM_aWFwZXg8MwF9u16_gWK1TeD0TJlQSx9XCS7J-fOZ3pnjfHw-PMA2jFPNmVJSCtp1X1YDdDPpPJSFCrUN77GSwdBJ9gdN52_zO2P5rxfdLxI5CfrD-vn-DuGi9ltqeIclYcw41eHPiYGB0%26data%3DUlNrNmk5WktYejR0eWJFYk1Ldmtxdm84RWY0bDJrdUVZbHlKRnlaQTltMHdqNlFTamdNQTdMLXlaaFBOcUdka3lfWnV5QURBMGVfQUdzemxRNHJMNGJRQTVUVHNLSzdRVjlJamduVFhRbzZTT1BqSTdvRG1jbjQ1LU1wZURKbHV0MlNXQUxOQUpzTzF0NDlFZjA2V0doLUlKM2ZDZzdkeHVFODRuWFBibVJZ%26b64e%3D2%26sign%3D3f14aafcb98c758338e5bed62cf1917e%26keyno%3D0%26l10n%3Dru%26cts%3D1422206130517%26mc%3D2.9477027792200903&tt=0&captcha_provider=nucaptcha" target="_blank" title="Hacker News"><span class=" at300bs at15nc at15t_hackernews"><span class="at_a11y">Share on hackernews</span></span></a>
+                                                    <div class="atclear"></div></div>
+                    </div>
+
+                    <p class="categories">Categorized by :<br><a href="http://hortonworks.com/blog/category/hdp2-cat/" rel="category tag">HDP 2.0</a> <a href="http://hortonworks.com/blog/category/yarn/" rel="category tag">YARN</a></p>
+
+                </div>
+                
+<div id="comments">
+    
+    
+    
+    <div class="labels-on-top">
+        								<div id="respond" class="comment-respond">
+				<h3 id="reply-title" class="comment-reply-title">Leave a Reply <small><a rel="nofollow" id="cancel-comment-reply-link" href="http://hortonworks.com/blog/resource-localization-in-yarn-deep-dive/#respond" style="display:none;">Cancel reply</a></small></h3>
+									<form action="http://hortonworks.com/wp-comments-post.php" method="post" id="commentform" class="comment-form">
+						<noscript>JavaScript and Cookies are required to submit comments. Please enable JavaScript and Cookies before proceeding.</noscript>													<p class="comment-notes"><span id="email-notes">Your email address will not be published.</span> Required fields are marked <span class="required">*</span></p>							<p class="comment-form-author"><label for="author">Name <span class="required">*</span></label> <input id="author" name="author" type="text" value="" size="30" aria-required="true"></p>
+<p class="comment-form-email"><label for="email">Email <span class="required">*</span></label> <input id="email" name="email" type="text" value="" size="30" aria-describedby="email-notes" aria-required="true"></p>
+<p class="comment-form-url"><label for="url">Website</label> <input id="url" name="url" type="text" value="" size="30"></p>
+												<p class="comment-form-comment"><label for="comment">Comment</label> <textarea id="comment" name="comment" cols="45" rows="8" aria-describedby="form-allowed-tags" aria-required="true"></textarea></p>						<p class="comment_warning">If you have specific technical questions, please post them in the <a href="http://hortonworks.com/community/forums/">Forums</a></p><p class="form-allowed-tags">You may use these <abbr title="HyperText Markup Language">HTML</abbr> tags and attributes:  <code>&lt;a href="" title=""&gt; &lt;abbr title=""&gt; &lt;acronym title=""&gt; &lt;b&gt; &lt;blockquote cite=""&gt; &lt;cite&gt; &lt;code&gt; &lt;del datetime=""&gt; &lt;em&gt; &lt;i&gt; &lt;q cite=""&gt; &lt;strike&gt; &lt;strong&gt; </code></p>						<p class="form-submit">
+							<input name="submit" type="submit" id="submit" class="submit" value="Post Comment">
+							<input type="hidden" name="comment_post_ID" value="43253" id="comment_post_ID">
+<input type="hidden" name="comment_parent" id="comment_parent" value="0">
+						<input type="hidden" name="a0LpT8O2Glic" value="4307982e71"></p>
+						<p style="display: none;"><input type="hidden" id="akismet_comment_nonce" name="akismet_comment_nonce" value="2660d6c9f9"></p><p class="comment-subscription-form"><input type="checkbox" name="subscribe_comments" id="subscribe_comments" value="subscribe" style="width: auto; -moz-appearance: checkbox; -webkit-appearance: checkbox;"> <label class="subscribe-label" id="subscribe-label" for="subscribe_comments">Notify me of follow-up comments by email.</label></p><p class="comment-subscription-form"><input type="checkbox" name="subscribe_blog" id="subscribe_blog" value="subscribe" style="width: auto; -moz-appearance: checkbox; -webkit-appearance: checkbox;"> <label class="subscribe-label" id="subscribe-blog-label" for="subscribe_blog">Notify me of new posts by email.</label></p><p style="display: none;"></p>					<input type="hidden" id="ak_js" name="ak_js" value="1422206132970"></form>
+							</div><!-- #respond -->
+			    </div>
+</div><!-- #comments -->
+            </div>
+
+                        <div class="col-1-4 aside right">
+
+                <div class="insightera_promo" id="insightera_promo"><h3>Get The Latest!</h3>
+<div class="webinar"><strong><a title="http://info.hortonworks.com/industry-series-registration.html" href="http://info.hortonworks.com/industry-series-registration.html?utm_medium=website&utm_campaign=insightera">Industry Solutions with Hadoop</a></strong></div>
+<div>Email series: How can Hadoop help you reveal the value in your data?</div>
+<div>&nbsp;</div>
+<div class="register"><a class="btn" href="http://info.hortonworks.com/industry-series-registration.html?utm_medium=website&utm_campaign=insightera" target="_blank">Sign Up Now</a></div></div><div class="related_pages widget"><h3>Related Pages</h3><div class="related_page"><b><a href="http://hortonworks.com/get-started/yarn/">Building YARN Apps for Hadoop</a></b><br>YARN is the data operating system of Hadoop that enables you to process data simultaneously in multiple ways.… <a href="http://hortonworks.com/get-started/yarn/" class="read-more">Read More</a></div><div class="related_page"><b><a href="http://hortonworks.com/labs/yarn/">YARN, the Hadoop Operating System</a></b><br>Apache Hadoop YARN is the data operating system for Hadoop 2.… <a href="http://hortonworks.com/labs/yarn/" class="read-more">Read More</a></div><div class="related_page"><b><a href="http://hortonworks.com/hadoop/yarn/">Hadoop YARN</a></b><br>Part of the core Hadoop project, YARN is the architectural center of Hadoop that allows multiple data processing engines such as interactive SQL, real-time streaming, data science and batch processing to handle data stored in a single platform, unlocking an entirely new approach to analytics.… <a href="http://hortonworks.com/hadoop/yarn/" class="read-more">Read More</a></div></div><div class="related_posts widget"><h3>Recently in the Blog</h3><ul class="related_posts"><li class="post">
+                    		<div class="title"><a href="http://hortonworks.com/blog/announcing-apache-falcon-0-6-0/">Announcing Apache Falcon 0.6.0</a></div>
+                    		<div class="date">January 7, 2015</div>
+                    		<div class="author">Venkatesh Seetharam</div>
+                    	  </li><li class="post">
+                    		<div class="title"><a href="http://hortonworks.com/blog/top-ten-popular-blogs-2014/">Top Ten Popular Hadoop Blog Posts of 2014</a></div>
+                    		<div class="date">December 30, 2014</div>
+                    		<div class="author">Jules S. Damji</div>
+                    	  </li><li class="post">
+                    		<div class="title"><a href="http://hortonworks.com/blog/discover-hdp-2-2-apache-kafka-apache-storm-stream-data-processing/">Discover HDP 2.2: Apache Kafka and Apache Storm for Stream Data Processing</a></div>
+                    		<div class="date">December 18, 2014</div>
+                    		<div class="author">Jules S. Damji</div>
+                    	  </li><li class="post">
+                    		<div class="title"><a href="http://hortonworks.com/blog/announcing-apache-storm-0-9-3/">Announcing Apache Storm 0.9.3</a></div>
+                    		<div class="date">December 18, 2014</div>
+                    		<div class="author">Taylor Goetz</div>
+                    	  </li><li class="post">
+                    		<div class="title"><a href="http://hortonworks.com/blog/accelerating-adoption-enterprise-hadoop/">Further Accelerating the Adoption of Enterprise Hadoop</a></div>
+                    		<div class="date">December 17, 2014</div>
+                    		<div class="author">John Kreisa</div>
+                    	  </li><li class="post">
+                    		<div class="title"><a href="http://hortonworks.com/blog/announcing-apache-slider-0-60-0/">Announcing Apache Slider 0.60.0</a></div>
+                    		<div class="date">December 16, 2014</div>
+                    		<div class="author">Steve Loughran</div>
+                    	  </li><li class="post">
+                    		<div class="title"><a href="http://hortonworks.com/blog/announcing-apache-knox-gateway-0-5-0/">Announcing Apache Knox Gateway 0.5.0</a></div>
+                    		<div class="date">December 9, 2014</div>
+                    		<div class="author">Larry McCay</div>
+                    	  </li><li class="post">
+                    		<div class="title"><a href="http://hortonworks.com/blog/want-new-ways-optimize-big-data-workloads/">Want New Ways to Optimize Your Big Data Workloads?</a></div>
+                    		<div class="date">December 3, 2014</div>
+                    		<div class="author">Ajay Singh</div>
+                    	  </li>   </ul></div>
+                                <div class="follow_us">
+                    <span class="leader">Follow us on : </span>
+                    <ul class="social-icons-list">
+                        <li><a href="http://hortonworks.com/blog/typedev/feed/"><img src="./Resource Localization in YARN  Deep Dive - Hortonworks_files/rss-content.gif" alt="Subsrcribe to our RSS Feed"></a></li>
+                        <li><a href="http://facebook.com/hortonworks/" target="_blank"><img src="./Resource Localization in YARN  Deep Dive - Hortonworks_files/facebook-content.gif" alt="Hortonworks Facebook"></a></li>
+                        <li><a href="http://twitter.com/#!/hortonworks" target="_blank"><img src="./Resource Localization in YARN  Deep Dive - Hortonworks_files/twitter-content.gif" alt="Hortonworks Twitter"></a></li>
+                        <li><a href="http://www.linkedin.com/company/hortonworks" target="_blank"><img src="./Resource Localization in YARN  Deep Dive - Hortonworks_files/linkedin-content.gif" alt="Hortonworks LinkedIn"></a></li>
+                    </ul>
+                </div>
+
+            </div>
+                    </div>
+    </section>
+</div>
+
+
+</div><!-- End mainbody early -->
+<section class="ps light-grey bottom_drawer">
+    <div>
+        <div class="three hitters">
+            <div id="drawer_1"><div class="promo">
+<div class="icon"></div>
+<div class="title">Hortonworks Data Platform</div>
+<div class="desc">The Hortonworks Data Platform is a 100% open source distribution of Apache Hadoop that is truly enterprise grade having been built, tested and hardened with enterprise rigor.</div>
+<div class="cta"><a href="http://hortonworks.com/hdp/">Discover HDP</a></div>
+</div></div><div id="drawer_2"><div class="promo">
+<div class="icon"></div>
+<div class="title">Get started with Sandbox</div>
+<div class="desc">Hortonworks Sandbox is a self-contained virtual machine with Apache Hadoop pre-configured alongside a set of hands-on, step-by-step Hadoop tutorials.</div>
+<div class="cta"><a href="http://hortonworks.com/products/sandbox/">Try Sandbox</a></div>
+</div></div><div id="drawer_3"><div class="promo">
+<div class="title">Modern Data Architecture</div>
+<div class="desc">Tackle the challenges of big data. Hadoop integrates with existing EDW, RDBMS and MPP systems to deliver lower cost, higher capacity infrastructure.</div>
+<div class="cta"><a href="http://hortonworks.com/mda/">Learn More</a></div>
+</div></div>        </div>
+    </div>
+</section>
+<div> <!-- This is just a stand-in for the mainbody div tag that was closed above, but will also get closed in the footer. -->
+
+</div><!-- end mainbody -->
+
+
+<section class="ps" id="newsletter_signup"><div class="newsletter_signup_wrapper">
+<div class="container" style="text-align: center;">
+<h2 style="color: #ffffff;">Email Series: Business Applications of Hadoop</h2>
+<div class="desc"><span style="font-family: helvetica; font-size: large;">Learn about the types of data that can be uniquely stored and processed in Hadoop.</span></div>
+<br>
+<div class="button" style="text-align: center;"><span style="font-family: helvetica;"><a class="btn" href="http://info.hortonworks.com/Data-Types_Signup.html?utm_medium=website&utm_campaign=insightera">Subscribe Now</a></span></div>
+<div class="button" style="text-align: center;">&nbsp;</div>
+<div class="button" style="text-align: center;">&nbsp;</div>
+</div>
+</div></section>
+
+<section class="ps" id="fat_footer">
+	<div>
+		<ul class="menu">
+			<li><b>About Us</b>
+				<ul class="sub-menu">
+					<li><a href="http://hortonworks.com/about-us/management-team/">Management Team</a></li>
+					<li><a href="http://hortonworks.com/about-us/board-of-directors/">Board of Directors</a></li>
+					<li><a href="http://hortonworks.com/about-us/founders/">Founders</a></li>
+					<li><a href="http://hortonworks.com/careers/">Careers</a></li>
+				</ul>
+			</li>
+			<li><b>Press</b>
+				<ul class="sub-menu">
+					<li><a href="http://hortonworks.com/press-releases/">Press Releases</a></li>
+					<li><a href="http://hortonworks.com/in-the-press/">In the Press</a></li>
+				</ul>
+			</li>
+			<li><b>Partners</b>
+				<ul class="sub-menu">
+					<li><a href="http://hortonworks.com/partners/hadoop-consultants/">Systems Integrators</a></li>
+					<li><a href="http://hortonworks.com/partners/ecosystem/">Technology Partners</a></li>
+					<li><a href="http://hortonworks.com/partners/strategic-resell-partners/">Resellers</a></li>
+					<li><a href="http://hortonworks.com/partners/certified-technology-program/">Certification</a></li>
+					<li><a href="http://hortonworks.com/partners/become-a-partner/">Become a Partner</a></li>
+				</ul>
+			</li>
+			<li><b>Connect</b>
+				<ul class="sub-menu">
+					<li><a href="http://hortonworks.com/blog/">Blog</a></li>
+					<li><a href="http://hortonworks.com/webinars/">Webinars</a></li>
+					<li><a href="http://hortonworks.com/events/">Events</a></li>
+					<li><a href="http://info.hortonworks.com/MDA-Roadshow-2014.html">MDA Roadshow</a></li>
+				</ul>
+			</li>
+			<li><b>Contact</b>
+				<ul class="sub-menu">
+					<li><a href="http://hortonworks.com/contact/">Contact</a></li>
+				</ul>
+				<div class="tel">+1 408 916-4121 <br><span style="font-size:70%; font-weight:normal; color:rgba(255, 255, 255, 0.4)">1 855 8-HORTON</span></div>
+				<ul class="social-icons-list">
+					<li><a href="http://facebook.com/hortonworks/" target="_blank"><img src="./Resource Localization in YARN  Deep Dive - Hortonworks_files/facebook-footer.gif" alt="Hortonworks Facebook"></a></li>
+					<li><a href="http://twitter.com/#!/hortonworks" target="_blank"><img src="./Resource Localization in YARN  Deep Dive - Hortonworks_files/twitter-footer.gif" alt="Hortonworks Twitter"></a></li>
+					<li><a href="http://www.linkedin.com/company/hortonworks" target="_blank"><img src="./Resource Localization in YARN  Deep Dive - Hortonworks_files/linkedin-footer.gif" alt="Hortonworks LinkedIn"></a></li>
+				</ul>
+			</li>
+		</ul>
+
+		<div class="sock">
+			<div class="logo"><a title="Hortonworks - Develops, Distributes and Supports Enterprise Apache Hadoop." href="http://hortonworks.com/">Hortonworks - Develops, Distributes and Supports Enterprise Apache Hadoop.</a></div>
+			<p class="copy">© 2011-2014 Hortonworks Inc. All Rights Reserved.<br>
+				Hadoop and the Hadoop elephant logo are trademarks of the Apache Software Foundation.<br>
+				<a href="http://hortonworks.com/agreements/privacy-policy/" title="Privacy Policy">Privacy Policy</a> |
+				<a href="http://hortonworks.com/agreements/terms-of-service/" title="Terms of Service">Terms of Service</a>
+			</p>
+		</div>
+	</div>
+</section>
+</div>
+
+<div id="options_panel" style="top:320px; right:-169px; width:375px;">
+	<ul>
+		<li class="chat-to-sales"></li>
+ 		<li class="contact-box"><a href="http://hortonworks.com/marketo-contact-sales/?view-mode=compact" class="contact-us-launch fancybox.iframe">Contact Us <i class="fa fa-pencil-square-o"></i></a></li>
+	</ul>
+</div>
+
+
+<script language="javascript" type="text/javascript">var sfjq$ = jQuery.noConflict(), $ = jQuery.noConflict();</script><script type="text/javascript" src="./Resource Localization in YARN  Deep Dive - Hortonworks_files/form.js"></script>
+<script type="text/javascript">
+/* <![CDATA[ */
+var AIA = {"ajaxurl":"http:\/\/hortonworks.com\/wp-admin\/admin-ajax.php"};
+/* ]]> */
+</script>
+<script type="text/javascript" src="./Resource Localization in YARN  Deep Dive - Hortonworks_files/aia.js"></script>
+<script type="text/javascript" src="./Resource Localization in YARN  Deep Dive - Hortonworks_files/plugins.js"></script>
+<script type="text/javascript" src="./Resource Localization in YARN  Deep Dive - Hortonworks_files/scripts.js"></script>
+<script type="text/javascript">
+/* <![CDATA[ */
+var obj_localize = {"submitSuccess":"Thank You for providing your information","themePath":"http:\/\/hortonworks.com\/wp-content\/plugins\/intercept-gate\/formProcessing.php"};
+/* ]]> */
+</script>
+<script type="text/javascript" src="./Resource Localization in YARN  Deep Dive - Hortonworks_files/link_update.js"></script>
+
+<div style="display:none;">
+	</div>
+
+<!-- Load our overrides.css in a validation friendly way -->
+<script>
+	var cb = function() {
+		var l = document.createElement('link'); l.rel = 'stylesheet';
+		l.href = 'http://hortonworks.com/wp-content/themes/hortonworks/css/override.css';
+		var h = document.getElementsByTagName('head')[0]; h.parentNode.insertBefore(l, h);
+	};
+	var raf = requestAnimationFrame || mozRequestAnimationFrame || webkitRequestAnimationFrame || msRequestAnimationFrame;
+	if (raf) raf(cb);
+	else window.addEventListener('load', cb);
+</script>
+
+<!-- Just in case Marketo Munchkin didn't load right, lets check for it and load again here if it didn't -->
+<script type="text/javascript">
+	if ( typeof mktoMunchkin != 'function' || typeof mktoMunchkinFunction != 'function' ) {
+		document.write(unescape("%3Cscript src='//munchkin.marketo.net/munchkin-beta.js' type='text/javascript'%3E%3C/script%3E"));
+	}
+</script><script src="./Resource Localization in YARN  Deep Dive - Hortonworks_files/munchkin-beta.js" type="text/javascript"></script>
+
+<!-- Marketo Analytics : Must Load Before Marketo -->
+<script>mktoMunchkin("549-QAL-086");</script>
+
+<!-- Google Analytics -->
+<script type="text/javascript">
+	var _gaq = _gaq || [];
+	var pluginUrl = '//www.google-analytics.com/plugins/ga/inpage_linkid.js';
+	_gaq.push(['_require', 'inpage_linkid', pluginUrl]);
+	_gaq.push(['_setAccount', 'UA-22950817-1']);
+	_gaq.push(['_setDomainName', '.hortonworks.com']);
+	_gaq.push(['_trackPageview']);
+	/*
+			// SetCustomeVar's allow us to group pages in GA.
+			_gaq.push(['_setCustomVar',
+			1,                  // This custom var is set to slot #1.  Required parameter.
+			'Section',          // The top-level name for your online content categories.  Required parameter.
+			'High level sell',  // Sets the value of "Section" to "Life & Style" for this particular aricle.  Required parameter.
+			3                   // Sets the scope to page-level.  Optional parameter.
+			]);
+
+			// This would allow us to assign categories to each page.
+			 _gaq.push(['_setCustomVar', 2, 'Category',  'Hive',  3   ]);
+	*/
+	(function() {
+		var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+		ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+		var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+	})();
+</script>
+
+<!-- Non essential, tracking, cookieing stuff below here -->
+
+<!-- Insightera Scripts :  RTP tag -->
+<script type="text/javascript">
+	(function(c,h,a,f,i){c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+		c[a].a=i;var g=h.createElement("script");g.async=true;g.type="text/javascript";
+		g.src=f+'?rh='+c.location.hostname+'&aid='+i;var b=h.getElementsByTagName("script")[0];b.parentNode.insertBefore(g,b);
+	})(window,document,"rtp","/wp-content/themes/hortonworks/js/libs/rtp.min.js","hortonworks");
+
+	rtp('send','view');
+	rtp('get', 'campaign',true);
+</script>
+<!-- End of RTP tag -->
+
+<!-- Bizo Retargetting : Lauren -->
+<script type="text/javascript">
+	_bizo_data_partner_id = "6008";
+	(function() {
+		var s = document.getElementsByTagName("script")[0];
+		var b = document.createElement("script");
+		b.type = "text/javascript";
+		b.async = true;
+		b.src = (window.location.protocol === "https:" ? "https://sjs" : "http://js") + ".bizographics.com/insight.min.js";
+		s.parentNode.insertBefore(b, s);
+	})();
+</script>
+<noscript>
+		&lt;img height="1" width="1" alt="" style="display:none;" src="//www.bizographics.com/collect/?pid=6008&amp;amp;fmt=gif" /&gt;
+</noscript>
+
+
+<!-- Smartling Language Detector -->
+<script type="text/javascript">
+	var smtId = "1b5fd90c4";
+	var smtDefaultStyles = false; /* set to false to use your own css */
+	var smtRedirect = true;
+	var smtProt = (("https:" == document.location.protocol) ? "https://" : "http://");
+	document.write(unescape("%3Cscript src='" + smtProt + "cdn01.smartling.com/ls/" + smtId + ".js' type='text/javascript'%3E%3C/script%3E"));
+</script><script src="./Resource Localization in YARN  Deep Dive - Hortonworks_files/1b5fd90c4.js" type="text/javascript"></script>
+
+<!-- Pingdom RUM -->
+<script>
+	var _prum = [['id', '544ef94fabe53db12aa05f65'],
+		['mark', 'firstbyte', (new Date()).getTime()]];
+	(function() {
+		var s = document.getElementsByTagName('script')[0]
+			, p = document.createElement('script');
+		p.async = 'async';
+		p.src = '//rum-static.pingdom.net/prum.min.js';
+		s.parentNode.insertBefore(p, s);
+	})();
+</script>
+
+<!-- Facebook Retargetting - Added for Masha Nov 12, 2014 -->
+<script>(function() {
+		var _fbq = window._fbq || (window._fbq = []);
+		if (!_fbq.loaded) {
+			var fbds = document.createElement('script');
+			fbds.async = true;
+			fbds.src = '//connect.facebook.net/en_US/fbds.js';
+			var s = document.getElementsByTagName('script')[0];
+			s.parentNode.insertBefore(fbds, s);
+			_fbq.loaded = true;
+		}
+		_fbq.push(['addPixelId', '828241047198292']);
+	})();
+	window._fbq = window._fbq || [];
+	window._fbq.push(['track', 'PixelInitialized', {}]);
+</script>
+<noscript>&lt;img height="1" width="1" alt="" style="display:none" src="https://www.facebook.com/tr?id=828241047198292&amp;amp;ev=PixelInitialized" /&gt;</noscript>
+
+<script type="text/javascript">var addthis_config = {"data_track_addressbar":false};</script>
+<script type="text/javascript" src="./Resource Localization in YARN  Deep Dive - Hortonworks_files/addthis_widget.js"></script><div id="_atssh" style="visibility: hidden; height: 1px; width: 1px; position: absolute; top: -9999px; z-index: 100000;"><iframe id="_atssh421" title="AddThis utility frame" style="height: 1px; width: 1px; position: absolute; top: 0px; z-index: 100000; border: 0px; left: 0px;" src="./Resource Localization in YARN  Deep Dive - Hortonworks_files/sh186.html"></iframe></div><script type="text/javascript" src="./Resource Localization in YARN  Deep Dive - Hortonworks_files/core181.js"></script>
+<script src="./Resource Localization in YARN  Deep Dive - Hortonworks_files/saved_resource" type="text/javascript"></script><div class="ui-dialog ui-widget ui-widget-content ui-corner-all insightera ui-draggable insightera-dialog" tabindex="-1" role="dialog" aria-labelledby="ui-id-1" style="outline: 0px; z-index: 1001; height: auto; width: 350px; top: 338px; left: 1069px; display: none;"><div class="ui-dialog-titlebar ui-widget-header ui-corner-all ui-helper-clearfix" style="background: rgb(225, 112, 0);"><span id="ui-id-1" class="ui-dialog-title">Hadoop Summit Europe</span><a href="http://hortonworks.com/blog/resource-localization-in-yarn-deep-dive/#" class="ui-dialog-titlebar-close ui-corner-all" role="button"><span class="ui-icon ui-icon-closethick">close</span></a></div><div id="trwDialog" class="ui-dialog-content ui-widget-content" scrolltop="0" scrollleft="0" style="width: auto; min-height: 0px; height: 321.5px;"><h3 class="title"><a title="http://2015.hadoopsummit.org/brussels/register/" href="http://2015.hadoopsummit.org/brussels/register/?utm_medium=website&utm_campaign=insightera" target="_blank">Registration is Open!</a></h3>
+<div><img style="float: right; margin-left: 10px; margin-right: 10px; padding-top: 15px;" title="Hadoop Summit" alt="Hadoop Summit" src="./Resource Localization in YARN  Deep Dive - Hortonworks_files/audience41.png" height="150" width="130"></div>
+<p><span style="font-family: helvetica; font-size: medium;"><span style="font-family: helvetica; font-size: medium;">Super Early Bird rate is extended until January 23rd! Register now before the price goes up.</span><br></span></p>
+<div class="other-suggestions"><span style="font-size: medium;"><a title="http://2015.hadoopsummit.org/brussels/register/" href="http://2015.hadoopsummit.org/brussels/register/?utm_medium=website&utm_campaign=insightera">Get Your Ticket</a><br></span></div></div></div><img src="./Resource Localization in YARN  Deep Dive - Hortonworks_files/seg" width="1" height="1" border="0" alt="" style="display: none;"><img src="./Resource Localization in YARN  Deep Dive - Hortonworks_files/seg(1)" width="1" height="1" border="0" alt="" style="display: none;"><img src="./Resource Localization in YARN  Deep Dive - Hortonworks_files/l" width="1" height="1" border="0" alt="" style="display: none;"><script type="text/javascript" id="">try{var myVar=setInterval(function(){myTimer()},500)}catch(e$$12){console.log("GTM Error: "+e$$12)}function myTimer(){0!=$("[id^\x3dlpchat-container]").length&&($("[id^\x3dlpchat-container]").on("click",function(){lsfDataLayer.push({event:"chatKPI"})}),myStopFunction())}function myStopFunction(){clearInterval(myVar)};</script></body></html>
