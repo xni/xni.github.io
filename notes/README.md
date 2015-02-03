@@ -1,6 +1,7 @@
 Notes
 -----
 * [.DS_Store](.DS_Store)
+* [Can we deprecate packaged apps  - Google Groups.html](Can%20we%20deprecate%20packaged%20apps%20%20-%20Google%20Groups.html)
 * [Doc_2.6_Manual_Textures_Mapping_UV Image Editor - BlenderWiki.html](Doc_2.6_Manual_Textures_Mapping_UV%20Image%20Editor%20-%20BlenderWiki.html)
 * [Forever For Now - UML Diagrams Using Graphviz Dot.html](Forever%20For%20Now%20-%20UML%20Diagrams%20Using%20Graphviz%20Dot.html)
 * [Getting Started with Deep Learning and Python - PyImageSearch.html](Getting%20Started%20with%20Deep%20Learning%20and%20Python%20-%20PyImageSearch.html)
@@ -9,7 +10,9 @@ Notes
 * [Materials and textures from Blender to Unity 3D.html](Materials%20and%20textures%20from%20Blender%20to%20Unity%203D.html)
 * [README.md](README.md)
 * [Resource Localization in YARN  Deep Dive - Hortonworks.html](Resource%20Localization%20in%20YARN%20%20Deep%20Dive%20-%20Hortonworks.html)
+* [Shipping Applications to Production in Containers with Docker.html](Shipping%20Applications%20to%20Production%20in%20Containers%20with%20Docker.html)
 * [UV-Texture mapping with Blender | JayAnAm - 3D games, indiedev, gamedev.html](UV-Texture%20mapping%20with%20Blender%20%7C%20JayAnAm%20-%203D%20games%2C%20indiedev%2C%20gamedev.html)
+* [Working with Competitors to Break the Apps Duopoly   Slack.html](Working%20with%20Competitors%20to%20Break%20the%20Apps%20Duopoly%20%20%20Slack.html)
 * [generate_index.py](generate_index.py)
 * [index.html](index.html)
 * [oss-security - Qualys Security Advisory CVE-2015-0235 - GHOST  glibc gethostbyname buffer overflow.html](oss-security%20-%20Qualys%20Security%20Advisory%20CVE-2015-0235%20-%20GHOST%20%20glibc%20gethostbyname%20buffer%20overflow.html)
