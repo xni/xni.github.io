@@ -13,6 +13,8 @@ Notes
 * [Shipping Applications to Production in Containers with Docker.html](Shipping%20Applications%20to%20Production%20in%20Containers%20with%20Docker.html)
 * [UV-Texture mapping with Blender | JayAnAm - 3D games, indiedev, gamedev.html](UV-Texture%20mapping%20with%20Blender%20%7C%20JayAnAm%20-%203D%20games%2C%20indiedev%2C%20gamedev.html)
 * [Working with Competitors to Break the Apps Duopoly   Slack.html](Working%20with%20Competitors%20to%20Break%20the%20Apps%20Duopoly%20%20%20Slack.html)
+* [deeplearning.pdf](deeplearning.pdf)
 * [generate_index.py](generate_index.py)
 * [index.html](index.html)
+* [lecun-ranzato-icml2013.pdf](lecun-ranzato-icml2013.pdf)
 * [oss-security - Qualys Security Advisory CVE-2015-0235 - GHOST  glibc gethostbyname buffer overflow.html](oss-security%20-%20Qualys%20Security%20Advisory%20CVE-2015-0235%20-%20GHOST%20%20glibc%20gethostbyname%20buffer%20overflow.html)
