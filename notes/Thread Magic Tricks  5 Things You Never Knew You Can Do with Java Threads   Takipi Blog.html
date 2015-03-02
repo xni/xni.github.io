@@ -1,0 +1,898 @@
+<!DOCTYPE html>
+<!-- saved from url=(0048)http://blog.takipi.com/java-thread-magic-tricks/ -->
+<html lang="en-US"><!--<![endif]--><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><script async="" src="./Thread Magic Tricks  5 Things You Never Knew You Can Do with Java Threads   Takipi Blog_files/saved_resource"></script><script src="./Thread Magic Tricks  5 Things You Never Knew You Can Do with Java Threads   Takipi Blog_files/cb=gapi.loaded_1" async=""></script><script src="./Thread Magic Tricks  5 Things You Never Knew You Can Do with Java Threads   Takipi Blog_files/cb=gapi.loaded_0" async=""></script>	
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width">
+		<meta name="msvalidate.01" content="F7C60ADE505B722CD3425AB42C597280">
+		<!--<link href='http://fonts.googleapis.com/css?family=Lato:400' rel='stylesheet' type='text/css'>-->
+		<link rel="profile" href="http://gmpg.org/xfn/11">
+		<link rel="pingback" href="http://blog.takipi.com/xmlrpc.php">
+		<title>Thread Magic Tricks: 5 Things You Never Knew You Can Do with Java Threads | Takipi Blog</title>
+		<link rel="stylesheet" href="./Thread Magic Tricks  5 Things You Never Knew You Can Do with Java Threads   Takipi Blog_files/css" type="text/css">
+							<link rel="shortcut icon" href="http://384uqqh5pka2ma24ild282mv.wpengine.netdna-cdn.com/wp-content/uploads/2015/01/favicon.ico">
+			<link rel="apple-touch-icon-precomposed" sizes="114x114" href="http://384uqqh5pka2ma24ild282mv.wpengine.netdna-cdn.com/wp-content/uploads/2015/01/favicon.ico">
+																	<div class="fit-vids-style">­<style>               .fluid-width-video-wrapper {                 width: 100%;                              position: relative;                       padding: 0;                            }                                                                                   .fluid-width-video-wrapper iframe,        .fluid-width-video-wrapper object,        .fluid-width-video-wrapper embed {           position: absolute;                       top: 0;                                   left: 0;                                  width: 100%;                              height: 100%;                          }                                       </style></div><script async="" src="./Thread Magic Tricks  5 Things You Never Knew You Can Do with Java Threads   Takipi Blog_files/fbds.js"></script><script type="text/javascript" async="" src="./Thread Magic Tricks  5 Things You Never Knew You Can Do with Java Threads   Takipi Blog_files/mixpanel-2.2.min.js"></script><script type="text/javascript" async="" src="./Thread Magic Tricks  5 Things You Never Knew You Can Do with Java Threads   Takipi Blog_files/inpage_linkid.js" id="undefined"></script><script type="text/javascript" async="" src="./Thread Magic Tricks  5 Things You Never Knew You Can Do with Java Threads   Takipi Blog_files/ga.js"></script><script id="gas-script" data-use-dcjs="false" type="text/javascript" async="" src="./Thread Magic Tricks  5 Things You Never Knew You Can Do with Java Threads   Takipi Blog_files/gas.min.js"></script><script type="text/javascript">
+
+gau_removeUtms = function()
+{
+  if (window.history &&
+	window.history.replaceState &&
+	window.location.hash.indexOf("__utma") > 0)
+  {
+  	var newAnchor = window.location.hash.indexOf("__utma");
+  	
+  	var newUrl = window.location.pathname +
+					window.location.search +
+				 	window.location.hash.substring(0, newAnchor - 1)
+
+	window.history.replaceState({}, "", newUrl);
+  }
+};
+					window.___gcfg = {lang: 'en-US'}; // This fixes G+1 button orientation
+
+					var _gas = _gas || [];
+
+					_gas.push(['_setAccount', 'UA-29184077-8']);
+					_gas.push(['_setAccount', 'UA-29184077-4']);
+					_gas.push(['_setAllowLinker', true]);
+					_gas.push(['_setAllowAnchor', true]);
+					_gas.push(['_setDomainName', 'takipiblog.com']);
+					_gas.push(['_setDomainName', 'takipioncode.com']);
+					_gas.push(['_setDomainName', 'takipi.com']);
+					_gas.push(['_gasMultiDomain', 'click']);
+					_gas.push(['_require', 'inpage_linkid', '//www.google-analytics.com/plugins/ga/inpage_linkid.js']);
+					_gas.push(['_trackPageview']);
+					_gas.push(['_gasTrackForms']);
+					_gas.push(['_gasTrackOutboundLinks']);
+					_gas.push(['_gasTrackMaxScroll']);
+					_gas.push(['_gasTrackDownloads', {category: 'Installer Downloads', extensions: 'msi'}]);
+					_gas.push(['_gasTrackVideo']);
+					_gas.push(['_gasTrackAudio']);
+					_gas.push(['_gasTrackYoutube', {force: true}]);
+					_gas.push(['_gasTrackMailto']);
+					_gas.push(gau_removeUtms);
+
+					(function() {
+					var ga = document.createElement('script');
+					ga.id = 'gas-script';
+					ga.setAttribute('data-use-dcjs', 'false'); // CHANGE TO TRUE FOR DC.JS SUPPORT
+					ga.type = 'text/javascript';
+					ga.async = true;
+					ga.src = '//cdnjs.cloudflare.com/ajax/libs/gas/1.11.0/gas.min.js';
+					var s = document.getElementsByTagName('script')[0];
+					s.parentNode.insertBefore(ga, s);
+					})();
+				</script>
+									<link rel="alternate" type="application/rss+xml" title="Takipi Blog » Feed" href="http://blog.takipi.com/feed/">
+<link rel="alternate" type="application/rss+xml" title="Takipi Blog » Comments Feed" href="http://blog.takipi.com/comments/feed/">
+<link rel="alternate" type="application/rss+xml" title="Takipi Blog » Thread Magic Tricks: 5 Things You Never Knew You Can Do with Java Threads Comments Feed" href="http://blog.takipi.com/java-thread-magic-tricks/feed/">
+<link rel="stylesheet" id="nks_cc_styles-css" href="./Thread Magic Tricks  5 Things You Never Knew You Can Do with Java Threads   Takipi Blog_files/nks-custom.css" type="text/css" media="all">
+<link rel="stylesheet" id="digg-digg-css" href="./Thread Magic Tricks  5 Things You Never Knew You Can Do with Java Threads   Takipi Blog_files/diggdigg-style.css" type="text/css" media="screen">
+<link rel="stylesheet" id="standard-activity-tabs-css" href="./Thread Magic Tricks  5 Things You Never Knew You Can Do with Java Threads   Takipi Blog_files/widget.css" type="text/css" media="all">
+<link rel="stylesheet" id="gcse-widget-css" href="./Thread Magic Tricks  5 Things You Never Knew You Can Do with Java Threads   Takipi Blog_files/widget(1).css" type="text/css" media="all">
+<link rel="stylesheet" id="standard-ad-300x250-widget-css" href="./Thread Magic Tricks  5 Things You Never Knew You Can Do with Java Threads   Takipi Blog_files/widget(2).css" type="text/css" media="all">
+<link rel="stylesheet" id="standard-ad-125x125-widget-css" href="./Thread Magic Tricks  5 Things You Never Knew You Can Do with Java Threads   Takipi Blog_files/widget(3).css" type="text/css" media="all">
+<link rel="stylesheet" id="standard-ad-468x60-css" href="./Thread Magic Tricks  5 Things You Never Knew You Can Do with Java Threads   Takipi Blog_files/widget(4).css" type="text/css" media="all">
+<link rel="stylesheet" id="standard-personal-image-widget-css" href="./Thread Magic Tricks  5 Things You Never Knew You Can Do with Java Threads   Takipi Blog_files/widget(5).css" type="text/css" media="all">
+<link rel="stylesheet" id="standard-influence-css" href="./Thread Magic Tricks  5 Things You Never Knew You Can Do with Java Threads   Takipi Blog_files/widget(6).css" type="text/css" media="all">
+<link rel="stylesheet" id="fancybox-css" href="./Thread Magic Tricks  5 Things You Never Knew You Can Do with Java Threads   Takipi Blog_files/jquery.fancybox-1.3.7.min.css" type="text/css" media="screen">
+<link rel="stylesheet" id="bootstrap-css" href="./Thread Magic Tricks  5 Things You Never Knew You Can Do with Java Threads   Takipi Blog_files/bootstrap.css" type="text/css" media="all">
+<link rel="stylesheet" id="bootstrap-responsive-css" href="./Thread Magic Tricks  5 Things You Never Knew You Can Do with Java Threads   Takipi Blog_files/bootstrap-responsive.css" type="text/css" media="all">
+<link rel="stylesheet" id="standard-css" href="./Thread Magic Tricks  5 Things You Never Knew You Can Do with Java Threads   Takipi Blog_files/style.css" type="text/css" media="all">
+<link rel="stylesheet" id="takipi-css" href="./Thread Magic Tricks  5 Things You Never Knew You Can Do with Java Threads   Takipi Blog_files/takipi3.css" type="text/css" media="all">
+<link rel="stylesheet" id="shCore-css" href="./Thread Magic Tricks  5 Things You Never Knew You Can Do with Java Threads   Takipi Blog_files/shCore.css" type="text/css" media="all">
+<link rel="stylesheet" id="shCoreEclipse-css" href="./Thread Magic Tricks  5 Things You Never Knew You Can Do with Java Threads   Takipi Blog_files/shCoreEclipse.css" type="text/css" media="all">
+<link rel="stylesheet" id="shThemeEclipse-css" href="./Thread Magic Tricks  5 Things You Never Knew You Can Do with Java Threads   Takipi Blog_files/shThemeEclipse.css" type="text/css" media="all">
+<script type="text/javascript" src="./Thread Magic Tricks  5 Things You Never Knew You Can Do with Java Threads   Takipi Blog_files/jquery.js"></script>
+<script type="text/javascript" src="./Thread Magic Tricks  5 Things You Never Knew You Can Do with Java Threads   Takipi Blog_files/jquery-migrate.min.js"></script>
+<script type="text/javascript" src="./Thread Magic Tricks  5 Things You Never Knew You Can Do with Java Threads   Takipi Blog_files/q2w3-fixed-widget.min.js"></script>
+<script type="text/javascript">
+/* <![CDATA[ */
+var NKS_CC_Opts = {"test_mode":"","sidebar_type":"slide","sidebar_pos":"right","width":"350","base_color":"#333333","fade_content":"light","label_top":"50%","label_top_mob":"50px","label_size":"2x","label_vis":"hidden","label_invert":"","label_no_anim":"","label_scroll_selector":"","selectors":"","bg":"none","path":"http:\/\/blog.takipi.com\/wp-content\/plugins\/NKS-custom\/img\/"};
+/* ]]> */
+</script>
+<script type="text/javascript" src="./Thread Magic Tricks  5 Things You Never Knew You Can Do with Java Threads   Takipi Blog_files/nks-custom.min.js"></script>
+<script type="text/javascript" src="./Thread Magic Tricks  5 Things You Never Knew You Can Do with Java Threads   Takipi Blog_files/bootstrap.js"></script>
+<script type="text/javascript" src="./Thread Magic Tricks  5 Things You Never Knew You Can Do with Java Threads   Takipi Blog_files/jquery.fitvids.js"></script>
+<script type="text/javascript" src="./Thread Magic Tricks  5 Things You Never Knew You Can Do with Java Threads   Takipi Blog_files/md5.js"></script>
+<script type="text/javascript" src="./Thread Magic Tricks  5 Things You Never Knew You Can Do with Java Threads   Takipi Blog_files/theme.comments.js"></script>
+<script type="text/javascript" src="./Thread Magic Tricks  5 Things You Never Knew You Can Do with Java Threads   Takipi Blog_files/jquery.base64.js"></script>
+<script type="text/javascript" src="./Thread Magic Tricks  5 Things You Never Knew You Can Do with Java Threads   Takipi Blog_files/theme.js"></script>
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="http://blog.takipi.com/xmlrpc.php?rsd">
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="http://blog.takipi.com/wp-includes/wlwmanifest.xml"> 
+<link rel="prev" title="15 Tools Java Developers Should Use After a Major Release" href="http://blog.takipi.com/15-tools-to-use-when-deploying-code-to-production/">
+<link rel="next" title="Fork/Join Framework vs. Parallel Streams vs. ExecutorService: The Ultimate Fork/Join Benchmark" href="http://blog.takipi.com/forkjoin-framework-vs-parallel-streams-vs-executorservice-the-ultimate-benchmark/">
+<link rel="shortlink" href="http://blog.takipi.com/?p=737">
+
+<!-- All in One SEO Pack 2.2.4.1 by Michael Torbert of Semper Fi Web Design[539,621] -->
+<link rel="author" href="https://plus.google.com/u/0/+AlexZhitnitsky">
+<meta name="description" content="Whether you&#39;re a beginner, advanced user or an expert Java developer, here are some of the lesser known techniques that threads support">
+
+<link rel="canonical" href="./Thread Magic Tricks  5 Things You Never Knew You Can Do with Java Threads   Takipi Blog_files/Thread Magic Tricks  5 Things You Never Knew You Can Do with Java Threads   Takipi Blog.html">
+<meta property="og:title" content="Thread Magic Tricks: 5 Things You Never Knew You Can Do with Java Threads | Takipi Blog">
+<meta property="og:type" content="article">
+<meta property="og:url" content="http://blog.takipi.com/java-thread-magic-tricks/">
+<meta property="og:image" content="http://blog.takipi.com/wp-content/plugins/all-in-one-seo-pack/images/default-user-image.png">
+<meta property="og:site_name" content="Takipi Blog">
+<meta property="og:description" content="Whether you&#39;re a beginner, advanced user or an expert Java developer, here are some of the lesser known techniques that threads support">
+<meta property="article:published_time" content="2015-01-07T13:35:07Z">
+<meta property="article:modified_time" content="2015-01-28T08:42:09Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:description" content="Whether you&#39;re a beginner, advanced user or an expert Java developer, here are some of the lesser known techniques that threads support">
+<meta itemprop="image" content="http://blog.takipi.com/wp-content/plugins/all-in-one-seo-pack/images/default-user-image.png">
+<!-- /all in one seo pack -->
+			<style type="text/css">
+									#site-title,
+					#site-description,
+					#logo {
+						clip: rect(1px 1px 1px 1px);
+						clip: rect(1px, 1px, 1px, 1px);
+					}
+						
+			</style>
+		
+<!-- Easy FancyBox 1.5.7 using FancyBox 1.3.7 - RavanH (http://status301.net/wordpress-plugins/easy-fancybox/) -->
+<script type="text/javascript">
+/* <![CDATA[ */
+var fb_timeout = null;
+var fb_opts = { 'overlayShow' : true, 'hideOnOverlayClick' : true, 'showCloseButton' : true, 'centerOnScroll' : true, 'enableEscapeButton' : true, 'autoScale' : true };
+var easy_fancybox_handler = function(){
+	/* IMG */
+	var fb_IMG_select = 'a[href*=".jpg"]:not(.nofancybox,.pin-it-button), area[href*=".jpg"]:not(.nofancybox), a[href*=".jpeg"]:not(.nofancybox,.pin-it-button), area[href*=".jpeg"]:not(.nofancybox), a[href*=".png"]:not(.nofancybox,.pin-it-button), area[href*=".png"]:not(.nofancybox)';
+	jQuery(fb_IMG_select).addClass('fancybox image');
+	var fb_IMG_sections = jQuery('div.gallery ');
+	fb_IMG_sections.each(function() { jQuery(this).find(fb_IMG_select).attr('rel', 'gallery-' + fb_IMG_sections.index(this)); });
+	jQuery('a.fancybox, area.fancybox, li.fancybox a:not(li.nofancybox a)').fancybox( jQuery.extend({}, fb_opts, { 'transitionIn' : 'elastic', 'easingIn' : 'easeOutBack', 'transitionOut' : 'elastic', 'easingOut' : 'easeInBack', 'opacity' : false, 'hideOnContentClick' : false, 'titleShow' : true, 'titlePosition' : 'over', 'titleFromAlt' : true, 'showNavArrows' : true, 'enableKeyboardNav' : true, 'cyclic' : false }) );
+	/* Auto-click */ 
+	jQuery('#fancybox-auto').trigger('click');
+}
+/* ]]> */
+</script>
+
+<style type="text/css" id="nks-dynamic-styles">
+@font-face {
+	font-family: 'FontAwesome';
+	src: url('http://384uqqh5pka2ma24ild282mv.wpengine.netdna-cdn.com/wp-content/plugins/NKS-custom/fonts/fontawesome-webfont.eot?v=4.1.0');
+	src: url('http://384uqqh5pka2ma24ild282mv.wpengine.netdna-cdn.com/wp-content/plugins/NKS-custom/fonts/fontawesome-webfont.eot?#iefix&v=4.1.0') format('embedded-opentype'),
+	url('http://384uqqh5pka2ma24ild282mv.wpengine.netdna-cdn.com/wp-content/plugins/NKS-custom/fonts/fontawesome-webfont.svg?v=4.1.0#fontawesomeregular') format('svg'),
+	url('http://384uqqh5pka2ma24ild282mv.wpengine.netdna-cdn.com/wp-content/plugins/NKS-custom/fonts/fontawesome-webfont.woff?v=4.1.0') format('woff'),
+	url('http://384uqqh5pka2ma24ild282mv.wpengine.netdna-cdn.com/wp-content/plugins/NKS-custom/fonts/fontawesome-webfont.ttf?v=4.1.0') format('truetype');
+	font-weight: normal;
+	font-style: normal
+}
+
+	
+	
+
+		#nks_cc_sidebar {
+		width: 350px;
+		overflow: hidden;
+	}
+	#nks_cc_sidebar .nks_cc_sidebar_cont_scrollable {
+		width: 350px !important;
+		padding-right: 60px;
+	}
+
+	#nks_cc_sidebar .nks_cc_sidebar_cont {
+		width: 350px !important;
+	}
+
+	body #nks_cc_sidebar {
+		-webkit-transform: translate(-350px,0);
+		-moz-transform: translate(-350px,0);
+		-ms-transform: translate(-350px,0);
+		-o-transform: translate(-350px,0);
+		transform: translate(-350px,0);
+		-webkit-transform: translate3d(-350px,0,0);
+		-moz-transform: translate3d(-350px,0,0);
+		-ms-transform: translate3d(-350px,0,0);
+		-o-transform: translate3d(-350px,0,0);
+		transform: translate3d(-350px,0,0);
+	}
+
+	body.nks_cc_sidebar_pos_right #nks_cc_sidebar  {
+		-webkit-transform: translate(350px,0);
+		-moz-transform: translate(350px,0);
+		-ms-transform: translate(350px,0);
+		-o-transform: translate(350px,0);
+		transform: translate(350px,0);
+		-webkit-transform: translate3d(350px,0,0);
+		-moz-transform: translate3d(350px,0,0);
+		-ms-transform: translate3d(350px,0,0);
+		-o-transform: translate3d(350px,0,0);
+		transform: translate3d(350px,0,0);
+	}
+
+	body.nks_cc_exposed > .nks_cc_trigger_tabs {
+		-webkit-transform: translate(350px,0);
+		-moz-transform: translate(350px,0);
+		-ms-transform: translate(350px,0);
+		-o-transform: translate(350px,0);
+		transform: translate(350px,0);
+		-webkit-transform: translate3d(350px,0,0);
+		-moz-transform: translate3d(350px,0,0);
+		-ms-transform: translate3d(350px,0,0);
+		-o-transform: translate3d(350px,0,0);
+		transform: translate3d(350px,0,0);
+	}
+
+	body.nks_cc_sidebar_pos_right.nks_cc_exposed > .nks_cc_trigger_tabs  {
+		-webkit-transform: translate(-350px,0);
+		-moz-transform: translate(-350px,0);
+		-ms-transform: translate(-350px,0);
+		-o-transform: translate(-350px,0);
+		transform: translate(-350px,0);
+		-webkit-transform: translate3d(-350px,0,0);
+		-moz-transform: translate3d(-350px,0,0);
+		-ms-transform: translate3d(-350px,0,0);
+		-o-transform: translate3d(-350px,0,0);
+		transform: translate3d(-350px,0,0);
+	}
+
+	
+	.nks_cc_exposed #nks-overlay {
+	    opacity: 0.3;
+		-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=30)";
+	}
+
+		.nks_cc_exposed #nks-overlay:hover {
+		cursor: pointer;
+		cursor: url("http://384uqqh5pka2ma24ild282mv.wpengine.netdna-cdn.com/wp-content/plugins/NKS-custom/img/close2.png") 16 16,pointer;
+	}
+	
+#nks_cc_sidebar {
+		background-color: #333333 !important;
+}
+
+	.nks_cc_trigger_tabs #nks-tab-1 .fa:before  {
+					color: #0074a2;
+	      }.nks_cc_trigger_tabs.nks_metro  #nks-tab-1 .fa-stack-2x {
+					background-color: #0074a2;
+	      }
+	       .nks_cc_trigger_tabs #nks-tab-1:after {
+						content: 'Tooltip 1';
+					}
+			#nks-content-1 {
+					background-color: #474d54 !important;
+	      }	
+.nks_cc_imagebg_custom {
+		background-image: url() !important;
+}
+
+
+
+	.nks_mobile .nks_cc_trigger_tabs {
+		top: 50px !important;
+	}
+
+
+
+.nks_mobile .nks_cc_trigger_tabs .nks-tab:after {
+	display: none!important;
+}
+.nks_cc_trigger_tabs .nks-tab:after {
+	opacity: 0;
+	visibility: hidden;
+	background-color: rgba(0, 0, 0, 0.7);
+	position: absolute;
+	padding: 6px 14px;
+	top: 50%;
+	margin-top: -20px;
+	left: 110%;
+	font-family: inherit;
+	font-size: 14px;
+	line-height: 28px;
+	white-space: nowrap;
+	border-radius: 20px;
+	-moz-border-radius: 20px;
+	-webkit-border-radius: 20px;
+	color: #FFF;
+	-webkit-transition: opacity 0.25s cubic-bezier(0.645, 0.045, 0.355, 1), visibility 0s 0.25s;
+	-moz-transition: opacity 0.25s cubic-bezier(0.645, 0.045, 0.355, 1), visibility 0s 0.25s;
+	-ms-transition: opacity 0.25s cubic-bezier(0.645, 0.045, 0.355, 1), visibility 0s 0.25s;
+	-o-transition: opacity 0.25s cubic-bezier(0.645, 0.045, 0.355, 1), visibility 0s 0.25s;
+	transition: opacity 0.25s cubic-bezier(0.645, 0.045, 0.355, 1), visibility 0s 0.25s;
+	-webkit-backface-visibility: hidden;
+}
+
+body.nks_cc_hidden .nks_cc_trigger_tabs .nks-tab:hover:after {
+	opacity: 1;
+	visibility: visible;
+	-webkit-transition: opacity 0.25s cubic-bezier(0.645, 0.045, 0.355, 1);
+	-moz-transition: opacity 0.25s cubic-bezier(0.645, 0.045, 0.355, 1);
+	-ms-transition: opacity 0.25s cubic-bezier(0.645, 0.045, 0.355, 1);
+	-o-transition: opacity 0.25s cubic-bezier(0.645, 0.045, 0.355, 1);
+	transition: opacity 0.25s cubic-bezier(0.645, 0.045, 0.355, 1);
+}
+
+.nks_cc_sidebar_pos_right .nks_cc_trigger_tabs .nks-tab:after {
+	right: 110%;
+	left: auto;
+}
+
+.nks_cc_trigger_tabs.nks_metro .nks-tab:after {
+	left: 100%;
+	border-radius: 0px;
+	-moz-border-radius: 0px;
+	-webkit-border-radius: 0px;
+}
+
+.nks_cc_sidebar_pos_right .nks_cc_trigger_tabs.nks_metro .nks-tab:after {
+	right: 100%;
+	left: auto;
+}
+
+.nks_cc_trigger_tabs.nks_metro .nks-tab.fa-2x:after {
+	padding: 10px 14px;
+	margin-top: -24px;
+}
+
+.nks_cc_trigger_tabs.nks_metro .nks-tab.fa-3x:after {
+	padding: 21px 14px;
+	margin-top: -35px
+}
+
+</style>
+
+<script type="text/javascript" async="" src="./Thread Magic Tricks  5 Things You Never Knew You Can Do with Java Threads   Takipi Blog_files/embed.js"></script><script async="" type="text/javascript" src="./Thread Magic Tricks  5 Things You Never Knew You Can Do with Java Threads   Takipi Blog_files/count.js"></script><script type="text/javascript" src="chrome-extension://phfplpepeojlgfgdfgfgfnmgakolcgoa/js/injected.js"></script><script async="" src="./Thread Magic Tricks  5 Things You Never Knew You Can Do with Java Threads   Takipi Blog_files/count-data.js"></script><script async="" type="text/javascript" src="./Thread Magic Tricks  5 Things You Never Knew You Can Do with Java Threads   Takipi Blog_files/count(1).js"></script><script async="true" type="text/javascript" src="./Thread Magic Tricks  5 Things You Never Knew You Can Do with Java Threads   Takipi Blog_files/roundtrip.js"></script><style type="text/css">.fb_hidden{position:absolute;top:-10000px;z-index:10001}.fb_invisible{display:none}.fb_reset{background:none;border:0;border-spacing:0;color:#000;cursor:auto;direction:ltr;font-family:"lucida grande", tahoma, verdana, arial, sans-serif;font-size:11px;font-style:normal;font-variant:normal;font-weight:normal;letter-spacing:normal;line-height:1;margin:0;overflow:visible;padding:0;text-align:left;text-decoration:none;text-indent:0;text-shadow:none;text-transform:none;visibility:visible;white-space:normal;word-spacing:normal}.fb_reset>div{overflow:hidden}.fb_link img{border:none}
+.fb_dialog{background:rgba(82, 82, 82, .7);position:absolute;top:-10000px;z-index:10001}.fb_reset .fb_dialog_legacy{overflow:visible}.fb_dialog_advanced{padding:10px;-moz-border-radius:8px;-webkit-border-radius:8px;border-radius:8px}.fb_dialog_content{background:#fff;color:#333}.fb_dialog_close_icon{background:url(http://static.ak.fbcdn.net/rsrc.php/v2/yq/r/IE9JII6Z1Ys.png) no-repeat scroll 0 0 transparent;_background-image:url(http://static.ak.fbcdn.net/rsrc.php/v2/yL/r/s816eWC-2sl.gif);cursor:pointer;display:block;height:15px;position:absolute;right:18px;top:17px;width:15px}.fb_dialog_mobile .fb_dialog_close_icon{top:5px;left:5px;right:auto}.fb_dialog_padding{background-color:transparent;position:absolute;width:1px;z-index:-1}.fb_dialog_close_icon:hover{background:url(http://static.ak.fbcdn.net/rsrc.php/v2/yq/r/IE9JII6Z1Ys.png) no-repeat scroll 0 -15px transparent;_background-image:url(http://static.ak.fbcdn.net/rsrc.php/v2/yL/r/s816eWC-2sl.gif)}.fb_dialog_close_icon:active{background:url(http://static.ak.fbcdn.net/rsrc.php/v2/yq/r/IE9JII6Z1Ys.png) no-repeat scroll 0 -30px transparent;_background-image:url(http://static.ak.fbcdn.net/rsrc.php/v2/yL/r/s816eWC-2sl.gif)}.fb_dialog_loader{background-color:#f6f7f8;border:1px solid #606060;font-size:24px;padding:20px}.fb_dialog_top_left,.fb_dialog_top_right,.fb_dialog_bottom_left,.fb_dialog_bottom_right{height:10px;width:10px;overflow:hidden;position:absolute}.fb_dialog_top_left{background:url(http://static.ak.fbcdn.net/rsrc.php/v2/ye/r/8YeTNIlTZjm.png) no-repeat 0 0;left:-10px;top:-10px}.fb_dialog_top_right{background:url(http://static.ak.fbcdn.net/rsrc.php/v2/ye/r/8YeTNIlTZjm.png) no-repeat 0 -10px;right:-10px;top:-10px}.fb_dialog_bottom_left{background:url(http://static.ak.fbcdn.net/rsrc.php/v2/ye/r/8YeTNIlTZjm.png) no-repeat 0 -20px;bottom:-10px;left:-10px}.fb_dialog_bottom_right{background:url(http://static.ak.fbcdn.net/rsrc.php/v2/ye/r/8YeTNIlTZjm.png) no-repeat 0 -30px;right:-10px;bottom:-10px}.fb_dialog_vert_left,.fb_dialog_vert_right,.fb_dialog_horiz_top,.fb_dialog_horiz_bottom{position:absolute;background:#525252;filter:alpha(opacity=70);opacity:.7}.fb_dialog_vert_left,.fb_dialog_vert_right{width:10px;height:100%}.fb_dialog_vert_left{margin-left:-10px}.fb_dialog_vert_right{right:0;margin-right:-10px}.fb_dialog_horiz_top,.fb_dialog_horiz_bottom{width:100%;height:10px}.fb_dialog_horiz_top{margin-top:-10px}.fb_dialog_horiz_bottom{bottom:0;margin-bottom:-10px}.fb_dialog_iframe{line-height:0}.fb_dialog_content .dialog_title{background:#6d84b4;border:1px solid #3a5795;color:#fff;font-size:14px;font-weight:bold;margin:0}.fb_dialog_content .dialog_title>span{background:url(http://static.ak.fbcdn.net/rsrc.php/v2/yd/r/Cou7n-nqK52.gif) no-repeat 5px 50%;float:left;padding:5px 0 7px 26px}body.fb_hidden{-webkit-transform:none;height:100%;margin:0;overflow:visible;position:absolute;top:-10000px;left:0;width:100%}.fb_dialog.fb_dialog_mobile.loading{background:url(http://static.ak.fbcdn.net/rsrc.php/v2/ya/r/3rhSv5V8j3o.gif) white no-repeat 50% 50%;min-height:100%;min-width:100%;overflow:hidden;position:absolute;top:0;z-index:10001}.fb_dialog.fb_dialog_mobile.loading.centered{max-height:590px;min-height:590px;max-width:500px;min-width:500px}#fb-root #fb_dialog_ipad_overlay{background:rgba(0, 0, 0, .45);position:absolute;left:0;top:0;width:100%;min-height:100%;z-index:10000}#fb-root #fb_dialog_ipad_overlay.hidden{display:none}.fb_dialog.fb_dialog_mobile.loading iframe{visibility:hidden}.fb_dialog_content .dialog_header{-webkit-box-shadow:white 0 1px 1px -1px inset;background:-webkit-gradient(linear, 0% 0%, 0% 100%, from(#738ABA), to(#2C4987));border-bottom:1px solid;border-color:#1d4088;color:#fff;font:14px Helvetica, sans-serif;font-weight:bold;text-overflow:ellipsis;text-shadow:rgba(0, 30, 84, .296875) 0 -1px 0;vertical-align:middle;white-space:nowrap}.fb_dialog_content .dialog_header table{-webkit-font-smoothing:subpixel-antialiased;height:43px;width:100%}.fb_dialog_content .dialog_header td.header_left{font-size:12px;padding-left:5px;vertical-align:middle;width:60px}.fb_dialog_content .dialog_header td.header_right{font-size:12px;padding-right:5px;vertical-align:middle;width:60px}.fb_dialog_content .touchable_button{background:-webkit-gradient(linear, 0% 0%, 0% 100%, from(#4966A6), color-stop(.5, #355492), to(#2A4887));border:1px solid #2f477a;-webkit-background-clip:padding-box;-webkit-border-radius:3px;-webkit-box-shadow:rgba(0, 0, 0, .117188) 0 1px 1px inset, rgba(255, 255, 255, .167969) 0 1px 0;display:inline-block;margin-top:3px;max-width:85px;line-height:18px;padding:4px 12px;position:relative}.fb_dialog_content .dialog_header .touchable_button input{border:none;background:none;color:#fff;font:12px Helvetica, sans-serif;font-weight:bold;margin:2px -12px;padding:2px 6px 3px 6px;text-shadow:rgba(0, 30, 84, .296875) 0 -1px 0}.fb_dialog_content .dialog_header .header_center{color:#fff;font-size:16px;font-weight:bold;line-height:18px;text-align:center;vertical-align:middle}.fb_dialog_content .dialog_content{background:url(http://static.ak.fbcdn.net/rsrc.php/v2/y9/r/jKEcVPZFk-2.gif) no-repeat 50% 50%;border:1px solid #555;border-bottom:0;border-top:0;height:150px}.fb_dialog_content .dialog_footer{background:#f6f7f8;border:1px solid #555;border-top-color:#ccc;height:40px}#fb_dialog_loader_close{float:left}.fb_dialog.fb_dialog_mobile .fb_dialog_close_button{text-shadow:rgba(0, 30, 84, .296875) 0 -1px 0}.fb_dialog.fb_dialog_mobile .fb_dialog_close_icon{visibility:hidden}
+.fb_iframe_widget{display:inline-block;position:relative}.fb_iframe_widget span{display:inline-block;position:relative;text-align:justify}.fb_iframe_widget iframe{position:absolute}.fb_iframe_widget_fluid_desktop,.fb_iframe_widget_fluid_desktop span,.fb_iframe_widget_fluid_desktop iframe{max-width:100%}.fb_iframe_widget_fluid_desktop iframe{min-width:220px;position:relative}.fb_iframe_widget_lift{z-index:1}.fb_hide_iframes iframe{position:relative;left:-10000px}.fb_iframe_widget_loader{position:relative;display:inline-block}.fb_iframe_widget_fluid{display:inline}.fb_iframe_widget_fluid span{width:100%}.fb_iframe_widget_loader iframe{min-height:32px;z-index:2;zoom:1}.fb_iframe_widget_loader .FB_Loader{background:url(http://static.ak.fbcdn.net/rsrc.php/v2/y9/r/jKEcVPZFk-2.gif) no-repeat;height:32px;width:32px;margin-left:-16px;position:absolute;left:50%;z-index:4}</style><script async="true" type="text/javascript" src="./Thread Magic Tricks  5 Things You Never Knew You Can Do with Java Threads   Takipi Blog_files/UW2XQSYWXVA4VHGMKZD5WU"></script><script src="./Thread Magic Tricks  5 Things You Never Knew You Can Do with Java Threads   Takipi Blog_files/secureAnonymousFramework"></script><style type="text/css">* html #li_ui_li_gen_1424158692751_0 a#li_ui_li_gen_1424158692751_0-link{height:1% !important;}#li_ui_li_gen_1424158692751_0{position:relative !important;overflow:visible !important;display:block !important;}#li_ui_li_gen_1424158692751_0 span{-webkit-box-sizing:content-box !important;-moz-box-sizing:content-box !important;box-sizing:content-box !important;}#li_ui_li_gen_1424158692751_0 a#li_ui_li_gen_1424158692751_0-link{border:0 !important;height:20px !important;text-decoration:none !important;padding:0 !important;margin:0 !important;display:inline-block !important;}#li_ui_li_gen_1424158692751_0 a#li_ui_li_gen_1424158692751_0-link:link, #li_ui_li_gen_1424158692751_0 a#li_ui_li_gen_1424158692751_0-link:visited, #li_ui_li_gen_1424158692751_0 a#li_ui_li_gen_1424158692751_0-link:hover, #li_ui_li_gen_1424158692751_0 a#li_ui_li_gen_1424158692751_0-link:active{border:0 !important;text-decoration:none !important;}#li_ui_li_gen_1424158692751_0 a#li_ui_li_gen_1424158692751_0-link:after{content:"." !important;display:block !important;clear:both !important;visibility:hidden !important;line-height:0 !important;height:0 !important;}#li_ui_li_gen_1424158692751_0 #li_ui_li_gen_1424158692751_0-logo{background-image:url(https://static.licdn.com/scds/common/u/images/apps/connect/sprites/sprite_connect_v14.png) !important;background-position:0px -276px !important;background-repeat:no-repeat !important;background-size:initial !important;cursor:pointer !important;border:0 !important;text-indent:-9999em !important;overflow:hidden !important;padding:0 !important;margin:0 !important;position:absolute !important;left:0px !important;top:0px !important;display:block !important;width:20px !important;height:20px !important;float:right !important;border-radius:0 !important;-webkit-border-radius:0 !important;border-top-right-radius:2px !important;border-bottom-right-radius:2px !important;-webkit-border-top-right-radius:2px !important;-webkit-border-bottom-right-radius:2px !important;}#li_ui_li_gen_1424158692751_0.hovered #li_ui_li_gen_1424158692751_0-logo{background-position:-20px -276px !important;}#li_ui_li_gen_1424158692751_0.clicked #li_ui_li_gen_1424158692751_0-logo, #li_ui_li_gen_1424158692751_0.down #li_ui_li_gen_1424158692751_0-logo{background-position:-40px -276px !important;}.IN-shadowed #li_ui_li_gen_1424158692751_0 #li_ui_li_gen_1424158692751_0-logo{}#li_ui_li_gen_1424158692751_0 #li_ui_li_gen_1424158692751_0-title{color:#333 !important;cursor:pointer !important;display:block !important;white-space:nowrap !important;float:left !important;margin-left:1px !important;vertical-align:top !important;overflow:hidden !important;text-align:center !important;height:18px !important;padding:0 4px 0 23px !important;border:1px solid #000 !important;border-top-color:#E2E2E2 !important;border-right-color:#BFBFBF !important;border-bottom-color:#B9B9B9 !important;border-left-color:#E2E2E2 !important;border-left:0 !important;text-shadow:#FFFFFF -1px 1px 0 !important;line-height:20px !important;border-radius:0 !important;-webkit-border-radius:0 !important;border-top-right-radius:2px !important;border-bottom-right-radius:2px !important;-webkit-border-top-right-radius:2px !important;-webkit-border-bottom-right-radius:2px !important;background-color:#ECECEC !important;background-image:-webkit-gradient(linear, left top, left bottom, color-stop(0%,#FEFEFE), color-stop(100%,#ECECEC)) !important; background-image: -webkit-linear-gradient(top, #FEFEFE 0%, #ECECEC 100%) !important;}#li_ui_li_gen_1424158692751_0.hovered #li_ui_li_gen_1424158692751_0-title{border:1px solid #000 !important;border-top-color:#ABABAB !important;border-right-color:#9A9A9A !important;border-bottom-color:#787878 !important;border-left-color:#04568B !important;border-left:0 !important;background-color:#EDEDED !important;background-image:-webkit-gradient(linear, left top, left bottom, color-stop(0%,#EDEDED), color-stop(100%,#DEDEDE)) !important; background-image: -webkit-linear-gradient(top, #EDEDED 0%, #DEDEDE 100%) !important;}#li_ui_li_gen_1424158692751_0.clicked #li_ui_li_gen_1424158692751_0-title, #li_ui_li_gen_1424158692751_0.down #li_ui_li_gen_1424158692751_0-title{color:#666 !important;border:1px solid #000 !important;border-top-color:#B6B6B6 !important;border-right-color:#B3B3B3 !important;border-bottom-color:#9D9D9D !important;border-left-color:#49627B !important;border-left:0 !important;background-color:#DEDEDE !important;background-image:-webkit-gradient(linear, left top, left bottom, color-stop(0%,#E3E3E3), color-stop(100%,#EDEDED)) !important; background-image: -webkit-linear-gradient(top, #E3E3E3 0%, #EDEDED 100%) !important;}.IN-shadowed #li_ui_li_gen_1424158692751_0 #li_ui_li_gen_1424158692751_0-title{}.IN-shadowed #li_ui_li_gen_1424158692751_0.hovered #li_ui_li_gen_1424158692751_0-title{}.IN-shadowed #li_ui_li_gen_1424158692751_0.clicked #li_ui_li_gen_1424158692751_0-title, .IN-shadowed #li_ui_li_gen_1424158692751_0.down #li_ui_li_gen_1424158692751_0-title{}#li_ui_li_gen_1424158692751_0 #li_ui_li_gen_1424158692751_0-title-text, #li_ui_li_gen_1424158692751_0 #li_ui_li_gen_1424158692751_0-title-text *{color:#333 !important;font-size:11px !important;font-family:Arial, sans-serif !important;font-weight:bold !important;font-style:normal !important;-webkit-font-smoothing:antialiased !important;display:inline-block !important;background:transparent none !important;vertical-align:top !important;height:18px !important;line-height:20px !important;float:none !important;}#li_ui_li_gen_1424158692751_0 #li_ui_li_gen_1424158692751_0-title-text strong{font-weight:bold !important;}#li_ui_li_gen_1424158692751_0 #li_ui_li_gen_1424158692751_0-title-text em{font-style:italic !important;}#li_ui_li_gen_1424158692751_0.hovered #li_ui_li_gen_1424158692751_0-title-text, #li_ui_li_gen_1424158692751_0.hovered #li_ui_li_gen_1424158692751_0-title-text *{color:#000 !important;}#li_ui_li_gen_1424158692751_0.clicked #li_ui_li_gen_1424158692751_0-title-text, #li_ui_li_gen_1424158692751_0.down #li_ui_li_gen_1424158692751_0-title-text, #li_ui_li_gen_1424158692751_0.clicked #li_ui_li_gen_1424158692751_0-title-text *, #li_ui_li_gen_1424158692751_0.down #li_ui_li_gen_1424158692751_0-title-text *{color:#666 !important;}#li_ui_li_gen_1424158692751_0 #li_ui_li_gen_1424158692751_0-title #li_ui_li_gen_1424158692751_0-mark{display:inline-block !important;width:0px !important;overflow:hidden !important;}.success #li_ui_li_gen_1424158692751_0 #li_ui_li_gen_1424158692751_0-title{color:#333 !important;border-top-color:#E2E2E2 !important;border-right-color:#BFBFBF !important;border-bottom-color:#B9B9B9 !important;border-left-color:#E2E2E2 !important;background-color:#ECECEC !important;background-image:-webkit-gradient(linear, left top, left bottom, color-stop(0%,#FEFEFE), color-stop(100%,#ECECEC)) !important; background-image: -webkit-linear-gradient(top, #FEFEFE 0%, #ECECEC 100%) !important;}.success #li_ui_li_gen_1424158692751_0 #li_ui_li_gen_1424158692751_0-title-text, .success #li_ui_li_gen_1424158692751_0 #li_ui_li_gen_1424158692751_0-title-text *{color:#333 !important;}.IN-shadowed .success #li_ui_li_gen_1424158692751_0 #li_ui_li_gen_1424158692751_0-title{}.success #li_ui_li_gen_1424158692751_0.hovered #li_ui_li_gen_1424158692751_0-title{color:#000 !important;border-top-color:#ABABAB !important;border-right-color:#9A9A9A !important;border-bottom-color:#787878 !important;border-left-color:#04568B !important;background-color:#EDEDED !important;background-image:-webkit-gradient(linear, left top, left bottom, color-stop(0%,#EDEDED), color-stop(100%,#DEDEDE)) !important; background-image: -webkit-linear-gradient(top, #EDEDED 0%, #DEDEDE 100%) !important;}.success #li_ui_li_gen_1424158692751_0.hovered #li_ui_li_gen_1424158692751_0-title-text, .success #li_ui_li_gen_1424158692751_0.hovered #li_ui_li_gen_1424158692751_0-title-text *{color:#000 !important;}.success #li_ui_li_gen_1424158692751_0.clicked #li_ui_li_gen_1424158692751_0-title, .success #li_ui_li_gen_1424158692751_0.down #li_ui_li_gen_1424158692751_0-title{color:#666 !important;border-top-color:#B6B6B6 !important;border-right-color:#B3B3B3 !important;border-bottom-color:#9D9D9D !important;border-left-color:#49627B !important;background-color:#DEDEDE !important;background-image:-webkit-gradient(linear, left top, left bottom, color-stop(0%,#E3E3E3), color-stop(100%,#EDEDED)) !important; background-image: -webkit-linear-gradient(top, #E3E3E3 0%, #EDEDED 100%) !important;}.success #li_ui_li_gen_1424158692751_0.clicked #li_ui_li_gen_1424158692751_0-title-text, .success #li_ui_li_gen_1424158692751_0.down #li_ui_li_gen_1424158692751_0-title-text, .success #li_ui_li_gen_1424158692751_0.clicked #li_ui_li_gen_1424158692751_0-title-text *, .success #li_ui_li_gen_1424158692751_0.down #li_ui_li_gen_1424158692751_0-title-text *{color:#666 !important;}.IN-shadowed .success #li_ui_li_gen_1424158692751_0.clicked #li_ui_li_gen_1424158692751_0-title, .IN-shadowed .success #li_ui_li_gen_1424158692751_0.down #li_ui_li_gen_1424158692751_0-title{}#li_ui_li_gen_1424158692767_1-container.IN-right {display:inline-block !important;float:left !important;overflow:visible !important;position:relative !important;height:18px !important;padding-left:2px !important;line-height:1px !important;cursor:pointer !important;}#li_ui_li_gen_1424158692767_1.IN-right {display:block !important;float:left !important;height:18px !important;margin-right:4px !important;padding-right:4px !important;background-image:url(https://static.licdn.com/scds/common/u/images/apps/connect/sprites/sprite_connect_v14.png) !important;background-color:transparent !important;background-repeat:no-repeat !important;background-position:right -100px !important;}#li_ui_li_gen_1424158692767_1-inner.IN-right {display:block !important;float:left !important;padding-left:8px !important;text-align:center !important;background-image:url(https://static.licdn.com/scds/common/u/images/apps/connect/sprites/sprite_connect_v14.png) !important;background-color:transparent !important;background-repeat:no-repeat !important;background-position:0px -60px !important;}#li_ui_li_gen_1424158692767_1-content.IN-right {display:inline !important;font-size:11px !important;color:#04558B !important;font-weight:bold !important;font-family:Arial, sans-serif !important;line-height:18px !important;padding:0 5px 0 5px !important;}#li_ui_li_gen_1424158692767_1-container.IN-empty {display:none !important;}#li_ui_li_gen_1424158692767_1-container.IN-hidden #li_ui_li_gen_1424158692767_1 {display:none !important;}</style><div style="width: 1px; height: 1px; display: inline;"><img height="1" width="1" style="border-style:none;" alt="" src="./Thread Magic Tricks  5 Things You Never Knew You Can Do with Java Threads   Takipi Blog_files/out">
+<img height="1" width="1" style="border-style:none;" alt="" src="./Thread Magic Tricks  5 Things You Never Knew You Can Do with Java Threads   Takipi Blog_files/out(1)">
+<img height="1" width="1" style="border-style:none;" alt="" src="./Thread Magic Tricks  5 Things You Never Knew You Can Do with Java Threads   Takipi Blog_files/out(2)">
+<img height="1" width="1" style="border-style:none;" alt="" src="./Thread Magic Tricks  5 Things You Never Knew You Can Do with Java Threads   Takipi Blog_files/out(3)">
+<img height="1" width="1" style="border-style:none;" alt="" src="./Thread Magic Tricks  5 Things You Never Knew You Can Do with Java Threads   Takipi Blog_files/out(4)">
+<img height="1" width="1" style="border-style:none;" alt="" src="./Thread Magic Tricks  5 Things You Never Knew You Can Do with Java Threads   Takipi Blog_files/out(5)">
+<img height="1" width="1" alt="" style="display:none" src="./Thread Magic Tricks  5 Things You Never Knew You Can Do with Java Threads   Takipi Blog_files/tr"><img height="1" width="1" style="border-style:none;" alt="" src="./Thread Magic Tricks  5 Things You Never Knew You Can Do with Java Threads   Takipi Blog_files/saved_resource(1)">
+<img height="1" width="1" style="border-style:none;" alt="" src="./Thread Magic Tricks  5 Things You Never Knew You Can Do with Java Threads   Takipi Blog_files/out(6)">
+<img src="./Thread Magic Tricks  5 Things You Never Knew You Can Do with Java Threads   Takipi Blog_files/seg" width="1" height="1">
+</div></head><body class="single single-post postid-737 single-format-standard nks_cc_hidden nks_cc_on nks_sidebar_slide nks_cc_sidebar_pos_right nks_webkit" data-twttr-rendered="true"><div id="nks_cc_sidebar" class="nks_cc_imagebg_none" style="display: block;">
+	<div class="nks_cc_sidebar_cont_scrollable">
+		<div class="nks_cc_sidebar_cont" style="min-height: 100px;">
+
+			<div id="nks-content-1" class="nks-content"><div class="nks-shrinked"><div class="widget">			<div class="textwidget"><div style="padding:0;text-align:center;display:block;margin-top:25%;"><img src="./Thread Magic Tricks  5 Things You Never Knew You Can Do with Java Threads   Takipi Blog_files/banner.png" alt="The story of the sneaky bug">
+<a href="https://www.takipi.com/?utm_source=blog&utm_medium=ninja&utm_campaign=detectallerrors" target="_blank"><div class="hello-peek">Get Started</div></a>
+</div></div>
+		</div></div></div>		</div>
+	</div>
+</div>
+
+<div class="nks_cc_trigger_tabs nks_cc_label_hidden" style="top: 50%; display: block;"><span id="nks-tab-1" class="nks-tab fa-stack fa-lg fa-2x"> <i class="fa fa-square fa-stack-2x "></i> <i class="fa fa-heart fa-stack-1x fa-inverse"></i> </span></div><div id="nks-body-bg" style="display: block; height: 7662px;"></div>
+
+<script>
+	(function($){
+		if (!$ || !window.NKS_CC_Opts) return;
+
+		var TYPE = NKS_CC_Opts.sidebar_type;
+		var $bodybg = $('#nks-body-bg');
+		var b = document.body;
+		var $body = $('body');
+		var bodyCss;
+
+    // fix onload
+		$(function(){
+			setTimeout(function(){
+
+				if (!$bodybg.parent().is($body)) {
+					$body.prepend($bodybg).prepend($('.nks_cc_trigger_tabs')).prepend($('#nks_cc_sidebar')).append($('#nks-overlay-wrapper'));
+				}
+
+				if (TYPE === 'push') { $bodybg.css('backgroundColor', $body.css('backgroundColor')) }
+
+			},0)
+		})
+
+		if (TYPE === 'push') {
+
+			bodyCss = {
+				'backgroundColor':$body.css('backgroundColor'),
+				'backgroundImage':$body.css('backgroundImage'),
+				'backgroundAttachment':$body.css('backgroundAttachment'),
+				'backgroundSize':$body.css('backgroundSize'),
+				'backgroundPosition':$body.css('backgroundPosition'),
+				'backgroundRepeat':$body.css('backgroundRepeat'),
+				'backgroundOrigin':$body.css('backgroundOrigin'),
+				'backgroundClip':$body.css('backgroundClip')
+			};
+
+			if (bodyCss.backgroundColor.indexOf('(0, 0, 0, 0') + 1 || bodyCss.backgroundColor.indexOf('transparent') + 1 ) {
+				bodyCss.backgroundColor = '#fff';
+			}
+
+			if (bodyCss.backgroundAttachment === 'fixed') {
+				NKS_CC_Opts.isBgFixed = true;
+				bodyCss.position = 'fixed';
+				bodyCss.bottom = 0;
+				bodyCss.backgroundAttachment = 'scroll';
+			} else {
+//				bodyCss.height = Math.max(
+//					b.scrollHeight, document.documentElement.scrollHeight,
+//					b.offsetHeight, document.documentElement.offsetHeight,
+//					b.clientHeight, document.documentElement.clientHeight
+//				)
+			}
+
+			$bodybg.css(bodyCss);
+
+		} else {
+			//$body.addClass('nks_sidebar_slide')
+		}
+
+	})(window.jQuery)
+</script>
+
+
+
+		<script type="text/javascript">
+			function addMixpanelId(href) {  
+  try {
+    var param = "mp="+mixpanel.get_distinct_id();
+
+    if (href.charAt(href.length - 1) === '?') //Very unlikely
+        return href + param;
+    else if (href.indexOf('?') > 0)
+        return href + '&' + param;
+    else
+        return href + '?' + param;
+  } catch (e) { }
+
+  return href;
+}
+
+			function trackOutboundLink(link, eventAction, eventValue) { 
+				try { 
+					_gas.push(['_trackEvent', "Takipi Outbound" , eventAction, eventValue]);
+					_gas.push(['_setCustomVar', 5, 'internal_campaign2', eventAction+'-'+eventValue, 2]);
+				} catch(err){}
+				
+				link.href = addMixpanelId(link.href);
+					
+				if (link.target != "_blank")
+				{
+					setTimeout(function() {
+						document.location.href = link.href;
+					}, 150);
+				}
+			}
+		</script>
+<style type="text/css">
+  .syntaxhighlighter { 
+     overflow-y: hidden !important; 
+     overflow-x: auto !important; 
+  }
+</style>
+<script type="text/javascript">
+		var MIXPANEL_API_KEY 		= '483bb4fc0b55c2aa112d91af0438ab7f';
+
+		mp_init = function()
+		{
+			mixpanel.init(MIXPANEL_API_KEY);
+		};
+
+		getParameterByName = function(name)
+		{
+			name = name.replace(/[\[]/, "\\\[").replace(/[\]]/, "\\\]");
+			
+			var regexS = "[\\?&]" + name + "=([^&#]*)";
+			var regex = new RegExp(regexS);
+			var results = regex.exec(window.location.search);
+			
+			if (results == null)
+			{
+				return "";
+			}
+			else
+			{
+				return decodeURIComponent(results[1].replace(/\+/g, " "));
+			}
+		};
+
+		mp_people_set_once_utm = function()
+		{
+			var campaign_keywords = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term'];
+		    var keywordIndex;
+
+		    var props = {};
+		    var hasProps = false;
+		    for (keywordIndex = 0; keywordIndex < campaign_keywords.length; ++keywordIndex)
+		    {
+		    	campaignKeyword = campaign_keywords[keywordIndex];
+		    	var campaignKeyWordValue = getParameterByName(campaignKeyword);
+
+		    	if (campaignKeyWordValue.length > 0)
+		    	{
+		    		props[campaignKeyword] = campaignKeyWordValue;
+		    		hasProps = true;
+		    	}
+		    }
+
+		    if (hasProps)
+		    {
+				mixpanel.people.set_once(props);
+			}
+		};
+
+		mp_people_set_once_start = function()
+		{
+			props = {"First seen": new Date(),
+				"First blog seen": new Date(),
+				 "Initial referrer": document.referrer,
+				"Initial blog referrer": document.referrer,
+			    	 "Visitor first page": document.location.href,
+				"Blog first page": document.location.href};
+
+			mixpanel.people.set_once(props);
+		};
+
+		mp_blog_default_init = function()
+		{
+			mp_init();
+			mp_people_set_once_start();
+			mp_people_set_once_utm();
+		};
+		</script>
+		<!-- start Mixpanel --><script type="text/javascript">(function(e,b){if(!b.__SV){var a,f,i,g;window.mixpanel=b;a=e.createElement("script");a.type="text/javascript";a.async=!0;a.src=("https:"===e.location.protocol?"https:":"http:")+'//cdn.mxpnl.com/libs/mixpanel-2.2.min.js';f=e.getElementsByTagName("script")[0];f.parentNode.insertBefore(a,f);b._i=[];b.init=function(a,e,d){function f(b,h){var a=h.split(".");2==a.length&&(b=b[a[0]],h=a[1]);b[h]=function(){b.push([h].concat(Array.prototype.slice.call(arguments,0)))}}var c=b;"undefined"!==
+		typeof d?c=b[d]=[]:d="mixpanel";c.people=c.people||[];c.toString=function(b){var a="mixpanel";"mixpanel"!==d&&(a+="."+d);b||(a+=" (stub)");return a};c.people.toString=function(){return c.toString(1)+".people (stub)"};i="disable track track_pageview track_links track_forms register register_once alias unregister identify name_tag set_config people.set people.set_once people.increment people.append people.track_charge people.clear_charges people.delete_user".split(" ");for(g=0;g<i.length;g++)f(c,i[g]);
+		b._i.push([a,e,d])};b.__SV=1.2}})(document,window.mixpanel||[]);
+		mp_blog_default_init();
+		</script><!-- end Mixpanel -->
+
+
+	
+	
+
+				
+				
+		<div class="navigationWrapper">
+			<div id="takipi-header">
+  <div class="navigationHolder">
+    <a class="takipilogo" href="https://www.takipi.com/" onclick="trackOutboundLink(this, &#39;navigation&#39;, &#39;index&#39;); return false;">Takipi</a>
+    <ul id="nav">
+      <li><a id="navigation-features" href="https://www.takipi.com/features" class="underlinelink" onclick="trackOutboundLink(this, &#39;navigation&#39;, &#39;features&#39;); return false;">Features</a></li>
+      <li><a id="navigation-pricing" href="https://www.takipi.com/pricing" class="underlinelink" onclick="trackOutboundLink(this, &#39;navigation&#39;, &#39;pricing&#39;); return false;">Pricing</a></li>
+      <li><a id="navigation-how-it-works" href="https://www.takipi.com/how-it-works" class="underlinelink" onclick="trackOutboundLink(this, &#39;navigation&#39;, &#39;how-it-works&#39;); return false;">How it Works</a></li>
+      <li><a id="navigation-why-takipi" href="https://www.takipi.com/why-takipi" class="underlinelink" onclick="trackOutboundLink(this, &#39;navigation&#39;, &#39;why-takipi&#39;); return false;">Why Takipi</a></li>
+      <li><a id="navigation-monsters" href="https://www.takipi.com/monsters" class="underlinelink" onclick="trackOutboundLink(this, &#39;navigation&#39;, &#39;monsters&#39;); return false;">Monsters</a></li>
+      <li><a id="navigation-support" href="http://support.takipi.com/" class="underlinelink" onclick="trackOutboundLink(this, &#39;navigation&#39;, &#39;support&#39;); return false;">Docs</a></li>
+      <li><a id="navigation-about-us" href="https://www.takipi.com/about" class="underlinelink" onclick="trackOutboundLink(this, &#39;navigation&#39;, &#39;aboutus&#39;); return false;">About Us</a></li>
+      <li><a id="navigation-blog" href="http://blog.takipi.com/" class="underlinelink">Blog</a></li>
+    </ul>
+    <ul id="nav-mobile">
+<li><a id="navigation-features" href="https://www.takipi.com/features" class="underlinelink" onclick="trackOutboundLink(this, &#39;navigation&#39;, &#39;features&#39;); return false;">Features</a></li>
+<li><a id="navigation-pricing" href="https://www.takipi.com/pricing" class="underlinelink" onclick="trackOutboundLink(this, &#39;navigation&#39;, &#39;pricing&#39;); return false;">Pricing</a></li>
+<li><a id="navigation-about-us" href="https://www.takipi.com/about" class="underlinelink" onclick="trackOutboundLink(this, &#39;navigation&#39;, &#39;aboutus&#39;); return false;">About Us</a></li>
+    </ul>
+    <div class="userHolder">
+      <a id="navigation-create-accoun" href="https://app.takipi.com/account.html" class="signup navBtn">Sign up</a>
+      <a id="navigation-login" href="https://app.takipi.com/" class="login navText">Login</a>
+    </div>
+  </div>
+</div>
+			<div class="imageHeaderWrapper">
+				<a href="http://blog.takipi.com/"><img src="./Thread Magic Tricks  5 Things You Never Knew You Can Do with Java Threads   Takipi Blog_files/header-blue.png" class="imageHeader" width="900px" height="272px"></a>
+			</div>
+		</div>
+
+				
+			<div id="header" class="imageless">
+				<div id="head-wrapper" class="container clearfix">
+				
+									
+															
+														</div><!-- /#head-wrapper -->
+			</div><!-- /#header -->
+
+			
+<div id="wrapper">
+	<div class="container">
+		<div class="row">
+
+			
+			<div id="main" class="span8 clearfix" role="main">
+				
+				
+				
+<div id="post-737" class="post-737 post type-post status-publish format-standard hentry category-java clearfix">
+
+	<div class="post-header clearfix">
+
+				 
+		<div class="title-wrap clearfix">
+												<h1 class="post-title entry-title">Thread Magic Tricks: 5 Things You Never Knew You Can Do with Java Threads</h1>	
+										<div class="post-header-meta">
+									<div class="author-box-image">
+						<img alt="" src="./Thread Magic Tricks  5 Things You Never Knew You Can Do with Java Threads   Takipi Blog_files/35d3cc95d9df5f8b50ebb728dd94df24" class="avatar avatar-36 photo" height="36" width="36">					</div><!-- /.author-box-image -->
+					<span class="the-author">By <a href="http://blog.takipi.com/author/alexzhitnitsky/" title="Alex Zhitnitsky">Alex Zhitnitsky</a>&nbsp;—&nbsp;</span>
+					
+													<span class="the-time updated">January 7, 2015</span>
+													<span class="the-comment-link">—&nbsp;<a href="http://blog.takipi.com/java-thread-magic-tricks/#disqus_thread" title="Comment on Thread Magic Tricks: 5 Things You Never Knew You Can Do with Java Threads" data-disqus-identifier="737 http://blog.takipi.com/?p=737">5 Comments</a></span>
+							</div><!-- /.post-header-meta -->
+		</div><!-- /.title-wrap -->
+
+	</div> <!-- /.post-header -->
+
+	<div id="content-737" class="entry-content clearfix">
+					<div class="dd_post_share dd_post_share_left"><div class="dd_buttons" style="opacity: 1;"><div class="dd_button"><fb:like href="http://blog.takipi.com/java-thread-magic-tricks/" send="false" show_faces="false" layout="button_count" width="92" class=" fb_iframe_widget" fb-xfbml-state="rendered" fb-iframe-plugin-query="app_id=&amp;container_width=0&amp;href=http%3A%2F%2Fblog.takipi.com%2Fjava-thread-magic-tricks%2F&amp;layout=button_count&amp;locale=en_US&amp;sdk=joey&amp;send=false&amp;show_faces=false&amp;width=92"><span style="vertical-align: bottom; width: 76px; height: 20px;"><iframe name="f387c56788" width="92px" height="1000px" frameborder="0" allowtransparency="true" scrolling="no" title="fb:like Facebook Social Plugin" src="./Thread Magic Tricks  5 Things You Never Knew You Can Do with Java Threads   Takipi Blog_files/like.html" style="border: none; visibility: visible; width: 76px; height: 20px;" class=""></iframe></span></fb:like></div><div class="dd_button"><span class="IN-widget" style="line-height: 1; vertical-align: baseline; display: inline-block; text-align: center;"><span style="padding: 0px !important; margin: 0px !important; text-indent: 0px !important; display: inline-block !important; vertical-align: baseline !important; font-size: 1px !important;"><span id="li_ui_li_gen_1424158692751_0"><a id="li_ui_li_gen_1424158692751_0-link" href="javascript:void(0);"><span id="li_ui_li_gen_1424158692751_0-logo">in</span><span id="li_ui_li_gen_1424158692751_0-title"><span id="li_ui_li_gen_1424158692751_0-mark"></span><span id="li_ui_li_gen_1424158692751_0-title-text">Share</span></span></a></span></span><span style="padding: 0px !important; margin: 0px !important; text-indent: 0px !important; display: inline-block !important; vertical-align: baseline !important; font-size: 1px !important;"><span id="li_ui_li_gen_1424158692767_1-container" class="IN-right"><span id="li_ui_li_gen_1424158692767_1" class="IN-right"><span id="li_ui_li_gen_1424158692767_1-inner" class="IN-right"><span id="li_ui_li_gen_1424158692767_1-content" class="IN-right">42</span></span></span></span></span></span><script type="IN/Share+init" data-url="http://blog.takipi.com/java-thread-magic-tricks/" data-counter="right"></script></div><div class="dd_button"><div id="___plusone_0" style="text-indent: 0px; margin: 0px; padding: 0px; border-style: none; float: none; line-height: normal; font-size: 1px; vertical-align: baseline; display: inline-block; width: 90px; height: 20px; background: transparent;"><iframe frameborder="0" hspace="0" marginheight="0" marginwidth="0" scrolling="no" style="position: static; top: 0px; width: 90px; margin: 0px; border-style: none; left: 0px; visibility: visible; height: 20px;" tabindex="0" vspace="0" width="100%" id="I0_1424158692196" name="I0_1424158692196" src="./Thread Magic Tricks  5 Things You Never Knew You Can Do with Java Threads   Takipi Blog_files/fastbutton.html" data-gapiattached="true" title="+1"></iframe></div></div><div class="dd_button"><iframe id="twitter-widget-0" scrolling="no" frameborder="0" allowtransparency="true" src="./Thread Magic Tricks  5 Things You Never Knew You Can Do with Java Threads   Takipi Blog_files/tweet_button.62da0a34306f5c17db7d290755ed1d7d.en.html" class="twitter-share-button twitter-tweet-button twitter-share-button twitter-count-horizontal" title="Twitter Tweet Button" data-twttr-rendered="true" style="width: 110px; height: 20px;"></iframe></div></div></div><p><a href="./Thread Magic Tricks  5 Things You Never Knew You Can Do with Java Threads   Takipi Blog_files/threadfred.jpg" class="fancybox image"><img class="alignnone wp-image-736 size-full" src="./Thread Magic Tricks  5 Things You Never Knew You Can Do with Java Threads   Takipi Blog_files/threadfred.jpg" alt="Thread Fred" width="580" height="300"></a></p>
+<p><strong>What are some of the least known facts and use cases for&nbsp;Java threads?</strong></p>
+<p>Some people like mountain climbing, others do sky diving. Me, I like Java. One of the things I love about it is that you never stop learning. The tools you use on a daily basis can often reveal a whole new side to them, with&nbsp;methods and interesting use cases you haven’t had a chance to see yet. Like threads for example. Actual threads. Or better put, the Thread class&nbsp;itself. Concurrent programming never stops posing challenges when we’re dealing with high scalability systems, but now&nbsp;we’ll talk about something a bit different.</p>
+<p>In this post you’ll see some of the lesser known yet useful techniques and methods that threads support. Whether you’re a beginner, advanced user or an expert&nbsp;Java developer, try to see which of these you already know and what comes off as new to you. Is there something else about threads you feel worth mentioning? I’d love to hear about it in the comments below. Let’s get started.</p>
+<p><span id="more-737"></span></p>
+<h2>Beginner</h2>
+<h3>1. Thread names</h3>
+<p>Each thread in your app has a name, a simple Java String that’s generated for it when the thread is constructed. The default name values go from “Thread-0″ to “Thread-1″, “Thread-2″ and so on. Now comes the more interesting part – Threads expose 2 ways you can use to set their names:</p>
+<p><strong>1. The thread constructors, here’s the simplest one:</strong></p>
+<div><div id="highlighter_690739" class="syntaxhighlighter  java"><div class="toolbar"><span><a href="http://blog.takipi.com/java-thread-magic-tricks/#" class="toolbar_item command_help help">?</a></span></div><table border="0" cellpadding="0" cellspacing="0"><tbody><tr><td class="gutter"><div class="line number1 index0 alt2">1</div><div class="line number2 index1 alt1">2</div><div class="line number3 index2 alt2">3</div><div class="line number4 index3 alt1">4</div><div class="line number5 index4 alt2">5</div><div class="line number6 index5 alt1">6</div><div class="line number7 index6 alt2">7</div><div class="line number8 index7 alt1">8</div><div class="line number9 index8 alt2">9</div></td><td class="code"><div class="container"><div class="line number1 index0 alt2"><code class="java keyword">class</code> <code class="java plain">SuchThread </code><code class="java keyword">extends</code> <code class="java plain">Thread {</code></div><div class="line number2 index1 alt1">&nbsp;</div><div class="line number3 index2 alt2"><code class="java spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="java plain">Public </code><code class="java keyword">void</code> <code class="java plain">run() {</code></div><div class="line number4 index3 alt1"><code class="java spaces">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="java plain">System.out.println (</code><code class="java string">"Hi Mom! "</code> <code class="java plain">+ getName());</code></div><div class="line number5 index4 alt2"><code class="java spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="java plain">}</code></div><div class="line number6 index5 alt1">&nbsp;</div><div class="line number7 index6 alt2"><code class="java plain">}</code></div><div class="line number8 index7 alt1">&nbsp;</div><div class="line number9 index8 alt2"><code class="java plain">SuchThread wow = </code><code class="java keyword">new</code> <code class="java plain">SuchThread(</code><code class="java string">"much-name"</code><code class="java plain">);</code></div></div></td></tr></tbody></table></div></div>
+<p><strong>2. The thread name setter:</strong></p>
+<div><div id="highlighter_2426" class="syntaxhighlighter  java"><div class="toolbar"><span><a href="http://blog.takipi.com/java-thread-magic-tricks/#" class="toolbar_item command_help help">?</a></span></div><table border="0" cellpadding="0" cellspacing="0"><tbody><tr><td class="gutter"><div class="line number1 index0 alt2">1</div></td><td class="code"><div class="container"><div class="line number1 index0 alt2"><code class="java plain">wow.setName(“Just another thread name”);</code></div></div></td></tr></tbody></table></div></div>
+<p>Right, thread names are mutable. So other than setting a custom name when we’re instantiating them, we can change it during runtime. The name field itself is set as a simple String object. This means it can go up to 2³¹-1 characters long (Integer.MAX_VALUE). More than enough I’d say. Please note that this name doesn’t act like a unique ID, so threads can share the same name. Also, don’t try passing null as a name unless you want an exception to be thrown (“null” is ok though, I’m not judging!).</p>
+<h4>Using thread names for&nbsp;debugging</h4>
+<p>So now that you have access to thread names, following some naming conventions of your own could make your life much much easier when&nbsp;something bad&nbsp;happens. “Thread-6″ sounds a bit heartless, I’m sure you can think of a better name. Couple this with a self assigned transaction ID when handling user requests, append it to the thread’s name and you’ve considerably cut down your error solving time.</p>
+<p>A good practice to keep here is making sure you generate a UUID at every thread’s entry point to your app, and keep it consistent as the request travels between your nodes, processes and threads. Let’s take a look at this example, one of the worker threads in a certain thread pool hangs for too long. You run jstack to take a closer look and then you see this:</p>
+<p><em><strong>“pool-1-thread-1″</strong> #17 prio=5 os_prio=31 tid=0x00007f9d620c9800</em><br>
+<em> nid=0x6d03 in Object.wait() [0x000000013ebcc000]</em></p>
+<p>Ok, “pool-1-thread-1″, why so serious? Let’s get to know you better and think of a more suitable name:</p>
+<div><div id="highlighter_933481" class="syntaxhighlighter  java"><div class="toolbar"><span><a href="http://blog.takipi.com/java-thread-magic-tricks/#" class="toolbar_item command_help help">?</a></span></div><table border="0" cellpadding="0" cellspacing="0"><tbody><tr><td class="gutter"><div class="line number1 index0 alt2">1</div></td><td class="code"><div class="container"><div class="line number1 index0 alt2"><code class="java plain">Thread.currentThread().setName(Context + TID + Params + current Time, ...);</code></div></div></td></tr></tbody></table></div></div>
+<p>Now when we run jstack again, things look much brighter:</p>
+<p><em>”<strong>Queue Processing Thread, MessageID: AB5CAD, type:</strong></em><br>
+<em><strong> AnalyzeGraph, queue: ACTIVE_PROD, Transaction_ID: 5678956,</strong></em><br>
+<em><strong> Start Time: 30/12/2014 17:37″</strong> #17 prio=5 os_prio=31 tid=0x00007f9d620c9800</em><br>
+<em> nid=0x6d03 in Object.wait() [0x000000013ebcc000]</em></p>
+<p>We know what the thread is doing, when it got&nbsp;stuck, and we also have the transaction ID that started it all. You can retrace your steps, reproduce the error, isolate and solve it. To learn more about cool ways to use jstack you can check out this post <a href="http://blog.takipi.com/supercharged-jstack-how-to-debug-your-servers-at-100mph/" target="_blank">right here</a>.</p>
+<h3>2. Thread Priorities</h3>
+<p style="direction: ltr;">Another interesting field threads have is Priority. A thread’s Priority is a value between 1 (MIN_PRIORITY) to 10 (MAX_PRIORITY), and the default value for your main thread is 5 (NORM_PRIORITY). Each new thread gets the priority of its parent, so if you’re not playing with it manually, all your thread priorities are probably set to&nbsp;5. This is also an often overlooked field of the Thread class, and we can access and manipulate it through the methods <em>getPriority()</em> and <em>setPriority()</em>. There’s no way to set this in the thread constructor.</p>
+<h4>Who needs priorities anyhow?</h4>
+<p>Of course not all threads are created equal, some require immediate attention from your CPU while others are just&nbsp;background tasks. Priorities are used to signal that&nbsp;to the OS thread scheduler. At Takipi, where we develop an error tracking and analysis tool, the thread that handles new exceptions for our users gets a MAX_PRIORITY, while threads&nbsp;that handle tasks like reporting new deployments are given a lower priority.&nbsp;One might&nbsp;expect that&nbsp;threads with a higher Priority get more time from the thread scheduler working with your JVM. Well, that’s&nbsp;not always the case.</p>
+<p>Each Java thread opens a new native thread on the OS level, and the Java priorities that you set are translated to native priorities in a different way for each platform. On Linux, you’ll also have to include the <em>“-XX:+UseThreadPriorities”</em>&nbsp;flag when running your app for them to be considered. With that said, thread priorities are still just recommendations that you provide. Compared to native Linux priorities, they don’t even cover the whole spectrum of values (1..99, and the effects of thread niceness that range between -20..20). The main takeaway is the importance of keeping your own logic that would ensure your priorities are reflected in the CPU time each thread gets, but it’s not recommended to rely solely on priorities.</p>
+<p><a href="./Thread Magic Tricks  5 Things You Never Knew You Can Do with Java Threads   Takipi Blog_files/FredThreads.jpg" class="fancybox image"><img class="alignnone wp-image-741 size-full" src="./Thread Magic Tricks  5 Things You Never Knew You Can Do with Java Threads   Takipi Blog_files/FredThreads.jpg" alt="Fred tangled up in threads" width="953" height="300"></a></p>
+<h2>Advanced</h2>
+<h3>3. Thread Local Storage</h3>
+<p>This one is a bit different than&nbsp;the other creatures we talked about here. ThreadLocal is a concept that’s implemented off the Thread class&nbsp;(<em>java.lang.ThreadLocal</em>), but stores unique data for&nbsp;each thread. As it says on the tin, it provides you with Thread Local Storage, meaning you can create variables that are unique to each thread instance. Similar to the way you would have a thread name or priority, you can create custom fields that act as if they’re members of the Thread class. Isn’t that cool? But let’s not get <a href="http://www.quickmeme.com/img/6b/6b21ef9c17d96b863db2bd496c0e3b799fb5623ea127273544dc5e4511c01337.jpg" target="_blank" class="fancybox image">too excited</a>, there are some caveats ahead.</p>
+<p>It’s recommended to create a ThreadLocal in one of two ways: Either as a static variable or part of singleton where it doesn’t have to be static. Note that it lives on the global scope, yet acts local to each thread that’s able to access it. Here’s an example of a ThreadLocal variable holding a data structure of our own for easy access:</p>
+<div><div id="highlighter_495050" class="syntaxhighlighter  java"><div class="toolbar"><span><a href="http://blog.takipi.com/java-thread-magic-tricks/#" class="toolbar_item command_help help">?</a></span></div><table border="0" cellpadding="0" cellspacing="0"><tbody><tr><td class="gutter"><div class="line number1 index0 alt2">1</div><div class="line number2 index1 alt1">2</div><div class="line number3 index2 alt2">3</div><div class="line number4 index3 alt1">4</div><div class="line number5 index4 alt2">5</div><div class="line number6 index5 alt1">6</div><div class="line number7 index6 alt2">7</div><div class="line number8 index7 alt1">8</div></td><td class="code"><div class="container"><div class="line number1 index0 alt2"><code class="java keyword">public</code>&nbsp;<code class="java keyword">static</code> <code class="java keyword">class</code> <code class="java plain">CriticalData</code></div><div class="line number2 index1 alt1"><code class="java plain">{</code></div><div class="line number3 index2 alt2"><code class="java spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="java keyword">public</code> <code class="java keyword">int</code> <code class="java plain">transactionId;</code></div><div class="line number4 index3 alt1"><code class="java spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="java keyword">public</code> <code class="java keyword">int</code> <code class="java plain">username;</code></div><div class="line number5 index4 alt2"><code class="java plain">}</code></div><div class="line number6 index5 alt1">&nbsp;</div><div class="line number7 index6 alt2"><code class="java keyword">public</code> <code class="java keyword">static</code> <code class="java keyword">final</code> <code class="java plain">ThreadLocal&lt;CriticalData&gt; globalData =</code></div><div class="line number8 index7 alt1"><code class="java spaces">&nbsp;&nbsp;&nbsp;&nbsp;</code><code class="java keyword">new</code> <code class="java plain">ThreadLocal&lt;CriticalData&gt;();</code></div></div></td></tr></tbody></table></div></div>
+<p>Once we have a ThreadLocal in our hands, we can access it with <em>globalData.set()</em> and <em>globalData.get()</em>.</p>
+<h4>Global? It must be evil</h4>
+<p>Not necessarily. A ThreadLocal variable can keep a transaction ID. This can come in handy when you have an uncaught exception bubbling up your code. A good practice is to have an <a href="http://docs.oracle.com/javase/8/docs/api/java/lang/Thread.UncaughtExceptionHandler.html" target="_blank">UncaughtExceptionHandler</a> in place, which we also get with the Thread class&nbsp;but have to implement ourselves. Once we reach that stage, there aren’t many hints as to what actually got us there. We’re left with the Thread object and can’t access any of the variables that go us there as the stack frames shut down. In our UncaughtExceptionHandler, as the thread takes its last breaths, ThreadLocal is pretty much one of the only things we have left.</p>
+<p>We can do something in the spirit of:</p>
+<div><div id="highlighter_844130" class="syntaxhighlighter  java"><div class="toolbar"><span><a href="http://blog.takipi.com/java-thread-magic-tricks/#" class="toolbar_item command_help help">?</a></span></div><table border="0" cellpadding="0" cellspacing="0"><tbody><tr><td class="gutter"><div class="line number1 index0 alt2">1</div></td><td class="code"><div class="container"><div class="line number1 index0 alt2"><code class="java plain">System.err.println(</code><code class="java string">"Transaction ID "</code> <code class="java plain">+ globalData.get().transactionId);</code></div></div></td></tr></tbody></table></div></div>
+<p>And just like that we added some valuable context to the error. One of the more creative ways to use <em>ThreadLocal</em>&nbsp;is by&nbsp;allocating a designated chunk of memory to be used as a buffer over and over by a worker thread. This can become useful depending on which side you’re on in the memory vs. CPU overhead tradeoff of course.&nbsp;That said, the thing to look out for is abuse of&nbsp;our memory space. ThreadLocal exists for a specific thread as long as it’s alive and will not be garbage collected unless you free it or the thread dies. So you better be careful when you use it and keep it simple.</p>
+<h3>4. User Threads and Daemon Threads</h3>
+<p>Back to our Thread&nbsp;class. Each thread in our app receives either a User or a Daemon status. In other words, a foreground or a background thread. By default, the main thread is a User thread and each new thread gets the status of the thread that created it. So if you set a thread as Daemon, all the threads it creates will be marked as daemon as well. When the only threads left running in your app are of Daemon status, the process closes. To play around, check and change a threads status we have the Boolean <em>.setDaemon(true)</em> and <em>.isDaemon()</em> methods.</p>
+<h4>When would you set a Daemon thread?</h4>
+<p>You should change a thread’s status to Daemon when it’s not critical for it to end so the process could close. It takes off the hassle of closing the thread properly, stopping everything at once and let’s it end quickly. On the other hand, when there’s a thread that runs an operation that must end properly or else bad things will happen, make sure it’s set as a User thread. A critical transaction could be, for example, a database entry or completing an update that can’t be interrupted.</p>
+<h2>Expert</h2>
+<h3>5. Java Processor Affinity</h3>
+<p>This part takes us closer to the hardware, where the code meets the metal. Processor affinity allows you to bind threads or processes to specific CPU cores. This means that whenever that&nbsp;specific thread executes, it would run exclusively on one certain core. Normally what would happen is that the OS thread scheduler would take on this role according to its own logic, possibly taking the thread priorities we&nbsp;mentioned&nbsp;earlier into account.</p>
+<p>The bargaining&nbsp;chip here is the CPUs cache. If a thread would only run on one specific core, it’s more likely it will get to enjoy having all its data ready for it&nbsp;on the cache. When the data is already there, there’s no need to reload it. The micro-seconds you save can be put to better use and the code will actually run on that time, making better use of the allocated CPU time it got. While some optimizations do exist on the OS level, and the hardware architecture also has an important role of course, using affinity can eliminate the chance of a thread switching cores.</p>
+<p>Since many factors are in play&nbsp;here, the best way to determine how processor affinity would affect your throughput is&nbsp;to embrace the habit of testing. While it may not always be significantly better, one of the benefits you might experience is a steady throughput. Affinity strategies can go down to a surgical level, depending on what there is to gain. The high frequency trading industry would be one of the places where these kind of things matter most.</p>
+<h4>Testing processor affinity</h4>
+<p>Java doesn’t have native support for processor affinity but that’s not the end of the story of course. On Linux, we can set a process affinity using the <a href="http://linuxcommand.org/man_pages/taskset1.html" target="_blank"><em>taskset</em></a> command. Say we have a Java process running and we want to pin it to a specific CPU:</p>
+<p><em>taskset -c 1 “java AboutToBePinned”</em></p>
+<p>Or if its already running:</p>
+<p><em>taskset -c 1&nbsp;&lt;PID&gt;</em></p>
+<p>Now, to get down to the thread level we’ll need to insert some new code. Luckily, there’s an open-source library that would help us do just that: <a href="https://github.com/OpenHFT/Java-Thread-Affinity" target="_blank">Java-Thread-Affinity</a>. Written by <a href="https://twitter.com/peterlawrey" target="_blank">Peter Lawrey</a> at OpenHFT,&nbsp;this is probably the most straightforward way to do this. Let’s see a quick example of pinning a thread, more of this is available on the library’s GitHub repo:</p>
+<div><div id="highlighter_551477" class="syntaxhighlighter  java"><div class="toolbar"><span><a href="http://blog.takipi.com/java-thread-magic-tricks/#" class="toolbar_item command_help help">?</a></span></div><table border="0" cellpadding="0" cellspacing="0"><tbody><tr><td class="gutter"><div class="line number1 index0 alt2">1</div></td><td class="code"><div class="container"><div class="line number1 index0 alt2"><code class="java plain">AffinityLock al = AffinityLock.acquireLock();</code></div></div></td></tr></tbody></table></div></div>
+<p>And that’s it. More advanced options for acquiring the lock – taking into account different strategies for choosing the specific core – are available on GitHub.</p>
+<h2>Conclusion</h2>
+<p>We’ve seen 5 ways to look at threads: Thread names, thread local storage, priorities, daemon threads and affinity. Hope this helped shed a new light on the things&nbsp;you deal with on a daily basis, and would be glad to hear your comments! What other thread handling methods could fit in?</p>
+<p>How about trying a new developer tool? Takipi detects all errors in production and shows the&nbsp;variable&nbsp;values&nbsp;as if you were there when it happened –&nbsp;<a style="color: #00aeef;" href="https://app.takipi.com/account-tshirt.html?utm_source=blog&utm_medium=post-footer-tshirt&utm_content=threadmagic&utm_campaign=java">Deploy now and get a free T-shirt</a></p>
+<div class="takipiVideo" url="https://www.takipi.com?utm_source=blog&amp;utm_medium=vid&amp;utm_content=threadmagic&amp;utm_campaign=java"><video id="demo-video-0" class="demovideos" poster="https://www.takipi.com/assets/images/index/img03.jpg" style="max-width: 100%; cursor: pointer;"><source src="https://www.takipi.com/assets/videos/index/demo.mp4" type="video/mp4"></video></div>
+<p><strong>Sign up to Takipi from this post – and get an extended 2-month trial:</strong></p>
+<div class="miniSignupDialog"><strong>&nbsp;</strong><div class="stubSignupElement"> 						<div class="blogheader"> 							<div class="dukewrapper"><img src="./Thread Magic Tricks  5 Things You Never Knew You Can Do with Java Threads   Takipi Blog_files/duke1.png"><div class="duketext" style="width: 130px">Detect 100% production errors</div></div> 							<div class="dukewrapper"><img src="./Thread Magic Tricks  5 Things You Never Knew You Can Do with Java Threads   Takipi Blog_files/duke2.png"><div class="duketext" style="width: 140px">See the variables behind every error</div></div> 							<div class="dukewrapper"><img src="./Thread Magic Tricks  5 Things You Never Knew You Can Do with Java Threads   Takipi Blog_files/duke3.png"><div class="duketext" style="width: 146px">Debugging at scale finally made easy</div></div> 						</div> 						<form class="blogStubSignupForm"> 							<input class="emailInput" type="text" autocomplete="off" placeholder="Enter your email"> 							<div class="createStubAccountBtn">Start using Takipi</div> 						</form> 						<div class="errorLabel" style="display: none;"></div> 					</div></div>
+<script type="text/javascript"> </script><!-- Social Buttons Generated by Digg Digg plugin v5.3.6,
+    Author : Buffer, Inc
+    Website : http://bufferapp.com/diggdigg -->					</div><!-- /.entry-content -->
+	<div class="post-meta clearfix">
+
+			<div class="meta-date-cat-tags pull-left">
+			
+													<span class="the-category">In <a href="http://blog.takipi.com/category/code/java/">Java</a></span>								
+												
+			</div><!-- /meta-date-cat-tags -->
+			
+			<div class="meta-comment-link pull-right">
+				<a class="pull-right post-link" href="./Thread Magic Tricks  5 Things You Never Knew You Can Do with Java Threads   Takipi Blog_files/Thread Magic Tricks  5 Things You Never Knew You Can Do with Java Threads   Takipi Blog.html" title="permalink "><img src="./Thread Magic Tricks  5 Things You Never Knew You Can Do with Java Threads   Takipi Blog_files/icn-permalink.png" alt="permalink "></a>
+							</div><!-- /meta-comment-link -->
+
+	</div><!-- /.post-meta -->
+
+</div> <!-- /#post--->							
+																		
+														
+																						<div id="author-box" class="well clearfix">
+									<div class="author-box-image">
+										<img alt="" src="./Thread Magic Tricks  5 Things You Never Knew You Can Do with Java Threads   Takipi Blog_files/35d3cc95d9df5f8b50ebb728dd94df24(1)" class="avatar avatar-96 photo" height="96" width="96">									</div><!-- /.author-box-image -->
+									<h4 class="author-box-name">Alex Zhitnitsky</h4>
+									<p>
+										<a class="author-link author-posts-url" href="http://blog.takipi.com/author/alexzhitnitsky/" title="Alex Zhitnitsky Posts">Posts</a>
+										
+																			<a class="author-link author-url" href="http://www.takipi.com/" title="Website" target="_blank" rel="author">Website</a>
+																		
+																			<a class="author-link icn-twitter" href="https://twitter.com/tkfxin/" title="Twitter" target="_blank">Twitter</a>
+									
+																		
+																		
+									</p>
+									Some kind of monster @ Takipi, GDG Haifa lead.								</div><!-- /.author-box -->						
+														
+														
+							
+
+	<div id="single-post-nav">
+		<ul class="pager">
+		
+						
+							<li class="previous">
+					<span class="previous-page"><a href="http://blog.takipi.com/15-tools-to-use-when-deploying-code-to-production/" rel="prev" title="15 Tools Java Developers Should Use After a Major Release"><i class="icon-chevron-left"></i>&nbsp;15 Tools Java Developers...</a></span>				</li>
+						
+							<li class="next">
+				<span class="no-previous-page-link next-page"><a href="http://blog.takipi.com/forkjoin-framework-vs-parallel-streams-vs-executorservice-the-ultimate-benchmark/" rel="next" title="Fork/Join Framework vs. Parallel Streams vs. ExecutorService: The Ultimate Fork/Join Benchmark">&nbsp;Fork/Join Framework vs....<i class="icon-chevron-right"></i></a></span>				</li>
+					</ul>	
+	</div><!-- /#single-post-nav -->
+
+							<span class="nks_cc_trigger_element appear"></span>
+							
+<div id="comments"><div id="disqus_thread"><iframe id="dsq-2" data-disqus-uid="2" allowtransparency="true" frameborder="0" scrolling="no" tabindex="0" title="Disqus" width="100%" src="./Thread Magic Tricks  5 Things You Never Knew You Can Do with Java Threads   Takipi Blog_files/saved_resource.html" style="width: 100% !important; border: none !important; overflow: hidden !important; height: 1037px !important;" horizontalscrolling="no" verticalscrolling="no"></iframe></div></div>
+
+<script type="text/javascript">
+var disqus_url = 'http://blog.takipi.com/java-thread-magic-tricks/';
+var disqus_identifier = '737 http://blog.takipi.com/?p=737';
+var disqus_container_id = 'disqus_thread';
+var disqus_shortname = 'takipiblog';
+var disqus_title = "Thread Magic Tricks: 5 Things You Never Knew You Can Do with Java Threads";
+var disqus_config_custom = window.disqus_config;
+var disqus_config = function () {
+    /*
+    All currently supported events:
+    onReady: fires when everything is ready,
+    onNewComment: fires when a new comment is posted,
+    onIdentify: fires when user is authenticated
+    */
+    
+    
+    this.language = '';
+        this.callbacks.onReady.push(function () {
+
+        // sync comments in the background so we don't block the page
+        var script = document.createElement('script');
+        script.async = true;
+        script.src = '?cf_action=sync_comments&post_id=737';
+
+        var firstScript = document.getElementsByTagName('script')[0];
+        firstScript.parentNode.insertBefore(script, firstScript);
+    });
+    
+    if (disqus_config_custom) {
+        disqus_config_custom.call(this);
+    }
+};
+
+(function() {
+    var dsq = document.createElement('script'); dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+})();
+</script>
+
+	
+							
+					 	
+							</div><!-- /#main -->
+			
+							<div id="sidebar" class="span4" style="height: 372px;">
+	<div id="text-17_clone" class="widget widget_text q2w3-widget-clone-sidebar-0" style="top: 0px; width: 300px; height: 303px; visibility: hidden;">			
+		</div><div id="text-17" class="widget widget_text" style="top: 0px; width: 300px; position: fixed;">			<div class="textwidget"><div style="width: 305px; display: block; padding: 0px;">
+		<a id="sidebar-takipi-header1" href="https://www.takipi.com/the-sneaky-bug?utm_source=blog&utm_medium=sidebar&utm_campaign=sneaky" onclick="trackOutboundLink(this, &#39;sidebar&#39;, &#39;top&#39;); return false;"><img class="alignnone" style="opacity: 1;" src="./Thread Magic Tricks  5 Things You Never Knew You Can Do with Java Threads   Takipi Blog_files/banner(1).png" alt="The story of the sneaky bug" width="258" height="303"></a>
+	</div></div>
+		</div><div id="text-15_clone" class="widget widget_text q2w3-widget-clone-sidebar-0" style="top: 303px; width: 300px; height: 69px; visibility: hidden;">			
+		</div><div id="text-15" class="widget widget_text" style="top: 303px; width: 300px; position: fixed;">			<div class="textwidget"><div style="padding-top: 20px">
+<iframe id="twitter-widget-1" scrolling="no" frameborder="0" allowtransparency="true" src="./Thread Magic Tricks  5 Things You Never Knew You Can Do with Java Threads   Takipi Blog_files/follow_button.a5bbbb7216610af1306d56b0f28a67d7.en.html" class="twitter-follow-button twitter-follow-button" title="Twitter Follow Button" data-twttr-rendered="true" style="width: 208px; height: 20px;"></iframe><a href="http://twitter.com/takipid" target="_blank" rel="nofollow"></a>
+<br>
+<a href="http://cloud.feedly.com/#subscription%2Ffeed%2Fhttp%3A%2F%2Fwww.takipiblog.com%2Ffeed%2F" target="blank"><img id="feedlyFollow" src="./Thread Magic Tricks  5 Things You Never Knew You Can Do with Java Threads   Takipi Blog_files/feedly-follow-rectangle-volume-medium_2x.png" alt="follow us in feedly" width="71" height="28"></a>
+</div></div>
+		</div></div><!-- /#sidebar -->
+							
+		</div> <!-- /row -->
+	</div><!-- /container -->
+</div> <!-- /#wrapper -->
+
+<div id="footer" class="clearfix">
+	
+												
+				<div id="sub-floor" class="clearfix">
+			<div class="container">
+				<div class="row-fluid">
+					<div class="span12">
+						<div id="footer-links">
+													</div><!-- /#footer-links -->			
+								
+						<div id="credit">
+														
+															© 2015 <a href="http://blog.takipi.com/">Takipi Blog</a> — <a href="http://standardtheme.com/?utm_source=standard-theme&utm_medium=footer&utm_content=wp-org&utm_campaign=Standard%2BFooter" target="_blank">Standard</a> by <a href="http://8bit.io/?utm_source=standard-theme&utm_medium=footer&utm_content=wp-org&utm_campaign=Standard%2BFooter" target="_blank">8BIT</a>														
+						</div><!-- /#credits -->
+					</div><!--/span12-->
+				</div><!-- /row -->
+			</div><!-- /.container -->
+		</div><!-- /#sub-floor -->
+	</div><!-- /#footer -->
+	        <script type="text/javascript">
+        // <![CDATA[
+        var disqus_shortname = 'takipiblog';
+        (function () {
+            var nodes = document.getElementsByTagName('span');
+            for (var i = 0, url; i < nodes.length; i++) {
+                if (nodes[i].className.indexOf('dsq-postid') != -1) {
+                    nodes[i].parentNode.setAttribute('data-disqus-identifier', nodes[i].getAttribute('data-dsqidentifier'));
+                    url = nodes[i].parentNode.href.split('#', 1);
+                    if (url.length == 1) { url = url[0]; }
+                    else { url = url[1]; }
+                    nodes[i].parentNode.href = url + '#disqus_thread';
+                }
+            }
+            var s = document.createElement('script'); 
+            s.async = true;
+            s.type = 'text/javascript';
+            s.src = '//' + disqus_shortname + '.disqus.com/count.js';
+            (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+        }());
+        // ]]>
+        </script>
+        <script type="text/javascript">
+jQuery(document).ready(function(){
+  var q2w3_sidebar_1_options = { "sidebar" : "sidebar-0", "margin_top" : 0, "margin_bottom" : 0, "screen_max_width" : 1280, "width_inherit" : false, "widgets" : ['text-17','text-15'] };
+  q2w3_sidebar(q2w3_sidebar_1_options);
+  setInterval(function () { q2w3_sidebar(q2w3_sidebar_1_options); }, 1500);
+});
+</script>
+<script type="text/javascript" src="./Thread Magic Tricks  5 Things You Never Knew You Can Do with Java Threads   Takipi Blog_files/shCore.js"></script>
+<script type="text/javascript" src="./Thread Magic Tricks  5 Things You Never Knew You Can Do with Java Threads   Takipi Blog_files/shBrushJava.js"></script>
+<script type="text/javascript">//<![CDATA[
+SyntaxHighlighter.all();
+//]]></script>
+<script type="text/javascript" src="./Thread Magic Tricks  5 Things You Never Knew You Can Do with Java Threads   Takipi Blog_files/comment-reply.min.js"></script>
+<script type="text/javascript" src="./Thread Magic Tricks  5 Things You Never Knew You Can Do with Java Threads   Takipi Blog_files/jquery.fancybox-1.3.7.min.js"></script>
+<script type="text/javascript" src="./Thread Magic Tricks  5 Things You Never Knew You Can Do with Java Threads   Takipi Blog_files/jquery.easing.pack.js"></script>
+<script type="text/javascript" src="./Thread Magic Tricks  5 Things You Never Knew You Can Do with Java Threads   Takipi Blog_files/jquery.mousewheel.min.js"></script>
+
+<script type="text/javascript">
+jQuery(document).on('ready post-load', easy_fancybox_handler );
+</script>
+<!-- Adroll start -->
+<script type="text/javascript">
+adroll_adv_id = "RTHTY4IRUVAN5CPZ5YUQ46";
+adroll_pix_id = "UW2XQSYWXVA4VHGMKZD5WU";
+
+</script>
+<!-- Adroll end -->
+<div id="fb-root" class=" fb_reset"><script async="" src="./Thread Magic Tricks  5 Things You Never Knew You Can Do with Java Threads   Takipi Blog_files/all.js"></script><div style="position: absolute; top: -10000px; height: 0px; width: 0px;"><div></div></div><div style="position: absolute; top: -10000px; height: 0px; width: 0px;"><div><iframe name="fb_xdm_frame_http" frameborder="0" allowtransparency="true" scrolling="no" id="fb_xdm_frame_http" aria-hidden="true" title="Facebook Cross Domain Communication Frame" tabindex="-1" src="./Thread Magic Tricks  5 Things You Never Knew You Can Do with Java Threads   Takipi Blog_files/DU1Ia251o0y.html" style="border: none;"></iframe><iframe name="fb_xdm_frame_https" frameborder="0" allowtransparency="true" scrolling="no" id="fb_xdm_frame_https" aria-hidden="true" title="Facebook Cross Domain Communication Frame" tabindex="-1" src="./Thread Magic Tricks  5 Things You Never Knew You Can Do with Java Threads   Takipi Blog_files/DU1Ia251o0y(1).html" style="border: none;"></iframe></div></div></div>
+<script>(function() {
+  var _fbq = window._fbq || (window._fbq = []);
+  if (!_fbq.loaded) {
+    var fbds = document.createElement('script');
+    fbds.async = true;
+    fbds.src = '//connect.facebook.net/en_US/fbds.js';
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(fbds, s);
+    _fbq.loaded = true;
+  }
+  _fbq.push(['addPixelId', '673213612744179']);
+})();
+window._fbq = window._fbq || [];
+window._fbq.push(['track', 'PixelInitialized', {}]);
+</script>
+<noscript>&lt;img height="1" width="1" alt="" style="display:none" src="https://www.facebook.com/tr?id=673213612744179&amp;amp;ev=PixelInitialized" /&gt;</noscript>
+<script type="text/javascript">
+/* <![CDATA[ */
+var google_conversion_id = 950123329;
+var google_custom_params = window.google_tag_params;
+var google_remarketing_only = true;
+/* ]]> */
+</script>
+<script type="text/javascript" src="./Thread Magic Tricks  5 Things You Never Knew You Can Do with Java Threads   Takipi Blog_files/conversion.js">
+</script><iframe name="google_conversion_frame" title="Google conversion frame" width="300" height="13" src="./Thread Magic Tricks  5 Things You Never Knew You Can Do with Java Threads   Takipi Blog_files/saved_resource(2).html" frameborder="0" marginwidth="0" marginheight="0" vspace="0" hspace="0" allowtransparency="true" scrolling="no">&lt;img height="1" width="1" border="0" alt="" src="http://googleads.g.doubleclick.net/pagead/viewthroughconversion/950123329/?frame=0&amp;random=1424158687714&amp;cv=7&amp;fst=1424158687714&amp;num=1&amp;fmt=1&amp;guid=ON&amp;u_h=900&amp;u_w=1440&amp;u_ah=808&amp;u_aw=1440&amp;u_cd=24&amp;u_his=4&amp;u_tz=180&amp;u_java=true&amp;u_nplug=11&amp;u_nmime=62&amp;frm=0&amp;url=http%3A//blog.takipi.com/java-thread-magic-tricks/&amp;ref=http%3A//plus.url.google.com/url%3Fsa%3Dz%26n%3D1424158685182%26url%3Dhttp%253A%252F%252Fblog.takipi.com%252Fjava-thread-magic-tricks%252F%26usg%3DKxAjdTsCnnmDf3A1Bb1Q7qAXuzY.&amp;vis=2" /&gt;</iframe>
+<noscript>
+&lt;div style="display:inline;"&gt;
+&lt;img height="1" width="1" style="border-style:none;" alt="" src="//googleads.g.doubleclick.net/pagead/viewthroughconversion/950123329/?value=0&amp;amp;guid=ON&amp;amp;script=0"/&gt;
+&lt;/div&gt;
+</noscript>
+
+<div id="fancybox-tmp"></div><div id="fancybox-loading"><div></div></div><div id="fancybox-overlay"></div><div id="fancybox-wrap"><div id="fancybox-outer"><div class="fancybox-bg" id="fancybox-bg-n"></div><div class="fancybox-bg" id="fancybox-bg-ne"></div><div class="fancybox-bg" id="fancybox-bg-e"></div><div class="fancybox-bg" id="fancybox-bg-se"></div><div class="fancybox-bg" id="fancybox-bg-s"></div><div class="fancybox-bg" id="fancybox-bg-sw"></div><div class="fancybox-bg" id="fancybox-bg-w"></div><div class="fancybox-bg" id="fancybox-bg-nw"></div><div id="fancybox-content"></div><a id="fancybox-close"></a><div id="fancybox-title"></div><a href="javascript:;" id="fancybox-left"><span class="fancy-ico" id="fancybox-left-ico"></span></a><a href="javascript:;" id="fancybox-right"><span class="fancy-ico" id="fancybox-right-ico"></span></a></div></div><div id="nks-overlay-wrapper"><div id="nks-overlay"></div></div><script type="text/javascript" src="./Thread Magic Tricks  5 Things You Never Knew You Can Do with Java Threads   Takipi Blog_files/plusone.js" async="">{lang: 'en-US'}</script><script src="./Thread Magic Tricks  5 Things You Never Knew You Can Do with Java Threads   Takipi Blog_files/in.js" type="text/javascript" async=""></script><script src="./Thread Magic Tricks  5 Things You Never Knew You Can Do with Java Threads   Takipi Blog_files/widgets.js" type="text/javascript" async="" gapi_processed="true"></script><iframe name="oauth2relay734981548" id="oauth2relay734981548" src="./Thread Magic Tricks  5 Things You Never Knew You Can Do with Java Threads   Takipi Blog_files/postmessageRelay.html" tabindex="-1" style="width: 1px; height: 1px; position: absolute; top: -100px;"></iframe></body></html>

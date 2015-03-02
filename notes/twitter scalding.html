@@ -1,0 +1,1857 @@
+<!DOCTYPE html>
+<!-- saved from url=(0035)https://github.com/twitter/scalding -->
+<html lang="en" class=""><head prefix="og: http://ogp.me/ns# fb: http://ogp.me/ns/fb# object: http://ogp.me/ns/object# article: http://ogp.me/ns/article# profile: http://ogp.me/ns/profile#"><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="Content-Language" content="en">
+    
+    
+    <title>twitter/scalding</title>
+    <link rel="search" type="application/opensearchdescription+xml" href="https://github.com/opensearch.xml" title="GitHub">
+    <link rel="fluid-icon" href="https://github.com/fluidicon.png" title="GitHub">
+    <link rel="apple-touch-icon" sizes="57x57" href="https://github.com/apple-touch-icon-114.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="https://github.com/apple-touch-icon-114.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="https://github.com/apple-touch-icon-144.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="https://github.com/apple-touch-icon-144.png">
+    <meta property="fb:app_id" content="1401488693436528">
+
+      <meta content="@github" name="twitter:site"><meta content="summary" name="twitter:card"><meta content="twitter/scalding" name="twitter:title"><meta content="scalding - A Scala API for Cascading" name="twitter:description"><meta content="https://avatars3.githubusercontent.com/u/50278?v=3&amp;s=400" name="twitter:image:src">
+      <meta content="GitHub" property="og:site_name"><meta content="object" property="og:type"><meta content="https://avatars3.githubusercontent.com/u/50278?v=3&amp;s=400" property="og:image"><meta content="twitter/scalding" property="og:title"><meta content="https://github.com/twitter/scalding" property="og:url"><meta content="scalding - A Scala API for Cascading" property="og:description">
+      <meta name="browser-stats-url" content="/_stats">
+    <link rel="assets" href="https://assets-cdn.github.com/">
+    <link rel="conduit-xhr" href="https://ghconduit.com:25035/">
+    <link rel="xhr-socket" href="https://github.com/_sockets">
+    <meta name="pjax-timeout" content="1000">
+    <link rel="sudo-modal" href="https://github.com/sessions/sudo_modal">
+
+    <meta name="msapplication-TileImage" content="/windows-tile.png">
+    <meta name="msapplication-TileColor" content="#ffffff">
+    <meta name="selected-link" value="repo_source" data-pjax-transient="">
+      <meta name="google-analytics" content="UA-3769691-2">
+
+    <meta content="collector.githubapp.com" name="octolytics-host"><meta content="collector-cdn.github.com" name="octolytics-script-host"><meta content="github" name="octolytics-app-id"><meta content="5F6CAE02:12A9:ACD0C61:54E5D29E" name="octolytics-dimension-request_id"><meta content="399699" name="octolytics-actor-id"><meta content="xni" name="octolytics-actor-login"><meta content="2f2b3e38050c2957803f1443b9b871c65f63c8a2a71f604c2906c3324d8862c8" name="octolytics-actor-hash">
+    
+    <meta content="Rails, view, files#disambiguate" name="analytics-event">
+
+    
+    
+    <link rel="icon" type="image/x-icon" href="https://assets-cdn.github.com/favicon.ico">
+
+
+    <meta content="authenticity_token" name="csrf-param">
+<meta content="vcUDYhhIdb9HLVIQqzVInWdgaDASnQFCMyLE28mkA63gtm+xCti4Mm2AsYSS9agv/f3xcxlDKdN7BA6SBlnGLA==" name="csrf-token">
+
+    <link href="https://assets-cdn.github.com/assets/github-1e2da182a77f4ea3d44c94f8ddb89b9a2acca6d8e940459b40b17952b7af7ce4.css" media="all" rel="stylesheet">
+    <link href="https://assets-cdn.github.com/assets/github2-a34ea5f36919335b720f812ba66ac87065665d8d6d759d6f237e7129ba34edb6.css" media="all" rel="stylesheet">
+    
+    
+
+
+    <meta http-equiv="x-pjax-version" content="18345e0eb33b78ec7651e0c3d7721072">
+
+      
+  <meta name="description" content="scalding - A Scala API for Cascading">
+  <meta name="go-import" content="github.com/twitter/scalding git https://github.com/twitter/scalding.git">
+
+  <meta content="50278" name="octolytics-dimension-user_id"><meta content="twitter" name="octolytics-dimension-user_login"><meta content="3146558" name="octolytics-dimension-repository_id"><meta content="twitter/scalding" name="octolytics-dimension-repository_nwo"><meta content="true" name="octolytics-dimension-repository_public"><meta content="false" name="octolytics-dimension-repository_is_fork"><meta content="3146558" name="octolytics-dimension-repository_network_root_id"><meta content="twitter/scalding" name="octolytics-dimension-repository_network_root_nwo">
+  <link href="https://github.com/twitter/scalding/commits/develop.atom" rel="alternate" title="Recent Commits to scalding:develop" type="application/atom+xml">
+
+  <script type="text/javascript" src="chrome-extension://phfplpepeojlgfgdfgfgfnmgakolcgoa/js/injected.js"></script><script type="text/javascript" async="" src="./twitter scalding_files/api.js"></script><style></style></head>
+
+
+  <body class="logged_in  env-production macintosh vis-public">
+    <a href="https://github.com/twitter/scalding#start-of-content" tabindex="1" class="accessibility-aid js-skip-to-content">Skip to content</a>
+    <div class="wrapper">
+      
+      
+      
+      
+
+
+      <div class="header header-logged-in true" role="banner">
+  <div class="container clearfix">
+
+    <a class="header-logo-invertocat" href="https://github.com/" data-hotkey="g d" aria-label="Homepage" data-ga-click="Header, go to dashboard, icon:logo">
+  <span class="mega-octicon octicon-mark-github"></span>
+</a>
+
+
+      <div class="site-search repo-scope js-site-search" role="search">
+          <form accept-charset="UTF-8" action="https://github.com/twitter/scalding/search" class="js-site-search-form" data-global-search-url="/search" data-repo-search-url="/twitter/scalding/search" method="get"><div style="margin:0;padding:0;display:inline"><input name="utf8" type="hidden" value="✓"></div>
+  <input type="text" class="js-site-search-field is-clearable" data-hotkey="s" name="q" placeholder="Search" data-global-scope-placeholder="Search GitHub" data-repo-scope-placeholder="Search" tabindex="1" autocapitalize="off">
+  <div class="scope-badge">This repository</div>
+</form>
+      </div>
+      <ul class="header-nav left" role="navigation">
+        <li class="header-nav-item explore">
+          <a class="header-nav-link" href="https://github.com/explore" data-ga-click="Header, go to explore, text:explore">Explore</a>
+        </li>
+          <li class="header-nav-item">
+            <a class="header-nav-link" href="https://gist.github.com/" data-ga-click="Header, go to gist, text:gist">Gist</a>
+          </li>
+          <li class="header-nav-item">
+            <a class="header-nav-link" href="https://github.com/blog" data-ga-click="Header, go to blog, text:blog">Blog</a>
+          </li>
+        <li class="header-nav-item">
+          <a class="header-nav-link" href="https://help.github.com/" data-ga-click="Header, go to help, text:help">Help</a>
+        </li>
+      </ul>
+
+    
+<ul class="header-nav user-nav right" id="user-links">
+  <li class="header-nav-item dropdown js-menu-container">
+    <a class="header-nav-link name" href="https://github.com/xni" data-ga-click="Header, go to profile, text:username">
+      <img alt="Konstantin" class="avatar" data-user="399699" height="20" src="./twitter scalding_files/399699" width="20">
+      <span class="css-truncate">
+        <span class="css-truncate-target">xni</span>
+      </span>
+    </a>
+  </li>
+
+  <li class="header-nav-item dropdown js-menu-container">
+    <a class="header-nav-link js-menu-target tooltipped tooltipped-s" href="https://github.com/twitter/scalding#" aria-label="Create new..." data-ga-click="Header, create new, icon:add">
+      <span class="octicon octicon-plus"></span>
+      <span class="dropdown-caret"></span>
+    </a>
+
+    <div class="dropdown-menu-content js-menu-content">
+      
+<ul class="dropdown-menu">
+  <li>
+    <a href="https://github.com/new" data-ga-click="Header, create new repository, icon:repo"><span class="octicon octicon-repo"></span> New repository</a>
+  </li>
+  <li>
+    <a href="https://github.com/organizations/new" data-ga-click="Header, create new organization, icon:organization"><span class="octicon octicon-organization"></span> New organization</a>
+  </li>
+
+
+    <li class="dropdown-divider"></li>
+    <li class="dropdown-header">
+      <span title="twitter/scalding">This repository</span>
+    </li>
+      <li>
+        <a href="https://github.com/twitter/scalding/issues/new" data-ga-click="Header, create new issue, icon:issue"><span class="octicon octicon-issue-opened"></span> New issue</a>
+      </li>
+</ul>
+
+    </div>
+  </li>
+
+  <li class="header-nav-item">
+        <a href="https://github.com/notifications" aria-label="You have no unread notifications" class="header-nav-link notification-indicator tooltipped tooltipped-s" data-ga-click="Header, go to notifications, icon:read" data-hotkey="g n">
+        <span class="mail-status all-read"></span>
+        <span class="octicon octicon-inbox"></span>
+</a>
+  </li>
+
+  <li class="header-nav-item">
+    <a class="header-nav-link tooltipped tooltipped-s" href="https://github.com/settings/profile" id="account_settings" aria-label="Settings" data-ga-click="Header, go to settings, icon:settings">
+      <span class="octicon octicon-gear"></span>
+    </a>
+  </li>
+
+  <li class="header-nav-item">
+    <form accept-charset="UTF-8" action="https://github.com/logout" class="logout-form" method="post"><div style="margin:0;padding:0;display:inline"><input name="utf8" type="hidden" value="✓"><input name="authenticity_token" type="hidden" value="yGgMYfr/ITEKW4BDxEz7PACAhmSWVLBy4x85Fv87WUCOg9B/+8Vo+zlQ9evhzDhqSE68pd3qiD2Y/kFT/QsabQ=="></div>
+      <button class="header-nav-link sign-out-button tooltipped tooltipped-s" aria-label="Sign out" data-ga-click="Header, sign out, icon:logout">
+        <span class="octicon octicon-sign-out"></span>
+      </button>
+</form>  </li>
+
+</ul>
+
+
+    
+  </div>
+</div>
+
+      
+
+        
+
+
+      <div id="start-of-content" class="accessibility-aid"></div>
+          <div class="site" itemscope="" itemtype="http://schema.org/WebPage">
+    <div id="js-flash-container">
+      
+    </div>
+    <div class="pagehead repohead instapaper_ignore readability-menu">
+      <div class="container">
+        
+<ul class="pagehead-actions">
+
+  <li>
+      <form accept-charset="UTF-8" action="https://github.com/notifications/subscribe" class="js-social-container" data-autosubmit="true" data-remote="true" method="post"><div style="margin:0;padding:0;display:inline"><input name="utf8" type="hidden" value="✓"><input name="authenticity_token" type="hidden" value="wUTGsVjSe+4XyvoBmsMzHPkEKRmVYZvlQZCKuvFPzCC9nKE0sI4yJ6lbIvfaHdRFYWSqO5pRUbG/iYbyXJ5fQA=="></div>    <input id="repository_id" name="repository_id" type="hidden" value="3146558">
+
+      <div class="select-menu js-menu-container js-select-menu">
+        <a class="social-count js-social-count" href="https://github.com/twitter/scalding/watchers">
+          368
+        </a>
+        <a href="https://github.com/twitter/scalding/subscription" class="minibutton select-menu-button with-count js-menu-target" role="button" tabindex="0" aria-haspopup="true">
+          <span class="js-select-button">
+            <span class="octicon octicon-eye"></span>
+            Watch
+          </span>
+        </a>
+
+        <div class="select-menu-modal-holder">
+          <div class="select-menu-modal subscription-menu-modal js-menu-content" aria-hidden="true">
+            <div class="select-menu-header">
+              <span class="select-menu-title">Notifications</span>
+              <span class="octicon octicon-x js-menu-close" role="button" aria-label="Close"></span>
+            </div>
+
+            <div class="select-menu-list js-navigation-container" role="menu">
+
+              <div class="select-menu-item js-navigation-item selected" role="menuitem" tabindex="0">
+                <span class="select-menu-item-icon octicon octicon-check"></span>
+                <div class="select-menu-item-text">
+                  <input checked="checked" id="do_included" name="do" type="radio" value="included">
+                  <span class="select-menu-item-heading">Not watching</span>
+                  <span class="description">Be notified when participating or @mentioned.</span>
+                  <span class="js-select-button-text hidden-select-button-text">
+                    <span class="octicon octicon-eye"></span>
+                    Watch
+                  </span>
+                </div>
+              </div>
+
+              <div class="select-menu-item js-navigation-item " role="menuitem" tabindex="0">
+                <span class="select-menu-item-icon octicon octicon octicon-check"></span>
+                <div class="select-menu-item-text">
+                  <input id="do_subscribed" name="do" type="radio" value="subscribed">
+                  <span class="select-menu-item-heading">Watching</span>
+                  <span class="description">Be notified of all conversations.</span>
+                  <span class="js-select-button-text hidden-select-button-text">
+                    <span class="octicon octicon-eye"></span>
+                    Unwatch
+                  </span>
+                </div>
+              </div>
+
+              <div class="select-menu-item js-navigation-item " role="menuitem" tabindex="0">
+                <span class="select-menu-item-icon octicon octicon-check"></span>
+                <div class="select-menu-item-text">
+                  <input id="do_ignore" name="do" type="radio" value="ignore">
+                  <span class="select-menu-item-heading">Ignoring</span>
+                  <span class="description">Never be notified.</span>
+                  <span class="js-select-button-text hidden-select-button-text">
+                    <span class="octicon octicon-mute"></span>
+                    Stop ignoring
+                  </span>
+                </div>
+              </div>
+
+            </div>
+
+          </div>
+        </div>
+      </div>
+</form>
+
+  </li>
+
+  <li>
+    
+  <div class="js-toggler-container js-social-container starring-container ">
+
+    <form accept-charset="UTF-8" action="https://github.com/twitter/scalding/unstar" class="js-toggler-form starred js-unstar-button" data-remote="true" method="post"><div style="margin:0;padding:0;display:inline"><input name="utf8" type="hidden" value="✓"><input name="authenticity_token" type="hidden" value="qTTV/OGxeUOFU2rhDtyk8A/WbLRzon24QIf1mqE8dVT6BzYTpI5jHn7MHqdNbz7isQfHQ7ecY5Y2tqJAYvgFEA=="></div>
+      <button class="minibutton with-count js-toggler-target" aria-label="Unstar this repository" title="Unstar twitter/scalding">
+        <span class="octicon octicon-star"></span>
+        Unstar
+      </button>
+        <a class="social-count js-social-count" href="https://github.com/twitter/scalding/stargazers">
+          1,953
+        </a>
+</form>
+    <form accept-charset="UTF-8" action="https://github.com/twitter/scalding/star" class="js-toggler-form unstarred js-star-button" data-remote="true" method="post"><div style="margin:0;padding:0;display:inline"><input name="utf8" type="hidden" value="✓"><input name="authenticity_token" type="hidden" value="FI4w0G7Eg/brl/k67qb1+PYGikJYwdqxwrEH+TtZNkoasGE4My2aqyuVLsSPRjXCGazKHBMtBUTi0g5j1qAAUw=="></div>
+      <button class="minibutton with-count js-toggler-target" aria-label="Star this repository" title="Star twitter/scalding">
+        <span class="octicon octicon-star"></span>
+        Star
+      </button>
+        <a class="social-count js-social-count" href="https://github.com/twitter/scalding/stargazers">
+          1,953
+        </a>
+</form>  </div>
+
+  </li>
+
+        <li>
+          <a href="https://github.com/twitter/scalding/fork" class="minibutton with-count js-toggler-target tooltipped-n" title="Fork your own copy of twitter/scalding to your account" aria-label="Fork your own copy of twitter/scalding to your account" rel="nofollow" data-method="post">
+            <span class="octicon octicon-repo-forked"></span>
+            Fork
+          </a>
+          <a href="https://github.com/twitter/scalding/network" class="social-count">434</a>
+        </li>
+
+</ul>
+
+        <h1 itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb" class="entry-title public">
+          <span class="mega-octicon octicon-repo"></span>
+          <span class="author"><a href="https://github.com/twitter" class="url fn" itemprop="url" rel="author"><span itemprop="title">twitter</span></a></span><!--
+       --><span class="path-divider">/</span><!--
+       --><strong><a href="./twitter scalding_files/twitter scalding.html" class="js-current-repository" data-pjax="#js-repo-pjax-container">scalding</a></strong>
+
+          <span class="page-context-loader">
+            <img alt="" height="16" src="./twitter scalding_files/octocat-spinner-32-e513294efa576953719e4e2de888dd9cf929b7d62ed8d05f25e731d02452ab6c.gif" width="16">
+          </span>
+
+        </h1>
+      </div><!-- /.container -->
+    </div><!-- /.repohead -->
+
+    <div class="container">
+      <div class="repository-with-sidebar repo-container new-discussion-timeline with-full-navigation">
+        <div class="repository-sidebar clearfix">
+            
+<nav class="sunken-menu repo-nav js-repo-nav js-sidenav-container-pjax js-octicon-loaders" role="navigation" data-pjax="#js-repo-pjax-container" data-issue-count-url="/twitter/scalding/issues/counts">
+  <ul class="sunken-menu-group">
+    <li class="tooltipped tooltipped-w" aria-label="Code">
+      <a href="./twitter scalding_files/twitter scalding.html" aria-label="Code" class="selected js-selected-navigation-item sunken-menu-item" data-hotkey="g c" data-selected-links="repo_source repo_downloads repo_commits repo_releases repo_tags repo_branches /twitter/scalding">
+        <span class="octicon octicon-code"></span> <span class="full-word">Code</span>
+        <img alt="" class="mini-loader" height="16" src="./twitter scalding_files/octocat-spinner-32-e513294efa576953719e4e2de888dd9cf929b7d62ed8d05f25e731d02452ab6c.gif" width="16">
+</a>    </li>
+
+      <li class="tooltipped tooltipped-w" aria-label="Issues">
+        <a href="https://github.com/twitter/scalding/issues" aria-label="Issues" class="js-selected-navigation-item sunken-menu-item" data-hotkey="g i" data-selected-links="repo_issues repo_labels repo_milestones /twitter/scalding/issues">
+          <span class="octicon octicon-issue-opened"></span> <span class="full-word">Issues</span>
+          <span class="counter">196</span>
+
+          <img alt="" class="mini-loader" height="16" src="./twitter scalding_files/octocat-spinner-32-e513294efa576953719e4e2de888dd9cf929b7d62ed8d05f25e731d02452ab6c.gif" width="16">
+</a>      </li>
+
+    <li class="tooltipped tooltipped-w" aria-label="Pull Requests">
+      <a href="https://github.com/twitter/scalding/pulls" aria-label="Pull Requests" class="js-selected-navigation-item sunken-menu-item" data-hotkey="g p" data-selected-links="repo_pulls /twitter/scalding/pulls">
+          <span class="octicon octicon-git-pull-request"></span> <span class="full-word">Pull Requests</span>
+          <span class="counter">21</span>
+
+          <img alt="" class="mini-loader" height="16" src="./twitter scalding_files/octocat-spinner-32-e513294efa576953719e4e2de888dd9cf929b7d62ed8d05f25e731d02452ab6c.gif" width="16">
+</a>    </li>
+
+
+      <li class="tooltipped tooltipped-w" aria-label="Wiki">
+        <a href="https://github.com/twitter/scalding/wiki" aria-label="Wiki" class="js-selected-navigation-item sunken-menu-item" data-hotkey="g w" data-selected-links="repo_wiki /twitter/scalding/wiki">
+          <span class="octicon octicon-book"></span> <span class="full-word">Wiki</span>
+          <img alt="" class="mini-loader" height="16" src="./twitter scalding_files/octocat-spinner-32-e513294efa576953719e4e2de888dd9cf929b7d62ed8d05f25e731d02452ab6c.gif" width="16">
+</a>      </li>
+  </ul>
+  <div class="sunken-menu-separator"></div>
+  <ul class="sunken-menu-group">
+
+    <li class="tooltipped tooltipped-w" aria-label="Pulse">
+      <a href="https://github.com/twitter/scalding/pulse" aria-label="Pulse" class="js-selected-navigation-item sunken-menu-item" data-selected-links="pulse /twitter/scalding/pulse">
+        <span class="octicon octicon-pulse"></span> <span class="full-word">Pulse</span>
+        <img alt="" class="mini-loader" height="16" src="./twitter scalding_files/octocat-spinner-32-e513294efa576953719e4e2de888dd9cf929b7d62ed8d05f25e731d02452ab6c.gif" width="16">
+</a>    </li>
+
+    <li class="tooltipped tooltipped-w" aria-label="Graphs">
+      <a href="https://github.com/twitter/scalding/graphs" aria-label="Graphs" class="js-selected-navigation-item sunken-menu-item" data-selected-links="repo_graphs repo_contributors /twitter/scalding/graphs">
+        <span class="octicon octicon-graph"></span> <span class="full-word">Graphs</span>
+        <img alt="" class="mini-loader" height="16" src="./twitter scalding_files/octocat-spinner-32-e513294efa576953719e4e2de888dd9cf929b7d62ed8d05f25e731d02452ab6c.gif" width="16">
+</a>    </li>
+  </ul>
+
+
+</nav>
+
+              <div class="only-with-full-nav">
+                  
+<div class="clone-url " data-protocol-type="http" data-url="/users/set_protocol?protocol_selector=http&amp;protocol_type=clone">
+  <h3><span class="text-emphasized">HTTPS</span> clone URL</h3>
+  <div class="input-group js-zeroclipboard-container">
+    <input type="text" class="input-mini input-monospace js-url-field js-zeroclipboard-target" value="https://github.com/twitter/scalding.git" readonly="readonly">
+    <span class="input-group-button">
+      
+    </span>
+  </div>
+</div>
+
+  
+<div class="clone-url open" data-protocol-type="ssh" data-url="/users/set_protocol?protocol_selector=ssh&amp;protocol_type=clone">
+  <h3><span class="text-emphasized">SSH</span> clone URL</h3>
+  <div class="input-group js-zeroclipboard-container">
+    <input type="text" class="input-mini input-monospace js-url-field js-zeroclipboard-target" value="git@github.com:twitter/scalding.git" readonly="readonly">
+    <span class="input-group-button">
+      
+    </span>
+  </div>
+</div>
+
+  
+<div class="clone-url " data-protocol-type="subversion" data-url="/users/set_protocol?protocol_selector=subversion&amp;protocol_type=clone">
+  <h3><span class="text-emphasized">Subversion</span> checkout URL</h3>
+  <div class="input-group js-zeroclipboard-container">
+    <input type="text" class="input-mini input-monospace js-url-field js-zeroclipboard-target" value="https://github.com/twitter/scalding" readonly="readonly">
+    <span class="input-group-button">
+      
+    </span>
+  </div>
+</div>
+
+
+
+<p class="clone-options">You can clone with
+  <a href="https://github.com/twitter/scalding#" class="js-clone-selector" data-protocol="http">HTTPS</a>, <a href="https://github.com/twitter/scalding#" class="js-clone-selector" data-protocol="ssh">SSH</a>, or <a href="https://github.com/twitter/scalding#" class="js-clone-selector" data-protocol="subversion">Subversion</a>.
+  <a href="https://help.github.com/articles/which-remote-url-should-i-use" class="help tooltipped tooltipped-n" aria-label="Get help on which URL is right for you.">
+    <span class="octicon octicon-question"></span>
+  </a>
+</p>
+
+  <a href="http://mac.github.com/" data-url="github-mac://openRepo/https://github.com/twitter/scalding" class="minibutton sidebar-button js-conduit-rewrite-url" title="Save twitter/scalding to your computer and use it in GitHub Desktop." aria-label="Save twitter/scalding to your computer and use it in GitHub Desktop.">
+    <span class="octicon octicon-device-desktop"></span>
+    Clone in Desktop
+  </a>
+
+
+                <a href="https://github.com/twitter/scalding/archive/develop.zip" class="minibutton sidebar-button" aria-label="Download the contents of twitter/scalding as a zip file" title="Download the contents of twitter/scalding as a zip file" rel="nofollow">
+                  <span class="octicon octicon-cloud-download"></span>
+                  Download ZIP
+                </a>
+              </div>
+        </div><!-- /.repository-sidebar -->
+
+        <div id="js-repo-pjax-container" class="repository-content context-loader-container" data-pjax-container="">
+          
+<span id="js-show-full-navigation"></span>
+
+<div class="repository-meta js-details-container ">
+    <div class="repository-description">
+      A Scala API for Cascading
+    </div>
+
+    <div class="repository-website">
+      <p><a href="http://twitter.com/scalding" rel="nofollow">http://twitter.com/scalding</a></p>
+    </div>
+
+
+</div>
+
+<div class="overall-summary overall-summary-bottomless">
+
+  <div class="stats-switcher-viewport js-stats-switcher-viewport">
+    <div class="stats-switcher-wrapper">
+    <ul class="numbers-summary">
+      <li class="commits">
+        <a data-pjax="" href="https://github.com/twitter/scalding/commits/develop">
+            <span class="octicon octicon-history"></span>
+            <span class="num text-emphasized">
+              2,730
+            </span>
+            commits
+        </a>
+      </li>
+      <li>
+        <a data-pjax="" href="https://github.com/twitter/scalding/branches">
+          <span class="octicon octicon-git-branch"></span>
+          <span class="num text-emphasized">
+            48
+          </span>
+          branches
+        </a>
+      </li>
+
+      <li>
+        <a data-pjax="" href="https://github.com/twitter/scalding/releases">
+          <span class="octicon octicon-tag"></span>
+          <span class="num text-emphasized">
+            44
+          </span>
+          releases
+        </a>
+      </li>
+
+      <li>
+        
+  <a href="https://github.com/twitter/scalding/graphs/contributors">
+    <span class="octicon octicon-organization"></span>
+    <span class="num text-emphasized">
+      101
+    </span>
+    contributors
+  </a>
+      </li>
+    </ul>
+
+      <div class="repository-lang-stats">
+        <ol class="repository-lang-stats-numbers">
+          <li>
+              <a href="https://github.com/twitter/scalding/search?l=scala">
+                <span class="color-block language-color" style="background-color:#7dd3b0;"></span>
+                <span class="lang">Scala</span>
+                <span class="percent">92.0%</span>
+              </a>
+          </li>
+          <li>
+              <a href="https://github.com/twitter/scalding/search?l=ruby">
+                <span class="color-block language-color" style="background-color:#701516;"></span>
+                <span class="lang">Ruby</span>
+                <span class="percent">3.6%</span>
+              </a>
+          </li>
+          <li>
+              <a href="https://github.com/twitter/scalding/search?l=java">
+                <span class="color-block language-color" style="background-color:#b07219;"></span>
+                <span class="lang">Java</span>
+                <span class="percent">3.0%</span>
+              </a>
+          </li>
+          <li>
+              <a href="https://github.com/twitter/scalding/search?l=bash">
+                <span class="color-block language-color" style="background-color:#89e051;"></span>
+                <span class="lang">Shell</span>
+                <span class="percent">1.4%</span>
+              </a>
+          </li>
+        </ol>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+  <div class="tooltipped tooltipped-s" aria-label="Show language statistics">
+    <a href="https://github.com/twitter/scalding#" class="repository-lang-stats-graph js-toggle-lang-stats" style="background-color:#89e051">
+  <span class="language-color" style="width:92.0%; background-color:#7dd3b0;" itemprop="keywords">Scala</span><span class="language-color" style="width:3.6%; background-color:#701516;" itemprop="keywords">Ruby</span><span class="language-color" style="width:3.0%; background-color:#b07219;" itemprop="keywords">Java</span><span class="language-color" style="width:1.4%; background-color:#89e051;" itemprop="keywords">Shell</span>
+    </a>
+  </div>
+
+
+
+<div class="file-navigation in-mid-page">
+  <a href="https://github.com/twitter/scalding/find/develop" class="js-show-file-finder minibutton empty-icon tooltipped tooltipped-s right" data-pjax="" data-hotkey="t" aria-label="Quickly jump between files">
+    <span class="octicon octicon-list-unordered"></span>
+  </a>
+    <a href="https://github.com/twitter/scalding/compare" aria-label="Compare, review, create a pull request" class="minibutton primary tooltipped tooltipped-s left compare-button" data-pjax="" data-ga-click="Repository, go to compare view, location:repo overview; icon:git-compare">
+      <span class="octicon octicon-git-compare"></span>
+    </a>
+
+  
+<div class="select-menu js-menu-container js-select-menu left">
+  <span class="minibutton select-menu-button js-menu-target css-truncate" data-hotkey="w" data-master-branch="develop" data-ref="develop" title="develop" role="button" aria-label="Switch branches or tags" tabindex="0" aria-haspopup="true">
+    <span class="octicon octicon-git-branch"></span>
+    <i>branch:</i>
+    <span class="js-select-button css-truncate-target">develop</span>
+  </span>
+
+  <div class="select-menu-modal-holder js-menu-content js-navigation-container" data-pjax="" aria-hidden="true">
+
+    <div class="select-menu-modal">
+      <div class="select-menu-header">
+        <span class="select-menu-title">Switch branches/tags</span>
+        <span class="octicon octicon-x js-menu-close" role="button" aria-label="Close"></span>
+      </div>
+
+      <div class="select-menu-filters">
+        <div class="select-menu-text-filter">
+          <input type="text" aria-label="Filter branches/tags" id="context-commitish-filter-field" class="js-filterable-field js-navigation-enable" placeholder="Filter branches/tags">
+        </div>
+        <div class="select-menu-tabs">
+          <ul>
+            <li class="select-menu-tab">
+              <a href="https://github.com/twitter/scalding#" data-tab-filter="branches" data-filter-placeholder="Filter branches/tags" class="js-select-menu-tab">Branches</a>
+            </li>
+            <li class="select-menu-tab">
+              <a href="https://github.com/twitter/scalding#" data-tab-filter="tags" data-filter-placeholder="Find a tag…" class="js-select-menu-tab">Tags</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="select-menu-list select-menu-tab-bucket js-select-menu-tab-bucket" data-tab-filter="branches">
+
+        <div data-filterable-for="context-commitish-filter-field" data-filterable-type="substring">
+
+
+            <a class="select-menu-item js-navigation-item js-navigation-open " href="https://github.com/twitter/scalding/tree/0.11.3rc1" data-name="0.11.3rc1" data-skip-pjax="true" rel="nofollow">
+              <span class="select-menu-item-icon octicon octicon-check"></span>
+              <span class="select-menu-item-text css-truncate-target" title="0.11.3rc1">
+                0.11.3rc1
+              </span>
+            </a>
+            <a class="select-menu-item js-navigation-item js-navigation-open " href="https://github.com/twitter/scalding/tree/addMoreMacroGeneratedBufferables" data-name="addMoreMacroGeneratedBufferables" data-skip-pjax="true" rel="nofollow">
+              <span class="select-menu-item-icon octicon octicon-check"></span>
+              <span class="select-menu-item-text css-truncate-target" title="addMoreMacroGeneratedBufferables">
+                addMoreMacroGeneratedBufferables
+              </span>
+            </a>
+            <a class="select-menu-item js-navigation-item js-navigation-open " href="https://github.com/twitter/scalding/tree/b890b805" data-name="b890b805" data-skip-pjax="true" rel="nofollow">
+              <span class="select-menu-item-icon octicon octicon-check"></span>
+              <span class="select-menu-item-text css-truncate-target" title="b890b805">
+                b890b805
+              </span>
+            </a>
+            <a class="select-menu-item js-navigation-item js-navigation-open " href="https://github.com/twitter/scalding/tree/be_lazy_on_iterable_pipes" data-name="be_lazy_on_iterable_pipes" data-skip-pjax="true" rel="nofollow">
+              <span class="select-menu-item-icon octicon octicon-check"></span>
+              <span class="select-menu-item-text css-truncate-target" title="be_lazy_on_iterable_pipes">
+                be_lazy_on_iterable_pipes
+              </span>
+            </a>
+            <a class="select-menu-item js-navigation-item js-navigation-open " href="https://github.com/twitter/scalding/tree/better-richpipe-reducer-msg" data-name="better-richpipe-reducer-msg" data-skip-pjax="true" rel="nofollow">
+              <span class="select-menu-item-icon octicon octicon-check"></span>
+              <span class="select-menu-item-text css-truncate-target" title="better-richpipe-reducer-msg">
+                better-richpipe-reducer-msg
+              </span>
+            </a>
+            <a class="select-menu-item js-navigation-item js-navigation-open " href="https://github.com/twitter/scalding/tree/bholt/autolocal" data-name="bholt/autolocal" data-skip-pjax="true" rel="nofollow">
+              <span class="select-menu-item-icon octicon octicon-check"></span>
+              <span class="select-menu-item-text css-truncate-target" title="bholt/autolocal">
+                bholt/autolocal
+              </span>
+            </a>
+            <a class="select-menu-item js-navigation-item js-navigation-open " href="https://github.com/twitter/scalding/tree/bholt/estimator-test-wider-margin" data-name="bholt/estimator-test-wider-margin" data-skip-pjax="true" rel="nofollow">
+              <span class="select-menu-item-icon octicon octicon-check"></span>
+              <span class="select-menu-item-text css-truncate-target" title="bholt/estimator-test-wider-margin">
+                bholt/estimator-test-wider-margin
+              </span>
+            </a>
+            <a class="select-menu-item js-navigation-item js-navigation-open " href="https://github.com/twitter/scalding/tree/bholt/explicit-reducers" data-name="bholt/explicit-reducers" data-skip-pjax="true" rel="nofollow">
+              <span class="select-menu-item-icon octicon octicon-check"></span>
+              <span class="select-menu-item-text css-truncate-target" title="bholt/explicit-reducers">
+                bholt/explicit-reducers
+              </span>
+            </a>
+            <a class="select-menu-item js-navigation-item js-navigation-open " href="https://github.com/twitter/scalding/tree/bholt/fix-hdfs-local" data-name="bholt/fix-hdfs-local" data-skip-pjax="true" rel="nofollow">
+              <span class="select-menu-item-icon octicon octicon-check"></span>
+              <span class="select-menu-item-text css-truncate-target" title="bholt/fix-hdfs-local">
+                bholt/fix-hdfs-local
+              </span>
+            </a>
+            <a class="select-menu-item js-navigation-item js-navigation-open " href="https://github.com/twitter/scalding/tree/branch/0.9.0" data-name="branch/0.9.0" data-skip-pjax="true" rel="nofollow">
+              <span class="select-menu-item-icon octicon octicon-check"></span>
+              <span class="select-menu-item-text css-truncate-target" title="branch/0.9.0">
+                branch/0.9.0
+              </span>
+            </a>
+            <a class="select-menu-item js-navigation-item js-navigation-open " href="https://github.com/twitter/scalding/tree/cdh4" data-name="cdh4" data-skip-pjax="true" rel="nofollow">
+              <span class="select-menu-item-icon octicon octicon-check"></span>
+              <span class="select-menu-item-text css-truncate-target" title="cdh4">
+                cdh4
+              </span>
+            </a>
+            <a class="select-menu-item js-navigation-item js-navigation-open " href="https://github.com/twitter/scalding/tree/config-appjar-support" data-name="config-appjar-support" data-skip-pjax="true" rel="nofollow">
+              <span class="select-menu-item-icon octicon octicon-check"></span>
+              <span class="select-menu-item-text css-truncate-target" title="config-appjar-support">
+                config-appjar-support
+              </span>
+            </a>
+            <a class="select-menu-item js-navigation-item js-navigation-open " href="https://github.com/twitter/scalding/tree/dcl/exec_fun" data-name="dcl/exec_fun" data-skip-pjax="true" rel="nofollow">
+              <span class="select-menu-item-icon octicon octicon-check"></span>
+              <span class="select-menu-item-text css-truncate-target" title="dcl/exec_fun">
+                dcl/exec_fun
+              </span>
+            </a>
+            <a class="select-menu-item js-navigation-item js-navigation-open " href="https://github.com/twitter/scalding/tree/dcl/exec_listener" data-name="dcl/exec_listener" data-skip-pjax="true" rel="nofollow">
+              <span class="select-menu-item-icon octicon octicon-check"></span>
+              <span class="select-menu-item-text css-truncate-target" title="dcl/exec_listener">
+                dcl/exec_listener
+              </span>
+            </a>
+            <a class="select-menu-item js-navigation-item js-navigation-open " href="https://github.com/twitter/scalding/tree/dependent-mode" data-name="dependent-mode" data-skip-pjax="true" rel="nofollow">
+              <span class="select-menu-item-icon octicon octicon-check"></span>
+              <span class="select-menu-item-text css-truncate-target" title="dependent-mode">
+                dependent-mode
+              </span>
+            </a>
+            <a class="select-menu-item js-navigation-item js-navigation-open selected" href="https://github.com/twitter/scalding/tree/develop" data-name="develop" data-skip-pjax="true" rel="nofollow">
+              <span class="select-menu-item-icon octicon octicon-check"></span>
+              <span class="select-menu-item-text css-truncate-target" title="develop">
+                develop
+              </span>
+            </a>
+            <a class="select-menu-item js-navigation-item js-navigation-open " href="https://github.com/twitter/scalding/tree/execution-fix-merge" data-name="execution-fix-merge" data-skip-pjax="true" rel="nofollow">
+              <span class="select-menu-item-icon octicon octicon-check"></span>
+              <span class="select-menu-item-text css-truncate-target" title="execution-fix-merge">
+                execution-fix-merge
+              </span>
+            </a>
+            <a class="select-menu-item js-navigation-item js-navigation-open " href="https://github.com/twitter/scalding/tree/execution_monad" data-name="execution_monad" data-skip-pjax="true" rel="nofollow">
+              <span class="select-menu-item-icon octicon octicon-check"></span>
+              <span class="select-menu-item-text css-truncate-target" title="execution_monad">
+                execution_monad
+              </span>
+            </a>
+            <a class="select-menu-item js-navigation-item js-navigation-open " href="https://github.com/twitter/scalding/tree/fast-binary-sort" data-name="fast-binary-sort" data-skip-pjax="true" rel="nofollow">
+              <span class="select-menu-item-icon octicon octicon-check"></span>
+              <span class="select-menu-item-text css-truncate-target" title="fast-binary-sort">
+                fast-binary-sort
+              </span>
+            </a>
+            <a class="select-menu-item js-navigation-item js-navigation-open " href="https://github.com/twitter/scalding/tree/gh-pages" data-name="gh-pages" data-skip-pjax="true" rel="nofollow">
+              <span class="select-menu-item-icon octicon octicon-check"></span>
+              <span class="select-menu-item-text css-truncate-target" title="gh-pages">
+                gh-pages
+              </span>
+            </a>
+            <a class="select-menu-item js-navigation-item js-navigation-open " href="https://github.com/twitter/scalding/tree/ianoc/cascadingTokens" data-name="ianoc/cascadingTokens" data-skip-pjax="true" rel="nofollow">
+              <span class="select-menu-item-icon octicon octicon-check"></span>
+              <span class="select-menu-item-text css-truncate-target" title="ianoc/cascadingTokens">
+                ianoc/cascadingTokens
+              </span>
+            </a>
+            <a class="select-menu-item js-navigation-item js-navigation-open " href="https://github.com/twitter/scalding/tree/ianoc/jdbcMacros" data-name="ianoc/jdbcMacros" data-skip-pjax="true" rel="nofollow">
+              <span class="select-menu-item-icon octicon octicon-check"></span>
+              <span class="select-menu-item-text css-truncate-target" title="ianoc/jdbcMacros">
+                ianoc/jdbcMacros
+              </span>
+            </a>
+            <a class="select-menu-item js-navigation-item js-navigation-open " href="https://github.com/twitter/scalding/tree/ianoc/macros2" data-name="ianoc/macros2" data-skip-pjax="true" rel="nofollow">
+              <span class="select-menu-item-icon octicon octicon-check"></span>
+              <span class="select-menu-item-text css-truncate-target" title="ianoc/macros2">
+                ianoc/macros2
+              </span>
+            </a>
+            <a class="select-menu-item js-navigation-item js-navigation-open " href="https://github.com/twitter/scalding/tree/ianoc/scalding_210" data-name="ianoc/scalding_210" data-skip-pjax="true" rel="nofollow">
+              <span class="select-menu-item-icon octicon octicon-check"></span>
+              <span class="select-menu-item-text css-truncate-target" title="ianoc/scalding_210">
+                ianoc/scalding_210
+              </span>
+            </a>
+            <a class="select-menu-item js-navigation-item js-navigation-open " href="https://github.com/twitter/scalding/tree/ianoc/stringBugFix" data-name="ianoc/stringBugFix" data-skip-pjax="true" rel="nofollow">
+              <span class="select-menu-item-icon octicon octicon-check"></span>
+              <span class="select-menu-item-text css-truncate-target" title="ianoc/stringBugFix">
+                ianoc/stringBugFix
+              </span>
+            </a>
+            <a class="select-menu-item js-navigation-item js-navigation-open " href="https://github.com/twitter/scalding/tree/ianoc/trimmed_scalding_210" data-name="ianoc/trimmed_scalding_210" data-skip-pjax="true" rel="nofollow">
+              <span class="select-menu-item-icon octicon octicon-check"></span>
+              <span class="select-menu-item-text css-truncate-target" title="ianoc/trimmed_scalding_210">
+                ianoc/trimmed_scalding_210
+              </span>
+            </a>
+            <a class="select-menu-item js-navigation-item js-navigation-open " href="https://github.com/twitter/scalding/tree/javautilrandom" data-name="javautilrandom" data-skip-pjax="true" rel="nofollow">
+              <span class="select-menu-item-icon octicon octicon-check"></span>
+              <span class="select-menu-item-text css-truncate-target" title="javautilrandom">
+                javautilrandom
+              </span>
+            </a>
+            <a class="select-menu-item js-navigation-item js-navigation-open " href="https://github.com/twitter/scalding/tree/jco/intermediate_tsv_type_loss" data-name="jco/intermediate_tsv_type_loss" data-skip-pjax="true" rel="nofollow">
+              <span class="select-menu-item-icon octicon octicon-check"></span>
+              <span class="select-menu-item-text css-truncate-target" title="jco/intermediate_tsv_type_loss">
+                jco/intermediate_tsv_type_loss
+              </span>
+            </a>
+            <a class="select-menu-item js-navigation-item js-navigation-open " href="https://github.com/twitter/scalding/tree/jco/more_jdbc_source_love" data-name="jco/more_jdbc_source_love" data-skip-pjax="true" rel="nofollow">
+              <span class="select-menu-item-icon octicon octicon-check"></span>
+              <span class="select-menu-item-text css-truncate-target" title="jco/more_jdbc_source_love">
+                jco/more_jdbc_source_love
+              </span>
+            </a>
+            <a class="select-menu-item js-navigation-item js-navigation-open " href="https://github.com/twitter/scalding/tree/jco/scalding_210" data-name="jco/scalding_210" data-skip-pjax="true" rel="nofollow">
+              <span class="select-menu-item-icon octicon octicon-check"></span>
+              <span class="select-menu-item-text css-truncate-target" title="jco/scalding_210">
+                jco/scalding_210
+              </span>
+            </a>
+            <a class="select-menu-item js-navigation-item js-navigation-open " href="https://github.com/twitter/scalding/tree/jco/tuple_setter_more_types_more_fun" data-name="jco/tuple_setter_more_types_more_fun" data-skip-pjax="true" rel="nofollow">
+              <span class="select-menu-item-icon octicon octicon-check"></span>
+              <span class="select-menu-item-text css-truncate-target" title="jco/tuple_setter_more_types_more_fun">
+                jco/tuple_setter_more_types_more_fun
+              </span>
+            </a>
+            <a class="select-menu-item js-navigation-item js-navigation-open " href="https://github.com/twitter/scalding/tree/jdbcMacros2" data-name="jdbcMacros2" data-skip-pjax="true" rel="nofollow">
+              <span class="select-menu-item-icon octicon octicon-check"></span>
+              <span class="select-menu-item-text css-truncate-target" title="jdbcMacros2">
+                jdbcMacros2
+              </span>
+            </a>
+            <a class="select-menu-item js-navigation-item js-navigation-open " href="https://github.com/twitter/scalding/tree/klin_join_test" data-name="klin_join_test" data-skip-pjax="true" rel="nofollow">
+              <span class="select-menu-item-icon octicon octicon-check"></span>
+              <span class="select-menu-item-text css-truncate-target" title="klin_join_test">
+                klin_join_test
+              </span>
+            </a>
+            <a class="select-menu-item js-navigation-item js-navigation-open " href="https://github.com/twitter/scalding/tree/lessrandom" data-name="lessrandom" data-skip-pjax="true" rel="nofollow">
+              <span class="select-menu-item-icon octicon octicon-check"></span>
+              <span class="select-menu-item-text css-truncate-target" title="lessrandom">
+                lessrandom
+              </span>
+            </a>
+            <a class="select-menu-item js-navigation-item js-navigation-open " href="https://github.com/twitter/scalding/tree/makeExampleOnTypedAPI" data-name="makeExampleOnTypedAPI" data-skip-pjax="true" rel="nofollow">
+              <span class="select-menu-item-icon octicon octicon-check"></span>
+              <span class="select-menu-item-text css-truncate-target" title="makeExampleOnTypedAPI">
+                makeExampleOnTypedAPI
+              </span>
+            </a>
+            <a class="select-menu-item js-navigation-item js-navigation-open " href="https://github.com/twitter/scalding/tree/mashraf/scalding_210" data-name="mashraf/scalding_210" data-skip-pjax="true" rel="nofollow">
+              <span class="select-menu-item-icon octicon octicon-check"></span>
+              <span class="select-menu-item-text css-truncate-target" title="mashraf/scalding_210">
+                mashraf/scalding_210
+              </span>
+            </a>
+            <a class="select-menu-item js-navigation-item js-navigation-open " href="https://github.com/twitter/scalding/tree/master" data-name="master" data-skip-pjax="true" rel="nofollow">
+              <span class="select-menu-item-icon octicon octicon-check"></span>
+              <span class="select-menu-item-text css-truncate-target" title="master">
+                master
+              </span>
+            </a>
+            <a class="select-menu-item js-navigation-item js-navigation-open " href="https://github.com/twitter/scalding/tree/ordered-bufferable" data-name="ordered-bufferable" data-skip-pjax="true" rel="nofollow">
+              <span class="select-menu-item-icon octicon octicon-check"></span>
+              <span class="select-menu-item-text css-truncate-target" title="ordered-bufferable">
+                ordered-bufferable
+              </span>
+            </a>
+            <a class="select-menu-item js-navigation-item js-navigation-open " href="https://github.com/twitter/scalding/tree/orderedBufferableScrooge" data-name="orderedBufferableScrooge" data-skip-pjax="true" rel="nofollow">
+              <span class="select-menu-item-icon octicon octicon-check"></span>
+              <span class="select-menu-item-text css-truncate-target" title="orderedBufferableScrooge">
+                orderedBufferableScrooge
+              </span>
+            </a>
+            <a class="select-menu-item js-navigation-item js-navigation-open " href="https://github.com/twitter/scalding/tree/release/0.11.2" data-name="release/0.11.2" data-skip-pjax="true" rel="nofollow">
+              <span class="select-menu-item-icon octicon octicon-check"></span>
+              <span class="select-menu-item-text css-truncate-target" title="release/0.11.2">
+                release/0.11.2
+              </span>
+            </a>
+            <a class="select-menu-item js-navigation-item js-navigation-open " href="https://github.com/twitter/scalding/tree/removeManifestUsage" data-name="removeManifestUsage" data-skip-pjax="true" rel="nofollow">
+              <span class="select-menu-item-icon octicon octicon-check"></span>
+              <span class="select-menu-item-text css-truncate-target" title="removeManifestUsage">
+                removeManifestUsage
+              </span>
+            </a>
+            <a class="select-menu-item js-navigation-item js-navigation-open " href="https://github.com/twitter/scalding/tree/repl-fun" data-name="repl-fun" data-skip-pjax="true" rel="nofollow">
+              <span class="select-menu-item-icon octicon octicon-check"></span>
+              <span class="select-menu-item-text css-truncate-target" title="repl-fun">
+                repl-fun
+              </span>
+            </a>
+            <a class="select-menu-item js-navigation-item js-navigation-open " href="https://github.com/twitter/scalding/tree/sbt_0_13_7" data-name="sbt_0_13_7" data-skip-pjax="true" rel="nofollow">
+              <span class="select-menu-item-icon octicon octicon-check"></span>
+              <span class="select-menu-item-text css-truncate-target" title="sbt_0_13_7">
+                sbt_0_13_7
+              </span>
+            </a>
+            <a class="select-menu-item js-navigation-item js-navigation-open " href="https://github.com/twitter/scalding/tree/scoverage" data-name="scoverage" data-skip-pjax="true" rel="nofollow">
+              <span class="select-menu-item-icon octicon octicon-check"></span>
+              <span class="select-menu-item-text css-truncate-target" title="scoverage">
+                scoverage
+              </span>
+            </a>
+            <a class="select-menu-item js-navigation-item js-navigation-open " href="https://github.com/twitter/scalding/tree/simple-source" data-name="simple-source" data-skip-pjax="true" rel="nofollow">
+              <span class="select-menu-item-icon octicon octicon-check"></span>
+              <span class="select-menu-item-text css-truncate-target" title="simple-source">
+                simple-source
+              </span>
+            </a>
+            <a class="select-menu-item js-navigation-item js-navigation-open " href="https://github.com/twitter/scalding/tree/tapproxy" data-name="tapproxy" data-skip-pjax="true" rel="nofollow">
+              <span class="select-menu-item-icon octicon octicon-check"></span>
+              <span class="select-menu-item-text css-truncate-target" title="tapproxy">
+                tapproxy
+              </span>
+            </a>
+            <a class="select-menu-item js-navigation-item js-navigation-open " href="https://github.com/twitter/scalding/tree/typed_jdbc_source" data-name="typed_jdbc_source" data-skip-pjax="true" rel="nofollow">
+              <span class="select-menu-item-icon octicon octicon-check"></span>
+              <span class="select-menu-item-text css-truncate-target" title="typed_jdbc_source">
+                typed_jdbc_source
+              </span>
+            </a>
+            <a class="select-menu-item js-navigation-item js-navigation-open " href="https://github.com/twitter/scalding/tree/typed-transient" data-name="typed-transient" data-skip-pjax="true" rel="nofollow">
+              <span class="select-menu-item-icon octicon octicon-check"></span>
+              <span class="select-menu-item-text css-truncate-target" title="typed-transient">
+                typed-transient
+              </span>
+            </a>
+        </div>
+
+          <div class="select-menu-no-results">Nothing to show</div>
+      </div>
+
+      <div class="select-menu-list select-menu-tab-bucket js-select-menu-tab-bucket" data-tab-filter="tags">
+        <div data-filterable-for="context-commitish-filter-field" data-filterable-type="substring">
+
+
+            <div class="select-menu-item js-navigation-item ">
+              <span class="select-menu-item-icon octicon octicon-check"></span>
+              <a href="https://github.com/twitter/scalding/tree/0.13.1" data-name="0.13.1" data-skip-pjax="true" rel="nofollow" class="js-navigation-open select-menu-item-text css-truncate-target" title="0.13.1">0.13.1</a>
+            </div>
+            <div class="select-menu-item js-navigation-item ">
+              <span class="select-menu-item-icon octicon octicon-check"></span>
+              <a href="https://github.com/twitter/scalding/tree/0.13.0" data-name="0.13.0" data-skip-pjax="true" rel="nofollow" class="js-navigation-open select-menu-item-text css-truncate-target" title="0.13.0">0.13.0</a>
+            </div>
+            <div class="select-menu-item js-navigation-item ">
+              <span class="select-menu-item-icon octicon octicon-check"></span>
+              <a href="https://github.com/twitter/scalding/tree/0.12.0rc5" data-name="0.12.0rc5" data-skip-pjax="true" rel="nofollow" class="js-navigation-open select-menu-item-text css-truncate-target" title="0.12.0rc5">0.12.0rc5</a>
+            </div>
+            <div class="select-menu-item js-navigation-item ">
+              <span class="select-menu-item-icon octicon octicon-check"></span>
+              <a href="https://github.com/twitter/scalding/tree/0.12.0rc4" data-name="0.12.0rc4" data-skip-pjax="true" rel="nofollow" class="js-navigation-open select-menu-item-text css-truncate-target" title="0.12.0rc4">0.12.0rc4</a>
+            </div>
+            <div class="select-menu-item js-navigation-item ">
+              <span class="select-menu-item-icon octicon octicon-check"></span>
+              <a href="https://github.com/twitter/scalding/tree/0.12.0rc3" data-name="0.12.0rc3" data-skip-pjax="true" rel="nofollow" class="js-navigation-open select-menu-item-text css-truncate-target" title="0.12.0rc3">0.12.0rc3</a>
+            </div>
+            <div class="select-menu-item js-navigation-item ">
+              <span class="select-menu-item-icon octicon octicon-check"></span>
+              <a href="https://github.com/twitter/scalding/tree/0.12.0.rc2" data-name="0.12.0.rc2" data-skip-pjax="true" rel="nofollow" class="js-navigation-open select-menu-item-text css-truncate-target" title="0.12.0.rc2">0.12.0.rc2</a>
+            </div>
+            <div class="select-menu-item js-navigation-item ">
+              <span class="select-menu-item-icon octicon octicon-check"></span>
+              <a href="https://github.com/twitter/scalding/tree/0.12.0rc1" data-name="0.12.0rc1" data-skip-pjax="true" rel="nofollow" class="js-navigation-open select-menu-item-text css-truncate-target" title="0.12.0rc1">0.12.0rc1</a>
+            </div>
+            <div class="select-menu-item js-navigation-item ">
+              <span class="select-menu-item-icon octicon octicon-check"></span>
+              <a href="https://github.com/twitter/scalding/tree/0.12.0" data-name="0.12.0" data-skip-pjax="true" rel="nofollow" class="js-navigation-open select-menu-item-text css-truncate-target" title="0.12.0">0.12.0</a>
+            </div>
+            <div class="select-menu-item js-navigation-item ">
+              <span class="select-menu-item-icon octicon octicon-check"></span>
+              <a href="https://github.com/twitter/scalding/tree/0.11.3rc1" data-name="0.11.3rc1" data-skip-pjax="true" rel="nofollow" class="js-navigation-open select-menu-item-text css-truncate-target" title="0.11.3rc1">0.11.3rc1</a>
+            </div>
+            <div class="select-menu-item js-navigation-item ">
+              <span class="select-menu-item-icon octicon octicon-check"></span>
+              <a href="https://github.com/twitter/scalding/tree/0.11.2" data-name="0.11.2" data-skip-pjax="true" rel="nofollow" class="js-navigation-open select-menu-item-text css-truncate-target" title="0.11.2">0.11.2</a>
+            </div>
+            <div class="select-menu-item js-navigation-item ">
+              <span class="select-menu-item-icon octicon octicon-check"></span>
+              <a href="https://github.com/twitter/scalding/tree/0.11.1" data-name="0.11.1" data-skip-pjax="true" rel="nofollow" class="js-navigation-open select-menu-item-text css-truncate-target" title="0.11.1">0.11.1</a>
+            </div>
+            <div class="select-menu-item js-navigation-item ">
+              <span class="select-menu-item-icon octicon octicon-check"></span>
+              <a href="https://github.com/twitter/scalding/tree/0.11.0" data-name="0.11.0" data-skip-pjax="true" rel="nofollow" class="js-navigation-open select-menu-item-text css-truncate-target" title="0.11.0">0.11.0</a>
+            </div>
+            <div class="select-menu-item js-navigation-item ">
+              <span class="select-menu-item-icon octicon octicon-check"></span>
+              <a href="https://github.com/twitter/scalding/tree/0.10.0" data-name="0.10.0" data-skip-pjax="true" rel="nofollow" class="js-navigation-open select-menu-item-text css-truncate-target" title="0.10.0">0.10.0</a>
+            </div>
+            <div class="select-menu-item js-navigation-item ">
+              <span class="select-menu-item-icon octicon octicon-check"></span>
+              <a href="https://github.com/twitter/scalding/tree/0.9.1" data-name="0.9.1" data-skip-pjax="true" rel="nofollow" class="js-navigation-open select-menu-item-text css-truncate-target" title="0.9.1">0.9.1</a>
+            </div>
+            <div class="select-menu-item js-navigation-item ">
+              <span class="select-menu-item-icon octicon octicon-check"></span>
+              <a href="https://github.com/twitter/scalding/tree/0.9.0rc17" data-name="0.9.0rc17" data-skip-pjax="true" rel="nofollow" class="js-navigation-open select-menu-item-text css-truncate-target" title="0.9.0rc17">0.9.0rc17</a>
+            </div>
+            <div class="select-menu-item js-navigation-item ">
+              <span class="select-menu-item-icon octicon octicon-check"></span>
+              <a href="https://github.com/twitter/scalding/tree/0.9.0rc16" data-name="0.9.0rc16" data-skip-pjax="true" rel="nofollow" class="js-navigation-open select-menu-item-text css-truncate-target" title="0.9.0rc16">0.9.0rc16</a>
+            </div>
+            <div class="select-menu-item js-navigation-item ">
+              <span class="select-menu-item-icon octicon octicon-check"></span>
+              <a href="https://github.com/twitter/scalding/tree/0.9.0rc15" data-name="0.9.0rc15" data-skip-pjax="true" rel="nofollow" class="js-navigation-open select-menu-item-text css-truncate-target" title="0.9.0rc15">0.9.0rc15</a>
+            </div>
+            <div class="select-menu-item js-navigation-item ">
+              <span class="select-menu-item-icon octicon octicon-check"></span>
+              <a href="https://github.com/twitter/scalding/tree/0.9.0rc4" data-name="0.9.0rc4" data-skip-pjax="true" rel="nofollow" class="js-navigation-open select-menu-item-text css-truncate-target" title="0.9.0rc4">0.9.0rc4</a>
+            </div>
+            <div class="select-menu-item js-navigation-item ">
+              <span class="select-menu-item-icon octicon octicon-check"></span>
+              <a href="https://github.com/twitter/scalding/tree/0.9.0rc1" data-name="0.9.0rc1" data-skip-pjax="true" rel="nofollow" class="js-navigation-open select-menu-item-text css-truncate-target" title="0.9.0rc1">0.9.0rc1</a>
+            </div>
+            <div class="select-menu-item js-navigation-item ">
+              <span class="select-menu-item-icon octicon octicon-check"></span>
+              <a href="https://github.com/twitter/scalding/tree/0.9.0" data-name="0.9.0" data-skip-pjax="true" rel="nofollow" class="js-navigation-open select-menu-item-text css-truncate-target" title="0.9.0">0.9.0</a>
+            </div>
+            <div class="select-menu-item js-navigation-item ">
+              <span class="select-menu-item-icon octicon octicon-check"></span>
+              <a href="https://github.com/twitter/scalding/tree/0.8.11" data-name="0.8.11" data-skip-pjax="true" rel="nofollow" class="js-navigation-open select-menu-item-text css-truncate-target" title="0.8.11">0.8.11</a>
+            </div>
+            <div class="select-menu-item js-navigation-item ">
+              <span class="select-menu-item-icon octicon octicon-check"></span>
+              <a href="https://github.com/twitter/scalding/tree/0.8.8" data-name="0.8.8" data-skip-pjax="true" rel="nofollow" class="js-navigation-open select-menu-item-text css-truncate-target" title="0.8.8">0.8.8</a>
+            </div>
+            <div class="select-menu-item js-navigation-item ">
+              <span class="select-menu-item-icon octicon octicon-check"></span>
+              <a href="https://github.com/twitter/scalding/tree/0.8.7" data-name="0.8.7" data-skip-pjax="true" rel="nofollow" class="js-navigation-open select-menu-item-text css-truncate-target" title="0.8.7">0.8.7</a>
+            </div>
+            <div class="select-menu-item js-navigation-item ">
+              <span class="select-menu-item-icon octicon octicon-check"></span>
+              <a href="https://github.com/twitter/scalding/tree/0.8.6" data-name="0.8.6" data-skip-pjax="true" rel="nofollow" class="js-navigation-open select-menu-item-text css-truncate-target" title="0.8.6">0.8.6</a>
+            </div>
+            <div class="select-menu-item js-navigation-item ">
+              <span class="select-menu-item-icon octicon octicon-check"></span>
+              <a href="https://github.com/twitter/scalding/tree/0.8.5" data-name="0.8.5" data-skip-pjax="true" rel="nofollow" class="js-navigation-open select-menu-item-text css-truncate-target" title="0.8.5">0.8.5</a>
+            </div>
+            <div class="select-menu-item js-navigation-item ">
+              <span class="select-menu-item-icon octicon octicon-check"></span>
+              <a href="https://github.com/twitter/scalding/tree/0.8.4" data-name="0.8.4" data-skip-pjax="true" rel="nofollow" class="js-navigation-open select-menu-item-text css-truncate-target" title="0.8.4">0.8.4</a>
+            </div>
+            <div class="select-menu-item js-navigation-item ">
+              <span class="select-menu-item-icon octicon octicon-check"></span>
+              <a href="https://github.com/twitter/scalding/tree/0.8.3" data-name="0.8.3" data-skip-pjax="true" rel="nofollow" class="js-navigation-open select-menu-item-text css-truncate-target" title="0.8.3">0.8.3</a>
+            </div>
+            <div class="select-menu-item js-navigation-item ">
+              <span class="select-menu-item-icon octicon octicon-check"></span>
+              <a href="https://github.com/twitter/scalding/tree/0.8.2" data-name="0.8.2" data-skip-pjax="true" rel="nofollow" class="js-navigation-open select-menu-item-text css-truncate-target" title="0.8.2">0.8.2</a>
+            </div>
+            <div class="select-menu-item js-navigation-item ">
+              <span class="select-menu-item-icon octicon octicon-check"></span>
+              <a href="https://github.com/twitter/scalding/tree/0.8.1" data-name="0.8.1" data-skip-pjax="true" rel="nofollow" class="js-navigation-open select-menu-item-text css-truncate-target" title="0.8.1">0.8.1</a>
+            </div>
+            <div class="select-menu-item js-navigation-item ">
+              <span class="select-menu-item-icon octicon octicon-check"></span>
+              <a href="https://github.com/twitter/scalding/tree/0.7.0" data-name="0.7.0" data-skip-pjax="true" rel="nofollow" class="js-navigation-open select-menu-item-text css-truncate-target" title="0.7.0">0.7.0</a>
+            </div>
+            <div class="select-menu-item js-navigation-item ">
+              <span class="select-menu-item-icon octicon octicon-check"></span>
+              <a href="https://github.com/twitter/scalding/tree/0.6.0" data-name="0.6.0" data-skip-pjax="true" rel="nofollow" class="js-navigation-open select-menu-item-text css-truncate-target" title="0.6.0">0.6.0</a>
+            </div>
+            <div class="select-menu-item js-navigation-item ">
+              <span class="select-menu-item-icon octicon octicon-check"></span>
+              <a href="https://github.com/twitter/scalding/tree/0.5.4" data-name="0.5.4" data-skip-pjax="true" rel="nofollow" class="js-navigation-open select-menu-item-text css-truncate-target" title="0.5.4">0.5.4</a>
+            </div>
+            <div class="select-menu-item js-navigation-item ">
+              <span class="select-menu-item-icon octicon octicon-check"></span>
+              <a href="https://github.com/twitter/scalding/tree/0.5.3" data-name="0.5.3" data-skip-pjax="true" rel="nofollow" class="js-navigation-open select-menu-item-text css-truncate-target" title="0.5.3">0.5.3</a>
+            </div>
+            <div class="select-menu-item js-navigation-item ">
+              <span class="select-menu-item-icon octicon octicon-check"></span>
+              <a href="https://github.com/twitter/scalding/tree/0.5.2" data-name="0.5.2" data-skip-pjax="true" rel="nofollow" class="js-navigation-open select-menu-item-text css-truncate-target" title="0.5.2">0.5.2</a>
+            </div>
+            <div class="select-menu-item js-navigation-item ">
+              <span class="select-menu-item-icon octicon octicon-check"></span>
+              <a href="https://github.com/twitter/scalding/tree/0.5.1" data-name="0.5.1" data-skip-pjax="true" rel="nofollow" class="js-navigation-open select-menu-item-text css-truncate-target" title="0.5.1">0.5.1</a>
+            </div>
+            <div class="select-menu-item js-navigation-item ">
+              <span class="select-menu-item-icon octicon octicon-check"></span>
+              <a href="https://github.com/twitter/scalding/tree/0.5.0" data-name="0.5.0" data-skip-pjax="true" rel="nofollow" class="js-navigation-open select-menu-item-text css-truncate-target" title="0.5.0">0.5.0</a>
+            </div>
+            <div class="select-menu-item js-navigation-item ">
+              <span class="select-menu-item-icon octicon octicon-check"></span>
+              <a href="https://github.com/twitter/scalding/tree/0.4.1" data-name="0.4.1" data-skip-pjax="true" rel="nofollow" class="js-navigation-open select-menu-item-text css-truncate-target" title="0.4.1">0.4.1</a>
+            </div>
+            <div class="select-menu-item js-navigation-item ">
+              <span class="select-menu-item-icon octicon octicon-check"></span>
+              <a href="https://github.com/twitter/scalding/tree/0.4.0" data-name="0.4.0" data-skip-pjax="true" rel="nofollow" class="js-navigation-open select-menu-item-text css-truncate-target" title="0.4.0">0.4.0</a>
+            </div>
+            <div class="select-menu-item js-navigation-item ">
+              <span class="select-menu-item-icon octicon octicon-check"></span>
+              <a href="https://github.com/twitter/scalding/tree/0.3.5" data-name="0.3.5" data-skip-pjax="true" rel="nofollow" class="js-navigation-open select-menu-item-text css-truncate-target" title="0.3.5">0.3.5</a>
+            </div>
+            <div class="select-menu-item js-navigation-item ">
+              <span class="select-menu-item-icon octicon octicon-check"></span>
+              <a href="https://github.com/twitter/scalding/tree/0.3.4" data-name="0.3.4" data-skip-pjax="true" rel="nofollow" class="js-navigation-open select-menu-item-text css-truncate-target" title="0.3.4">0.3.4</a>
+            </div>
+            <div class="select-menu-item js-navigation-item ">
+              <span class="select-menu-item-icon octicon octicon-check"></span>
+              <a href="https://github.com/twitter/scalding/tree/0.3.3" data-name="0.3.3" data-skip-pjax="true" rel="nofollow" class="js-navigation-open select-menu-item-text css-truncate-target" title="0.3.3">0.3.3</a>
+            </div>
+            <div class="select-menu-item js-navigation-item ">
+              <span class="select-menu-item-icon octicon octicon-check"></span>
+              <a href="https://github.com/twitter/scalding/tree/0.3.2" data-name="0.3.2" data-skip-pjax="true" rel="nofollow" class="js-navigation-open select-menu-item-text css-truncate-target" title="0.3.2">0.3.2</a>
+            </div>
+            <div class="select-menu-item js-navigation-item ">
+              <span class="select-menu-item-icon octicon octicon-check"></span>
+              <a href="https://github.com/twitter/scalding/tree/0.3.1" data-name="0.3.1" data-skip-pjax="true" rel="nofollow" class="js-navigation-open select-menu-item-text css-truncate-target" title="0.3.1">0.3.1</a>
+            </div>
+            <div class="select-menu-item js-navigation-item ">
+              <span class="select-menu-item-icon octicon octicon-check"></span>
+              <a href="https://github.com/twitter/scalding/tree/0.3.0" data-name="0.3.0" data-skip-pjax="true" rel="nofollow" class="js-navigation-open select-menu-item-text css-truncate-target" title="0.3.0">0.3.0</a>
+            </div>
+        </div>
+
+        <div class="select-menu-no-results">Nothing to show</div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+
+  <div class="breadcrumb"><span class="repo-root js-repo-root"><span itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb"><a href="./twitter scalding_files/twitter scalding.html" class="" data-branch="develop" data-direction="back" data-pjax="true" itemscope="url"><span itemprop="title">scalding</span></a></span></span><span class="separator">/</span><form action="https://github.com/twitter/scalding/new/develop" aria-label="Fork this project and create a new file" class="js-new-blob-form tooltipped tooltipped-e new-file-link" method="post"><span aria-label="Fork this project and create a new file" class="js-new-blob-submit octicon octicon-plus" data-test-id="create-new-git-file" role="button"></span></form></div>
+</div>
+
+
+
+  
+  <div class="commit commit-tease js-details-container">
+    <p class="commit-title ">
+        <a href="https://github.com/twitter/scalding/commit/83eb5c325cc52913d7a7c21d76a8fc2c74248f07" class="message" data-pjax="true" title="Merge pull request #1196 from twitter/klin_execution_tutorial
+
+Add a new ExecutionApp tutorial">Merge pull request</a> <a href="https://github.com/twitter/scalding/pull/1196" class="issue-link" title="Add a new ExecutionApp tutorial">#1196</a> <a href="https://github.com/twitter/scalding/commit/83eb5c325cc52913d7a7c21d76a8fc2c74248f07" class="message" data-pjax="true" title="Merge pull request #1196 from twitter/klin_execution_tutorial
+
+Add a new ExecutionApp tutorial">from twitter/klin_execution_tutorial</a>
+        <span class="hidden-text-expander inline"><a href="https://github.com/twitter/scalding#" class="js-details-target">…</a></span>
+    </p>
+      <div class="commit-desc"><pre>Add a new ExecutionApp tutorial</pre></div>
+    <div class="commit-meta">
+      
+      <a href="https://github.com/twitter/scalding/commit/83eb5c325cc52913d7a7c21d76a8fc2c74248f07" class="sha-block" data-pjax="">latest commit <span class="sha">83eb5c325c</span></a>
+
+      <div class="authorship">
+        <img alt="P. Oscar Boykin" class="avatar" data-user="67958" height="20" src="./twitter scalding_files/67958" width="20">
+        <span class="author-name"><a href="https://github.com/johnynek" rel="contributor">johnynek</a></span>
+        authored <time class="updated" datetime="2015-02-18T18:24:57Z" is="relative-time" title="18 февр. 2015 г., 21:24 GMT+3">18 hours ago</time>
+
+      </div>
+    </div>
+  </div>
+
+  
+<div class="file-wrap">
+
+  <table class="files" data-pjax="">
+
+
+    <tbody>
+      <tr class="warning include-fragment-error">
+        <td class="icon"><span class="octicon octicon-alert"></span></td>
+        <td class="content" colspan="3">Failed to load latest commit information.</td>
+      </tr>
+
+        <tr>
+          <td class="icon">
+            <span class="octicon octicon-file-directory"></span>
+            <img alt="" class="spinner" height="16" src="./twitter scalding_files/octocat-spinner-32-e513294efa576953719e4e2de888dd9cf929b7d62ed8d05f25e731d02452ab6c.gif" width="16">
+          </td>
+          <td class="content">
+            <span class="css-truncate css-truncate-target"><a href="https://github.com/twitter/scalding/tree/develop/logo" class="js-directory-link" id="96d6f2e7e1f705ab5e59c84a6dc009b2-54602b76b0b197f0baaa6293bed6bab7785b5856" title="logo">logo</a></span>
+          </td>
+          <td class="message">
+            <span class="css-truncate css-truncate-target">
+              <a href="https://github.com/twitter/scalding/commit/ac76b61f51fa8614ea1070c7ba29d389bdefa431" class="message" data-pjax="true" title="Add scalding logo
+
+Added Scalding logo to the README and also linked to the full artifacts:
+https://drive.google.com/folderview?id=0B3i3pDi3yVgNbm9pMUdDcHFKVEk&amp;usp=sharing
+
+Signed-off-by: Chris Aniszczyk &lt;zx@twitter.com&gt;">Add scalding logo</a>
+            </span>
+          </td>
+          <td class="age">
+            <span class="css-truncate css-truncate-target"><time datetime="2013-10-25T16:46:05Z" is="time-ago" title="25 окт. 2013 г., 20:46 GMT+4">a year ago</time></span>
+          </td>
+        </tr>
+        <tr>
+          <td class="icon">
+            <span class="octicon octicon-file-directory"></span>
+            <img alt="" class="spinner" height="16" src="./twitter scalding_files/octocat-spinner-32-e513294efa576953719e4e2de888dd9cf929b7d62ed8d05f25e731d02452ab6c.gif" width="16">
+          </td>
+          <td class="content">
+            <span class="css-truncate css-truncate-target"><a href="https://github.com/twitter/scalding/tree/develop/maple/src/main/java/com" class="js-directory-link" id="41b62e533271cd67b91be5ca6767ae06-9436447d908947819212acf32923e1e9b5cd04f9" title="This path skips through empty directories"><span class="simplified-path">maple/src/main/java/</span>com</a></span>
+          </td>
+          <td class="message">
+            <span class="css-truncate css-truncate-target">
+              <a href="https://github.com/twitter/scalding/commit/8982386e97a0db8e83f7fc1b8333898f84c6af3c" class="message" data-pjax="true" title="Revert hack in TupleMemoryInputFormat">Revert hack in TupleMemoryInputFormat</a>
+            </span>
+          </td>
+          <td class="age">
+            <span class="css-truncate css-truncate-target"><time datetime="2014-07-31T06:02:03Z" is="time-ago" title="31 июля 2014 г., 10:02 GMT+4">7 months ago</time></span>
+          </td>
+        </tr>
+        <tr>
+          <td class="icon">
+            <span class="octicon octicon-file-directory"></span>
+            <img alt="" class="spinner" height="16" src="./twitter scalding_files/octocat-spinner-32-e513294efa576953719e4e2de888dd9cf929b7d62ed8d05f25e731d02452ab6c.gif" width="16">
+          </td>
+          <td class="content">
+            <span class="css-truncate css-truncate-target"><a href="https://github.com/twitter/scalding/tree/develop/project" class="js-directory-link" id="46f86faa6bbf9ac94a7e459509a20ed0-a9f56703757c07eb001b55ba817c11afca01b199" title="project">project</a></span>
+          </td>
+          <td class="message">
+            <span class="css-truncate css-truncate-target">
+              <a href="https://github.com/twitter/scalding/commit/51a2a4181b677a15c8f400d2968a3ec240f05901" class="message" data-pjax="true" title="Partial of Oscar and Alex&#39;s comments.">Partial of Oscar and Alex's comments.</a>
+            </span>
+          </td>
+          <td class="age">
+            <span class="css-truncate css-truncate-target"><time datetime="2015-02-14T01:22:57Z" is="time-ago" title="14 февр. 2015 г., 4:22 GMT+3">5 days ago</time></span>
+          </td>
+        </tr>
+        <tr>
+          <td class="icon">
+            <span class="octicon octicon-file-directory"></span>
+            <img alt="" class="spinner" height="16" src="./twitter scalding_files/octocat-spinner-32-e513294efa576953719e4e2de888dd9cf929b7d62ed8d05f25e731d02452ab6c.gif" width="16">
+          </td>
+          <td class="content">
+            <span class="css-truncate css-truncate-target"><a href="https://github.com/twitter/scalding/tree/develop/scalding-args/src" class="js-directory-link" id="a821ffcee5209959e69ac2d4c17ae8a5-7efce4cccdc5ac2399bcbcf8f1d16808c9086e58" title="This path skips through empty directories"><span class="simplified-path">scalding-args/</span>src</a></span>
+          </td>
+          <td class="message">
+            <span class="css-truncate css-truncate-target">
+              <a href="https://github.com/twitter/scalding/commit/500ae654c83f60b23bb5b37b94f388b442dd7169" class="message" data-pjax="true" title="Override hashCode for Args
+
+Currently, Args overrides equals but does not override hashCode.
+This leads to unexpected behavior when hashing and checking for equality
+on objects that depend on Args.">Override hashCode for Args</a>
+            </span>
+          </td>
+          <td class="age">
+            <span class="css-truncate css-truncate-target"><time datetime="2015-02-05T18:12:40Z" is="time-ago" title="5 февр. 2015 г., 21:12 GMT+3">14 days ago</time></span>
+          </td>
+        </tr>
+        <tr>
+          <td class="icon">
+            <span class="octicon octicon-file-directory"></span>
+            <img alt="" class="spinner" height="16" src="./twitter scalding_files/octocat-spinner-32-e513294efa576953719e4e2de888dd9cf929b7d62ed8d05f25e731d02452ab6c.gif" width="16">
+          </td>
+          <td class="content">
+            <span class="css-truncate css-truncate-target"><a href="https://github.com/twitter/scalding/tree/develop/scalding-avro" class="js-directory-link" id="f04f18c7b44fb7b08659d6b457687397-d2a8c2d24932e199f5238eac180f73824c9c56db" title="scalding-avro">scalding-avro</a></span>
+          </td>
+          <td class="message">
+            <span class="css-truncate css-truncate-target">
+              <a href="https://github.com/twitter/scalding/commit/3f076ee9269ec32d04b3a124c41c954af555fd06" class="message" data-pjax="true" title="Move Scalding to 2.10/2.11">Move Scalding to 2.10/2.11</a>
+            </span>
+          </td>
+          <td class="age">
+            <span class="css-truncate css-truncate-target"><time datetime="2014-12-05T18:11:15Z" is="time-ago" title="5 дек. 2014 г., 21:11 GMT+3">3 months ago</time></span>
+          </td>
+        </tr>
+        <tr>
+          <td class="icon">
+            <span class="octicon octicon-file-directory"></span>
+            <img alt="" class="spinner" height="16" src="./twitter scalding_files/octocat-spinner-32-e513294efa576953719e4e2de888dd9cf929b7d62ed8d05f25e731d02452ab6c.gif" width="16">
+          </td>
+          <td class="content">
+            <span class="css-truncate css-truncate-target"><a href="https://github.com/twitter/scalding/tree/develop/scalding-commons" class="js-directory-link" id="dfb7a26110d34dc852ac1a2539545606-013caad5b2b69427b2e10c67c8f8403a2dd38373" title="scalding-commons">scalding-commons</a></span>
+          </td>
+          <td class="message">
+            <span class="css-truncate css-truncate-target">
+              <a href="https://github.com/twitter/scalding/commit/3cf7f053824cdc3711965db540109fdc9433b5d9" class="message" data-pjax="true" title="Covert LzoTextDelimited to Cascading scheme.">Covert LzoTextDelimited to Cascading scheme.</a>
+            </span>
+          </td>
+          <td class="age">
+            <span class="css-truncate css-truncate-target"><time datetime="2015-01-29T09:05:34Z" is="time-ago" title="29 янв. 2015 г., 12:05 GMT+3">21 days ago</time></span>
+          </td>
+        </tr>
+        <tr>
+          <td class="icon">
+            <span class="octicon octicon-file-directory"></span>
+            <img alt="" class="spinner" height="16" src="./twitter scalding_files/octocat-spinner-32-e513294efa576953719e4e2de888dd9cf929b7d62ed8d05f25e731d02452ab6c.gif" width="16">
+          </td>
+          <td class="content">
+            <span class="css-truncate css-truncate-target"><a href="https://github.com/twitter/scalding/tree/develop/scalding-core" class="js-directory-link" id="fc114bce52a60a0205058ba99d0a69e0-98d7429554a636b5fd83328bcb8773a6636e6846" title="scalding-core">scalding-core</a></span>
+          </td>
+          <td class="message">
+            <span class="css-truncate css-truncate-target">
+              <a href="https://github.com/twitter/scalding/commit/278eb71d216b2e52bd1123c93e6c4a7df66c8593" class="message" data-pjax="true" title="fix">fix</a>
+            </span>
+          </td>
+          <td class="age">
+            <span class="css-truncate css-truncate-target"><time datetime="2015-02-17T16:31:30Z" is="time-ago" title="17 февр. 2015 г., 19:31 GMT+3">2 days ago</time></span>
+          </td>
+        </tr>
+        <tr>
+          <td class="icon">
+            <span class="octicon octicon-file-directory"></span>
+            <img alt="" class="spinner" height="16" src="./twitter scalding_files/octocat-spinner-32-e513294efa576953719e4e2de888dd9cf929b7d62ed8d05f25e731d02452ab6c.gif" width="16">
+          </td>
+          <td class="content">
+            <span class="css-truncate css-truncate-target"><a href="https://github.com/twitter/scalding/tree/develop/scalding-date/src" class="js-directory-link" id="5e3661c589ee63ae510c2433ad4c37de-20e903e69e7791986d9fd2627d5562ccb4113b91" title="This path skips through empty directories"><span class="simplified-path">scalding-date/</span>src</a></span>
+          </td>
+          <td class="message">
+            <span class="css-truncate css-truncate-target">
+              <a href="https://github.com/twitter/scalding/commit/e082878bfffc2ad21238cac63b6a8a14dd49aafe" class="message" data-pjax="true" title="Add an exclusiveUpper method to DateRange">Add an exclusiveUpper method to DateRange</a>
+            </span>
+          </td>
+          <td class="age">
+            <span class="css-truncate css-truncate-target"><time datetime="2015-02-10T21:38:50Z" is="time-ago" title="11 февр. 2015 г., 0:38 GMT+3">9 days ago</time></span>
+          </td>
+        </tr>
+        <tr>
+          <td class="icon">
+            <span class="octicon octicon-file-directory"></span>
+            <img alt="" class="spinner" height="16" src="./twitter scalding_files/octocat-spinner-32-e513294efa576953719e4e2de888dd9cf929b7d62ed8d05f25e731d02452ab6c.gif" width="16">
+          </td>
+          <td class="content">
+            <span class="css-truncate css-truncate-target"><a href="https://github.com/twitter/scalding/tree/develop/scalding-hadoop-test/src" class="js-directory-link" id="edd30b79399bdbf1e3447ed8a9b1f34c-beceb3409ac445603d8bd383a8c138148340b263" title="This path skips through empty directories"><span class="simplified-path">scalding-hadoop-test/</span>src</a></span>
+          </td>
+          <td class="message">
+            <span class="css-truncate css-truncate-target">
+              <a href="https://github.com/twitter/scalding/commit/96d55bfbe0f4dfed2a57ec36c21b88994a088ebc" class="message" data-pjax="true" title="All that remains is the scalding REPL">All that remains is the scalding REPL</a>
+            </span>
+          </td>
+          <td class="age">
+            <span class="css-truncate css-truncate-target"><time datetime="2014-12-05T18:12:43Z" is="time-ago" title="5 дек. 2014 г., 21:12 GMT+3">3 months ago</time></span>
+          </td>
+        </tr>
+        <tr>
+          <td class="icon">
+            <span class="octicon octicon-file-directory"></span>
+            <img alt="" class="spinner" height="16" src="./twitter scalding_files/octocat-spinner-32-e513294efa576953719e4e2de888dd9cf929b7d62ed8d05f25e731d02452ab6c.gif" width="16">
+          </td>
+          <td class="content">
+            <span class="css-truncate css-truncate-target"><a href="https://github.com/twitter/scalding/tree/develop/scalding-hraven" class="js-directory-link" id="08ae4678b41cb07f9f380453488e04b5-31cb7f3325822efc3ee960aad1dbb65c4b54d023" title="scalding-hraven">scalding-hraven</a></span>
+          </td>
+          <td class="message">
+            <span class="css-truncate css-truncate-target">
+              <a href="https://github.com/twitter/scalding/commit/3cf820ede3821c7e57cca25b66a03e85a19b4473" class="message" data-pjax="true" title="only request necessary hadoop configs in hraven reducer estimator">only request necessary hadoop configs in hraven reducer estimator</a>
+            </span>
+          </td>
+          <td class="age">
+            <span class="css-truncate css-truncate-target"><time datetime="2014-09-26T01:23:58Z" is="time-ago" title="26 сент. 2014 г., 5:23 GMT+4">5 months ago</time></span>
+          </td>
+        </tr>
+        <tr>
+          <td class="icon">
+            <span class="octicon octicon-file-directory"></span>
+            <img alt="" class="spinner" height="16" src="./twitter scalding_files/octocat-spinner-32-e513294efa576953719e4e2de888dd9cf929b7d62ed8d05f25e731d02452ab6c.gif" width="16">
+          </td>
+          <td class="content">
+            <span class="css-truncate css-truncate-target"><a href="https://github.com/twitter/scalding/tree/develop/scalding-jdbc/src" class="js-directory-link" id="0ca16d2afcf0472bb57c7437e1e0ae15-6002b925be07046c75d8e545c209af08724eec88" title="This path skips through empty directories"><span class="simplified-path">scalding-jdbc/</span>src</a></span>
+          </td>
+          <td class="message">
+            <span class="css-truncate css-truncate-target">
+              <a href="https://github.com/twitter/scalding/commit/0a451cf24ccf509b2667818d430b09bd267ecc33" class="message" data-pjax="true" title="Fixes">Fixes</a>
+            </span>
+          </td>
+          <td class="age">
+            <span class="css-truncate css-truncate-target"><time datetime="2014-12-05T18:33:41Z" is="time-ago" title="5 дек. 2014 г., 21:33 GMT+3">3 months ago</time></span>
+          </td>
+        </tr>
+        <tr>
+          <td class="icon">
+            <span class="octicon octicon-file-directory"></span>
+            <img alt="" class="spinner" height="16" src="./twitter scalding_files/octocat-spinner-32-e513294efa576953719e4e2de888dd9cf929b7d62ed8d05f25e731d02452ab6c.gif" width="16">
+          </td>
+          <td class="content">
+            <span class="css-truncate css-truncate-target"><a href="https://github.com/twitter/scalding/tree/develop/scalding-json/src" class="js-directory-link" id="a92a0e587bf89b07afa095348f7bee43-0d0a8e848f6b416c3436c44b7e5327a578b26787" title="This path skips through empty directories"><span class="simplified-path">scalding-json/</span>src</a></span>
+          </td>
+          <td class="message">
+            <span class="css-truncate css-truncate-target">
+              <a href="https://github.com/twitter/scalding/commit/ba020bb2f26a3d95f8d5e620044c625ee5dca6d0" class="message" data-pjax="true" title="Easy split off portion from the macro PR">Easy split off portion from the macro PR</a>
+            </span>
+          </td>
+          <td class="age">
+            <span class="css-truncate css-truncate-target"><time datetime="2014-12-13T18:12:42Z" is="time-ago" title="13 дек. 2014 г., 21:12 GMT+3">2 months ago</time></span>
+          </td>
+        </tr>
+        <tr>
+          <td class="icon">
+            <span class="octicon octicon-file-directory"></span>
+            <img alt="" class="spinner" height="16" src="./twitter scalding_files/octocat-spinner-32-e513294efa576953719e4e2de888dd9cf929b7d62ed8d05f25e731d02452ab6c.gif" width="16">
+          </td>
+          <td class="content">
+            <span class="css-truncate css-truncate-target"><a href="https://github.com/twitter/scalding/tree/develop/scalding-macros/src" class="js-directory-link" id="c389975325b579c7518404872533bf2b-66955126d1fe0335e72119256e104b4d9443d8a3" title="This path skips through empty directories"><span class="simplified-path">scalding-macros/</span>src</a></span>
+          </td>
+          <td class="message">
+            <span class="css-truncate css-truncate-target">
+              <a href="https://github.com/twitter/scalding/commit/5ad7999e251ee70bf732c58500ec95e7a195f418" class="message" data-pjax="true" title="Adds the TypeDescriptor macro + tests">Adds the TypeDescriptor macro + tests</a>
+            </span>
+          </td>
+          <td class="age">
+            <span class="css-truncate css-truncate-target"><time datetime="2014-12-31T19:51:46Z" is="time-ago" title="31 дек. 2014 г., 22:51 GMT+3">2 months ago</time></span>
+          </td>
+        </tr>
+        <tr>
+          <td class="icon">
+            <span class="octicon octicon-file-directory"></span>
+            <img alt="" class="spinner" height="16" src="./twitter scalding_files/octocat-spinner-32-e513294efa576953719e4e2de888dd9cf929b7d62ed8d05f25e731d02452ab6c.gif" width="16">
+          </td>
+          <td class="content">
+            <span class="css-truncate css-truncate-target"><a href="https://github.com/twitter/scalding/tree/develop/scalding-parquet-scrooge" class="js-directory-link" id="1e1f8938872bcdccf7e850c39888c1d8-727ed137669325ee3bee5e14ec45804c43bbb324" title="scalding-parquet-scrooge">scalding-parquet-scrooge</a></span>
+          </td>
+          <td class="message">
+            <span class="css-truncate css-truncate-target">
+              <a href="https://github.com/twitter/scalding/commit/ff4df2f4423059bf796456237d496ebf3becc3fa" class="message" data-pjax="true" title="Add parquet-scrooge sources">Add parquet-scrooge sources</a>
+            </span>
+          </td>
+          <td class="age">
+            <span class="css-truncate css-truncate-target"><time datetime="2014-09-23T02:09:27Z" is="time-ago" title="23 сент. 2014 г., 6:09 GMT+4">5 months ago</time></span>
+          </td>
+        </tr>
+        <tr>
+          <td class="icon">
+            <span class="octicon octicon-file-directory"></span>
+            <img alt="" class="spinner" height="16" src="./twitter scalding_files/octocat-spinner-32-e513294efa576953719e4e2de888dd9cf929b7d62ed8d05f25e731d02452ab6c.gif" width="16">
+          </td>
+          <td class="content">
+            <span class="css-truncate css-truncate-target"><a href="https://github.com/twitter/scalding/tree/develop/scalding-parquet" class="js-directory-link" id="2ade7fb49bf86e1f097eafed0e08c9a2-b08311b78032eb44ecce29e160b67f16d6feb632" title="scalding-parquet">scalding-parquet</a></span>
+          </td>
+          <td class="message">
+            <span class="css-truncate css-truncate-target">
+              <a href="https://github.com/twitter/scalding/commit/9384520d8609b8aa4181e6dc8eab4facfcf86687" class="message" data-pjax="true" title="Fix compile errors in tests">Fix compile errors in tests</a>
+            </span>
+          </td>
+          <td class="age">
+            <span class="css-truncate css-truncate-target"><time datetime="2014-12-05T19:07:04Z" is="time-ago" title="5 дек. 2014 г., 22:07 GMT+3">3 months ago</time></span>
+          </td>
+        </tr>
+        <tr>
+          <td class="icon">
+            <span class="octicon octicon-file-directory"></span>
+            <img alt="" class="spinner" height="16" src="./twitter scalding_files/octocat-spinner-32-e513294efa576953719e4e2de888dd9cf929b7d62ed8d05f25e731d02452ab6c.gif" width="16">
+          </td>
+          <td class="content">
+            <span class="css-truncate css-truncate-target"><a href="https://github.com/twitter/scalding/tree/develop/scalding-repl" class="js-directory-link" id="a2762e73c338d983d9eea672f16390e0-ceb240a824081591ee78cb9a40fe238b4dc8144d" title="scalding-repl">scalding-repl</a></span>
+          </td>
+          <td class="message">
+            <span class="css-truncate css-truncate-target">
+              <a href="https://github.com/twitter/scalding/commit/7fad66ff22d457ade952c6539d975051f0bc67fc" class="message" data-pjax="true" title="Add dump to ValuePipe in the REPL">Add dump to ValuePipe in the REPL</a>
+            </span>
+          </td>
+          <td class="age">
+            <span class="css-truncate css-truncate-target"><time datetime="2015-01-10T16:28:42Z" is="time-ago" title="10 янв. 2015 г., 19:28 GMT+3">a month ago</time></span>
+          </td>
+        </tr>
+        <tr>
+          <td class="icon">
+            <span class="octicon octicon-file-directory"></span>
+            <img alt="" class="spinner" height="16" src="./twitter scalding_files/octocat-spinner-32-e513294efa576953719e4e2de888dd9cf929b7d62ed8d05f25e731d02452ab6c.gif" width="16">
+          </td>
+          <td class="content">
+            <span class="css-truncate css-truncate-target"><a href="https://github.com/twitter/scalding/tree/develop/scripts" class="js-directory-link" id="d6c5855a62cf32a4dadbc2831f0f295f-5f8fede0c8b44870d41a96bd56e246a223aec339" title="scripts">scripts</a></span>
+          </td>
+          <td class="message">
+            <span class="css-truncate css-truncate-target">
+              <a href="https://github.com/twitter/scalding/commit/aa1ddaa4fe35f8cff0ec0e9eada64fa9861fd06a" class="message" data-pjax="true" title="Use shell to read scala and scalding versions.">Use shell to read scala and scalding versions.</a>
+            </span>
+          </td>
+          <td class="age">
+            <span class="css-truncate css-truncate-target"><time datetime="2015-02-17T21:32:40Z" is="time-ago" title="18 февр. 2015 г., 0:32 GMT+3">2 days ago</time></span>
+          </td>
+        </tr>
+        <tr>
+          <td class="icon">
+            <span class="octicon octicon-file-directory"></span>
+            <img alt="" class="spinner" height="16" src="./twitter scalding_files/octocat-spinner-32-e513294efa576953719e4e2de888dd9cf929b7d62ed8d05f25e731d02452ab6c.gif" width="16">
+          </td>
+          <td class="content">
+            <span class="css-truncate css-truncate-target"><a href="https://github.com/twitter/scalding/tree/develop/tutorial" class="js-directory-link" id="0575c8d592fb7b088226750aceec2b4e-bcaa9c21799c3e01cca85f8afa3edcc5e09963c3" title="tutorial">tutorial</a></span>
+          </td>
+          <td class="message">
+            <span class="css-truncate css-truncate-target">
+              <a href="https://github.com/twitter/scalding/commit/51a2a4181b677a15c8f400d2968a3ec240f05901" class="message" data-pjax="true" title="Partial of Oscar and Alex&#39;s comments.">Partial of Oscar and Alex's comments.</a>
+            </span>
+          </td>
+          <td class="age">
+            <span class="css-truncate css-truncate-target"><time datetime="2015-02-14T01:22:57Z" is="time-ago" title="14 февр. 2015 г., 4:22 GMT+3">5 days ago</time></span>
+          </td>
+        </tr>
+        <tr>
+          <td class="icon">
+            <span class="octicon octicon-file-text"></span>
+            <img alt="" class="spinner" height="16" src="./twitter scalding_files/octocat-spinner-32-e513294efa576953719e4e2de888dd9cf929b7d62ed8d05f25e731d02452ab6c.gif" width="16">
+          </td>
+          <td class="content">
+            <span class="css-truncate css-truncate-target"><a href="https://github.com/twitter/scalding/blob/develop/.gitignore" class="js-directory-link" id="a084b794bc0759e7a6b77810e01874f2-efb48fa0af3fe1454405b0812edbdbb951bb35db" title=".gitignore">.gitignore</a></span>
+          </td>
+          <td class="message">
+            <span class="css-truncate css-truncate-target">
+              <a href="https://github.com/twitter/scalding/commit/a40de533059f36d303ceb2753c4a2197a715f594" class="message" data-pjax="true" title="Put the hadoop notice file into the git ignore">Put the hadoop notice file into the git ignore</a>
+            </span>
+          </td>
+          <td class="age">
+            <span class="css-truncate css-truncate-target"><time datetime="2014-12-05T19:38:10Z" is="time-ago" title="5 дек. 2014 г., 22:38 GMT+3">3 months ago</time></span>
+          </td>
+        </tr>
+        <tr>
+          <td class="icon">
+            <span class="octicon octicon-file-text"></span>
+            <img alt="" class="spinner" height="16" src="./twitter scalding_files/octocat-spinner-32-e513294efa576953719e4e2de888dd9cf929b7d62ed8d05f25e731d02452ab6c.gif" width="16">
+          </td>
+          <td class="content">
+            <span class="css-truncate css-truncate-target"><a href="https://github.com/twitter/scalding/blob/develop/.travis.yml" class="js-directory-link" id="354f30a63fb0907d4ad57269548329e3-365b2e9cd4048d47a30fccc7c1c97bd5034ab65e" title=".travis.yml">.travis.yml</a></span>
+          </td>
+          <td class="message">
+            <span class="css-truncate css-truncate-target">
+              <a href="https://github.com/twitter/scalding/commit/e6aad516305b4ddf0c8223f761c5644ce77f051f" class="message" data-pjax="true" title="Remove scalind-core from travis build.">Remove scalind-core from travis build.</a>
+            </span>
+          </td>
+          <td class="age">
+            <span class="css-truncate css-truncate-target"><time datetime="2015-02-18T03:51:39Z" is="time-ago" title="18 февр. 2015 г., 6:51 GMT+3">a day ago</time></span>
+          </td>
+        </tr>
+        <tr>
+          <td class="icon">
+            <span class="octicon octicon-file-text"></span>
+            <img alt="" class="spinner" height="16" src="./twitter scalding_files/octocat-spinner-32-e513294efa576953719e4e2de888dd9cf929b7d62ed8d05f25e731d02452ab6c.gif" width="16">
+          </td>
+          <td class="content">
+            <span class="css-truncate css-truncate-target"><a href="https://github.com/twitter/scalding/blob/develop/CHANGES.md" class="js-directory-link" id="8b1c3fd0d4a6765c16dfd18509182f9d-a6bdf9a5d066552fb212413a705888385e1b0029" title="CHANGES.md">CHANGES.md</a></span>
+          </td>
+          <td class="message">
+            <span class="css-truncate css-truncate-target">
+              <a href="https://github.com/twitter/scalding/commit/1261a10737ad5c6211822cc03acbe59ae5812858" class="message" data-pjax="true" title="Prepare for release of 0.13.1">Prepare for release of 0.13.1</a>
+            </span>
+          </td>
+          <td class="age">
+            <span class="css-truncate css-truncate-target"><time datetime="2015-02-04T04:23:50Z" is="time-ago" title="4 февр. 2015 г., 7:23 GMT+3">15 days ago</time></span>
+          </td>
+        </tr>
+        <tr>
+          <td class="icon">
+            <span class="octicon octicon-file-text"></span>
+            <img alt="" class="spinner" height="16" src="./twitter scalding_files/octocat-spinner-32-e513294efa576953719e4e2de888dd9cf929b7d62ed8d05f25e731d02452ab6c.gif" width="16">
+          </td>
+          <td class="content">
+            <span class="css-truncate css-truncate-target"><a href="https://github.com/twitter/scalding/blob/develop/CONTRIBUTING.md" class="js-directory-link" id="6a3371457528722a734f3c51d9238c13-9afa836db329b0382033f20ae198b4dd4ec6c782" title="CONTRIBUTING.md">CONTRIBUTING.md</a></span>
+          </td>
+          <td class="message">
+            <span class="css-truncate css-truncate-target">
+              <a href="https://github.com/twitter/scalding/commit/59d06931560a8386d0bf2a1532df34a531131611" class="message" data-pjax="true" title="Add CONTRIBUTING.md
+
+Signed-off-by: Chris Aniszczyk &lt;zx@twitter.com&gt;">Add CONTRIBUTING.md</a>
+            </span>
+          </td>
+          <td class="age">
+            <span class="css-truncate css-truncate-target"><time datetime="2012-09-19T18:05:57Z" is="time-ago" title="19 сент. 2012 г., 22:05 GMT+4">2 years ago</time></span>
+          </td>
+        </tr>
+        <tr>
+          <td class="icon">
+            <span class="octicon octicon-file-text"></span>
+            <img alt="" class="spinner" height="16" src="./twitter scalding_files/octocat-spinner-32-e513294efa576953719e4e2de888dd9cf929b7d62ed8d05f25e731d02452ab6c.gif" width="16">
+          </td>
+          <td class="content">
+            <span class="css-truncate css-truncate-target"><a href="https://github.com/twitter/scalding/blob/develop/LICENSE" class="js-directory-link" id="9879d6db96fd29134fc802214163b95a-4947287f7b5ccb5d1e8b7b2d3aa5d89f322c160d" title="LICENSE">LICENSE</a></span>
+          </td>
+          <td class="message">
+            <span class="css-truncate css-truncate-target">
+              <a href="https://github.com/twitter/scalding/commit/790a1aa146313fa58ce50f9ca3db801fcf467d0a" class="message" data-pjax="true" title="Initial Import">Initial Import</a>
+            </span>
+          </td>
+          <td class="age">
+            <span class="css-truncate css-truncate-target"><time datetime="2012-01-10T16:22:26Z" is="time-ago" title="10 янв. 2012 г., 20:22 GMT+4">3 years ago</time></span>
+          </td>
+        </tr>
+        <tr>
+          <td class="icon">
+            <span class="octicon octicon-file-text"></span>
+            <img alt="" class="spinner" height="16" src="./twitter scalding_files/octocat-spinner-32-e513294efa576953719e4e2de888dd9cf929b7d62ed8d05f25e731d02452ab6c.gif" width="16">
+          </td>
+          <td class="content">
+            <span class="css-truncate css-truncate-target"><a href="https://github.com/twitter/scalding/blob/develop/NOTICE" class="js-directory-link" id="aa14599dc3fdfa9cc81a7c3c247b77b9-d541a0bb5ddb2c834778614f1e88ed5aa220d0a5" title="NOTICE">NOTICE</a></span>
+          </td>
+          <td class="message">
+            <span class="css-truncate css-truncate-target">
+              <a href="https://github.com/twitter/scalding/commit/790a1aa146313fa58ce50f9ca3db801fcf467d0a" class="message" data-pjax="true" title="Initial Import">Initial Import</a>
+            </span>
+          </td>
+          <td class="age">
+            <span class="css-truncate css-truncate-target"><time datetime="2012-01-10T16:22:26Z" is="time-ago" title="10 янв. 2012 г., 20:22 GMT+4">3 years ago</time></span>
+          </td>
+        </tr>
+        <tr>
+          <td class="icon">
+            <span class="octicon octicon-file-text"></span>
+            <img alt="" class="spinner" height="16" src="./twitter scalding_files/octocat-spinner-32-e513294efa576953719e4e2de888dd9cf929b7d62ed8d05f25e731d02452ab6c.gif" width="16">
+          </td>
+          <td class="content">
+            <span class="css-truncate css-truncate-target"><a href="https://github.com/twitter/scalding/blob/develop/README.md" class="js-directory-link" id="04c6e90faac2675aa89e2176d2eec7d8-54a9e0c948feebf1f3d4f47b4737bda03464a1bf" title="README.md">README.md</a></span>
+          </td>
+          <td class="message">
+            <span class="css-truncate css-truncate-target">
+              <a href="https://github.com/twitter/scalding/commit/4d21fd14046a987b99c22d5bcd6d6e0b18b2c794" class="message" data-pjax="true" title="Add jonathan.">Add jonathan.</a>
+            </span>
+          </td>
+          <td class="age">
+            <span class="css-truncate css-truncate-target"><time datetime="2015-02-12T07:23:43Z" is="time-ago" title="12 февр. 2015 г., 10:23 GMT+3">7 days ago</time></span>
+          </td>
+        </tr>
+        <tr>
+          <td class="icon">
+            <span class="octicon octicon-file-text"></span>
+            <img alt="" class="spinner" height="16" src="./twitter scalding_files/octocat-spinner-32-e513294efa576953719e4e2de888dd9cf929b7d62ed8d05f25e731d02452ab6c.gif" width="16">
+          </td>
+          <td class="content">
+            <span class="css-truncate css-truncate-target"><a href="https://github.com/twitter/scalding/blob/develop/sbt" class="js-directory-link" id="eadc1bacb17aea28d29fefc19868b5e1-25cd36d65c51969ee6454339d6e6a50457145be0" title="sbt">sbt</a></span>
+          </td>
+          <td class="message">
+            <span class="css-truncate css-truncate-target">
+              <a href="https://github.com/twitter/scalding/commit/98500db47e177d5fe2f1e116484bd52a8ef1badb" class="message" data-pjax="true" title="Try sudo off again, and use https for sbt repo">Try sudo off again, and use https for sbt repo</a>
+            </span>
+          </td>
+          <td class="age">
+            <span class="css-truncate css-truncate-target"><time datetime="2014-08-02T16:16:20Z" is="time-ago" title="2 авг. 2014 г., 20:16 GMT+4">7 months ago</time></span>
+          </td>
+        </tr>
+        <tr>
+          <td class="icon">
+            <span class="octicon octicon-file-text"></span>
+            <img alt="" class="spinner" height="16" src="./twitter scalding_files/octocat-spinner-32-e513294efa576953719e4e2de888dd9cf929b7d62ed8d05f25e731d02452ab6c.gif" width="16">
+          </td>
+          <td class="content">
+            <span class="css-truncate css-truncate-target"><a href="https://github.com/twitter/scalding/blob/develop/version.sbt" class="js-directory-link" id="daa348ddc8d0bbd06f657bb9e2de314a-beb9953b436853245de5b1fbb4d1b54dc646e384" title="version.sbt">version.sbt</a></span>
+          </td>
+          <td class="message">
+            <span class="css-truncate css-truncate-target">
+              <a href="https://github.com/twitter/scalding/commit/1261a10737ad5c6211822cc03acbe59ae5812858" class="message" data-pjax="true" title="Prepare for release of 0.13.1">Prepare for release of 0.13.1</a>
+            </span>
+          </td>
+          <td class="age">
+            <span class="css-truncate css-truncate-target"><time datetime="2015-02-04T04:23:50Z" is="time-ago" title="4 февр. 2015 г., 7:23 GMT+3">15 days ago</time></span>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+</div>
+
+
+  <div id="readme" class="boxed-group flush clearfix announce instapaper_body md">
+    <h3>
+      <span class="octicon octicon-book"></span>
+      README.md
+    </h3>
+
+    <article class="markdown-body entry-content" itemprop="mainContentOfPage"><h1>
+<a id="user-content-scalding" class="anchor" href="https://github.com/twitter/scalding#scalding" aria-hidden="true"><span class="octicon octicon-link"></span></a>Scalding</h1>
+
+<p>Scalding is a Scala library that makes it easy to specify Hadoop MapReduce jobs. Scalding is built on top of <a href="http://www.cascading.org/">Cascading</a>, a Java library that abstracts away low-level Hadoop details. Scalding is comparable to <a href="http://pig.apache.org/">Pig</a>, but offers tight integration with Scala, bringing advantages of Scala to your MapReduce jobs.</p>
+
+<p><a href="./twitter scalding_files/68747470733a2f2f7261772e6769746875622e636f6d2f747769747465722f7363616c64696e672f646576656c6f702f6c6f676f2f7363616c64696e672e706e67" target="_blank"><img src="./twitter scalding_files/68747470733a2f2f7261772e6769746875622e636f6d2f747769747465722f7363616c64696e672f646576656c6f702f6c6f676f2f7363616c64696e672e706e67" alt="Scalding Logo" data-canonical-src="https://raw.github.com/twitter/scalding/develop/logo/scalding.png" style="max-width:100%;"></a></p>
+
+<p>Current version: <code>0.13.1</code></p>
+
+<h2>
+<a id="user-content-word-count" class="anchor" href="https://github.com/twitter/scalding#word-count" aria-hidden="true"><span class="octicon octicon-link"></span></a>Word Count</h2>
+
+<p>Hadoop is a distributed system for counting words. Here is how it's done in Scalding.</p>
+
+<div class="highlight highlight-scala"><pre><span class="pl-k">package</span> <span class="pl-en">com.twitter.scalding.examples</span>
+
+<span class="pl-k">import</span> <span class="pl-v">com.twitter.scalding.</span><span class="pl-v">_</span>
+
+<span class="pl-k">class</span> <span class="pl-en">WordCountJob</span>(<span class="pl-v">args</span>: <span class="pl-en">Args</span>) <span class="pl-k">extends</span> <span class="pl-e">Job</span>(args) {
+  <span class="pl-en">TypedPipe</span>.from(<span class="pl-en">TextLine</span>(args(<span class="pl-s1"><span class="pl-pds">"</span>input<span class="pl-pds">"</span></span>)))
+    .flatMap { line <span class="pl-k">=&gt;</span> tokenize(line) }
+    .groupBy { word <span class="pl-k">=&gt;</span> word } <span class="pl-c">// use each word for a key</span>
+    .size <span class="pl-c">// in each group, get the size</span>
+    .write(<span class="pl-en">TypedTsv</span>[(<span class="pl-st">String</span>, <span class="pl-st">Long</span>)](args(<span class="pl-s1"><span class="pl-pds">"</span>output<span class="pl-pds">"</span></span>)))
+
+  <span class="pl-c">// Split a piece of text into individual words.</span>
+  <span class="pl-k">def</span> <span class="pl-en">tokenize</span>(<span class="pl-v">text</span> : <span class="pl-st">String</span>) <span class="pl-k">:</span> <span class="pl-en">Array</span>[<span class="pl-st">String</span>] <span class="pl-k">=</span> {
+    <span class="pl-c">// Lowercase each word and remove punctuation.</span>
+    text.toLowerCase.replaceAll(<span class="pl-s1"><span class="pl-pds">"</span>[^a-zA-Z0-9<span class="pl-cce">\\</span>s]<span class="pl-pds">"</span></span>, <span class="pl-s1"><span class="pl-pds">"</span><span class="pl-pds">"</span></span>).split(<span class="pl-s1"><span class="pl-pds">"</span><span class="pl-cce">\\</span>s+<span class="pl-pds">"</span></span>)
+  }
+}</pre></div>
+
+<p>Notice that the <code>tokenize</code> function, which is standard Scala, integrates naturally with the rest of the MapReduce job. This is a very powerful feature of Scalding. (Compare it to the use of UDFs in Pig.)</p>
+
+<p>You can find more example code under <a href="https://github.com/twitter/scalding/tree/master/scalding-core/src/main/scala/com/twitter/scalding/examples">examples/</a>. If you're interested in comparing Scalding to other languages, see our <a href="https://github.com/twitter/scalding/wiki/Rosetta-Code">Rosetta Code page</a>, which has several MapReduce tasks in Scalding and other frameworks (e.g., Pig and Hadoop Streaming).</p>
+
+<h2>
+<a id="user-content-documentation-and-getting-started" class="anchor" href="https://github.com/twitter/scalding#documentation-and-getting-started" aria-hidden="true"><span class="octicon octicon-link"></span></a>Documentation and Getting Started</h2>
+
+<ul class="task-list">
+<li>
+<a href="https://github.com/twitter/scalding/wiki/Getting-Started"><strong>Getting Started</strong></a> page on the <a href="https://github.com/twitter/scalding/wiki">Scalding Wiki</a>
+</li>
+<li>
+<a href="http://twitter.github.com/scalding">Scalding Scaladocs</a> provide details beyond the API References. Prefer using this as it's always up to date.</li>
+<li>
+<a href="https://gist.github.com/johnynek/a47699caa62f4f38a3e2"><strong>REPL in Wonderland</strong></a> a hands-on tour of the
+scalding REPL requiring only git and java installed.</li>
+<li>
+<a href="https://github.com/twitter/scalding/tree/master/tutorial"><strong>Runnable tutorials</strong></a> in the source.</li>
+<li>The API Reference, including many example Scalding snippets:
+
+<ul class="task-list">
+<li><a href="https://github.com/twitter/scalding/wiki/Type-safe-api-reference">Type-safe API Reference</a></li>
+<li><a href="https://github.com/twitter/scalding/wiki/Fields-based-API-Reference">Fields-based API Reference</a></li>
+</ul>
+</li>
+<li>The Matrix Library provides a way of working with key-attribute-value scalding pipes:
+
+<ul class="task-list">
+<li>The <a href="https://github.com/twitter/scalding/wiki/Introduction-to-Matrix-Library">Introduction to Matrix Library</a> contains an overview and a "getting started" example</li>
+<li>The <a href="https://github.com/twitter/scalding/wiki/Matrix-API-Reference">Matrix API Reference</a> contains the Matrix Library API reference with examples</li>
+</ul>
+</li>
+<li>
+<a href="https://github.com/twitter/scalding/wiki/Calling-Scalding-from-inside-your-application"><strong>Introduction to Scalding Execution</strong></a> contains general rules and examples of calling Scalding from inside another application.</li>
+</ul>
+
+<p>Please feel free to use the beautiful <a href="https://drive.google.com/folderview?id=0B3i3pDi3yVgNbm9pMUdDcHFKVEk&usp=sharing">Scalding logo</a> artwork anywhere.</p>
+
+<h2>
+<a id="user-content-code-of-conduct" class="anchor" href="https://github.com/twitter/scalding#code-of-conduct" aria-hidden="true"><span class="octicon octicon-link"></span></a>Code of Conduct</h2>
+
+<p>This, and all github.com/twitter projects, are under the <a href="https://engineering.twitter.com/opensource/code-of-conduct">Twitter Open Source Code of Conduct</a>. Additionally, see the <a href="http://typelevel.org/conduct">Typelevel Code of Conduct</a> for specific examples of harassing behavior that are not tolerated.</p>
+
+<h2>
+<a id="user-content-building" class="anchor" href="https://github.com/twitter/scalding#building" aria-hidden="true"><span class="octicon octicon-link"></span></a>Building</h2>
+
+<p>There is a script (called sbt) in the root that loads the correct sbt version to build:</p>
+
+<ol class="task-list">
+<li>
+<code>./sbt update</code> (takes 2 minutes or more)</li>
+<li><code>./sbt test</code></li>
+<li>
+<code>./sbt assembly</code> (needed to make the jar used by the scald.rb script)</li>
+</ol>
+
+<p>The test suite takes a while to run. When you're in sbt, here's a shortcut to run just one test:</p>
+
+<p><code>&gt; test-only com.twitter.scalding.FileSourceTest</code></p>
+
+<p>Please refer to <a href="https://github.com/twitter/scalding/wiki/Frequently-asked-questions#issues-with-sbt">FAQ page</a> if you encounter problems when using sbt.</p>
+
+<p>We use <a href="http://travis-ci.org/">Travis CI</a> to verify the build:
+<a href="http://travis-ci.org/twitter/scalding"><img src="./twitter scalding_files/68747470733a2f2f7365637572652e7472617669732d63692e6f72672f747769747465722f7363616c64696e672e706e67" alt="Build Status" data-canonical-src="https://secure.travis-ci.org/twitter/scalding.png" style="max-width:100%;"></a></p>
+
+<p>We use <a href="https://coveralls.io/r/twitter/scalding">Coveralls</a> for code coverage results:
+<a href="https://coveralls.io/r/twitter/scalding?branch=develop"><img src="./twitter scalding_files/68747470733a2f2f636f766572616c6c732e696f2f7265706f732f747769747465722f7363616c64696e672f62616467652e706e673f6272616e63683d646576656c6f70" alt="Coverage Status" data-canonical-src="https://coveralls.io/repos/twitter/scalding/badge.png?branch=develop" style="max-width:100%;"></a></p>
+
+<p>Scalding modules are available from maven central.</p>
+
+<p>The current groupid and version for all modules is, respectively, <code>"com.twitter"</code> and  <code>0.12.0</code>.</p>
+
+<p>Current published artifacts are</p>
+
+<ul class="task-list">
+<li><code>scalding-core_2.10</code></li>
+<li><code>scalding-args_2.10</code></li>
+<li><code>scalding-date_2.10</code></li>
+<li><code>scalding-commons_2.10</code></li>
+<li><code>scalding-avro_2.10</code></li>
+<li><code>scalding-parquet_2.10</code></li>
+<li><code>scalding-repl_2.10</code></li>
+</ul>
+
+<p>The suffix denotes the scala version.</p>
+
+<h2>
+<a id="user-content-adopters" class="anchor" href="https://github.com/twitter/scalding#adopters" aria-hidden="true"><span class="octicon octicon-link"></span></a>Adopters</h2>
+
+<ul class="task-list">
+<li>Ebay</li>
+<li>Etsy</li>
+<li>Sharethrough</li>
+<li>Snowplow Analytics</li>
+<li>Soundcloud</li>
+<li>Twitter</li>
+</ul>
+
+<p>To see a full list of users or to add yourself, see the <a href="https://github.com/twitter/scalding/wiki/Powered-By">wiki</a></p>
+
+<h2>
+<a id="user-content-contact" class="anchor" href="https://github.com/twitter/scalding#contact" aria-hidden="true"><span class="octicon octicon-link"></span></a>Contact</h2>
+
+<p>For user questions, we are using the cascading-user mailing list for discussions:
+<a href="http://groups.google.com/group/cascading-user">http://groups.google.com/group/cascading-user</a></p>
+
+<p>For scalding development (internals, extending, release planning):
+<a href="https://groups.google.com/forum/#!forum/scalding-dev">https://groups.google.com/forum/#!forum/scalding-dev</a></p>
+
+<p>In the remote possibility that there exist bugs in this code, please report them to:
+<a href="https://github.com/twitter/scalding/issues">https://github.com/twitter/scalding/issues</a></p>
+
+<p>Follow <a href="http://twitter.com/scalding">@Scalding</a> on Twitter for updates.</p>
+
+<p>Chat (IRC): <a href="https://webchat.freenode.net/">freenode</a> channel: #scalding</p>
+
+<h2>
+<a id="user-content-authors" class="anchor" href="https://github.com/twitter/scalding#authors" aria-hidden="true"><span class="octicon octicon-link"></span></a>Authors:</h2>
+
+<ul class="task-list">
+<li>Avi Bryant <a href="http://twitter.com/avibryant">http://twitter.com/avibryant</a>
+</li>
+<li>Oscar Boykin <a href="http://twitter.com/posco">http://twitter.com/posco</a>
+</li>
+<li>Argyris Zymnis <a href="http://twitter.com/argyris">http://twitter.com/argyris</a>
+</li>
+</ul>
+
+<p>Thanks for assistance and contributions:</p>
+
+<ul class="task-list">
+<li>Sam Ritchie <a href="http://twitter.com/sritchie">http://twitter.com/sritchie</a>
+</li>
+<li>Aaron Siegel: <a href="http://twitter.com/asiegel">http://twitter.com/asiegel</a>
+</li>
+<li>Ian O'Connell <a href="http://twitter.com/0x138">http://twitter.com/0x138</a>
+</li>
+<li>Alex Levenson <a href="http://twitter.com/THISWILLWORK">http://twitter.com/THISWILLWORK</a>
+</li>
+<li>Jonathan Coveney <a href="http://twitter.com/jco">http://twitter.com/jco</a>
+</li>
+<li>Kevin Lin <a href="http://twitter.com/reconditesea">http://twitter.com/reconditesea</a>
+</li>
+<li>Brad Greenlee: <a href="http://twitter.com/bgreenlee">http://twitter.com/bgreenlee</a>
+</li>
+<li>Edwin Chen <a href="http://twitter.com/edchedch">http://twitter.com/edchedch</a>
+</li>
+<li>Arkajit Dey: <a href="http://twitter.com/arkajit">http://twitter.com/arkajit</a>
+</li>
+<li>Krishnan Raman: <a href="http://twitter.com/dxbydt_jasq">http://twitter.com/dxbydt_jasq</a>
+</li>
+<li>Flavian Vasile <a href="http://twitter.com/flavianv">http://twitter.com/flavianv</a>
+</li>
+<li>Chris Wensel <a href="http://twitter.com/cwensel">http://twitter.com/cwensel</a>
+</li>
+<li>Ning Liang <a href="http://twitter.com/ningliang">http://twitter.com/ningliang</a>
+</li>
+<li>Dmitriy Ryaboy <a href="http://twitter.com/squarecog">http://twitter.com/squarecog</a>
+</li>
+<li>Dong Wang <a href="http://twitter.com/dongwang218">http://twitter.com/dongwang218</a>
+</li>
+<li>Josh Attenberg <a href="http://twitter.com/jattenberg">http://twitter.com/jattenberg</a>
+</li>
+<li>Juliet Hougland <a href="https://twitter.com/j_houg">https://twitter.com/j_houg</a>
+</li>
+</ul>
+
+<p>A full list of <a href="https://github.com/twitter/scalding/graphs/contributors">contributors</a> can be found on GitHub.</p>
+
+<h2>
+<a id="user-content-license" class="anchor" href="https://github.com/twitter/scalding#license" aria-hidden="true"><span class="octicon octicon-link"></span></a>License</h2>
+
+<p>Copyright 2013 Twitter, Inc.</p>
+
+<p>Licensed under the Apache License, Version 2.0: <a href="http://www.apache.org/licenses/LICENSE-2.0">http://www.apache.org/licenses/LICENSE-2.0</a></p>
+</article>
+  </div>
+
+
+        </div>
+
+      </div><!-- /.repo-container -->
+      <div class="modal-backdrop"></div>
+    </div><!-- /.container -->
+  </div><!-- /.site -->
+
+
+    </div><!-- /.wrapper -->
+
+      <div class="container">
+  <div class="site-footer" role="contentinfo">
+    <ul class="site-footer-links right">
+        <li><a href="https://status.github.com/" data-ga-click="Footer, go to status, text:status">Status</a></li>
+      <li><a href="https://developer.github.com/" data-ga-click="Footer, go to api, text:api">API</a></li>
+      <li><a href="http://training.github.com/" data-ga-click="Footer, go to training, text:training">Training</a></li>
+      <li><a href="http://shop.github.com/" data-ga-click="Footer, go to shop, text:shop">Shop</a></li>
+        <li><a href="https://github.com/blog" data-ga-click="Footer, go to blog, text:blog">Blog</a></li>
+        <li><a href="https://github.com/about" data-ga-click="Footer, go to about, text:about">About</a></li>
+
+    </ul>
+
+    <a href="https://github.com/" aria-label="Homepage">
+      <span class="mega-octicon octicon-mark-github" title="GitHub"></span>
+    </a>
+
+    <ul class="site-footer-links">
+      <li>© 2015 <span title="0.09855s from github-fe130-cp1-prd.iad.github.net">GitHub</span>, Inc.</li>
+        <li><a href="https://github.com/site/terms" data-ga-click="Footer, go to terms, text:terms">Terms</a></li>
+        <li><a href="https://github.com/site/privacy" data-ga-click="Footer, go to privacy, text:privacy">Privacy</a></li>
+        <li><a href="https://github.com/security" data-ga-click="Footer, go to security, text:security">Security</a></li>
+        <li><a href="https://github.com/contact" data-ga-click="Footer, go to contact, text:contact">Contact</a></li>
+    </ul>
+  </div>
+</div>
+
+
+    <div class="fullscreen-overlay js-fullscreen-overlay" id="fullscreen_overlay">
+  <div class="fullscreen-container js-suggester-container">
+    <div class="textarea-wrap">
+      <textarea name="fullscreen-contents" id="fullscreen-contents" class="fullscreen-contents js-fullscreen-contents" placeholder=""></textarea>
+      <div class="suggester-container">
+        <div class="suggester fullscreen-suggester js-suggester js-navigation-container"></div>
+      </div>
+    </div>
+  </div>
+  <div class="fullscreen-sidebar">
+    <a href="https://github.com/twitter/scalding#" class="exit-fullscreen js-exit-fullscreen tooltipped tooltipped-w" aria-label="Exit Zen Mode">
+      <span class="mega-octicon octicon-screen-normal"></span>
+    </a>
+    <a href="https://github.com/twitter/scalding#" class="theme-switcher js-theme-switcher tooltipped tooltipped-w" aria-label="Switch themes">
+      <span class="octicon octicon-color-mode"></span>
+    </a>
+  </div>
+</div>
+
+
+
+    
+
+    <div id="ajax-error-message" class="flash flash-error">
+      <span class="octicon octicon-alert"></span>
+      <a href="https://github.com/twitter/scalding#" class="octicon octicon-x flash-close js-ajax-error-dismiss" aria-label="Dismiss error"></a>
+      Something went wrong with that request. Please try again.
+    </div>
+
+
+      <script crossorigin="anonymous" src="./twitter scalding_files/frameworks-9643b0378c6bcb216adcdaaaa703eed77aa239aaf1c2ae44cadb2fb5099ec172.js"></script>
+      <script async="async" crossorigin="anonymous" src="./twitter scalding_files/github-9dec5965f0440c271e53f19297ddcf6a6e892652dcbd89ff67742db9834aeeb6.js"></script>
+      
+      
+
+  
+
+
+</body></html>

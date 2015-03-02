@@ -1,0 +1,2667 @@
+<!DOCTYPE html>
+<!-- saved from url=(0032)http://habrahabr.ru/post/250945/ -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><script type="text/javascript" async="" src="./ZeroNet — Распределенные сайты через Bittorrent и Bitcoin   Хабрахабр_files/watch.js"></script><script async="" src="./ZeroNet — Распределенные сайты через Bittorrent и Bitcoin   Хабрахабр_files/analytics.js"></script>
+    
+    <meta content="width=1024" name="viewport">
+
+
+    <title>ZeroNet — Распределенные сайты через Bittorrent и Bitcoin / Хабрахабр</title>
+
+    <meta name="yandex-verification" content="67d46b975fa41645"> <!-- яндекс вебмастер - верификация -->
+
+    <meta name="description" content="
+ — Стартовое окно ZeroNet
+
+В нынешнее время активно развиваются различные распределенные технологии, ранее уже пояились на свет: распределенные мессенджеры (Tox), распределенные микроблоги...">
+    <meta name="keywords" content="zeronet">
+
+    	<meta property="fb:app_id" content="444736788986613"> 
+<meta property="og:type" content="article"> 
+<meta property="og:url" content="http://habrahabr.ru/post/250945/"> 
+<meta property="og:title" content="ZeroNet — Распределенные сайты через Bittorrent и Bitcoin"> 
+	<meta property="og:image" content="https://habrastorage.org/files/7ba/f20/171/7baf201715df4adcb91ca03a551cc606.png">
+	<link rel="image_src" href="https://habrastorage.org/files/7ba/f20/171/7baf201715df4adcb91ca03a551cc606.png">
+	
+<meta property="og:description" content="— Стартовое окно ZeroNet  В нынешнее время активно развиваются различные распределенные технологии, ранее уже пояились на свет: распределенные мессенджеры...">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:site" content="@habrahabr">
+	<meta property="al:ios:url" content="habrahabr://post/250945">
+<meta property="al:ios:app_store_id" content="778613673">
+<meta property="al:ios:app_name" content="Habrahabr">
+<meta property="al:android:url" content="habrahabr://post/250945">
+<meta property="al:android:app_name" content="Habrahabr">
+<meta property="al:android:package" content="ru.habrahabr">
+<meta property="al:windows_phone:url" content="habrahabr://post/250945">
+<meta property="al:windows_phone:app_name" content="Habrahabr">
+<meta property="al:windows_phone:app_id" content="460a6bd6-8955-470f-935e-9ea1726a6060">
+	<link rel="canonical" href="./ZeroNet — Распределенные сайты через Bittorrent и Bitcoin   Хабрахабр_files/ZeroNet — Распределенные сайты через Bittorrent и Bitcoin   Хабрахабр.html">
+
+
+
+    <link href="http://habrahabr.ru/styles/1424335982/assets/global_main.css" rel="stylesheet" media="all">
+    <script type="text/javascript" src="./ZeroNet — Распределенные сайты через Bittorrent и Bitcoin   Хабрахабр_files/global_main.js"></script>
+      <link href="http://habrahabr.ru/styles/1424335982/assets/post_common_css.css" rel="stylesheet" media="all">
+
+    <link href="http://habrahabr.ru/styles/1424335982/printer.css" rel="stylesheet" media="print">
+
+    
+    
+
+
+
+
+      <script type="text/javascript" src="./ZeroNet — Распределенные сайты через Bittorrent и Bitcoin   Хабрахабр_files/post_common_js.js"></script>
+
+
+      <!-- www.criteo.com/ru -->
+<script type="text/javascript">
+  var crtg_nid="2580";
+  var crtg_cookiename="cto_rtt";
+  var crtg_varname="crtg_content";
+  function crtg_getCookie(c_name){
+    var i,x,y,ARRCookies=document.cookie.split(";");
+    for(i=0;i<ARRCookies.length;i++){
+      x=ARRCookies[i].substr(0,ARRCookies[i].indexOf("="));
+      y=ARRCookies[i].substr(ARRCookies[i].indexOf("=")+1);
+      x=x.replace(/^\s+|\s+$/g,"");
+      if(x==c_name){return unescape(y);}
+    }
+    return'';
+  }
+  var crtg_content = crtg_getCookie(crtg_cookiename);var crtg_rnd=Math.floor(Math.random()*99999999999);
+  var crtg_url=location.protocol+'//rtax.criteo.com/delivery/rta/rta.js?netId='+escape(crtg_nid);crtg_url+='&cookieName='+escape(crtg_cookiename);crtg_url+='&rnd='+crtg_rnd;crtg_url+='&varName=' + escape(crtg_varname);
+  var crtg_script=document.createElement('script');crtg_script.type='text/javascript';crtg_script.src=crtg_url;crtg_script.async=true;
+  if(document.getElementsByTagName("head").length>0)document.getElementsByTagName("head")[0].appendChild(crtg_script);
+  else
+  if(document.getElementsByTagName("body").length>0)document.getElementsByTagName("body")[0].appendChild(crtg_script);
+</script><script type="text/javascript" src="./ZeroNet — Распределенные сайты через Bittorrent и Bitcoin   Хабрахабр_files/rta.js" async=""></script>
+      <script>
+        var N = 5;
+        var ar_duo1 = Math.floor(Math.random()*N+1);
+      </script>
+      <script type="text/javascript" src="./ZeroNet — Распределенные сайты через Bittorrent и Bitcoin   Хабрахабр_files/adriver.core.2.js"></script>
+
+    <link title="Хабрахабр / Комментарии к публикации «ZeroNet — Распределенные сайты через Bittorrent и Bitcoin»" type="application/rss+xml" rel="alternate" href="http://habrahabr.ru/rss/post/250945/">
+
+    
+<script type="text/javascript">
+
+      var user_type = 'habrauser';
+
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-726094-1',  'auto' );
+    ga('create', 'UA-726094-24', 'auto', {'name': 'HGM'});
+
+  ga('require', 'displayfeatures');
+  ga('set', 'dimension1', user_type); // user type - guest/readonly/habrauser
+  //ga('set', 'dimension2', username); // username
+
+
+
+  ga('HGM.send', 'pageview');
+  ga('HGM.set', 'dimension1', user_type);
+  ga('HGM.set', 'dimension2', "habrahabr");
+  ga('send', 'pageview', { 'hitCallback': removeUtms });
+
+</script>
+
+
+    <meta content="Хабрахабр" name="apple-mobile-web-app-title">
+<link href="http://habrahabr.ru/images/apple-touch-icon_142x142.png" rel="apple-touch-icon" type="image/png">
+  <script type="text/javascript" src="chrome-extension://phfplpepeojlgfgdfgfgfnmgakolcgoa/js/injected.js"></script></head>
+
+  <body><style type="text/css">#navbar .nav_panel .tab.tab_print:hover path,#navbar .nav_panel .tab.tab_print:hover text { fill: #c82842; } </style>
+    <div id="TMpanel">
+  <div class="container">
+    <div class="menu">
+      <a href="http://tmfeed.ru/?utm_source=tm_habrahabr&utm_medium=tm_top_panel&utm_campaign=tm_promo">TM Feed</a>
+      <a href="http://habrahabr.ru/?utm_source=tm_habrahabr&utm_medium=tm_top_panel&utm_campaign=tm_promo" class="current">Хабрахабр</a>
+      <a href="http://megamozg.ru/?utm_source=tm_habrahabr&utm_medium=tm_top_panel&utm_campaign=tm_promo">Мегамозг</a>
+      <a href="http://geektimes.ru/?utm_source=tm_habrahabr&utm_medium=tm_top_panel&utm_campaign=tm_promo">Geektimes</a>
+      <a href="http://toster.ru/?utm_source=tm_habrahabr&utm_medium=tm_top_panel&utm_campaign=tm_promo">Тостер</a>
+      <a href="http://brainstorage.me/?utm_source=tm_habrahabr&utm_medium=tm_top_panel&utm_campaign=tm_promo">Brainstorage</a>
+      <a href="http://freelansim.ru/?utm_source=tm_habrahabr&utm_medium=tm_top_panel&utm_campaign=tm_promo">Фрилансим</a>
+    </div>
+      <div class="menu special"><a href="http://ad.adriver.ru/cgi-bin/click.cgi?sid=1&ad=511571&bt=21&pid=1887801&bid=3738619&bn=3738619&rnd=1617756125" target="_blank" style="color: #31b0c5">Умный дом</a><a href="http://ad.adriver.ru/cgi-bin/click.cgi?sid=1&ad=505391&bt=21&pid=1847899&bid=3694517&bn=3694517&rnd=1094034552" target="_blank" style="color: blue">Лекции HP</a></div>
+  </div>
+</div>
+
+
+    <div id="layout">
+      <div id="navbar_overlay" class="hidden"></div>
+<div id="navbar" class="fixed" style="bottom: 0px;">
+    <div class="nav_panel">
+        <a href="http://habrahabr.ru/feed/all/" class="logo"></a>
+            <a href="http://habrahabr.ru/users/xni/" class="tab tab_user" data-tab="user_tab" title="xni">
+                <img src="./ZeroNet — Распределенные сайты через Bittorrent и Bitcoin   Хабрахабр_files/stub-user-middle.gif" alt="">
+                <span class="count navbar_count_new_messages"></span>
+            </a>
+            <a href="http://habrahabr.ru/tracker/" class="tab tab_tracker" data-tab="tracker_tab" title="Трекер">
+                <span class="g-icon g-icon-alarm"></span>
+                <span class="count navbar_count_tracker_total">12</span>
+            </a>
+
+            <a href="http://habrahabr.ru/posts/" class="tab tab_menu" data-tab="menu_tab" title="Меню"><span class="g-icon g-icon-burger"></span></a>
+                <a href="http://habrahabr.ru/topic/add" class="tab tab_add_post" title="Новая публикация"><span class="g-icon g-icon-write"></span></a>
+            <a href="http://habrahabr.ru/auth/settings/profile/" class="tab tab_settings " data-tab="settings_tab" title="Настройки"><span class="g-icon g-icon-gear"></span></a>
+
+
+        <a href="http://ad.adriver.ru/cgi-bin/click.cgi?sid=1&ad=507881&bt=21&pid=1860356&bid=3733806&bn=3733806&rnd=1688328578" class="tab tab_print tab_print_for_habrauser" id="print_tab" target="_blank" data-post-id="250945"><svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 71 71" enable-background="new 0 0 71 71" xml:space="preserve">
+<path fill="#C1C1C1" d="M48.1,23.6h-3v-11H25.9v11h-3c-1.6,0-2.8,1.3-2.8,2.8v13.7c0,1.6,1.3,2.8,2.8,2.8h25.2
+	c1.6,0,2.8-1.3,2.8-2.8V26.4C50.9,24.8,49.7,23.6,48.1,23.6z M27.5,14.2h16v16.4h-16V14.2z M43.6,39.4H27.4v-3.1h16.2V39.4z"></path>
+<g>
+	<path fill="#C1C1C1" d="M19.8,52.3l0.2-1.6h-0.1l-0.5,1.2l-1.8,3H17l-1.9-3l-0.5-1.2h-0.1l0.2,1.6v4h-1.6v-7.9h1.5L17,52l0.4,0.9
+		h0.1l0.4-0.9l2.2-3.6h1.5v7.9h-1.7V52.3z"></path>
+	<path fill="#C1C1C1" d="M27.9,54.6h-2.7l-0.6,1.7h-1.7l3.1-8h1.2l3.1,8h-1.8L27.9,54.6z M25.7,53.2h1.8l-0.6-1.7l-0.3-1.3h-0.1
+		l-0.3,1.3L25.7,53.2z"></path>
+	<path fill="#C1C1C1" d="M33.4,52.2L31,48.3h2l1.3,2.3l0.3,0.8l0.3-0.8l1.4-2.3h1.8l-2.5,3.8l2.6,4.1h-2l-1.5-2.4L34.4,53l-0.3,0.8
+		l-1.5,2.4h-1.8L33.4,52.2z"></path>
+	<path fill="#C1C1C1" d="M40.5,49.2h-0.9v-0.9H43v0.9h-0.9v6.1H43v0.9h-3.5v-0.9h0.9V49.2z"></path>
+	<path fill="#C1C1C1" d="M44.9,48.3H50v1.5h-3.4v1.8h3.2v1.5h-3.2v3.1h-1.7V48.3z"></path>
+	<path fill="#C1C1C1" d="M53.9,53.3l-2.8-5h2l1.6,2.9l0.2,0.8h0.1l0.2-0.9l1.5-2.9h1.8l-2.8,5v2.9h-1.7V53.3z"></path>
+</g>
+</svg></a>
+
+        <a href="http://habrahabr.ru/post/250945/#" class="scroll_to_up" id="scroll_to_top" title="Наверх"></a>
+    </div>
+    <div class="nav_tabs_content ">
+
+        <div class="nav_tab hidden" id="menu_tab">
+            <div class="title">Разделы</div>
+            <form action="http://habrahabr.ru/search/" method="get" class="global_search_form">
+                <div>
+                    <input type="text" name="q" placeholder="Поиск">
+                </div>
+            </form>
+            <div class="menu">
+                <a href="http://habrahabr.ru/posts/top/">Публикации</a>
+                <a href="http://habrahabr.ru/hubs/">Хабы</a>
+                <a href="http://habrahabr.ru/companies/">Компании</a>
+                <a href="http://habrahabr.ru/users/">Пользователи</a>
+                <a href="http://toster.ru/" class="new_window">Q&amp;A</a>
+                <a href="http://habrahabr.ru/sandbox/">Песочница</a>
+                <a href="http://habrahabr.ru/exchange/">Биржа авторов</a>
+
+
+
+            </div>
+
+                
+
+                        <div class="line"></div>
+                        <div class="title">Спецпроекты</div>
+                        <div class="menu">
+
+                        <a href="http://ad.adriver.ru/cgi-bin/click.cgi?sid=1&ad=482836&bt=21&pid=1730497&bid=3502321&bn=3502321&rnd=124687018" target="_blank">AZURE бесплатно</a>
+
+                        <a href="http://ad.adriver.ru/cgi-bin/click.cgi?sid=1&ad=507881&bt=21&pid=1860356&bid=3725802&bn=3725802&rnd=730571473" target="_blank">Canon Maxify</a>
+
+                        <a href="http://ad.adriver.ru/cgi-bin/click.cgi?sid=1&ad=505391&bt=21&pid=1847899&bid=3702369&bn=3702369&rnd=867921351" target="_blank">HP ProLiant Gen9</a>
+                        </div>
+
+
+        </div>
+
+            <div class="nav_tab hidden" id="user_tab">
+                <div class="title"><a href="http://habrahabr.ru/users/xni/">xni</a></div>
+                    <div class="text">У вас 19 голосов за карму и публикации, и еще 39 за комментарии</div>
+                <div class="menu">
+                    <a href="http://habrahabr.ru/feed/all/">Моя лента</a>
+                    <a href="http://habrahabr.ru/users/xni/">Мой профиль</a>
+                    <a href="http://habrahabr.ru/users/xni/topics/">Мои публикации</a>
+                    <a href="http://habrahabr.ru/users/xni/comments/">Мои комментарии</a>
+                        <a href="http://habrahabr.ru/conversations/">Мои диалоги <span class="count navbar_count_new_messages"></span></a>
+                    <a href="http://habrahabr.ru/users/xni/favorites/">Моё избранное</a>
+                </div>
+
+                    
+
+                            <div class="line"></div>
+                            <div class="title">Спецпроекты</div>
+                            <div class="menu">
+
+                        <a href="http://ad.adriver.ru/cgi-bin/click.cgi?sid=1&ad=482836&bt=21&pid=1730497&bid=3502321&bn=3502321&rnd=124687018">AZURE бесплатно</a>
+
+                        <a href="http://ad.adriver.ru/cgi-bin/click.cgi?sid=1&ad=507881&bt=21&pid=1860356&bid=3725802&bn=3725802&rnd=730571473">Canon Maxify</a>
+
+                        <a href="http://ad.adriver.ru/cgi-bin/click.cgi?sid=1&ad=505391&bt=21&pid=1847899&bid=3702369&bn=3702369&rnd=867921351">HP ProLiant Gen9</a>
+                            </div>
+
+
+            </div>
+            <div class="nav_tab hidden" id="tracker_tab">
+                <div class="title">Трекер</div>
+                <div class="menu">
+                    <a href="http://habrahabr.ru/tracker/">Публикации <span class="count navbar_count_tracker_posts">11</span></a>
+                    <a href="http://habrahabr.ru/tracker/subscribers/">Подписчики <span class="count navbar_count_tracker_followers">1</span></a>
+                    <a href="http://habrahabr.ru/tracker/mentions/">Упоминания <span class="count navbar_count_tracker_mentions"></span></a>
+                    <a href="http://habrahabr.ru/tracker/apps/">Приложения <span class="count navbar_count_tracker_apps"></span></a>
+                </div>
+
+                    
+
+                            <div class="line"></div>
+                            <div class="title">Спецпроекты</div>
+                            <div class="menu">
+
+                        <a href="http://ad.adriver.ru/cgi-bin/click.cgi?sid=1&ad=482836&bt=21&pid=1730497&bid=3502321&bn=3502321&rnd=124687018">AZURE бесплатно</a>
+
+                        <a href="http://ad.adriver.ru/cgi-bin/click.cgi?sid=1&ad=507881&bt=21&pid=1860356&bid=3725802&bn=3725802&rnd=730571473">Canon Maxify</a>
+
+                        <a href="http://ad.adriver.ru/cgi-bin/click.cgi?sid=1&ad=505391&bt=21&pid=1847899&bid=3702369&bn=3702369&rnd=867921351">HP ProLiant Gen9</a>
+                            </div>
+
+
+            </div>
+            <div class="nav_tab hidden" id="settings_tab">
+                <div class="title">Настройки</div>
+                <div class="menu">
+                    <a href="https://habrahabr.ru/auth/settings/profile/">Профиль</a>
+                    <a href="https://habrahabr.ru/auth/settings/account/" class="new_window">Аккаунт</a>
+                    <a href="https://habrahabr.ru/auth/settings/privacy/">Приватность</a>
+                    <a href="https://habrahabr.ru/auth/settings/notifications/">Уведомления</a>
+                    <a href="https://habrahabr.ru/auth/apps/">Приложения</a>
+                    <a href="https://habrahabr.ru/auth/settings/others/">Разное</a>
+                    <a href="http://habrahabr.ru/logout/xni/3906150659/" class="exit">Выйти</a>
+                </div>
+            </div>
+
+    </div>
+</div>
+
+      <div class="inner">
+        
+
+        
+
+          <div class="content_left">
+  	
+
+
+
+
+
+    <div class="post_show">
+  	  
+  <div class="post shortcuts_item" id="post_250945">
+  	<div class="published">вчера в 14:17</div>
+    <h1 class="title">
+	    
+        <span class="post_title">ZeroNet — Распределенные сайты через Bittorrent и Bitcoin</span>
+      
+			
+  	</h1>
+  	
+  	<div class="hubs">
+		<a href="http://habrahabr.ru/hub/infosecurity/" class="hub " title="Вы не подписаны на этот хаб">Информационная безопасность</a><span class="profiled_hub" title="Профильный хаб">*</span>, 
+		<a href="http://habrahabr.ru/hub/p2p/" class="hub " title="Вы не подписаны на этот хаб">Peer-to-Peer</a><span class="profiled_hub" title="Профильный хаб">*</span>
+</div>
+
+  	
+  	<div class="content html_format">
+    	<div style="text-align:center;"><img src="./ZeroNet — Распределенные сайты через Bittorrent и Bitcoin   Хабрахабр_files/7baf201715df4adcb91ca03a551cc606.png"></div><br>
+<i> — Стартовое окно ZeroNet</i><br>
+<br>
+В нынешнее время активно развиваются различные распределенные технологии, ранее уже пояились на свет: распределенные мессенджеры (Tox), распределенные микроблоги (Twister), и теперь дошло дело до полноценных распределенных сайтов. <br>
+<a name="habracut"></a><br>
+<br>
+<h4>ZeroNet — Что это?</h4><br>
+ZeroNet это платформа которая позволяет:<br>
+1) Получать доступ к распределенным сайтам <br>
+2) Создавать распределенные сайты<br>
+<br>
+Для доступа к сайту в этой сети требуется указать его hash адрес и перейти на него, он выглядит вот так: 13DNDkMUExRf9Xa9ogwPKqp7zyHFEqbhC2<br>
+При первом заходе на такой сайт он будет помещен на домашний экран системы и будет отображатся с нормальным именем а не с хэшем. <br>
+<br>
+<h4>Как это работает?</h4> <br>
+Во время создания сайта проиходит генерация пары ключей и создаётся целевая папка с контентом сайта. Всё что будет в ней — будет доступно в сети.<br>
+<br>
+После создания сайта происходит анонсирование его через DHT сеть, и создается аналог blockchain для данного сайта (для поддержки версионности).<br>
+<br>
+<h4>А что происходит при просмотре сайтов?</h4><br>
+При первом открытии сайта происходит поиск пиров в DHT сети, как только пиры найдены — начинается загрузка контента сайта с них. В дальнейшем вы будете с этими пирами в общем рое (swarm) что позволит оперативно получать обновления. <br>
+<br>
+Да, при открытии сайта вы должны загрузить его целиком и полностью и только после этого вы сможете с ним работать. <br>
+И нет, сайты могут иметь динамический контент, для примера разработчики системы создали ZeroBoard, распределенный форум в котором можно писать не только его создателям. <br>
+<br>
+ZeroNet — opensource проект <a href="https://github.com/HelloZeroNet/ZeroNet">github.com/HelloZeroNet/ZeroNet</a> кроме того, тут <a href="https://github.com/HelloZeroNet/">github.com/HelloZeroNet/</a> можно найти примеры всех распределенных приложений. <br>
+<br>
+<h4>Как установить?</h4><br>
+<div class="spoiler"><b class="spoiler_title">Windows</b><div class="spoiler_text">Установите <a href="https://www.python.org/ftp/python/2.7.9/python-2.7.9.msi">Python 2.7</a><br>
+Установите <a href="http://zeronet.io/files/windows/pyzmq-14.4.1.win32-py2.7.exe">Python ZeroMQ</a><br>
+Установите <a href="http://zeronet.io/files/windows/greenlet-0.4.5.win32-py2.7.exe">Python Greenlet</a><br>
+Установите <a href="http://zeronet.io/files/windows/gevent-1.0.1.win32-py2.7.exe">Python Gevent</a><br>
+Установите <a href="http://zeronet.io/files/windows/msgpack-python-0.4.2.win32-py2.7.exe">Python MsgPack</a><br>
+Запустите <b>start.py</b><br>
+<br>
+Открыть в браузере <a href="http://127.0.0.1/">127.0.0.1</a>:43110<br>
+</div></div><br>
+<div class="spoiler"><b class="spoiler_title">Linux</b><div class="spoiler_text">apt-get install python-pip<br>
+pip install pyzmq <br>
+pip install gevent<br>
+pip install msgpack-python<br>
+Запустите python zeronet.py<br>
+Открыть в браузере <a href="http://127.0.0.1/">127.0.0.1</a>:43110<br>
+</div></div><br>
+<div class="spoiler"><b class="spoiler_title">Mac</b><div class="spoiler_text">brew install python-pip<br>
+sudo pip install pyzmq <br>
+sudo pip install gevent<br>
+sudo pip install msgpack-python<br>
+Запустите python zeronet.py<br>
+<br>
+Открыть в браузере <a href="http://127.0.0.1/">127.0.0.1</a>:43110<br>
+</div></div> 
+    	<div class="clear"></div> 	
+  	</div>
+    
+<ul class="tags">
+	<li><a href="http://habrahabr.ru/search/?q=%5Bzeronet%5D&target_type=posts" rel="tag">zeronet</a></li>
+</ul>
+
+    <div class="infopanel_wrapper">
+	<div class="infopanel " id="infopanel_post_250945">
+
+				<div class="voting   ">
+	
+						<a href="http://habrahabr.ru/post/250945/#plus" class="plus" title="Нравится" onclick="return posts_vote(this, 250945, &#39;2&#39;, 1)"></a>
+	
+					<div class="mark">
+								<a class="score" title="Посмотреть результат" href="http://habrahabr.ru/post/250945/#" onclick="return posts_vote(this, 250945, &#39;2&#39;, 0)">—</a>
+					</div>
+					
+						<a href="http://habrahabr.ru/post/250945/#minus" class="minus" title="Не нравится" onclick="return posts_vote(this, 250945, &#39;2&#39;, -1)"></a>
+		
+				</div>
+	
+		<div class="pageviews" title="Просмотры публикации">14041</div>
+			
+		<div class="favorite">
+				<a class="add" title="Добавить в избранное" href="http://habrahabr.ru/post/250945/#" onclick="return posts_add_to_favorite(this, &#39;2&#39;, 250945)"> </a>
+		</div>
+		<div class="favs_count" title="Количество пользователей, добавивших публикацию в избранное">139</div>
+		
+		
+		
+	
+	
+	
+	
+				<div class="author">
+					<a title="Автор текста" href="http://habrahabr.ru/users/shifttstas/">shifttstas</a>
+					<span class="rating" title="рейтинг пользователя">27,9</span>
+				</div>
+		
+	
+
+			<div class="share">
+				<div class="twitter">
+					<a href="http://twitter.com/intent/tweet?text=ZeroNet+%E2%80%94+%D0%A0%D0%B0%D1%81%D0%BF%D1%80%D0%B5%D0%B4%D0%B5%D0%BB%D0%B5%D0%BD%D0%BD%D1%8B%D0%B5+%D1%81%D0%B0%D0%B9%D1%82%D1%8B+%D1%87%D0%B5%D1%80%D0%B5%D0%B7+Bittorrent+%D0%B8+Bitcoin+http://habr.ru/p/250945/+via+%40habrahabr+%23habr" title="Опубликовать ссылку в Twitter" target="_blank"></a>
+				</div>
+				<div class="vkontakte">
+					<a href="http://vk.com/share.php?url=http://habrahabr.ru/post/250945/" title="Опубликовать ссылку во ВКонтакте" onclick="window.open(this.href, &#39;Опубликовать ссылку во Вконтакте&#39;, &#39;width=800,height=300&#39;); return false"></a>
+				</div>
+				<div class="facebook">
+					<a href="https://www.facebook.com/sharer/sharer.php?u=http://habrahabr.ru/post/250945/" title="Опубликовать ссылку в Facebook" onclick="window.open(this.href, &#39;Опубликовать ссылку в Facebook&#39;, &#39;width=640,height=436,toolbar=0,status=0&#39;); return false"></a>
+				</div>
+				<div class="googleplus">
+					<a href="https://plus.google.com/share?url=http://habrahabr.ru/post/250945/" title="Опубликовать ссылку в Google Plus" onclick="window.open(this.href, &#39;Опубликовать ссылку в Google Plus&#39;, &#39;width=800,height=300&#39;); return false"></a>
+				</div>
+			</div>
+	
+	</div>
+	<div class="clear"></div>
+</div>
+
+
+
+
+    
+    
+	</div>
+
+    </div>
+
+  	    
+  <div id="adriver_banner_132032996" title=""><style type="text/css">
+    .post_inner_banner.seopult_inner_banner { overflow:hidden;text-align:center;height:70px;border:1px solid #d4d4d4;border-radius:15px; }
+    .post_inner_banner.seopult_inner_banner a { text-decoration:none;color:#000;overflow:hidden;display:block;height:70px; }
+    .post_inner_banner.seopult_inner_banner div { display:block;float:left;text-align:left;font-size:12px; }
+    .post_inner_banner.seopult_inner_banner .logo { background: url(http://special.habrahabr.ru/img/1424334345/htmlblock/seopult/logo.png) no-repeat center;width:153px;height:70px; }
+    .post_inner_banner.seopult_inner_banner .zig { background: url(http://special.habrahabr.ru/img/1424334345/htmlblock/seopult/zig.png) no-repeat center;width:7px;height:70px; }
+    .post_inner_banner.seopult_inner_banner .zig1 { margin-left: 20px }
+    .post_inner_banner.seopult_inner_banner .target { margin:0 40px;background: url(http://special.habrahabr.ru/img/1424334345/htmlblock/seopult/target.png) no-repeat 0 5px;width:200px;padding-left:55px;padding-top:12px;height:53px;font:18px/22px Verdana, Arial;color:#000; }
+    .post_inner_banner.seopult_inner_banner .list ul { margin:10px 30px; }
+    .post_inner_banner.seopult_inner_banner .list ul li { background: url(http://special.habrahabr.ru/img/1424334345/htmlblock/seopult/li.png) no-repeat 0 2px;padding-left:15px;font:12px/16px Verdana, Arial;color:#000; }
+    .post_inner_banner.seopult_inner_banner .mline { float:right;background: url(http://special.habrahabr.ru/img/1424334345/htmlblock/seopult/right.png) no-repeat;width:6px;height:70px; }
+    .post_inner_banner.seopult_inner_banner .mmore { float:right;background:#ea9d4a;text-align:center;height:70px;width:172px;font:18px/70px Verdana, Arial;color:#fff; }
+    .post_inner_banner.seopult_inner_banner .mmore span { border-bottom:1px solid #fff; }
+
+    @media (max-width: 1400px) {
+        .post_inner_banner.seopult_inner_banner .list ul { margin:10px 20px; }
+        .post_inner_banner.seopult_inner_banner .zig1 { margin-left: 0 }
+    }
+    @media (max-width: 1360px) {
+        .post_inner_banner.seopult_inner_banner .target { margin: 0 10px; }
+    }
+    @media (max-width: 1300px) {
+        .post_inner_banner.seopult_inner_banner .mmore { width:102px;font-size:14px; }
+    }
+    @media (max-width: 1230px) {
+
+        .post_inner_banner.seopult_inner_banner .target { width:152px;font-size:14px;padding-left:50px;margin:0 10px; }
+    }
+    @media (max-width: 1180px) {
+        .post_inner_banner.seopult_inner_banner .mline,
+        .post_inner_banner.seopult_inner_banner .mmore { display:none; }
+    }
+    @media (max-width: 1125px) {
+        .post_inner_banner.seopult_inner_banner .logo { width:140px; }
+    }
+    @media (max-width: 1040px) {
+        .post_inner_banner.seopult_inner_banner .logo { width: 120px; }
+        .post_inner_banner.seopult_inner_banner .list ul { margin:10px; }
+    }
+</style>
+<div class="seopult_inner_banner post_inner_banner">
+    <a href="http://ad.adriver.ru/cgi-bin/click.cgi?sid=1&ad=506846&bt=21&pid=1853258&bid=3703390&bn=3703390&rnd=576364064" target="_blank" class="block_url">
+        <div class="logo"></div>
+        <div class="zig zig1"></div>
+        <div class="target">Автоматизированное<br>продвижение сайтов</div>
+        <div class="zig zig2"></div>
+        <div class="list">
+            <ul>
+                <li>50% экономии на ссылках</li><li>Запуск проекта за 10 минут</li><li>Вывод и удержание в ТОП 10</li>
+            </ul>
+        </div>
+        <div class="mmore"><span>Подробнее</span></div>
+        <div class="mline"></div>
+    </a>
+</div></div>  
+
+  <script type="text/javascript">
+      /** Для блоков гугла **/
+      function requireAdsafe(file){
+          var head = document.getElementsByTagName("head")[0];
+          var script = document.createElement('script');
+          script.src = file;
+          script.type = 'text/javascript';
+          head.appendChild(script);
+      }
+
+      function show_inner_banner_block(name, url){
+          if( typeof(name) !== 'undefined'){
+              //$.get('/html/'+name+'/1424335982/', function(html){
+              $.get('http://special.habrahabr.ru/api/htmlblock/'+name+'/', function(html){
+                  $('#adriver_banner_132032996').html(html);
+                  $('.'+name+'_inner_banner').removeClass('hidden');
+                  if( typeof(url) !== 'undefined'){
+                      $('.'+name+'_inner_banner .block_url').attr('href', url);
+                  }
+              }, 'html')
+          }
+      }
+
+        $(function(){
+          var check_scroll_position = function() {
+            var height = $(window).height();
+            var scrollTop = $(window).scrollTop();
+            var scrollBottom = $(window).scrollTop() + height;
+            var blockTop = $('#adriver_banner_132032996').position().top;
+            var show = scrollTop < blockTop && blockTop < scrollBottom;
+            
+            if( show ){
+                $( window ).off('scroll', check_scroll_position);
+                $( window ).trigger('show_bn3');
+            }
+          };
+          //$( window ).on('scroll', check_scroll_position);
+          
+          $( window ).on('show_bn3', function(){
+            var keyword = '';
+            if (typeof crtg_content !== 'undefined' && crtg_content) { keyword = crtg_content; }
+            var custom = { 4:ar_duo1 };
+                custom[1] = 'infosecurity';
+                custom[2] = 'p2p';
+
+            //if (true)
+            //    show_inner_banner_block('raiffaizen2');
+            //else
+                new adriver("adriver_banner_132032996", {sid: 176776, bt: 52, bn: 3, custom: custom, keyword: keyword});
+          });      
+
+          $( window ).trigger('show_bn3');          
+        });
+    </script>
+    
+
+
+  	
+      
+      <div class="block_after_post">
+        
+
+
+
+      </div>
+
+  		    <div class="comments_list " id="comments">
+
+        <h2 class="title ">Комментарии (<span id="comments_count">28</span>)
+            		<span class="subscribe_comments">
+			отслеживать новые: 
+			<label><input type="checkbox" id="subscribe_comments" rel="{target_type:&#39;2&#39;,target_id:250945 }"> в почте</label>
+			<label><input type="checkbox" id="tracker_comments" rel="{target_type:&#39;2&#39;,target_id:250945 }"> в трекере</label>
+		</span>
+
+
+        </h2>
+
+        
+
+            <div class="comment_item" id="comment_8287849">
+
+    <span class="parent_id" data-parent_id="0"></span>
+    <div class="comment_body ">
+        <div class="info  " rel="8287849">
+            <div class="folding-dot-holder"><div class="folding-dot"></div></div>
+            <div id="voting_8287849" class="voting   ">
+                <a href="http://habrahabr.ru/post/250945/#minus" class="minus" title="Не нравится" onclick="return comments_vote(this, 8287849, &#39;3&#39;,	250945, -1)"></a>
+                <a href="http://habrahabr.ru/post/250945/#plus" class="plus" title="Нравится" onclick="return comments_vote(this, 8287849, &#39;3&#39;,	 250945, 1)"></a>
+                <div class="mark positive ">
+                    <span class="score" title="Всего 3: ↑3 и ↓0">+3</span>
+                </div>
+            </div>
+            <a href="http://habrahabr.ru/users/fogone/" class="avatar"><img src="./ZeroNet — Распределенные сайты через Bittorrent и Bitcoin   Хабрахабр_files/a04f8b4fcf3ad258e99e607cfb1468c5_small.jpg" alt=""></a>
+            <a href="http://habrahabr.ru/users/fogone/" class="username">fogone</a>
+            <time>18 февраля 2015 в 14:27</time>
+
+            <a href="http://habrahabr.ru/post/250945/#comment_8287849" class="link_to_comment">#</a>
+            
+                    <a href="http://habrahabr.ru/post/250945/#" class="favorite add" onclick="return comments_add_to_favorite(this, &#39;3&#39;, 8287849 )" title="В избранное"></a>
+            <span class="to_chidren"></span>
+            <div class="clear"></div>
+        </div>
+        <div class="message html_format ">
+            И как найти нужный сайт?
+        </div>
+        <div class="reply_form_placeholder"></div>
+        <div class="reply">
+		            <a href="http://habrahabr.ru/post/250945/#reply" class="reply_link" onclick="return comment_show_reply_form(8287849 )">ответить</a>
+            
+        </div>
+    </div>
+
+    <div class="reply_comments" id="reply_comments_8287849">
+        <div class="comment_item" id="comment_8287855">
+
+    <span class="parent_id" data-parent_id="8287849"></span>
+    <div class="comment_body ">
+        <div class="info  is_topic_starter  " rel="8287855">
+            <div class="folding-dot-holder"><div class="folding-dot"></div></div>
+            <div id="voting_8287855" class="voting   ">
+                <a href="http://habrahabr.ru/post/250945/#minus" class="minus" title="Не нравится" onclick="return comments_vote(this, 8287855, &#39;3&#39;,	250945, -1)"></a>
+                <a href="http://habrahabr.ru/post/250945/#plus" class="plus" title="Нравится" onclick="return comments_vote(this, 8287855, &#39;3&#39;,	 250945, 1)"></a>
+                <div class="mark  ">
+                    <span class="score" title="Всего 2: ↑1 и ↓1">0</span>
+                </div>
+            </div>
+            <a href="http://habrahabr.ru/users/shifttstas/" class="avatar"><img src="./ZeroNet — Распределенные сайты через Bittorrent и Bitcoin   Хабрахабр_files/6117397ee3df449f7008d88f4f885b1f_small.jpg" alt=""></a>
+            <a href="http://habrahabr.ru/users/shifttstas/" class="username">shifttstas</a>
+            <time>18 февраля 2015 в 14:28</time>
+
+            <a href="http://habrahabr.ru/post/250945/#comment_8287855" class="link_to_comment">#</a>
+            
+                    <a href="http://habrahabr.ru/post/250945/#" class="favorite add" onclick="return comments_add_to_favorite(this, &#39;3&#39;, 8287855 )" title="В избранное"></a>
+                <div class="show_tree" data-id="8287855" data-parent_id="8287849" title="Показать ветку комментариев">↵</div>
+                <a href="http://habrahabr.ru/post/250945/#comment_8287849" data-id="8287855" data-parent_id="8287849" class="to_parent">↑</a>
+            <span class="to_chidren"></span>
+            <div class="clear"></div>
+        </div>
+        <div class="message html_format ">
+            Сейчас в сети есть поисковик <a href="http://127.0.0.1:43110/1ZeroeuDnL2jNS6t1epQa1SPvC91KG8ER">http://127.0.0.1:43110/1ZeroeuDnL2jNS6t1epQa1SPvC91KG8ER</a>
+        </div>
+        <div class="reply_form_placeholder"></div>
+        <div class="reply">
+		            <a href="http://habrahabr.ru/post/250945/#reply" class="reply_link" onclick="return comment_show_reply_form(8287855 )">ответить</a>
+            
+        </div>
+    </div>
+
+    <div class="reply_comments" id="reply_comments_8287855">
+    </div>
+</div>
+
+    </div>
+</div>
+
+            <div class="comment_item" id="comment_8287851">
+
+    <span class="parent_id" data-parent_id="0"></span>
+    <div class="comment_body ">
+        <div class="info  is_topic_starter  " rel="8287851">
+            <div class="folding-dot-holder"><div class="folding-dot"></div></div>
+            <div id="voting_8287851" class="voting   ">
+                <a href="http://habrahabr.ru/post/250945/#minus" class="minus" title="Не нравится" onclick="return comments_vote(this, 8287851, &#39;3&#39;,	250945, -1)"></a>
+                <a href="http://habrahabr.ru/post/250945/#plus" class="plus" title="Нравится" onclick="return comments_vote(this, 8287851, &#39;3&#39;,	 250945, 1)"></a>
+                <div class="mark positive ">
+                    <span class="score" title="Всего 1: ↑1 и ↓0">+1</span>
+                </div>
+            </div>
+            <a href="http://habrahabr.ru/users/shifttstas/" class="avatar"><img src="./ZeroNet — Распределенные сайты через Bittorrent и Bitcoin   Хабрахабр_files/6117397ee3df449f7008d88f4f885b1f_small.jpg" alt=""></a>
+            <a href="http://habrahabr.ru/users/shifttstas/" class="username">shifttstas</a>
+            <time>18 февраля 2015 в 14:27</time>
+
+            <a href="http://habrahabr.ru/post/250945/#comment_8287851" class="link_to_comment">#</a>
+            
+                    <a href="http://habrahabr.ru/post/250945/#" class="favorite add" onclick="return comments_add_to_favorite(this, &#39;3&#39;, 8287851 )" title="В избранное"></a>
+            <span class="to_chidren"></span>
+            <div class="clear"></div>
+        </div>
+        <div class="message html_format ">
+            Для примера, в сети есть простой сайт <br>
+<a href="http://127.0.0.1:43110/1FhhawHHvgLg5LS1w3w7DxT8KJSPihG9Cv">http://127.0.0.1:43110/1FhhawHHvgLg5LS1w3w7DxT8KJSPihG9Cv </a><br>
+<br>
+Это ZeroHabr
+        </div>
+        <div class="reply_form_placeholder"></div>
+        <div class="reply">
+		            <a href="http://habrahabr.ru/post/250945/#reply" class="reply_link" onclick="return comment_show_reply_form(8287851 )">ответить</a>
+            
+        </div>
+    </div>
+
+    <div class="reply_comments" id="reply_comments_8287851">
+        <div class="comment_item" id="comment_8287867">
+
+    <span class="parent_id" data-parent_id="8287851"></span>
+    <div class="comment_body ">
+        <div class="info  " rel="8287867">
+            <div class="folding-dot-holder"><div class="folding-dot"></div></div>
+            <div id="voting_8287867" class="voting   ">
+                <a href="http://habrahabr.ru/post/250945/#minus" class="minus" title="Не нравится" onclick="return comments_vote(this, 8287867, &#39;3&#39;,	250945, -1)"></a>
+                <a href="http://habrahabr.ru/post/250945/#plus" class="plus" title="Нравится" onclick="return comments_vote(this, 8287867, &#39;3&#39;,	 250945, 1)"></a>
+                <div class="mark  negative">
+                    <span class="score" title="Всего 6: ↑2 и ↓4">–2</span>
+                </div>
+            </div>
+            <a href="http://habrahabr.ru/users/fogone/" class="avatar"><img src="./ZeroNet — Распределенные сайты через Bittorrent и Bitcoin   Хабрахабр_files/a04f8b4fcf3ad258e99e607cfb1468c5_small.jpg" alt=""></a>
+            <a href="http://habrahabr.ru/users/fogone/" class="username">fogone</a>
+            <time>18 февраля 2015 в 14:31</time>
+
+            <a href="http://habrahabr.ru/post/250945/#comment_8287867" class="link_to_comment">#</a>
+            
+                    <a href="http://habrahabr.ru/post/250945/#" class="favorite add" onclick="return comments_add_to_favorite(this, &#39;3&#39;, 8287867 )" title="В избранное"></a>
+                <div class="show_tree" data-id="8287867" data-parent_id="8287851" title="Показать ветку комментариев">↵</div>
+                <a href="http://habrahabr.ru/post/250945/#comment_8287851" data-id="8287867" data-parent_id="8287851" class="to_parent">↑</a>
+            <span class="to_chidren"></span>
+            <div class="clear"></div>
+        </div>
+        <div class="message html_format bad bad2">
+            А если контент не статический?
+        </div>
+        <div class="reply_form_placeholder"></div>
+        <div class="reply">
+		            <a href="http://habrahabr.ru/post/250945/#reply" class="reply_link" onclick="return comment_show_reply_form(8287867 )">ответить</a>
+            
+        </div>
+    </div>
+
+    <div class="reply_comments" id="reply_comments_8287867">
+        <div class="comment_item" id="comment_8287893">
+
+    <span class="parent_id" data-parent_id="8287867"></span>
+    <div class="comment_body ">
+        <div class="info  is_topic_starter  " rel="8287893">
+            <div class="folding-dot-holder"><div class="folding-dot"></div></div>
+            <div id="voting_8287893" class="voting   ">
+                <a href="http://habrahabr.ru/post/250945/#minus" class="minus" title="Не нравится" onclick="return comments_vote(this, 8287893, &#39;3&#39;,	250945, -1)"></a>
+                <a href="http://habrahabr.ru/post/250945/#plus" class="plus" title="Нравится" onclick="return comments_vote(this, 8287893, &#39;3&#39;,	 250945, 1)"></a>
+                <div class="mark positive ">
+                    <span class="score" title="Всего 2: ↑2 и ↓0">+2</span>
+                </div>
+            </div>
+            <a href="http://habrahabr.ru/users/shifttstas/" class="avatar"><img src="./ZeroNet — Распределенные сайты через Bittorrent и Bitcoin   Хабрахабр_files/6117397ee3df449f7008d88f4f885b1f_small.jpg" alt=""></a>
+            <a href="http://habrahabr.ru/users/shifttstas/" class="username">shifttstas</a>
+            <time>18 февраля 2015 в 14:36</time>
+
+            <a href="http://habrahabr.ru/post/250945/#comment_8287893" class="link_to_comment">#</a>
+            
+                    <a href="http://habrahabr.ru/post/250945/#" class="favorite add" onclick="return comments_add_to_favorite(this, &#39;3&#39;, 8287893 )" title="В избранное"></a>
+                <div class="show_tree" data-id="8287893" data-parent_id="8287867" title="Показать ветку комментариев">↵</div>
+                <a href="http://habrahabr.ru/post/250945/#comment_8287867" data-id="8287893" data-parent_id="8287867" class="to_parent">↑</a>
+            <span class="to_chidren"></span>
+            <div class="clear"></div>
+        </div>
+        <div class="message html_format ">
+            Чуть выше привел пример — есть форум в сети, контент там не статический, кроме того есть WebRTC которые позволяют реализовать любой динамический контент.
+        </div>
+        <div class="reply_form_placeholder"></div>
+        <div class="reply">
+		            <a href="http://habrahabr.ru/post/250945/#reply" class="reply_link" onclick="return comment_show_reply_form(8287893 )">ответить</a>
+            
+        </div>
+    </div>
+
+    <div class="reply_comments" id="reply_comments_8287893">
+        <div class="comment_item" id="comment_8288307">
+
+    <span class="parent_id" data-parent_id="8287893"></span>
+    <div class="comment_body ">
+        <div class="info  " rel="8288307">
+            <div class="folding-dot-holder"><div class="folding-dot"></div></div>
+            <div id="voting_8288307" class="voting   ">
+                <a href="http://habrahabr.ru/post/250945/#minus" class="minus" title="Не нравится" onclick="return comments_vote(this, 8288307, &#39;3&#39;,	250945, -1)"></a>
+                <a href="http://habrahabr.ru/post/250945/#plus" class="plus" title="Нравится" onclick="return comments_vote(this, 8288307, &#39;3&#39;,	 250945, 1)"></a>
+                <div class="mark  ">
+                    <span class="score" title="Всего 0: ↑0 и ↓0">0</span>
+                </div>
+            </div>
+            <a href="http://habrahabr.ru/users/fogone/" class="avatar"><img src="./ZeroNet — Распределенные сайты через Bittorrent и Bitcoin   Хабрахабр_files/a04f8b4fcf3ad258e99e607cfb1468c5_small.jpg" alt=""></a>
+            <a href="http://habrahabr.ru/users/fogone/" class="username">fogone</a>
+            <time>18 февраля 2015 в 16:07</time>
+
+            <a href="http://habrahabr.ru/post/250945/#comment_8288307" class="link_to_comment">#</a>
+            
+                    <a href="http://habrahabr.ru/post/250945/#" class="favorite add" onclick="return comments_add_to_favorite(this, &#39;3&#39;, 8288307 )" title="В избранное"></a>
+                <div class="show_tree" data-id="8288307" data-parent_id="8287893" title="Показать ветку комментариев">↵</div>
+                <a href="http://habrahabr.ru/post/250945/#comment_8287893" data-id="8288307" data-parent_id="8287893" class="to_parent">↑</a>
+            <span class="to_chidren"></span>
+            <div class="clear"></div>
+        </div>
+        <div class="message html_format ">
+            Да, я видел, что упоминание об этом есть, но нет информации о реализации этого.
+        </div>
+        <div class="reply_form_placeholder"></div>
+        <div class="reply">
+		            <a href="http://habrahabr.ru/post/250945/#reply" class="reply_link" onclick="return comment_show_reply_form(8288307 )">ответить</a>
+            
+        </div>
+    </div>
+
+    <div class="reply_comments" id="reply_comments_8288307">
+        <div class="comment_item" id="comment_8289093">
+
+    <span class="parent_id" data-parent_id="8288307"></span>
+    <div class="comment_body ">
+        <div class="info  " rel="8289093">
+            <div class="folding-dot-holder"><div class="folding-dot"></div></div>
+            <div id="voting_8289093" class="voting   ">
+                <a href="http://habrahabr.ru/post/250945/#minus" class="minus" title="Не нравится" onclick="return comments_vote(this, 8289093, &#39;3&#39;,	250945, -1)"></a>
+                <a href="http://habrahabr.ru/post/250945/#plus" class="plus" title="Нравится" onclick="return comments_vote(this, 8289093, &#39;3&#39;,	 250945, 1)"></a>
+                <div class="mark positive ">
+                    <span class="score" title="Всего 4: ↑4 и ↓0">+4</span>
+                </div>
+            </div>
+            <a href="http://habrahabr.ru/users/Guria/" class="avatar"><img src="./ZeroNet — Распределенные сайты через Bittorrent и Bitcoin   Хабрахабр_files/20da8b6f9480186d60e4ffd18673889a_small.jpg" alt=""></a>
+            <a href="http://habrahabr.ru/users/Guria/" class="username">Guria</a>
+            <time>18 февраля 2015 в 19:38</time>
+
+            <a href="http://habrahabr.ru/post/250945/#comment_8289093" class="link_to_comment">#</a>
+            
+                    <a href="http://habrahabr.ru/post/250945/#" class="favorite add" onclick="return comments_add_to_favorite(this, &#39;3&#39;, 8289093 )" title="В избранное"></a>
+                <div class="show_tree" data-id="8289093" data-parent_id="8288307" title="Показать ветку комментариев">↵</div>
+                <a href="http://habrahabr.ru/post/250945/#comment_8288307" data-id="8289093" data-parent_id="8288307" class="to_parent">↑</a>
+            <span class="to_chidren"></span>
+            <div class="clear"></div>
+        </div>
+        <div class="message html_format ">
+            $.post(«<a href="http://demo.zeronet.io/ZeroBoard/add.php">demo.zeronet.io/ZeroBoard/add.php</a>», {«body»: body, «auth_key»: auth_key, «hash»: hash}).always(@submittedMessage)
+        </div>
+        <div class="reply_form_placeholder"></div>
+        <div class="reply">
+		            <a href="http://habrahabr.ru/post/250945/#reply" class="reply_link" onclick="return comment_show_reply_form(8289093 )">ответить</a>
+            
+        </div>
+    </div>
+
+    <div class="reply_comments" id="reply_comments_8289093">
+        <div class="comment_item" id="comment_8289101">
+
+    <span class="parent_id" data-parent_id="8289093"></span>
+    <div class="comment_body ">
+        <div class="info  " rel="8289101">
+            <div class="folding-dot-holder"><div class="folding-dot"></div></div>
+            <div id="voting_8289101" class="voting   ">
+                <a href="http://habrahabr.ru/post/250945/#minus" class="minus" title="Не нравится" onclick="return comments_vote(this, 8289101, &#39;3&#39;,	250945, -1)"></a>
+                <a href="http://habrahabr.ru/post/250945/#plus" class="plus" title="Нравится" onclick="return comments_vote(this, 8289101, &#39;3&#39;,	 250945, 1)"></a>
+                <div class="mark  ">
+                    <span class="score" title="Всего 2: ↑1 и ↓1">0</span>
+                </div>
+            </div>
+            <a href="http://habrahabr.ru/users/Guria/" class="avatar"><img src="./ZeroNet — Распределенные сайты через Bittorrent и Bitcoin   Хабрахабр_files/20da8b6f9480186d60e4ffd18673889a_small.jpg" alt=""></a>
+            <a href="http://habrahabr.ru/users/Guria/" class="username">Guria</a>
+            <time>18 февраля 2015 в 19:39</time>
+
+            <a href="http://habrahabr.ru/post/250945/#comment_8289101" class="link_to_comment">#</a>
+            
+                    <a href="http://habrahabr.ru/post/250945/#" class="favorite add" onclick="return comments_add_to_favorite(this, &#39;3&#39;, 8289101 )" title="В избранное"></a>
+                <div class="show_tree" data-id="8289101" data-parent_id="8289093" title="Показать ветку комментариев">↵</div>
+                <a href="http://habrahabr.ru/post/250945/#comment_8289093" data-id="8289101" data-parent_id="8289093" class="to_parent">↑</a>
+            <span class="to_chidren"></span>
+            <div class="clear"></div>
+        </div>
+        <div class="message html_format ">
+            без комментариев
+        </div>
+        <div class="reply_form_placeholder"></div>
+        <div class="reply">
+		            <a href="http://habrahabr.ru/post/250945/#reply" class="reply_link" onclick="return comment_show_reply_form(8289101 )">ответить</a>
+            
+        </div>
+    </div>
+
+    <div class="reply_comments" id="reply_comments_8289101">
+    </div>
+</div>
+
+        <div class="comment_item" id="comment_8289591">
+
+    <span class="parent_id" data-parent_id="8289093"></span>
+    <div class="comment_body ">
+        <div class="info  " rel="8289591">
+            <div class="folding-dot-holder"><div class="folding-dot"></div></div>
+            <div id="voting_8289591" class="voting   ">
+                <a href="http://habrahabr.ru/post/250945/#minus" class="minus" title="Не нравится" onclick="return comments_vote(this, 8289591, &#39;3&#39;,	250945, -1)"></a>
+                <a href="http://habrahabr.ru/post/250945/#plus" class="plus" title="Нравится" onclick="return comments_vote(this, 8289591, &#39;3&#39;,	 250945, 1)"></a>
+                <div class="mark  ">
+                    <span class="score" title="Всего 0: ↑0 и ↓0">0</span>
+                </div>
+            </div>
+            <a href="http://habrahabr.ru/users/fr33z3/" class="avatar"><img src="./ZeroNet — Распределенные сайты через Bittorrent и Bitcoin   Хабрахабр_files/d1ad4acd18c8770fbd17c070f21a02c7_small.jpg" alt=""></a>
+            <a href="http://habrahabr.ru/users/fr33z3/" class="username">fr33z3</a>
+            <time>18 февраля 2015 в 22:08</time>
+
+            <a href="http://habrahabr.ru/post/250945/#comment_8289591" class="link_to_comment">#</a>
+            
+                    <a href="http://habrahabr.ru/post/250945/#" class="favorite add" onclick="return comments_add_to_favorite(this, &#39;3&#39;, 8289591 )" title="В избранное"></a>
+                <div class="show_tree" data-id="8289591" data-parent_id="8289093" title="Показать ветку комментариев">↵</div>
+                <a href="http://habrahabr.ru/post/250945/#comment_8289093" data-id="8289591" data-parent_id="8289093" class="to_parent">↑</a>
+            <span class="to_chidren"></span>
+            <div class="clear"></div>
+        </div>
+        <div class="message html_format ">
+            То есть мои данные будут гулять по тысячам компьютеров? перед тем как попасть на сервер? Или я чего-то не понимаю?
+        </div>
+        <div class="reply_form_placeholder"></div>
+        <div class="reply">
+		            <a href="http://habrahabr.ru/post/250945/#reply" class="reply_link" onclick="return comment_show_reply_form(8289591 )">ответить</a>
+            
+        </div>
+    </div>
+
+    <div class="reply_comments" id="reply_comments_8289591">
+        <div class="comment_item" id="comment_8289847">
+
+    <span class="parent_id" data-parent_id="8289591"></span>
+    <div class="comment_body ">
+        <div class="info  " rel="8289847">
+            <div class="folding-dot-holder"><div class="folding-dot"></div></div>
+            <div id="voting_8289847" class="voting   ">
+                <a href="http://habrahabr.ru/post/250945/#minus" class="minus" title="Не нравится" onclick="return comments_vote(this, 8289847, &#39;3&#39;,	250945, -1)"></a>
+                <a href="http://habrahabr.ru/post/250945/#plus" class="plus" title="Нравится" onclick="return comments_vote(this, 8289847, &#39;3&#39;,	 250945, 1)"></a>
+                <div class="mark positive ">
+                    <span class="score" title="Всего 2: ↑2 и ↓0">+2</span>
+                </div>
+            </div>
+            <a href="http://habrahabr.ru/users/Guria/" class="avatar"><img src="./ZeroNet — Распределенные сайты через Bittorrent и Bitcoin   Хабрахабр_files/20da8b6f9480186d60e4ffd18673889a_small.jpg" alt=""></a>
+            <a href="http://habrahabr.ru/users/Guria/" class="username">Guria</a>
+            <time>18 февраля 2015 в 23:55</time>
+
+            <a href="http://habrahabr.ru/post/250945/#comment_8289847" class="link_to_comment">#</a>
+            
+                    <a href="http://habrahabr.ru/post/250945/#" class="favorite add" onclick="return comments_add_to_favorite(this, &#39;3&#39;, 8289847 )" title="В избранное"></a>
+                <div class="show_tree" data-id="8289847" data-parent_id="8289591" title="Показать ветку комментариев">↵</div>
+                <a href="http://habrahabr.ru/post/250945/#comment_8289591" data-id="8289847" data-parent_id="8289591" class="to_parent">↑</a>
+            <span class="to_chidren"></span>
+            <div class="clear"></div>
+        </div>
+        <div class="message html_format ">
+            т.е. для публикации коммента на ZeroBoard, будет отправлен стандартный http (не шифрованный) запрос через стандартный tcp/ip.<br>
+таким образом ну пути прохождения запроса будет известен не только факт вашей публикации, но и содержимое. неговоря о лёгкой блокировке возможности отправки как таковой.<br>
+Я понимаю, что это «концепт», но он из разряда вредных. И не годится для утверждения: «сайты могут иметь динамический контент»
+        </div>
+        <div class="reply_form_placeholder"></div>
+        <div class="reply">
+		            <a href="http://habrahabr.ru/post/250945/#reply" class="reply_link" onclick="return comment_show_reply_form(8289847 )">ответить</a>
+            
+        </div>
+    </div>
+
+    <div class="reply_comments" id="reply_comments_8289847">
+    </div>
+</div>
+
+    </div>
+</div>
+
+        <div class="comment_item" id="comment_8290663">
+
+    <span class="parent_id" data-parent_id="8289093"></span>
+    <div class="comment_body ">
+        <div class="info  " rel="8290663">
+            <div class="folding-dot-holder"><div class="folding-dot"></div></div>
+            <div id="voting_8290663" class="voting   ">
+                <a href="http://habrahabr.ru/post/250945/#minus" class="minus" title="Не нравится" onclick="return comments_vote(this, 8290663, &#39;3&#39;,	250945, -1)"></a>
+                <a href="http://habrahabr.ru/post/250945/#plus" class="plus" title="Нравится" onclick="return comments_vote(this, 8290663, &#39;3&#39;,	 250945, 1)"></a>
+                <div class="mark  ">
+                    <span class="score" title="Всего 0: ↑0 и ↓0">0</span>
+                </div>
+            </div>
+            <a href="http://habrahabr.ru/users/fogone/" class="avatar"><img src="./ZeroNet — Распределенные сайты через Bittorrent и Bitcoin   Хабрахабр_files/a04f8b4fcf3ad258e99e607cfb1468c5_small.jpg" alt=""></a>
+            <a href="http://habrahabr.ru/users/fogone/" class="username">fogone</a>
+            <time>19 февраля 2015 в 12:00</time>
+
+            <a href="http://habrahabr.ru/post/250945/#comment_8290663" class="link_to_comment">#</a>
+            
+                    <a href="http://habrahabr.ru/post/250945/#" class="favorite add" onclick="return comments_add_to_favorite(this, &#39;3&#39;, 8290663 )" title="В избранное"></a>
+                <div class="show_tree" data-id="8290663" data-parent_id="8289093" title="Показать ветку комментариев">↵</div>
+                <a href="http://habrahabr.ru/post/250945/#comment_8289093" data-id="8290663" data-parent_id="8289093" class="to_parent">↑</a>
+            <span class="to_chidren"></span>
+            <div class="clear"></div>
+        </div>
+        <div class="message html_format ">
+            Так и какая же это распределенность, если всё равно есть сервер с форумом? Просто блокируешь адрес сервера или демонтируешь сервер ломом и всё — нету форума.
+        </div>
+        <div class="reply_form_placeholder"></div>
+        <div class="reply">
+		            <a href="http://habrahabr.ru/post/250945/#reply" class="reply_link" onclick="return comment_show_reply_form(8290663 )">ответить</a>
+            
+        </div>
+    </div>
+
+    <div class="reply_comments" id="reply_comments_8290663">
+    </div>
+</div>
+
+    </div>
+</div>
+
+    </div>
+</div>
+
+    </div>
+</div>
+
+    </div>
+</div>
+
+    </div>
+</div>
+
+            <div class="comment_item" id="comment_8287943">
+
+    <span class="parent_id" data-parent_id="0"></span>
+    <div class="comment_body ">
+        <div class="info  " rel="8287943">
+            <div class="folding-dot-holder"><div class="folding-dot"></div></div>
+            <div id="voting_8287943" class="voting   ">
+                <a href="http://habrahabr.ru/post/250945/#minus" class="minus" title="Не нравится" onclick="return comments_vote(this, 8287943, &#39;3&#39;,	250945, -1)"></a>
+                <a href="http://habrahabr.ru/post/250945/#plus" class="plus" title="Нравится" onclick="return comments_vote(this, 8287943, &#39;3&#39;,	 250945, 1)"></a>
+                <div class="mark  ">
+                    <span class="score" title="Всего 0: ↑0 и ↓0">0</span>
+                </div>
+            </div>
+            <a href="http://habrahabr.ru/users/ZoomLS/" class="avatar"><img src="./ZeroNet — Распределенные сайты через Bittorrent и Bitcoin   Хабрахабр_files/0b0473e064e29fe79fc09267fe868c1e_small.png" alt=""></a>
+            <a href="http://habrahabr.ru/users/ZoomLS/" class="username">ZoomLS</a>
+            <time>18 февраля 2015 в 14:45</time>
+
+            <a href="http://habrahabr.ru/post/250945/#comment_8287943" class="link_to_comment">#</a>
+            
+                    <a href="http://habrahabr.ru/post/250945/#" class="favorite add" onclick="return comments_add_to_favorite(this, &#39;3&#39;, 8287943 )" title="В избранное"></a>
+            <span class="to_chidren"></span>
+            <div class="clear"></div>
+        </div>
+        <div class="message html_format ">
+            Если нужно сделать сайт с CMS, получается, нужно и саму CMS распространять всем вместе с сайтом? А если это будет что-то например на Django? Как тут быть? Никак?
+        </div>
+        <div class="reply_form_placeholder"></div>
+        <div class="reply">
+		            <a href="http://habrahabr.ru/post/250945/#reply" class="reply_link" onclick="return comment_show_reply_form(8287943 )">ответить</a>
+            
+        </div>
+    </div>
+
+    <div class="reply_comments" id="reply_comments_8287943">
+        <div class="comment_item" id="comment_8288043">
+
+    <span class="parent_id" data-parent_id="8287943"></span>
+    <div class="comment_body ">
+        <div class="info  is_topic_starter  " rel="8288043">
+            <div class="folding-dot-holder"><div class="folding-dot"></div></div>
+            <div id="voting_8288043" class="voting   ">
+                <a href="http://habrahabr.ru/post/250945/#minus" class="minus" title="Не нравится" onclick="return comments_vote(this, 8288043, &#39;3&#39;,	250945, -1)"></a>
+                <a href="http://habrahabr.ru/post/250945/#plus" class="plus" title="Нравится" onclick="return comments_vote(this, 8288043, &#39;3&#39;,	 250945, 1)"></a>
+                <div class="mark  ">
+                    <span class="score" title="Всего 0: ↑0 и ↓0">0</span>
+                </div>
+            </div>
+            <a href="http://habrahabr.ru/users/shifttstas/" class="avatar"><img src="./ZeroNet — Распределенные сайты через Bittorrent и Bitcoin   Хабрахабр_files/6117397ee3df449f7008d88f4f885b1f_small.jpg" alt=""></a>
+            <a href="http://habrahabr.ru/users/shifttstas/" class="username">shifttstas</a>
+            <time>18 февраля 2015 в 15:05</time>
+
+            <a href="http://habrahabr.ru/post/250945/#comment_8288043" class="link_to_comment">#</a>
+            
+                    <a href="http://habrahabr.ru/post/250945/#" class="favorite add" onclick="return comments_add_to_favorite(this, &#39;3&#39;, 8288043 )" title="В избранное"></a>
+                <div class="show_tree" data-id="8288043" data-parent_id="8287943" title="Показать ветку комментариев">↵</div>
+                <a href="http://habrahabr.ru/post/250945/#comment_8287943" data-id="8288043" data-parent_id="8287943" class="to_parent">↑</a>
+            <span class="to_chidren"></span>
+            <div class="clear"></div>
+        </div>
+        <div class="message html_format ">
+            Тут CMS может быть в двух вариантах: <br>
+1) Вы генерируете статику и заливаете в сеть (аналогично Github Pages)<br>
+2) Сайт использует динамику только через javascript (webrtc например)
+        </div>
+        <div class="reply_form_placeholder"></div>
+        <div class="reply">
+		            <a href="http://habrahabr.ru/post/250945/#reply" class="reply_link" onclick="return comment_show_reply_form(8288043 )">ответить</a>
+            
+        </div>
+    </div>
+
+    <div class="reply_comments" id="reply_comments_8288043">
+    </div>
+</div>
+
+    </div>
+</div>
+
+            <div class="comment_item" id="comment_8289185">
+
+    <span class="parent_id" data-parent_id="0"></span>
+    <div class="comment_body ">
+        <div class="info  " rel="8289185">
+            <div class="folding-dot-holder"><div class="folding-dot"></div></div>
+            <div id="voting_8289185" class="voting   ">
+                <a href="http://habrahabr.ru/post/250945/#minus" class="minus" title="Не нравится" onclick="return comments_vote(this, 8289185, &#39;3&#39;,	250945, -1)"></a>
+                <a href="http://habrahabr.ru/post/250945/#plus" class="plus" title="Нравится" onclick="return comments_vote(this, 8289185, &#39;3&#39;,	 250945, 1)"></a>
+                <div class="mark  ">
+                    <span class="score" title="Всего 0: ↑0 и ↓0">0</span>
+                </div>
+            </div>
+            <a href="http://habrahabr.ru/users/kolpeex/" class="avatar"><img src="./ZeroNet — Распределенные сайты через Bittorrent и Bitcoin   Хабрахабр_files/c4045769718e66fa4de2258aea34f136_small.jpg" alt=""></a>
+            <a href="http://habrahabr.ru/users/kolpeex/" class="username">kolpeex</a>
+            <time>18 февраля 2015 в 20:04</time>
+
+            <a href="http://habrahabr.ru/post/250945/#comment_8289185" class="link_to_comment">#</a>
+            
+                    <a href="http://habrahabr.ru/post/250945/#" class="favorite add" onclick="return comments_add_to_favorite(this, &#39;3&#39;, 8289185 )" title="В избранное"></a>
+            <span class="to_chidren"></span>
+            <div class="clear"></div>
+        </div>
+        <div class="message html_format ">
+            В дополнение к этой штуке идеально бы вписаля какйо-нибудь dnsmasq
+        </div>
+        <div class="reply_form_placeholder"></div>
+        <div class="reply">
+		            <a href="http://habrahabr.ru/post/250945/#reply" class="reply_link" onclick="return comment_show_reply_form(8289185 )">ответить</a>
+            
+        </div>
+    </div>
+
+    <div class="reply_comments" id="reply_comments_8289185">
+        <div class="comment_item" id="comment_8290389">
+
+    <span class="parent_id" data-parent_id="8289185"></span>
+    <div class="comment_body ">
+        <div class="info  " rel="8290389">
+            <div class="folding-dot-holder"><div class="folding-dot"></div></div>
+            <div id="voting_8290389" class="voting   ">
+                <a href="http://habrahabr.ru/post/250945/#minus" class="minus" title="Не нравится" onclick="return comments_vote(this, 8290389, &#39;3&#39;,	250945, -1)"></a>
+                <a href="http://habrahabr.ru/post/250945/#plus" class="plus" title="Нравится" onclick="return comments_vote(this, 8290389, &#39;3&#39;,	 250945, 1)"></a>
+                <div class="mark  ">
+                    <span class="score" title="Всего 0: ↑0 и ↓0">0</span>
+                </div>
+            </div>
+            <a href="http://habrahabr.ru/users/fshp/" class="avatar"><img src="./ZeroNet — Распределенные сайты через Bittorrent и Bitcoin   Хабрахабр_files/cf4274a9db4dd1b206b5e1dfd62013f0_small.jpg" alt=""></a>
+            <a href="http://habrahabr.ru/users/fshp/" class="username">fshp</a>
+            <time>19 февраля 2015 в 09:58</time>
+
+            <a href="http://habrahabr.ru/post/250945/#comment_8290389" class="link_to_comment">#</a>
+            
+                    <a href="http://habrahabr.ru/post/250945/#" class="favorite add" onclick="return comments_add_to_favorite(this, &#39;3&#39;, 8290389 )" title="В избранное"></a>
+                <div class="show_tree" data-id="8290389" data-parent_id="8289185" title="Показать ветку комментариев">↵</div>
+                <a href="http://habrahabr.ru/post/250945/#comment_8289185" data-id="8290389" data-parent_id="8289185" class="to_parent">↑</a>
+            <span class="to_chidren"></span>
+            <div class="clear"></div>
+        </div>
+        <div class="message html_format ">
+            Может Namecoin тогда?
+        </div>
+        <div class="reply_form_placeholder"></div>
+        <div class="reply">
+		            <a href="http://habrahabr.ru/post/250945/#reply" class="reply_link" onclick="return comment_show_reply_form(8290389 )">ответить</a>
+            
+        </div>
+    </div>
+
+    <div class="reply_comments" id="reply_comments_8290389">
+    </div>
+</div>
+
+    </div>
+</div>
+
+            <div class="comment_item" id="comment_8289309">
+
+    <span class="parent_id" data-parent_id="0"></span>
+    <div class="comment_body ">
+        <div class="info  " rel="8289309">
+            <div class="folding-dot-holder"><div class="folding-dot"></div></div>
+            <div id="voting_8289309" class="voting   ">
+                <a href="http://habrahabr.ru/post/250945/#minus" class="minus" title="Не нравится" onclick="return comments_vote(this, 8289309, &#39;3&#39;,	250945, -1)"></a>
+                <a href="http://habrahabr.ru/post/250945/#plus" class="plus" title="Нравится" onclick="return comments_vote(this, 8289309, &#39;3&#39;,	 250945, 1)"></a>
+                <div class="mark positive ">
+                    <span class="score" title="Всего 3: ↑3 и ↓0">+3</span>
+                </div>
+            </div>
+            <a href="http://habrahabr.ru/users/Flash_X/" class="avatar"><img src="./ZeroNet — Распределенные сайты через Bittorrent и Bitcoin   Хабрахабр_files/bda3ecb59ebf31376e31970ef92c5642_small.gif" alt=""></a>
+            <a href="http://habrahabr.ru/users/Flash_X/" class="username">Flash_X</a>
+            <time>18 февраля 2015 в 20:41</time>
+
+            <a href="http://habrahabr.ru/post/250945/#comment_8289309" class="link_to_comment">#</a>
+            
+                    <a href="http://habrahabr.ru/post/250945/#" class="favorite add" onclick="return comments_add_to_favorite(this, &#39;3&#39;, 8289309 )" title="В избранное"></a>
+            <span class="to_chidren"></span>
+            <div class="clear"></div>
+        </div>
+        <div class="message html_format ">
+            поисковик работает через вполне себе централизованный web ресурс:<br>
+<br>
+<a href="http://127.0.0.1/">127.0.0.1</a>:43110/media/1ZeroeuDnL2jNS6t1epQa1SPvC91KG8ER/index.html<br>
+<br>
+39: xmlhttp.open(«POST»,«<a href="http://zeronetproxy.tk/zeronet/zerosearch/add.php">zeronetproxy.tk/zeronet/zerosearch/add.php</a>»,true);<br>
+<br>
+По всей видимости можно хостить только статичные сайты.
+        </div>
+        <div class="reply_form_placeholder"></div>
+        <div class="reply">
+		            <a href="http://habrahabr.ru/post/250945/#reply" class="reply_link" onclick="return comment_show_reply_form(8289309 )">ответить</a>
+            
+        </div>
+    </div>
+
+    <div class="reply_comments" id="reply_comments_8289309">
+        <div class="comment_item" id="comment_8289855">
+
+    <span class="parent_id" data-parent_id="8289309"></span>
+    <div class="comment_body ">
+        <div class="info  " rel="8289855">
+            <div class="folding-dot-holder"><div class="folding-dot"></div></div>
+            <div id="voting_8289855" class="voting   ">
+                <a href="http://habrahabr.ru/post/250945/#minus" class="minus" title="Не нравится" onclick="return comments_vote(this, 8289855, &#39;3&#39;,	250945, -1)"></a>
+                <a href="http://habrahabr.ru/post/250945/#plus" class="plus" title="Нравится" onclick="return comments_vote(this, 8289855, &#39;3&#39;,	 250945, 1)"></a>
+                <div class="mark  negative">
+                    <span class="score" title="Всего 1: ↑0 и ↓1">–1</span>
+                </div>
+            </div>
+            <a href="http://habrahabr.ru/users/Guria/" class="avatar"><img src="./ZeroNet — Распределенные сайты через Bittorrent и Bitcoin   Хабрахабр_files/20da8b6f9480186d60e4ffd18673889a_small.jpg" alt=""></a>
+            <a href="http://habrahabr.ru/users/Guria/" class="username">Guria</a>
+            <time>18 февраля 2015 в 23:56</time>
+
+            <a href="http://habrahabr.ru/post/250945/#comment_8289855" class="link_to_comment">#</a>
+            
+                    <a href="http://habrahabr.ru/post/250945/#" class="favorite add" onclick="return comments_add_to_favorite(this, &#39;3&#39;, 8289855 )" title="В избранное"></a>
+                <div class="show_tree" data-id="8289855" data-parent_id="8289309" title="Показать ветку комментариев">↵</div>
+                <a href="http://habrahabr.ru/post/250945/#comment_8289309" data-id="8289855" data-parent_id="8289309" class="to_parent">↑</a>
+            <span class="to_chidren"></span>
+            <div class="clear"></div>
+        </div>
+        <div class="message html_format bad bad1">
+            ZeroBoard тоже самое: <br>
+<a href="http://habrahabr.ru/post/250945/#comment_8289093">habrahabr.ru/post/250945/#comment_8289093</a>
+        </div>
+        <div class="reply_form_placeholder"></div>
+        <div class="reply">
+		            <a href="http://habrahabr.ru/post/250945/#reply" class="reply_link" onclick="return comment_show_reply_form(8289855 )">ответить</a>
+            
+        </div>
+    </div>
+
+    <div class="reply_comments" id="reply_comments_8289855">
+        <div class="comment_item" id="comment_8290689">
+
+    <span class="parent_id" data-parent_id="8289855"></span>
+    <div class="comment_body ">
+        <div class="info  " rel="8290689">
+            <div class="folding-dot-holder"><div class="folding-dot"></div></div>
+            <div id="voting_8290689" class="voting   ">
+                <a href="http://habrahabr.ru/post/250945/#minus" class="minus" title="Не нравится" onclick="return comments_vote(this, 8290689, &#39;3&#39;,	250945, -1)"></a>
+                <a href="http://habrahabr.ru/post/250945/#plus" class="plus" title="Нравится" onclick="return comments_vote(this, 8290689, &#39;3&#39;,	 250945, 1)"></a>
+                <div class="mark  ">
+                    <span class="score" title="Всего 0: ↑0 и ↓0">0</span>
+                </div>
+            </div>
+            <a href="http://habrahabr.ru/users/fogone/" class="avatar"><img src="./ZeroNet — Распределенные сайты через Bittorrent и Bitcoin   Хабрахабр_files/a04f8b4fcf3ad258e99e607cfb1468c5_small.jpg" alt=""></a>
+            <a href="http://habrahabr.ru/users/fogone/" class="username">fogone</a>
+            <time>19 февраля 2015 в 12:08</time>
+
+            <a href="http://habrahabr.ru/post/250945/#comment_8290689" class="link_to_comment">#</a>
+            
+                    <a href="http://habrahabr.ru/post/250945/#" class="favorite add" onclick="return comments_add_to_favorite(this, &#39;3&#39;, 8290689 )" title="В избранное"></a>
+                <div class="show_tree" data-id="8290689" data-parent_id="8289855" title="Показать ветку комментариев">↵</div>
+                <a href="http://habrahabr.ru/post/250945/#comment_8289855" data-id="8290689" data-parent_id="8289855" class="to_parent">↑</a>
+            <span class="to_chidren"></span>
+            <div class="clear"></div>
+        </div>
+        <div class="message html_format ">
+            Распределенностью здесь даже не пахнет, по сути распределен только статический контент, а данамика работает по старинке на одном сервере, который можно спокойно прикрыть. Думаю, полноценное решение было бы возможность выполнять динамику в какой-то песочнице у пользователя или возможно даже распределенно между пользователями, что конечно не очень просто.
+        </div>
+        <div class="reply_form_placeholder"></div>
+        <div class="reply">
+		            <a href="http://habrahabr.ru/post/250945/#reply" class="reply_link" onclick="return comment_show_reply_form(8290689 )">ответить</a>
+            
+        </div>
+    </div>
+
+    <div class="reply_comments" id="reply_comments_8290689">
+    </div>
+</div>
+
+    </div>
+</div>
+
+    </div>
+</div>
+
+            <div class="comment_item" id="comment_8289449">
+
+    <span class="parent_id" data-parent_id="0"></span>
+    <div class="comment_body ">
+        <div class="info  " rel="8289449">
+            <div class="folding-dot-holder"><div class="folding-dot"></div></div>
+            <div id="voting_8289449" class="voting   ">
+                <a href="http://habrahabr.ru/post/250945/#minus" class="minus" title="Не нравится" onclick="return comments_vote(this, 8289449, &#39;3&#39;,	250945, -1)"></a>
+                <a href="http://habrahabr.ru/post/250945/#plus" class="plus" title="Нравится" onclick="return comments_vote(this, 8289449, &#39;3&#39;,	 250945, 1)"></a>
+                <div class="mark  ">
+                    <span class="score" title="Всего 0: ↑0 и ↓0">0</span>
+                </div>
+            </div>
+            <a href="http://habrahabr.ru/users/bagger/" class="avatar"><img src="./ZeroNet — Распределенные сайты через Bittorrent и Bitcoin   Хабрахабр_files/stub-user-small.gif" alt=""></a>
+            <a href="http://habrahabr.ru/users/bagger/" class="username">bagger</a>
+            <time>18 февраля 2015 в 21:28</time>
+
+            <a href="http://habrahabr.ru/post/250945/#comment_8289449" class="link_to_comment">#</a>
+            
+                    <a href="http://habrahabr.ru/post/250945/#" class="favorite add" onclick="return comments_add_to_favorite(this, &#39;3&#39;, 8289449 )" title="В избранное"></a>
+            <span class="to_chidren"></span>
+            <div class="clear"></div>
+        </div>
+        <div class="message html_format ">
+            предвижу создание в скором времени ZeroDNS
+        </div>
+        <div class="reply_form_placeholder"></div>
+        <div class="reply">
+		            <a href="http://habrahabr.ru/post/250945/#reply" class="reply_link" onclick="return comment_show_reply_form(8289449 )">ответить</a>
+            
+        </div>
+    </div>
+
+    <div class="reply_comments" id="reply_comments_8289449">
+        <div class="comment_item" id="comment_8289585">
+
+    <span class="parent_id" data-parent_id="8289449"></span>
+    <div class="comment_body ">
+        <div class="info  " rel="8289585">
+            <div class="folding-dot-holder"><div class="folding-dot"></div></div>
+            <div id="voting_8289585" class="voting   ">
+                <a href="http://habrahabr.ru/post/250945/#minus" class="minus" title="Не нравится" onclick="return comments_vote(this, 8289585, &#39;3&#39;,	250945, -1)"></a>
+                <a href="http://habrahabr.ru/post/250945/#plus" class="plus" title="Нравится" onclick="return comments_vote(this, 8289585, &#39;3&#39;,	 250945, 1)"></a>
+                <div class="mark  ">
+                    <span class="score" title="Всего 0: ↑0 и ↓0">0</span>
+                </div>
+            </div>
+            <a href="http://habrahabr.ru/users/farcaller/" class="avatar"><img src="./ZeroNet — Распределенные сайты через Bittorrent и Bitcoin   Хабрахабр_files/e6469ecbc30a424aea7d3f53bfac7641_small.png" alt=""></a>
+            <a href="http://habrahabr.ru/users/farcaller/" class="username">farcaller</a>
+            <time>18 февраля 2015 в 22:07</time>
+
+            <a href="http://habrahabr.ru/post/250945/#comment_8289585" class="link_to_comment">#</a>
+            
+                    <a href="http://habrahabr.ru/post/250945/#" class="favorite add" onclick="return comments_add_to_favorite(this, &#39;3&#39;, 8289585 )" title="В избранное"></a>
+                <div class="show_tree" data-id="8289585" data-parent_id="8289449" title="Показать ветку комментариев">↵</div>
+                <a href="http://habrahabr.ru/post/250945/#comment_8289449" data-id="8289585" data-parent_id="8289449" class="to_parent">↑</a>
+            <span class="to_chidren"></span>
+            <div class="clear"></div>
+        </div>
+        <div class="message html_format ">
+            <a href="http://namecoin.info/">Namecoin</a>?
+        </div>
+        <div class="reply_form_placeholder"></div>
+        <div class="reply">
+		            <a href="http://habrahabr.ru/post/250945/#reply" class="reply_link" onclick="return comment_show_reply_form(8289585 )">ответить</a>
+            
+        </div>
+    </div>
+
+    <div class="reply_comments" id="reply_comments_8289585">
+    </div>
+</div>
+
+    </div>
+</div>
+
+            <div class="comment_item" id="comment_8289525">
+
+    <span class="parent_id" data-parent_id="0"></span>
+    <div class="comment_body ">
+        <div class="info  " rel="8289525">
+            <div class="folding-dot-holder"><div class="folding-dot"></div></div>
+            <div id="voting_8289525" class="voting   ">
+                <a href="http://habrahabr.ru/post/250945/#minus" class="minus" title="Не нравится" onclick="return comments_vote(this, 8289525, &#39;3&#39;,	250945, -1)"></a>
+                <a href="http://habrahabr.ru/post/250945/#plus" class="plus" title="Нравится" onclick="return comments_vote(this, 8289525, &#39;3&#39;,	 250945, 1)"></a>
+                <div class="mark  ">
+                    <span class="score" title="Всего 0: ↑0 и ↓0">0</span>
+                </div>
+            </div>
+            <a href="http://habrahabr.ru/users/dna/" class="avatar"><img src="./ZeroNet — Распределенные сайты через Bittorrent и Bitcoin   Хабрахабр_files/stub-user-small.gif" alt=""></a>
+            <a href="http://habrahabr.ru/users/dna/" class="username">dna</a>
+            <time>18 февраля 2015 в 21:47</time>
+
+            <a href="http://habrahabr.ru/post/250945/#comment_8289525" class="link_to_comment">#</a>
+            
+                    <a href="http://habrahabr.ru/post/250945/#" class="favorite add" onclick="return comments_add_to_favorite(this, &#39;3&#39;, 8289525 )" title="В избранное"></a>
+            <span class="to_chidren"></span>
+            <div class="clear"></div>
+        </div>
+        <div class="message html_format ">
+            freenet?
+        </div>
+        <div class="reply_form_placeholder"></div>
+        <div class="reply">
+		            <a href="http://habrahabr.ru/post/250945/#reply" class="reply_link" onclick="return comment_show_reply_form(8289525 )">ответить</a>
+            
+        </div>
+    </div>
+
+    <div class="reply_comments" id="reply_comments_8289525">
+    </div>
+</div>
+
+            <div class="comment_item" id="comment_8289647">
+
+    <span class="parent_id" data-parent_id="0"></span>
+    <div class="comment_body ">
+        <div class="info  " rel="8289647">
+            <div class="folding-dot-holder"><div class="folding-dot"></div></div>
+            <div id="voting_8289647" class="voting   ">
+                <a href="http://habrahabr.ru/post/250945/#minus" class="minus" title="Не нравится" onclick="return comments_vote(this, 8289647, &#39;3&#39;,	250945, -1)"></a>
+                <a href="http://habrahabr.ru/post/250945/#plus" class="plus" title="Нравится" onclick="return comments_vote(this, 8289647, &#39;3&#39;,	 250945, 1)"></a>
+                <div class="mark  ">
+                    <span class="score" title="Всего 0: ↑0 и ↓0">0</span>
+                </div>
+            </div>
+            <a href="http://habrahabr.ru/users/Nokta_strigo/" class="avatar"><img src="./ZeroNet — Распределенные сайты через Bittorrent и Bitcoin   Хабрахабр_files/8be39bdbeecc1488dad3c80911a94dbb_small.jpg" alt=""></a>
+            <a href="http://habrahabr.ru/users/Nokta_strigo/" class="username">Nokta_strigo</a>
+            <time>18 февраля 2015 в 22:34</time>
+
+            <a href="http://habrahabr.ru/post/250945/#comment_8289647" class="link_to_comment">#</a>
+            
+                    <a href="http://habrahabr.ru/post/250945/#" class="favorite add" onclick="return comments_add_to_favorite(this, &#39;3&#39;, 8289647 )" title="В избранное"></a>
+            <span class="to_chidren"></span>
+            <div class="clear"></div>
+        </div>
+        <div class="message html_format ">
+            Работает шустренько :-) Даже сайт на 166 Мб есть.<br>
+Хорошо бы это в виде плагина к браузеру сделать (понятно, что это может быть на далёкую перспективу)
+        </div>
+        <div class="reply_form_placeholder"></div>
+        <div class="reply">
+		            <a href="http://habrahabr.ru/post/250945/#reply" class="reply_link" onclick="return comment_show_reply_form(8289647 )">ответить</a>
+            
+        </div>
+    </div>
+
+    <div class="reply_comments" id="reply_comments_8289647">
+    </div>
+</div>
+
+            <div class="comment_item" id="comment_8290019">
+
+    <span class="parent_id" data-parent_id="0"></span>
+    <div class="comment_body ">
+        <div class="info  " rel="8290019">
+            <div class="folding-dot-holder"><div class="folding-dot"></div></div>
+            <div id="voting_8290019" class="voting   ">
+                <a href="http://habrahabr.ru/post/250945/#minus" class="minus" title="Не нравится" onclick="return comments_vote(this, 8290019, &#39;3&#39;,	250945, -1)"></a>
+                <a href="http://habrahabr.ru/post/250945/#plus" class="plus" title="Нравится" onclick="return comments_vote(this, 8290019, &#39;3&#39;,	 250945, 1)"></a>
+                <div class="mark positive ">
+                    <span class="score" title="Всего 3: ↑2 и ↓1">+1</span>
+                </div>
+            </div>
+            <a href="http://habrahabr.ru/users/DjOnline/" class="avatar"><img src="./ZeroNet — Распределенные сайты через Bittorrent и Bitcoin   Хабрахабр_files/stub-user-small.gif" alt=""></a>
+            <a href="http://habrahabr.ru/users/DjOnline/" class="username">DjOnline</a>
+            <time>19 февраля 2015 в 00:51</time>
+
+            <a href="http://habrahabr.ru/post/250945/#comment_8290019" class="link_to_comment">#</a>
+            
+                    <a href="http://habrahabr.ru/post/250945/#" class="favorite add" onclick="return comments_add_to_favorite(this, &#39;3&#39;, 8290019 )" title="В избранное"></a>
+            <span class="to_chidren"></span>
+            <div class="clear"></div>
+        </div>
+        <div class="message html_format ">
+            Это как гипертекстовый фидонет? Чтобы посмотрели другие, надо сначала всё скачать самому, даже то что не нужно?
+        </div>
+        <div class="reply_form_placeholder"></div>
+        <div class="reply">
+		            <a href="http://habrahabr.ru/post/250945/#reply" class="reply_link" onclick="return comment_show_reply_form(8290019 )">ответить</a>
+            
+        </div>
+    </div>
+
+    <div class="reply_comments" id="reply_comments_8290019">
+    </div>
+</div>
+
+            <div class="comment_item" id="comment_8290109">
+
+    <span class="parent_id" data-parent_id="0"></span>
+    <div class="comment_body ">
+        <div class="info  " rel="8290109">
+            <div class="folding-dot-holder"><div class="folding-dot"></div></div>
+            <div id="voting_8290109" class="voting   ">
+                <a href="http://habrahabr.ru/post/250945/#minus" class="minus" title="Не нравится" onclick="return comments_vote(this, 8290109, &#39;3&#39;,	250945, -1)"></a>
+                <a href="http://habrahabr.ru/post/250945/#plus" class="plus" title="Нравится" onclick="return comments_vote(this, 8290109, &#39;3&#39;,	 250945, 1)"></a>
+                <div class="mark  ">
+                    <span class="score" title="Всего 0: ↑0 и ↓0">0</span>
+                </div>
+            </div>
+            <a href="http://habrahabr.ru/users/Nokta_strigo/" class="avatar"><img src="./ZeroNet — Распределенные сайты через Bittorrent и Bitcoin   Хабрахабр_files/8be39bdbeecc1488dad3c80911a94dbb_small.jpg" alt=""></a>
+            <a href="http://habrahabr.ru/users/Nokta_strigo/" class="username">Nokta_strigo</a>
+            <time>19 февраля 2015 в 01:51</time>
+
+            <a href="http://habrahabr.ru/post/250945/#comment_8290109" class="link_to_comment">#</a>
+            
+                    <a href="http://habrahabr.ru/post/250945/#" class="favorite add" onclick="return comments_add_to_favorite(this, &#39;3&#39;, 8290109 )" title="В избранное"></a>
+            <span class="to_chidren"></span>
+            <div class="clear"></div>
+        </div>
+        <div class="message html_format ">
+            Есть прокси из обычного инета: <a href="http://zero.network/">zero.network</a><br>
+Кроме поисковика есть индекс сайтов: 1JF4oezBUFMCbbct1uUnXHf4y3W3grUsXP<br>
+
+        </div>
+        <div class="reply_form_placeholder"></div>
+        <div class="reply">
+		            <a href="http://habrahabr.ru/post/250945/#reply" class="reply_link" onclick="return comment_show_reply_form(8290109 )">ответить</a>
+            
+        </div>
+    </div>
+
+    <div class="reply_comments" id="reply_comments_8290109">
+        <div class="comment_item" id="comment_8290139">
+
+    <span class="parent_id" data-parent_id="8290109"></span>
+    <div class="comment_body ">
+        <div class="info  " rel="8290139">
+            <div class="folding-dot-holder"><div class="folding-dot"></div></div>
+            <div id="voting_8290139" class="voting   ">
+                <a href="http://habrahabr.ru/post/250945/#minus" class="minus" title="Не нравится" onclick="return comments_vote(this, 8290139, &#39;3&#39;,	250945, -1)"></a>
+                <a href="http://habrahabr.ru/post/250945/#plus" class="plus" title="Нравится" onclick="return comments_vote(this, 8290139, &#39;3&#39;,	 250945, 1)"></a>
+                <div class="mark  ">
+                    <span class="score" title="Всего 0: ↑0 и ↓0">0</span>
+                </div>
+            </div>
+            <a href="http://habrahabr.ru/users/Nokta_strigo/" class="avatar"><img src="./ZeroNet — Распределенные сайты через Bittorrent и Bitcoin   Хабрахабр_files/8be39bdbeecc1488dad3c80911a94dbb_small.jpg" alt=""></a>
+            <a href="http://habrahabr.ru/users/Nokta_strigo/" class="username">Nokta_strigo</a>
+            <time>19 февраля 2015 в 02:08</time>
+
+            <a href="http://habrahabr.ru/post/250945/#comment_8290139" class="link_to_comment">#</a>
+            
+                    <a href="http://habrahabr.ru/post/250945/#" class="favorite add" onclick="return comments_add_to_favorite(this, &#39;3&#39;, 8290139 )" title="В избранное"></a>
+                <div class="show_tree" data-id="8290139" data-parent_id="8290109" title="Показать ветку комментариев">↵</div>
+                <a href="http://habrahabr.ru/post/250945/#comment_8290109" data-id="8290139" data-parent_id="8290109" class="to_parent">↑</a>
+            <span class="to_chidren"></span>
+            <div class="clear"></div>
+        </div>
+        <div class="message html_format ">
+            Правда если смотреть через эту прокси, то в ZeroTalk последние сообщения не показываются… Не успевает она обновляться похоже.
+        </div>
+        <div class="reply_form_placeholder"></div>
+        <div class="reply">
+		            <a href="http://habrahabr.ru/post/250945/#reply" class="reply_link" onclick="return comment_show_reply_form(8290139 )">ответить</a>
+            
+        </div>
+    </div>
+
+    <div class="reply_comments" id="reply_comments_8290139">
+    </div>
+</div>
+
+    </div>
+</div>
+
+            <div class="comment_item" id="comment_8290407">
+
+    <span class="parent_id" data-parent_id="0"></span>
+    <div class="comment_body ">
+        <div class="info  " rel="8290407">
+            <div class="folding-dot-holder"><div class="folding-dot"></div></div>
+            <div id="voting_8290407" class="voting   ">
+                <a href="http://habrahabr.ru/post/250945/#minus" class="minus" title="Не нравится" onclick="return comments_vote(this, 8290407, &#39;3&#39;,	250945, -1)"></a>
+                <a href="http://habrahabr.ru/post/250945/#plus" class="plus" title="Нравится" onclick="return comments_vote(this, 8290407, &#39;3&#39;,	 250945, 1)"></a>
+                <div class="mark  ">
+                    <span class="score" title="Всего 0: ↑0 и ↓0">0</span>
+                </div>
+            </div>
+            <a href="http://habrahabr.ru/users/MiXaiL27/" class="avatar"><img src="./ZeroNet — Распределенные сайты через Bittorrent и Bitcoin   Хабрахабр_files/b9b184a3156411f3f4d41d99004e6a42_small.jpg" alt=""></a>
+            <a href="http://habrahabr.ru/users/MiXaiL27/" class="username">MiXaiL27</a>
+            <time>19 февраля 2015 в 10:09</time>
+
+            <a href="http://habrahabr.ru/post/250945/#comment_8290407" class="link_to_comment">#</a>
+            
+                    <a href="http://habrahabr.ru/post/250945/#" class="favorite add" onclick="return comments_add_to_favorite(this, &#39;3&#39;, 8290407 )" title="В избранное"></a>
+            <span class="to_chidren"></span>
+            <div class="clear"></div>
+        </div>
+        <div class="message html_format ">
+            Однако! А на какой стадии разработчики определяют свой проект по степени завершенности?
+        </div>
+        <div class="reply_form_placeholder"></div>
+        <div class="reply">
+		            <a href="http://habrahabr.ru/post/250945/#reply" class="reply_link" onclick="return comment_show_reply_form(8290407 )">ответить</a>
+            
+        </div>
+    </div>
+
+    <div class="reply_comments" id="reply_comments_8290407">
+    </div>
+</div>
+
+            <div class="comment_item" id="comment_8290639">
+
+    <span class="parent_id" data-parent_id="0"></span>
+    <div class="comment_body ">
+        <div class="info  " rel="8290639">
+            <div class="folding-dot-holder"><div class="folding-dot"></div></div>
+            <div id="voting_8290639" class="voting   ">
+                <a href="http://habrahabr.ru/post/250945/#minus" class="minus" title="Не нравится" onclick="return comments_vote(this, 8290639, &#39;3&#39;,	250945, -1)"></a>
+                <a href="http://habrahabr.ru/post/250945/#plus" class="plus" title="Нравится" onclick="return comments_vote(this, 8290639, &#39;3&#39;,	 250945, 1)"></a>
+                <div class="mark  ">
+                    <span class="score" title="Всего 0: ↑0 и ↓0">0</span>
+                </div>
+            </div>
+            <a href="http://habrahabr.ru/users/Zardos/" class="avatar"><img src="./ZeroNet — Распределенные сайты через Bittorrent и Bitcoin   Хабрахабр_files/f5820b390321efb64d2f6a3f15a15de5_small.jpg" alt=""></a>
+            <a href="http://habrahabr.ru/users/Zardos/" class="username">Zardos</a>
+            <time>19 февраля 2015 в 11:51</time>
+
+            <a href="http://habrahabr.ru/post/250945/#comment_8290639" class="link_to_comment">#</a>
+            
+                    <a href="http://habrahabr.ru/post/250945/#" class="favorite add" onclick="return comments_add_to_favorite(this, &#39;3&#39;, 8290639 )" title="В избранное"></a>
+            <span class="to_chidren"></span>
+            <div class="clear"></div>
+        </div>
+        <div class="message html_format ">
+            Я правильно понимаю, что это революция и появление чего-то сопоставимого с самим интернетом? По крайней мере, пока не было динамических сайтов, это была всего лишь милая поделка. А сейчас, похоже, начинается самое интересное.
+        </div>
+        <div class="reply_form_placeholder"></div>
+        <div class="reply">
+		            <a href="http://habrahabr.ru/post/250945/#reply" class="reply_link" onclick="return comment_show_reply_form(8290639 )">ответить</a>
+            
+        </div>
+    </div>
+
+    <div class="reply_comments" id="reply_comments_8290639">
+        <div class="comment_item" id="comment_8290669">
+
+    <span class="parent_id" data-parent_id="8290639"></span>
+    <div class="comment_body ">
+        <div class="info  " rel="8290669">
+            <div class="folding-dot-holder"><div class="folding-dot"></div></div>
+            <div id="voting_8290669" class="voting   ">
+                <a href="http://habrahabr.ru/post/250945/#minus" class="minus" title="Не нравится" onclick="return comments_vote(this, 8290669, &#39;3&#39;,	250945, -1)"></a>
+                <a href="http://habrahabr.ru/post/250945/#plus" class="plus" title="Нравится" onclick="return comments_vote(this, 8290669, &#39;3&#39;,	 250945, 1)"></a>
+                <div class="mark  ">
+                    <span class="score" title="Всего 0: ↑0 и ↓0">0</span>
+                </div>
+            </div>
+            <a href="http://habrahabr.ru/users/Guria/" class="avatar"><img src="./ZeroNet — Распределенные сайты через Bittorrent и Bitcoin   Хабрахабр_files/20da8b6f9480186d60e4ffd18673889a_small.jpg" alt=""></a>
+            <a href="http://habrahabr.ru/users/Guria/" class="username">Guria</a>
+            <time>19 февраля 2015 в 12:03</time>
+
+            <a href="http://habrahabr.ru/post/250945/#comment_8290669" class="link_to_comment">#</a>
+            
+                    <a href="http://habrahabr.ru/post/250945/#" class="favorite add" onclick="return comments_add_to_favorite(this, &#39;3&#39;, 8290669 )" title="В избранное"></a>
+                <div class="show_tree" data-id="8290669" data-parent_id="8290639" title="Показать ветку комментариев">↵</div>
+                <a href="http://habrahabr.ru/post/250945/#comment_8290639" data-id="8290669" data-parent_id="8290639" class="to_parent">↑</a>
+            <span class="to_chidren"></span>
+            <div class="clear"></div>
+        </div>
+        <div class="message html_format ">
+            см. выше. вся динамика через tcp/ip
+        </div>
+        <div class="reply_form_placeholder"></div>
+        <div class="reply">
+		            <a href="http://habrahabr.ru/post/250945/#reply" class="reply_link" onclick="return comment_show_reply_form(8290669 )">ответить</a>
+            
+        </div>
+    </div>
+
+    <div class="reply_comments" id="reply_comments_8290669">
+    </div>
+</div>
+
+    </div>
+</div>
+
+    </div>
+
+
+  					<div class="comments_form" id="comments_form_placeholder">
+				<h2 class="title"><a href="http://habrahabr.ru/post/250945/#" onclick="return comment_show_form()">Написать комментарий</a></h2>
+				<form action="http://habrahabr.ru/json/comment/" method="post" id="comments_form">
+
+				<div id="preview_placeholder" class="hidden html_format"></div>
+
+				<input type="hidden" name="ts" value="1424346807">
+				<input type="hidden" name="tt" value="2">
+				<input type="hidden" name="ti" value="250945">  
+				<input type="hidden" name="comment_id" value="0">
+				<input type="hidden" name="parent_id" value="0">
+
+
+				<div class="editor">
+						<div class="panel">
+							<div class="wysiwyg_wrapper">
+	<div class="can_use_html"><a href="http://habrahabr.ru/post/250945/#html_help" onclick="$(this).parents(&#39;.wysiwyg_wrapper&#39;).find(&#39;.help_holder&#39;).toggleClass(&#39;hidden&#39;);return false;">html-теги</a></div>
+	<a class="btn" title="Жирный" onclick="return habraWYG.insertTagWithText(this, &#39;b&#39;);" href="http://habrahabr.ru/post/250945/#" tabindex="-1"><span class="g-icon g-icon-bold"></span></a>
+	<a class="btn" title="Курсив" onclick="return habraWYG.insertTagWithText(this, &#39;i&#39;);" href="http://habrahabr.ru/post/250945/#" tabindex="-1"><span class="g-icon g-icon-italic"></span></a>
+	<a class="btn" title="Подчёркнутый" onclick="return habraWYG.insertTagWithText(this, &#39;u&#39;);" href="http://habrahabr.ru/post/250945/#" tabindex="-1"><span class="g-icon g-icon-underline"></span></a>
+	<a class="btn" title="Зачёркнутый" onclick="return habraWYG.insertTagWithText(this, &#39;s&#39;);" href="http://habrahabr.ru/post/250945/#" tabindex="-1"><span class="g-icon g-icon-strike"></span></a>
+	<a class="btn" title="Цитата" onclick="return habraWYG.insertTagWithText(this, &#39;blockquote&#39;);" href="http://habrahabr.ru/post/250945/#" tabindex="-1"><span class="g-icon g-icon-quote"></span></a>
+	<div class="btn btn-dropdown">
+		<span class="g-icon g-icon-list"></span>
+		<select name="list" onchange="habraWYG.insertList(this);" onclick="return false;" tabindex="-1">
+			<option value="" class="title">Список:</option>
+			<option value="ul">UL LI</option>
+			<option value="ol">OL LI</option>
+		</select>
+	</div>
+	<a class="btn" title="Пользователь" onclick="return habraWYG.insertUser(this);" href="http://habrahabr.ru/post/250945/#" tabindex="-1"><span class="g-icon g-icon-users"></span></a>
+	<a class="btn" title="Вставить ссылку" onclick="return habraWYG.insertLink(this);" href="http://habrahabr.ru/post/250945/#" tabindex="-1"><span class="g-icon g-icon-link"></span></a>
+	<a class="btn" title="Вставить изображение" onclick="return habraWYG.insertImage(this);" href="http://habrahabr.ru/post/250945/#" tabindex="-1"><span class="g-icon g-icon-images"></span></a>
+	<a class="btn" title="Вставить видео" onclick="return habraWYG.insertTagWithText(this, &#39;video&#39;);" href="http://habrahabr.ru/post/250945/#" tabindex="-1"><span class="g-icon g-icon-video"></span></a>
+	<a class="btn" title="Вставить спойлер" onclick="return habraWYG.insertSpoiler(this);" href="http://habrahabr.ru/post/250945/#" tabindex="-1"><span class="g-icon g-icon-spoiler"></span></a>
+	<div class="btn btn-dropdown">
+		<span class="g-icon g-icon-code"></span>
+		<select class="with-title" name="source" title="Используйте этот тег для блочных элементов" onchange="habraWYG.insertSource(this);" tabindex="-1">
+			<option value="" class="title">Source:</option>
+			<option value="bash">Bash</option>
+			<option value="cs">C#</option>
+			<option value="cpp">C++</option>
+			<option value="css">CSS</option>
+			<option value="diff">Diff</option>
+			<option value="html">HTML</option>
+			<option value="xml">XML</option>
+			<option value="java">Java</option>
+			<option value="javascript">JavaScript</option>
+			<option value="php">PHP</option>
+			<option value="perl">Perl</option>
+			<option value="python">Python</option>
+			<option value="ruby">Ruby</option>
+			<option value="sql">SQL</option>
+			<option value="1c">1C</option>
+			<option value="actionscript">ActionScript</option>
+			<option value="apache">Apache</option>
+			<option value="axapta">Axapta</option>
+			<option value="cmake">CMake</option>
+			<option value="coffeescript">CoffeeScript</option>
+			<option value="dos">DOS</option>
+			<option value="delphi">Delphi</option>
+			<option value="django">Django</option>
+			<option value="erlang">Erlang</option>
+			<option value="erlang_repl">Erlang REPL</option>
+      <option value="glsl">GLSL</option>
+			<option value="go">Go</option>
+			<option value="haskell">Haskell</option>
+			<option value="lisp">Lisp</option>
+			<option value="lua">Lua</option>
+			<option value="mel">MEL</option>
+			<option value="markdown">Markdown</option>
+			<option value="matlab">Matlab</option>
+			<option value="nginx">Nginx</option>
+			<option value="objectivec">Objective C</option>
+			<option value="rust">Rust</option>
+			<option value="scala">Scala</option>
+			<option value="smalltalk">Smalltalk</option>
+			<option value="tex">TeX</option>
+			<option value="vbscript">VBScript</option>
+			<option value="vhdl">VHDL</option>
+			<option value="vala">Vala</option>
+		</select>
+	</div>
+	
+
+	<div class="clear"></div>
+
+		<div class="help_holder hidden">
+          <h4>Теги Хабрахабра</h4>
+					<dl class="block_semi">
+						<dt>&lt;habracut&gt;</dt>
+						<dd class="description">Используется только в текстах публикаций, скрывает под кат часть текста, следующую за тегом (будет написано «Читать дальше»).</dd>
+					</dl>
+					<dl class="block_semi">
+	
+						<dt>&lt;habracut text="Подробности" /&gt;</dt>
+						<dd class="description">Так можно превратить надпись «Читать дальше» в любой текст.</dd>
+					</dl>
+					<dl class="block_semi">
+						<dt>&lt;source lang="Язык"&gt;&lt;/source&gt;</dt>
+						<dd class="description">Подсвечивает исходный код (на выбор: 
+						Bash,  C#,  C++,  CSS,  Diff,  HTML, XML,  Ini,  Java,  JavaScript,  PHP,  Perl,  Python,  Ruby,  SQL,
+						1C,  AVR Assembler,  ActionScript,  Apache,  Axapta,  CMake,  CoffeeScript,  DOS, .bat,  Delphi,  Django,  Erlang,  Erlang REPL,  Go,  Haskell,  Lisp,  Lua,  MEL,  Markdown,  Matlab,  Nginx,  Objective C,  Parser3,  Python profile,  RenderMan,  Rust,  Scala,  Smalltalk,  TeX,  VBScript,  VHDL,  Vala    
+						).</dd>
+					</dl>
+					<dl class="block_semi">
+						<dt>&lt;video&gt;http://...&lt;/video&gt;</dt>
+	
+						<dd class="description">Добавляет в публикацию видео со следующих хостингов: YouTube, RuTube, Google video, Vimeo, Я.Видео, Ivideon и Видео@Mail.ru<br>Вставляйте между тегами только прямую ссылку на видеоролик.</dd>
+					</dl>
+
+					<dl class="block_semi">
+						<dt>&lt;twitter&gt;http://...&lt;/twitter&gt;</dt>
+
+						<dd class="description">Добавляет в публикацию твит. Необходимо указать полную ссылку на твит. Например: &lt;twitter&gt;https://twitter.com/habrahabr/status/522334394175213568&lt;/twitter&gt;</dd>
+					</dl>
+
+					<dl class="block_semi">
+						<dt>&lt;slideshow&gt;http://...&lt;/slideshow&gt;</dt>						
+	
+						<dd class="description">Вставка интерактивного слайд-шоу. Пока поддерживается только сервис Slideshare.net.</dd>
+					</dl>
+
+					<dl class="block_semi">
+						<dt>@username</dt>
+	
+						<dd class="description">
+							Выводит имя пользователя в тексте и отправляет пользователю уведомление о том, что его упомянули в публикации/комментарии. 
+							Вы можете использовать конструкцию <b>@username</b>, где <b>username</b> — это имя пользователя.
+						</dd>
+					</dl>
+					
+					<dl class="block_semi">
+						<dt>&lt;spoiler title="Заголовок"&gt;Содержимое&lt;/spoiler&gt;</dt>
+	
+						<dd class="description">Вставка спойлера (разворачиваемый блок информации).</dd>
+					</dl>
+					
+					
+					
+					
+					<h4>Стандартные</h4>
+					<table class="wide">
+						<tbody><tr>
+							<td>
+		
+								<dl class="block_semi">
+									<dt>&lt;h1&gt;&lt;/h1&gt;<br>
+										...<br>
+										&lt;h6&gt;&lt;/h6&gt;
+									</dt>
+									<dd class="description">Заголовки разного уровня.</dd>
+								</dl>
+								<dl class="block_semi">
+	
+									<dt>&lt;img src="" /&gt;</dt>
+									<dd class="description">Вставка изображения, в атрибуте src нужно указывать полный путь к изображению. Возможно выравнивание картинки атрибутом align.</dd>
+								</dl>
+								<dl class="block_semi">
+									<dt>&lt;a href="http://..."&gt;Ссылка&lt;/a&gt;</dt>
+	
+									<dd class="description">Вставка ссылки, в атрибуте href указывается желаемый интернет-адрес или якорь (anchor) для навигации по странице.</dd>
+								</dl>								
+								<dl class="block_semi">
+									<dt>&lt;anchor&gt;Example1&lt;/anchor&gt;</dt>
+	
+									<dd class="description">Тег для указания якоря. Для вызова используйте тег вставки ссылок (&lt;a href="#Example1"&gt;Текст&lt;/a&gt;).</dd>
+								</dl>								
+								<dl class="block_semi">
+									<dt>&lt;b&gt;&lt;/b&gt;<br>
+										&lt;strong&gt;&lt;/strong&gt;</dt>
+									<dd class="description">Выделение важного текста, на странице выделяется жирным начертанием.</dd>
+								</dl>
+								<dl class="block_semi">
+	
+									<dt>&lt;i&gt;&lt;/i&gt;<br>
+										&lt;em&gt;&lt;/em&gt;</dt>
+									<dd class="description">Выделение важного текста, на странице выделяется курсивом.</dd>
+								</dl>
+								<dl class="block_semi">
+									<dt>
+										&lt;s&gt;&lt;/s&gt;<br>
+										&lt;strike&gt;&lt;/strike&gt;
+									</dt>
+									<dd class="description">Текст между этими тегами будет отображаться как зачеркнутый.</dd>
+								</dl>
+	
+								<dl class="block_semi">
+									<dt>
+										&lt;u&gt;&lt;/u&gt;
+									</dt>
+									<dd class="description">Текст между этими тегами будет отображаться как подчеркнутый.</dd>
+								</dl>
+	
+								
+							</td>
+							
+							<td width="5%"></td>
+							
+							<td>
+							<dl class="block_semi">
+								<dt>
+									&lt;hr /&gt;
+								</dt>
+								<dd class="description">Тег для вставки горизонтальной линии.</dd>
+							</dl>	
+								<dl class="block_semi">
+									<dt>
+										&lt;blockquote&gt;&lt;/blockquote&gt;
+									</dt>
+									<dd class="description">Используйте этот тег для выделения цитат.</dd>
+	
+								</dl>
+								<dl class="block_semi">
+									<dt>
+										&lt;table&gt;&lt;/table&gt;<br>
+										&lt;th&gt;&lt;/th&gt;<br>
+										&lt;td&gt;&lt;/td&gt;<br>
+	
+										&lt;tr&gt;&lt;/tr&gt;
+									</dt>
+									<dd class="description">Набор тегов для создания таблицы. Тег &lt;td&gt; обозначает ячейку таблицы, тег &lt;th&gt; - ячейку в заголовке, &lt;tr&gt; - строчку таблицы. Все содержимое таблицы помещайте в тег &lt;table&gt;.</dd>
+	
+								</dl>
+								<dl class="block_semi">
+									<dt>
+										&lt;sup&gt;&lt;/sup&gt;<br>
+										&lt;sub&gt;&lt;/sub&gt;
+									</dt>
+									<dd class="description">Текст, заключенный в тег &lt;sup&gt; отображается в виде верхнего индекса, &lt;sub&gt; - в виде нижнего.</dd>
+	
+								</dl>
+								<dl class="block_semi">
+									<dt>
+										&lt;abbr title="" &gt;&lt;/abbr&gt;<br>
+										&lt;acronym title="" &gt;&lt;/acronym&gt;
+									</dt>
+	
+									<dd class="description">Тегом &lt;abbr&gt; выделяется аббревиатура, в атрибуте title указывайте её расшифровку. Используйте тег &lt;acronym&gt; для устоявшихся аббревиатур.</dd>
+								</dl>
+								<dl class="block_semi">
+									<dt>
+										&lt;pre&gt;&lt;/pre&gt;
+	
+									</dt>
+									<dd class="description">Текст в теге &lt;pre&gt; не форматируется автоматически.</dd>
+								</dl>
+								<dl class="block_semi">
+									<dt>
+										&lt;nobr&gt;&lt;/nobr&gt;<br>
+	
+										&lt;br clear="all|left||right" /&gt;
+									</dt>
+									<dd class="description">Текст, помещенный в тег &lt;nobr&gt;, не переносится на странице; для принудительного переноса текста используйте тег &lt;br /&gt;; для аккуратного выравнивания изображений используйте атрибут clear="all|left||right" в теге &lt;br /&gt;.</dd>
+								</dl>
+								
+								<dl class="block_semi">
+									<dt>
+										&lt;ul&gt;&lt;/ul&gt;<br>
+										&lt;li&gt;&lt;/li&gt;
+									</dt>
+									<dd class="description">Ненумерованный список; каждый элемент списка задается тегом &lt;li&gt;, набор элементов списка помещайте в тег &lt;ul&gt;.</dd>
+	
+								</dl>
+								<dl class="block_semi">
+									<dt>
+										&lt;ol&gt;&lt;/ol&gt;<br>
+										&lt;li&gt;&lt;/li&gt;
+									</dt>
+									<dd class="description">Нумерованный список; каждый элемент списка задается тегом &lt;li&gt;, набор элементов списка помещайте в тег &lt;ol&gt;.</dd>
+	
+								</dl>
+							</td>
+						</tr>
+	
+					</tbody></table>
+					
+					<div class="close_html"><a href="http://habrahabr.ru/post/250945/#html_help_close" onclick="$(this).parents(&#39;.wysiwyg_wrapper&#39;).find(&#39;.help_holder&#39;).toggleClass(&#39;hidden&#39;);return false;">закрыть</a></div>
+					
+		</div>
+</div>
+						</div>
+						<div class="text-holder">
+						 <textarea cols="30" rows="10" name="text" id="comment_text"></textarea>
+						</div>
+						<span id="error_text" class="error"></span>
+					</div>
+					<div class="buttons">
+						<input type="button" class="preview disableble" value="Предпросмотр" disabled="disabled" onclick="comment_preview(this.form, this)">
+						<input type="button" class="submit disableble" value="Написать" disabled="disabled" onclick="comment_send(this.form, this)">
+						<input type="button" class="edit hidden disableble" value="Сохранить" disabled="disabled" onclick="comment_update(this.form, this)">
+						
+
+						<span class="time_left" title="Оставшееся время редактирования комментария"></span>
+					</div>
+				</form>
+			</div>
+
+
+  	
+<form action="http://habrahabr.ru/json/favorites/" method="post" id="edit_tags_form" class="hidden">
+  <input type="hidden" name="action" value="add">
+  <input type="hidden" name="ti" value="0">
+  <input type="hidden" name="tt" value="0">
+  <label>Пометьте топик понятными вам метками, если хотите</label>
+  <input type="text" name="tags_string" class="tags_string" autocomplete="off">
+  <div class="description">Метки лучше разделять запятой. Например: <i>общение, социальные сети, myspace.com, подростки, мердок</i></div>
+  <input type="submit" value="Сохранить" class="submit"> или <a href="http://habrahabr.ru/post/250945/#" class="close" onclick="return close_edit_tags()">закрыть</a>
+</form>
+    
+    
+
+  </div>
+  <div class="sidebar_right">
+  			<div class="banner_300x500">
+		<div id="adriver_banner_1863387959" title="" style="width: 300px; height: 500px; text-align: center; margin: 0px auto;"><a href="http://ad.adriver.ru/cgi-bin/click.cgi?sid=176776&ad=504897&bid=3708953&bt=52&bn=1&pz=0&xpid=ClNLMMCVm8vqovSXjpQbJqngDilsFN7Qz&ref=http:%2f%2fhabrahabr.ru%2fpost%2f250945%2f&custom=1%3Dinfosecurity%3B2%3Dp2p%3B4%3D2&rleurl=" onclick="adriver(&#39;adriver_banner_1863387959&#39;).sendPixel(&#39;&#39;);" target="_blank"><img src="./ZeroNet — Распределенные сайты через Bittorrent и Bitcoin   Хабрахабр_files/bn1-ulmart-2.jpg" alt="AdRiver" border="0"></a></div>
+		<script type="text/javascript">
+            function show_bn1_block(name, url){
+                console.log('show' + name);
+                if( typeof(name) !== 'undefined'){
+                    $.get('/html/'+name+'/1424335982/', function(html){
+                        $('#adriver_banner_1863387959').html(html);
+                        if( typeof(url) !== 'undefined'){
+                            $('.'+name+'_inner_banner .block_url').attr('href', url);
+                        }
+                    })
+                }
+            }
+
+
+
+			$(function(){
+
+                // конвертирут кириллицу в cp1251
+                // doc: http://www.adriver.ru/doc/edu-n/pub/settargt/standtrgt/scentrgt/scentrgt.html#9
+				function esc(s){
+                    for(var i=0,l=s.length,r='';i<l;i++){
+                        var c = s.charCodeAt(i);r += String.fromCharCode(c>1039&&c<1104 ? c-848 : c==1105 ? 184 : c==1025 ? 168 : c);
+                    }
+                    return r;
+                }
+
+                var keyword = '';
+
+                if (typeof crtg_content !== 'undefined' && crtg_content) { keyword = crtg_content; }
+                
+                
+
+				var custom = {4:ar_duo1};
+					custom[1] = 'infosecurity';
+					custom[2] = 'p2p';
+
+                 new adriver("adriver_banner_1863387959", {sid: 176776, bt: 52, bn: 1, custom: custom, keyword: keyword});
+			}());
+
+
+
+            
+		</script>
+	</div>
+
+  		
+  		
+<div class="block daily_best_posts">
+  <div class="title">Популярное за сутки</div>
+  <div class="posts_list">
+      <div class="post_item">
+        
+				
+				
+				
+				
+				
+
+        <a href="http://habrahabr.ru/post/250999/" onclick="if (typeof ga === &#39;function&#39;) { ga(&#39;send&#39;, &#39;event&#39;, &#39;tm_block&#39;, &#39;daily_best_posts&#39;, $(this).parents(&#39;.daily_best_posts&#39;).hasClass(&#39;float_block&#39;) ? &#39;float&#39; : &#39;common&#39;); }" class="post_name">Восстанавливаем локальные и доменные пароли из hiberfil.sys</a>
+      </div>
+      <div class="post_item">
+        
+				
+				
+				
+				
+				
+
+        <a href="http://habrahabr.ru/post/250927/" onclick="if (typeof ga === &#39;function&#39;) { ga(&#39;send&#39;, &#39;event&#39;, &#39;tm_block&#39;, &#39;daily_best_posts&#39;, $(this).parents(&#39;.daily_best_posts&#39;).hasClass(&#39;float_block&#39;) ? &#39;float&#39; : &#39;common&#39;); }" class="post_name">Оплата на счет Яндекс.Денег картой VISA/MasterCard или как заблокировать произвольный кошелек</a>
+      </div>
+      <div class="post_item">
+        
+				
+				
+				
+				
+				
+
+        <a href="http://habrahabr.ru/post/250997/" onclick="if (typeof ga === &#39;function&#39;) { ga(&#39;send&#39;, &#39;event&#39;, &#39;tm_block&#39;, &#39;daily_best_posts&#39;, $(this).parents(&#39;.daily_best_posts&#39;).hasClass(&#39;float_block&#39;) ? &#39;float&#39; : &#39;common&#39;); }" class="post_name">Построение графиков в LaTeX/PGFPlots</a>
+      </div>
+      <div class="post_item">
+        
+				
+				
+				
+				
+				
+
+        <a href="http://habrahabr.ru/post/250859/" onclick="if (typeof ga === &#39;function&#39;) { ga(&#39;send&#39;, &#39;event&#39;, &#39;tm_block&#39;, &#39;daily_best_posts&#39;, $(this).parents(&#39;.daily_best_posts&#39;).hasClass(&#39;float_block&#39;) ? &#39;float&#39; : &#39;common&#39;); }" class="post_name">VPN везде и всюду: IPsec без L2TP со strongSwan</a>
+      </div>
+      <div class="post_item">
+        
+				
+				
+				
+				
+				
+
+        <a href="http://habrahabr.ru/company/croc/blog/251015/" onclick="if (typeof ga === &#39;function&#39;) { ga(&#39;send&#39;, &#39;event&#39;, &#39;tm_block&#39;, &#39;daily_best_posts&#39;, $(this).parents(&#39;.daily_best_posts&#39;).hasClass(&#39;float_block&#39;) ? &#39;float&#39; : &#39;common&#39;); }" class="post_name">Всероссийская перепись населения: как тоссятся ваши данные</a>
+      </div>
+      <div class="post_item">
+        
+				
+				
+				
+				
+				
+
+        <a href="http://habrahabr.ru/post/247409/" onclick="if (typeof ga === &#39;function&#39;) { ga(&#39;send&#39;, &#39;event&#39;, &#39;tm_block&#39;, &#39;daily_best_posts&#39;, $(this).parents(&#39;.daily_best_posts&#39;).hasClass(&#39;float_block&#39;) ? &#39;float&#39; : &#39;common&#39;); }" class="post_name">Потенциальная уязвимость в Telegram Android</a>
+      </div>
+      <div class="post_item">
+        
+				
+				
+				
+				
+				
+
+        <a href="./ZeroNet — Распределенные сайты через Bittorrent и Bitcoin   Хабрахабр_files/ZeroNet — Распределенные сайты через Bittorrent и Bitcoin   Хабрахабр.html" onclick="if (typeof ga === &#39;function&#39;) { ga(&#39;send&#39;, &#39;event&#39;, &#39;tm_block&#39;, &#39;daily_best_posts&#39;, $(this).parents(&#39;.daily_best_posts&#39;).hasClass(&#39;float_block&#39;) ? &#39;float&#39; : &#39;common&#39;); }" class="post_name">ZeroNet — Распределенные сайты через Bittorrent и Bitcoin</a>
+      </div>
+      <div class="post_item">
+        
+				
+				
+				
+				
+				
+
+        <a href="http://habrahabr.ru/post/250985/" onclick="if (typeof ga === &#39;function&#39;) { ga(&#39;send&#39;, &#39;event&#39;, &#39;tm_block&#39;, &#39;daily_best_posts&#39;, $(this).parents(&#39;.daily_best_posts&#39;).hasClass(&#39;float_block&#39;) ? &#39;float&#39; : &#39;common&#39;); }" class="post_name">Нестандартная оптимизация проектов на PHP</a>
+      </div>
+      <div class="post_item">
+        
+				
+				
+				
+				
+				
+
+        <a href="http://habrahabr.ru/company/haulmont/blog/248981/" onclick="if (typeof ga === &#39;function&#39;) { ga(&#39;send&#39;, &#39;event&#39;, &#39;tm_block&#39;, &#39;daily_best_posts&#39;, $(this).parents(&#39;.daily_best_posts&#39;).hasClass(&#39;float_block&#39;) ? &#39;float&#39; : &#39;common&#39;); }" class="post_name">Динамическая компиляция Java-кода своими руками</a>
+      </div>
+      <div class="post_item">
+        
+				
+				
+				
+				
+				
+
+        <a href="http://habrahabr.ru/post/250955/" onclick="if (typeof ga === &#39;function&#39;) { ga(&#39;send&#39;, &#39;event&#39;, &#39;tm_block&#39;, &#39;daily_best_posts&#39;, $(this).parents(&#39;.daily_best_posts&#39;).hasClass(&#39;float_block&#39;) ? &#39;float&#39; : &#39;common&#39;); }" class="post_name">Objective-C Runtime для Си-шников. Часть 1</a>
+      </div>
+      <div class="post_item">
+        
+				
+				
+				
+				
+				
+
+        <a href="http://habrahabr.ru/post/251029/" onclick="if (typeof ga === &#39;function&#39;) { ga(&#39;send&#39;, &#39;event&#39;, &#39;tm_block&#39;, &#39;daily_best_posts&#39;, $(this).parents(&#39;.daily_best_posts&#39;).hasClass(&#39;float_block&#39;) ? &#39;float&#39; : &#39;common&#39;); }" class="post_name">Создание вращающегося логотипа с помощью ImageMagick и FFMPEG</a>
+      </div>
+      <div class="post_item">
+        
+				
+				
+				
+				
+				
+
+        <a href="http://habrahabr.ru/post/250995/" onclick="if (typeof ga === &#39;function&#39;) { ga(&#39;send&#39;, &#39;event&#39;, &#39;tm_block&#39;, &#39;daily_best_posts&#39;, $(this).parents(&#39;.daily_best_posts&#39;).hasClass(&#39;float_block&#39;) ? &#39;float&#39; : &#39;common&#39;); }" class="post_name">UART в ATtiny13 или Как вывести данные из МК за 52р</a>
+      </div>
+      <div class="post_item">
+        
+				
+				
+				
+				
+				
+
+        <a href="http://habrahabr.ru/post/250981/" onclick="if (typeof ga === &#39;function&#39;) { ga(&#39;send&#39;, &#39;event&#39;, &#39;tm_block&#39;, &#39;daily_best_posts&#39;, $(this).parents(&#39;.daily_best_posts&#39;).hasClass(&#39;float_block&#39;) ? &#39;float&#39; : &#39;common&#39;); }" class="post_name">MathMl в HTML5</a>
+      </div>
+      <div class="post_item">
+        
+				
+				
+				
+				
+				
+
+        <a href="http://habrahabr.ru/post/250975/" onclick="if (typeof ga === &#39;function&#39;) { ga(&#39;send&#39;, &#39;event&#39;, &#39;tm_block&#39;, &#39;daily_best_posts&#39;, $(this).parents(&#39;.daily_best_posts&#39;).hasClass(&#39;float_block&#39;) ? &#39;float&#39; : &#39;common&#39;); }" class="post_name">Selenium для Python. Глава 4. Поиск элементов</a>
+      </div>
+      <div class="post_item">
+        
+				
+				
+				
+				
+				
+
+        <a href="http://habrahabr.ru/post/216939/" onclick="if (typeof ga === &#39;function&#39;) { ga(&#39;send&#39;, &#39;event&#39;, &#39;tm_block&#39;, &#39;daily_best_posts&#39;, $(this).parents(&#39;.daily_best_posts&#39;).hasClass(&#39;float_block&#39;) ? &#39;float&#39; : &#39;common&#39;); }" class="post_name">Межпроцессная репликация объектов с помощью QtRemoteObjects</a>
+      </div>
+      <div class="post_item">
+        
+				
+				
+				
+				
+				
+
+        <a href="http://habrahabr.ru/post/251031/" onclick="if (typeof ga === &#39;function&#39;) { ga(&#39;send&#39;, &#39;event&#39;, &#39;tm_block&#39;, &#39;daily_best_posts&#39;, $(this).parents(&#39;.daily_best_posts&#39;).hasClass(&#39;float_block&#39;) ? &#39;float&#39; : &#39;common&#39;); }" class="post_name">Обновление сервисов, запущенных на Go</a>
+      </div>
+      <div class="post_item">
+        
+				
+				
+				
+				
+				
+
+        <a href="http://habrahabr.ru/company/asus/blog/251019/" onclick="if (typeof ga === &#39;function&#39;) { ga(&#39;send&#39;, &#39;event&#39;, &#39;tm_block&#39;, &#39;daily_best_posts&#39;, $(this).parents(&#39;.daily_best_posts&#39;).hasClass(&#39;float_block&#39;) ? &#39;float&#39; : &#39;common&#39;); }" class="post_name">Нанороботы в нашем мозге</a>
+      </div>
+      <div class="post_item">
+        
+				
+				
+				
+				
+				
+
+        <a href="http://habrahabr.ru/post/250947/" onclick="if (typeof ga === &#39;function&#39;) { ga(&#39;send&#39;, &#39;event&#39;, &#39;tm_block&#39;, &#39;daily_best_posts&#39;, $(this).parents(&#39;.daily_best_posts&#39;).hasClass(&#39;float_block&#39;) ? &#39;float&#39; : &#39;common&#39;); }" class="post_name">Selenium для Python. Глава 3. Навигация</a>
+      </div>
+      <div class="post_item">
+        
+				
+				
+				
+				
+				
+
+        <a href="http://habrahabr.ru/company/ilkfinkom/blog/251017/" onclick="if (typeof ga === &#39;function&#39;) { ga(&#39;send&#39;, &#39;event&#39;, &#39;tm_block&#39;, &#39;daily_best_posts&#39;, $(this).parents(&#39;.daily_best_posts&#39;).hasClass(&#39;float_block&#39;) ? &#39;float&#39; : &#39;common&#39;); }" class="post_name">Теория игр. История создания и применение</a>
+      </div>
+      <div class="post_item">
+        
+				
+				
+				
+				
+				
+
+        <a href="http://habrahabr.ru/post/250957/" onclick="if (typeof ga === &#39;function&#39;) { ga(&#39;send&#39;, &#39;event&#39;, &#39;tm_block&#39;, &#39;daily_best_posts&#39;, $(this).parents(&#39;.daily_best_posts&#39;).hasClass(&#39;float_block&#39;) ? &#39;float&#39; : &#39;common&#39;); }" class="post_name">СМС-рассылка с Google Sheets API</a>
+      </div>
+  </div>
+  <div class="all"><a href="http://habrahabr.ru/top/">все лучшие</a></div>
+</div>
+
+	    
+
+<div class="block geektimes_top">
+	<a href="http://geektimes.ru/" data-utm="?utm_source=tm_habrahabr&amp;utm_medium=tm_block&amp;utm_campaign=tm_promo" class="title">Лучшее на Geektimes</a>
+	<div class="posts_list">
+  		<div class="post_item">
+  			<a class="post_name" href="http://geektimes.ru/post/246080/" data-utm="?utm_source=tm_habrahabr&amp;utm_medium=tm_block&amp;utm_campaign=tm_promo">Опасная радиоактивная игра демонстрируется в музее</a>
+  		</div>
+  		<div class="post_item">
+  			<a class="post_name" href="http://geektimes.ru/post/246078/" data-utm="?utm_source=tm_habrahabr&amp;utm_medium=tm_block&amp;utm_campaign=tm_promo">Илон Маск подтвердил, что патенты бесплатны для всех</a>
+  		</div>
+  		<div class="post_item">
+  			<a class="post_name" href="http://geektimes.ru/post/245620/" data-utm="?utm_source=tm_habrahabr&amp;utm_medium=tm_block&amp;utm_campaign=tm_promo">Зачем космосу пиар?</a>
+  		</div>
+  		<div class="post_item">
+  			<a class="post_name" href="http://geektimes.ru/post/246060/" data-utm="?utm_source=tm_habrahabr&amp;utm_medium=tm_block&amp;utm_campaign=tm_promo">LibreOffice 4.4 рулит</a>
+  		</div>
+  		<div class="post_item">
+  			<a class="post_name" href="http://geektimes.ru/post/246086/" data-utm="?utm_source=tm_habrahabr&amp;utm_medium=tm_block&amp;utm_campaign=tm_promo">Каспаров против Deep Blue. Часть IV: Нью-Йоркские тайны</a>
+  		</div>
+  		<div class="post_item">
+  			<a class="post_name" href="http://geektimes.ru/post/246034/" data-utm="?utm_source=tm_habrahabr&amp;utm_medium=tm_block&amp;utm_campaign=tm_promo">25 лет назад «Вояджер-1» сфотографировал «бледную голубую точку»</a>
+  		</div>
+  		<div class="post_item">
+  			<a class="post_name" href="http://geektimes.ru/post/246072/" data-utm="?utm_source=tm_habrahabr&amp;utm_medium=tm_block&amp;utm_campaign=tm_promo">Фотографии с российского производства солнечных панелей</a>
+  		</div>
+  		<div class="post_item">
+  			<a class="post_name" href="http://geektimes.ru/post/246056/" data-utm="?utm_source=tm_habrahabr&amp;utm_medium=tm_block&amp;utm_campaign=tm_promo">Зонд Dawn прислал новые снимки Цереры</a>
+  		</div>
+  		<div class="post_item">
+  			<a class="post_name" href="http://geektimes.ru/post/245086/" data-utm="?utm_source=tm_habrahabr&amp;utm_medium=tm_block&amp;utm_campaign=tm_promo">Как не переплачивать за Умный Дом. Защита от потопа (антипротечка)</a>
+  		</div>
+  		<div class="post_item">
+  			<a class="post_name" href="http://geektimes.ru/post/246046/" data-utm="?utm_source=tm_habrahabr&amp;utm_medium=tm_block&amp;utm_campaign=tm_promo">Насадка на пистолет делает его нелетальным оружием</a>
+  		</div>
+	</div>
+	<div class="all"><a href="http://geektimes.ru/" data-utm="?utm_source=tm_habrahabr&amp;utm_medium=tm_block&amp;utm_campaign=tm_promo">все публикации</a></div>
+</div>
+
+	  	
+
+<div class="block geektimes_top">
+    <a href="http://megamozg.ru/" data-utm="?utm_source=tm_habrahabr&amp;utm_medium=tm_block&amp;utm_campaign=tm_promo" class="title">Лучшее на Мегамозге</a>
+    <div class="posts_list">
+        <div class="post_item">
+            <a class="post_name" href="http://megamozg.ru/post/10662/" data-utm="?utm_source=tm_habrahabr&amp;utm_medium=tm_block&amp;utm_campaign=tm_promo">Как перестать отвлекаться на рабочем месте: 6 эффективных способов</a>
+        </div>
+        <div class="post_item">
+            <a class="post_name" href="http://megamozg.ru/post/10668/" data-utm="?utm_source=tm_habrahabr&amp;utm_medium=tm_block&amp;utm_campaign=tm_promo">Возможно ли Великое Объединение в теории управления проектами? Часть 1</a>
+        </div>
+        <div class="post_item">
+            <a class="post_name" href="http://megamozg.ru/post/10670/" data-utm="?utm_source=tm_habrahabr&amp;utm_medium=tm_block&amp;utm_campaign=tm_promo">Почему не стоит полностью доверять спискам самых-самых или статистика упрямая вещь</a>
+        </div>
+        <div class="post_item">
+            <a class="post_name" href="http://megamozg.ru/post/10682/" data-utm="?utm_source=tm_habrahabr&amp;utm_medium=tm_block&amp;utm_campaign=tm_promo">ICAP Patent Brokerage принимает заявки на аукционирование патентов на Superior RFID/NFC-ридеры</a>
+        </div>
+        <div class="post_item">
+            <a class="post_name" href="http://megamozg.ru/post/10678/" data-utm="?utm_source=tm_habrahabr&amp;utm_medium=tm_block&amp;utm_campaign=tm_promo">Microsoft заплатит 200 млн за производителя стилусов N-Trig</a>
+        </div>
+        <div class="post_item">
+            <a class="post_name" href="http://megamozg.ru/post/8582/" data-utm="?utm_source=tm_habrahabr&amp;utm_medium=tm_block&amp;utm_campaign=tm_promo">Будьте честны: ваш продукт действительно лучший?</a>
+        </div>
+        <div class="post_item">
+            <a class="post_name" href="http://megamozg.ru/post/10672/" data-utm="?utm_source=tm_habrahabr&amp;utm_medium=tm_block&amp;utm_campaign=tm_promo">По итогам 2014 года рост чистой прибыли «Яндекса» составил 26%</a>
+        </div>
+        <div class="post_item">
+            <a class="post_name" href="http://megamozg.ru/post/10664/" data-utm="?utm_source=tm_habrahabr&amp;utm_medium=tm_block&amp;utm_campaign=tm_promo">Эффективность: говорим на языке задач</a>
+        </div>
+        <div class="post_item">
+            <a class="post_name" href="http://megamozg.ru/post/10666/" data-utm="?utm_source=tm_habrahabr&amp;utm_medium=tm_block&amp;utm_campaign=tm_promo">​Как сделать сайт и заработать на этом (для исполнителей)</a>
+        </div>
+        <div class="post_item">
+            <a class="post_name" href="http://megamozg.ru/post/10692/" data-utm="?utm_source=tm_habrahabr&amp;utm_medium=tm_block&amp;utm_campaign=tm_promo">Google: некрасивые факты на пути красивой истории</a>
+        </div>
+
+    </div>
+    <div class="all"><a href="http://megamozg.ru/" data-utm="?utm_source=tm_habrahabr&amp;utm_medium=tm_block&amp;utm_campaign=tm_promo">все публикации</a></div>
+</div>
+
+
+  	  
+
+  		
+  		
+
+	<div class="block live_broadcast">
+		<div class="title">Что обсуждают? </div>
+
+		<div class="live_broadcast_activity">
+				<div class="posts_list">
+							<div class="post_item">
+								<a href="http://habrahabr.ru/post/251015#comments" onclick="if (typeof ga === &#39;function&#39;) { ga(&#39;send&#39;, &#39;event&#39;, &#39;tm_block&#39;, &#39;live_broadcast_activity&#39;, &#39;post&#39;); }" class="post_name">Всероссийская перепись населения: как тоссятся ваши данные</a>&nbsp;<span class="count">39</span>
+							</div>
+							<div class="post_item">
+								<a href="http://habrahabr.ru/post/250991#comments" onclick="if (typeof ga === &#39;function&#39;) { ga(&#39;send&#39;, &#39;event&#39;, &#39;tm_block&#39;, &#39;live_broadcast_activity&#39;, &#39;post&#39;); }" class="post_name">The Equation, Carbanak, Desert Falcons: отчет с Security Analyst Summit</a>&nbsp;<span class="count">4</span>
+							</div>
+							<div class="post_item">
+								<a href="http://habrahabr.ru/post/250887#comments" onclick="if (typeof ga === &#39;function&#39;) { ga(&#39;send&#39;, &#39;event&#39;, &#39;tm_block&#39;, &#39;live_broadcast_activity&#39;, &#39;post&#39;); }" class="post_name">Do not be evil</a>&nbsp;<span class="count">817</span>
+							</div>
+							<div class="post_item">
+								<a href="http://habrahabr.ru/post/250775#comments" onclick="if (typeof ga === &#39;function&#39;) { ga(&#39;send&#39;, &#39;event&#39;, &#39;tm_block&#39;, &#39;live_broadcast_activity&#39;, &#39;post&#39;); }" class="post_name">Говорила же мама: не доверяй прошивкам жёстких дисков</a>&nbsp;<span class="count">159</span>
+							</div>
+							<div class="post_item">
+								<a href="http://habrahabr.ru/post/250995#comments" onclick="if (typeof ga === &#39;function&#39;) { ga(&#39;send&#39;, &#39;event&#39;, &#39;tm_block&#39;, &#39;live_broadcast_activity&#39;, &#39;post&#39;); }" class="post_name">UART в ATtiny13 или Как вывести данные из МК за 52р</a>&nbsp;<span class="count">15</span>
+							</div>
+							<div class="post_item">
+								<a href="http://habrahabr.ru/post/248817#comments" onclick="if (typeof ga === &#39;function&#39;) { ga(&#39;send&#39;, &#39;event&#39;, &#39;tm_block&#39;, &#39;live_broadcast_activity&#39;, &#39;post&#39;); }" class="post_name">Oracle join elimination</a>&nbsp;<span class="count">33</span>
+							</div>
+							<div class="post_item">
+								<a href="http://habrahabr.ru/post/251017#comments" onclick="if (typeof ga === &#39;function&#39;) { ga(&#39;send&#39;, &#39;event&#39;, &#39;tm_block&#39;, &#39;live_broadcast_activity&#39;, &#39;post&#39;); }" class="post_name">Теория игр. История создания и применение</a>&nbsp;<span class="count">2</span>
+							</div>
+							<div class="post_item">
+								<a href="http://habrahabr.ru/post/216939#comments" onclick="if (typeof ga === &#39;function&#39;) { ga(&#39;send&#39;, &#39;event&#39;, &#39;tm_block&#39;, &#39;live_broadcast_activity&#39;, &#39;post&#39;); }" class="post_name">Межпроцессная репликация объектов с помощью QtRemoteObjects</a>&nbsp;<span class="count">4</span>
+							</div>
+							<div class="post_item">
+								<a href="http://habrahabr.ru/post/250917#comments" onclick="if (typeof ga === &#39;function&#39;) { ga(&#39;send&#39;, &#39;event&#39;, &#39;tm_block&#39;, &#39;live_broadcast_activity&#39;, &#39;post&#39;); }" class="post_name">Внедрение технологии единого источника DITA в компании-разработчике ПО</a>&nbsp;<span class="count">7</span>
+							</div>
+							<div class="post_item">
+								<a href="http://habrahabr.ru/post/250927#comments" onclick="if (typeof ga === &#39;function&#39;) { ga(&#39;send&#39;, &#39;event&#39;, &#39;tm_block&#39;, &#39;live_broadcast_activity&#39;, &#39;post&#39;); }" class="post_name">Оплата на счет Яндекс.Денег картой VISA/MasterCard или как заблокировать произвольный кошелек</a>&nbsp;<span class="count">40</span>
+							</div>
+				</div>
+				<div class="all"><a href="http://habrahabr.ru/posts/" onclick="if (typeof ga === &#39;function&#39;) { ga(&#39;send&#39;, &#39;event&#39;, &#39;tm_block&#39;, &#39;live_broadcast_activity&#39;, &#39;all_posts&#39;); }">все публикации</a></div>
+		</div>
+
+	</div>
+  
+  		<!--  AdRiver code START. Type:AjaxJS Site: habrahabr PZ: 0 BN: 2 -->
+
+<div id="adriver_banner_480931290" class="adbanner" title="" style="width: 300px; height: 500px; text-align: center; margin: 0px auto;"><a href="http://ad.adriver.ru/cgi-bin/click.cgi?sid=176776&ad=511994&bid=3743058&bt=52&bn=2&pz=0&xpid=Cty3GKoOUKYqVk-7ufIHkFvthkyoVIGAz&ref=http:%2f%2fhabrahabr.ru%2fpost%2f250945%2f&custom=1%3Dinfosecurity%3B2%3Dp2p%3B4%3D2&rleurl=" onclick="adriver(&#39;adriver_banner_480931290&#39;).sendPixel(&#39;&#39;);" target="_blank"><img src="./ZeroNet — Распределенные сайты через Bittorrent и Bitcoin   Хабрахабр_files/bn2_ms_frii-4.png" alt="AdRiver" border="0"></a></div>
+
+
+<script type="text/javascript">
+    function show_bn2_block(name, url){
+        if( typeof(name) !== 'undefined'){
+            $.get('/html/'+name+'/1424335982/', function(html){
+                $('#adriver_banner_480931290').html(html);
+                if( typeof(url) !== 'undefined'){
+                    $('.'+name+'_inner_banner .block_url').attr('href', url);
+                }
+            })
+        }
+    }
+
+    $(function(){
+
+        var check_scroll_position = function() {
+            var height = $(window).height();
+            var scrollTop = $(window).scrollTop();
+            var scrollBottom = $(window).scrollTop() + height;
+            var blockTop = $('#adriver_banner_480931290').position().top;
+            var show = scrollTop < blockTop && blockTop < scrollBottom;
+            if( show ){
+                $( window ).off('scroll', check_scroll_position);
+                $( window ).trigger('show_bn2');
+            }
+        };
+        $( window ).on('scroll', check_scroll_position);
+
+        $( window ).on('show_bn2', function(){
+            var keyword = '';
+            if (typeof crtg_content !== 'undefined' && crtg_content) { keyword = crtg_content; }
+            var custom = {4:ar_duo1};
+            custom[1] = 'infosecurity';
+            custom[2] = 'p2p';
+            new adriver("adriver_banner_480931290", {sid: 176776, bt: 52, bn: 2, custom: custom, keyword: keyword});
+        });
+    });
+    </script>
+<!--  AdRiver code END  -->
+
+  		
+<div class="block best_company">
+
+		<div class="title">Компания дня <img src="./ZeroNet — Распределенные сайты через Bittorrent и Bitcoin   Хабрахабр_files/bg_cicle_help.png" class="help-tip"></div>
+
+		<div class="company_info">
+			<div class="name">
+			 <img class="favicon" src="./ZeroNet — Распределенные сайты через Bittorrent и Bitcoin   Хабрахабр_files/9e91c4fc382322e68ee3dfaa05ce359f_small.png" alt="Group-IB" height="16" width="16">
+			 <div class="company_name"><a href="http://habrahabr.ru/company/group-ib/" onclick="if (typeof ga === &#39;function&#39;) { ga(&#39;send&#39;, &#39;event&#39;, &#39;tm_block&#39;, &#39;best_company&#39;, &#39;title&#39;); }" class="title">Group-IB</a></div>
+			</div>
+
+			<p>Последняя публикация:
+				<a href="http://habrahabr.ru/company/group-ib/blog/250627/" onclick="if (typeof ga === &#39;function&#39;) { ga(&#39;send&#39;, &#39;event&#39;, &#39;tm_block&#39;, &#39;best_company&#39;, &#39;post&#39;); }">Технический отчет о деятельности преступной группы, занимающейся целевыми атаками — Anunak</a>
+			</p>
+
+			<div class="buttons">
+  			<div id="fans_count">186 подписчиков</div>
+  				<input type="button" id="addCompanyFan" data-id="1669" class="blue " title="Мне нравится компания" value="Подписаться">
+  				<input type="button" id="removeCompanyFan" data-id="1669" class="hidden" title="Компания мне больше не нравится" value="Подписан">
+			</div>
+		</div>
+
+	</div>
+
+
+  		
+  		
+  		
+  </div>
+  <div class="clear"></div>
+
+  <script>
+    // hubs to GA
+      ga('send', 'event', 'Post_view', 'infosecurity (Информационная безопасность)',  window.location.pathname + window.location.search);
+      ga('send', 'event', 'Post_view', 'p2p (Peer-to-Peer)',  window.location.pathname + window.location.search);
+  </script>
+
+
+
+
+        	
+	<div class="rotated_posts">
+			<div class="rotated_post ">
+				<a href="http://habrahabr.ru/company/yandex/blog/243813/" class="grey" onclick="if (typeof ga === &#39;function&#39;) { ga(&#39;send&#39;, &#39;event&#39;, &#39;tm_block&#39;, &#39;posts_rotation_block&#39;); }">Интерактивное голосовое редактирование текста с помощью новых речевых технологий от Яндекса</a>
+			</div>
+			<div class="rotated_post ">
+				<a href="http://habrahabr.ru/company/yandex/blog/249771/" class="grey" onclick="if (typeof ga === &#39;function&#39;) { ga(&#39;send&#39;, &#39;event&#39;, &#39;tm_block&#39;, &#39;posts_rotation_block&#39;); }">Как и зачем мы делаем TLS в Яндексе</a>
+			</div>
+			<div class="rotated_post last">
+				<a href="http://habrahabr.ru/company/croc/blog/246155/" class="grey" onclick="if (typeof ga === &#39;function&#39;) { ga(&#39;send&#39;, &#39;event&#39;, &#39;tm_block&#39;, &#39;posts_rotation_block&#39;); }">Как разработчики сидели в Петербурге и тихо ели грибы, а потом написали ОС для систем хранения данных</a>
+			</div>
+		<div class="clear"></div>
+	</div>
+
+        <div class="bottom_promo_blocks">
+    <div class="left">
+            
+	<div class="block new_vacanies">
+  <a href="http://brainstorage.me/jobs" data-utm="?utm_source=tm_habrahabr&amp;utm_medium=tm_block&amp;utm_campaign=tm_promo" class="title">Brainstorage</a>
+  <div class="vacancies">
+		<div class="job_item ">
+			<a href="http://brainstorage.me/jobs/27125" data-utm="?utm_source=tm_habrahabr&amp;utm_medium=tm_block&amp;utm_campaign=tm_promo">Технический писатель, менеджер проектов</a>
+		</div>
+		<div class="job_item ">
+			<a href="http://brainstorage.me/jobs/25275" data-utm="?utm_source=tm_habrahabr&amp;utm_medium=tm_block&amp;utm_campaign=tm_promo">Frontend-разработчик (JavaScript) главной страницы</a>
+		</div>
+		<div class="job_item ">
+			<a href="http://brainstorage.me/jobs/25945" data-utm="?utm_source=tm_habrahabr&amp;utm_medium=tm_block&amp;utm_campaign=tm_promo">iOS-разработчик, MAPS.ME</a>
+		</div>
+		<div class="job_item ">
+			<a href="http://brainstorage.me/jobs/26055" data-utm="?utm_source=tm_habrahabr&amp;utm_medium=tm_block&amp;utm_campaign=tm_promo">Android-разработчик</a>
+		</div>
+		<div class="job_item ">
+			<a href="http://brainstorage.me/jobs/26057" data-utm="?utm_source=tm_habrahabr&amp;utm_medium=tm_block&amp;utm_campaign=tm_promo">IOS-разработчик</a>
+		</div>
+		<div class="job_item ">
+			<a href="http://brainstorage.me/jobs/26063" data-utm="?utm_source=tm_habrahabr&amp;utm_medium=tm_block&amp;utm_campaign=tm_promo">Разработчик автотестов под Android</a>
+		</div>
+		<div class="job_item ">
+			<a href="http://brainstorage.me/jobs/26927" data-utm="?utm_source=tm_habrahabr&amp;utm_medium=tm_block&amp;utm_campaign=tm_promo">Ведущий системный администратор</a>
+		</div>
+		<div class="job_item ">
+			<a href="http://brainstorage.me/jobs/26987" data-utm="?utm_source=tm_habrahabr&amp;utm_medium=tm_block&amp;utm_campaign=tm_promo">Системный аналитик</a>
+		</div>
+		<div class="job_item ">
+			<a href="http://brainstorage.me/jobs/20745" data-utm="?utm_source=tm_habrahabr&amp;utm_medium=tm_block&amp;utm_campaign=tm_promo">Frontend разработчик</a>
+		</div>
+		<div class="job_item ">
+			<a href="http://brainstorage.me/jobs/26711" data-utm="?utm_source=tm_habrahabr&amp;utm_medium=tm_block&amp;utm_campaign=tm_promo">WEB Разработчик (PHP)</a>
+		</div>
+  </div>
+  <div class="all"><a href="http://brainstorage.me/jobs" data-utm="?utm_source=tm_habrahabr&amp;utm_medium=tm_block&amp;utm_campaign=tm_promo">все вакансии</a></div>
+</div>
+
+    </div>
+    <div class="right">
+        
+	<div class="block freelansim">
+	  <a href="http://freelansim.ru/" data-utm="?utm_source=tm_habrahabr&amp;utm_medium=tm_block&amp;utm_campaign=tm_promo" class="title"></a>
+	  <div class="tasks">
+				<div class="task ">
+					<a href="http://freelansim.ru/tasks/101259" data-utm="?utm_source=tm_habrahabr&amp;utm_medium=tm_block&amp;utm_campaign=tm_promo">Написать (дописать) пресс релиз для мобильной игры (Рус/Eng)</a>
+				</div>
+				<div class="task ">
+					<a href="http://freelansim.ru/tasks/101249" data-utm="?utm_source=tm_habrahabr&amp;utm_medium=tm_block&amp;utm_campaign=tm_promo">Разработка интерфейса приложения для Андроид</a>
+				</div>
+				<div class="task ">
+					<a href="http://freelansim.ru/tasks/101243" data-utm="?utm_source=tm_habrahabr&amp;utm_medium=tm_block&amp;utm_campaign=tm_promo">Натянуть готовую верстку на bitrix</a>
+				</div>
+				<div class="task ">
+					<a href="http://freelansim.ru/tasks/101237" data-utm="?utm_source=tm_habrahabr&amp;utm_medium=tm_block&amp;utm_campaign=tm_promo">Web-сервис для resp-запросов</a>
+				</div>
+				<div class="task ">
+					<a href="http://freelansim.ru/tasks/101231" data-utm="?utm_source=tm_habrahabr&amp;utm_medium=tm_block&amp;utm_campaign=tm_promo">Мобильное приложение (iOs, android)</a>
+				</div>
+				<div class="task ">
+					<a href="http://freelansim.ru/tasks/101229" data-utm="?utm_source=tm_habrahabr&amp;utm_medium=tm_block&amp;utm_campaign=tm_promo">Администрирование сервера на CentOS (Java приложение)</a>
+				</div>
+				<div class="task ">
+					<a href="http://freelansim.ru/tasks/101225" data-utm="?utm_source=tm_habrahabr&amp;utm_medium=tm_block&amp;utm_campaign=tm_promo">Верстка шаблонов и натяжка на Joomla альтернативно MODX</a>
+				</div>
+				<div class="task ">
+					<a href="http://freelansim.ru/tasks/101207" data-utm="?utm_source=tm_habrahabr&amp;utm_medium=tm_block&amp;utm_campaign=tm_promo">Разработка HTML5+Canvas игры под мобильные браузеры</a>
+				</div>
+				<div class="task ">
+					<a href="http://freelansim.ru/tasks/101205" data-utm="?utm_source=tm_habrahabr&amp;utm_medium=tm_block&amp;utm_campaign=tm_promo">Доработки в проект на основе ext.net</a>
+				</div>
+				<div class="task ">
+					<a href="http://freelansim.ru/tasks/101197" data-utm="?utm_source=tm_habrahabr&amp;utm_medium=tm_block&amp;utm_campaign=tm_promo">Создание мультипликационных героев для сайта МФО</a>
+				</div>
+
+	  </div>
+	  <div class="all"><a href="http://freelansim.ru/tasks" data-utm="?utm_source=tm_habrahabr&amp;utm_medium=tm_block&amp;utm_campaign=tm_promo">все заказы</a></div>
+	</div>
+
+    </div>
+    <div class="clear"></div>
+</div>
+
+
+
+        <div class="clear"></div>
+
+        <div class="footer_panel">
+          <div id="footer">
+	<dl class="user">
+		<dt><a href="http://habrahabr.ru/users/xni/">xni</a></dt>
+		<dd><a href="http://habrahabr.ru/feed/">Лента</a></dd>
+		<dd><a href="http://habrahabr.ru/tracker/">Трекер</a></dd>
+			<dd><a href="http://habrahabr.ru/topic/add/">Написать</a></dd>
+			<dd><a href="http://habrahabr.ru/conversations/">Диалоги</a></dd>
+			<dd><a href="https://habrahabr.ru/auth/settings/">Настройки</a></dd>
+			<dd><a href="http://habrahabr.ru/ppa/">ППА</a></dd>
+	</dl>
+	<dl>
+		<dt>Разделы</dt>
+		<dd><a href="http://habrahabr.ru/posts/top/">Публикации</a></dd>
+		<dd><a href="http://habrahabr.ru/hubs/">Хабы</a></dd>
+		<dd><a href="http://habrahabr.ru/companies/">Компании</a></dd>
+		<dd><a href="http://habrahabr.ru/users/">Пользователи</a></dd>
+		<dd><a href="http://toster.ru/?_aa=press_anykey">Q&amp;A</a></dd>
+		<dd><a href="http://habrahabr.ru/sandbox/">Песочница</a></dd>
+		
+	</dl>	
+	<dl>
+		<dt>Инфо</dt>
+		<dd><a href="http://habrahabr.ru/info/about/">О сайте</a></dd>
+		<dd><a href="http://habrahabr.ru/info/help/rules/">Правила</a></dd>
+		<dd><a href="http://habrahabr.ru/info/help/">Помощь</a></dd>
+		<dd><a href="http://habrahabr.ru/info/agreement/">Соглашение</a></dd>
+	</dl>
+	<dl>
+		<dt>Услуги</dt>
+		<dd><a href="http://special.habrahabr.ru/advertising/">Реклама</a></dd>
+        <dd><a href="http://special.habrahabr.ru/">Спецпроекты</a></dd>
+        <dd><a href="http://special.habrahabr.ru/corporate/">Тарифы</a></dd>
+        <dd><a href="http://special.habrahabr.ru/content/">Контент</a></dd>
+        <dd><a href="http://special.habrahabr.ru/workshops/">Семинары</a></dd>
+	</dl>
+	<dl>
+		<dt>Разное</dt>
+		<dd><a href="http://habrahabr.ru/apps/">Приложения</a></dd>
+		<dd><a href="http://habrahabr.ru/special/testdrive/">Тест-драйвы</a></dd>
+		<dd><a href="http://special.habrahabr.ru/hello_startup/bizspark/">Помощь стартапам</a></dd>
+	</dl>
+	<div class="copyright">
+
+		<div class="about">
+			<a href="http://tmtm.ru/">© TM</a>
+			
+			<br><br>
+			<a href="http://habrahabr.ru/feedback/">Служба поддержки</a><br><br>
+                <a href="http://m.habrahabr.ru/post/250945/?mobile=yes">Мобильная версия</a><br><br>
+			
+
+			<div class="social_accounts">
+				<a href="https://twitter.com/habrahabr" class="tw"></a>
+				<a href="https://www.facebook.com/habrahabr.ru" class="fb"></a>
+				<a href="http://vk.com/habr" class="vk"></a>
+				<!-- <a href="" class="gp"></a> //-->
+			</div>
+
+		</div>
+	</div>
+
+</div>
+
+        </div>
+      </div>
+    </div>
+
+
+
+    <script type="text/javascript">
+  // global vars
+  var g_base_url = 'habrahabr.ru';
+  var g_show_xpanel = true;
+  var g_base_fullurl = 'http://habrahabr.ru/';
+  var g_is_guest = true;
+  var g_user_login = 'xni';
+  var g_user_id = 18017;
+  var g_user_avatar = '//habrahabr.ru/i/avatars/stub-user-middle.gif';   
+</script> 
+
+      <script type="text/javascript" src="./ZeroNet — Распределенные сайты через Bittorrent и Bitcoin   Хабрахабр_files/shortcuts.js"></script>
+
+    <script type="text/javascript" src="./ZeroNet — Распределенные сайты через Bittorrent и Bitcoin   Хабрахабр_files/global_footer_main.js"></script>
+
+    	<script type="text/javascript" src="./ZeroNet — Распределенные сайты через Bittorrent и Bitcoin   Хабрахабр_files/saved_resource"></script>
+
+    
+
+<!-- Yandex.Metrika counter -->
+<script type="text/javascript">
+(function (d, w, c) {
+    (w[c] = w[c] || []).push(function() {
+        try {
+            w.yaCounter24049213 = new Ya.Metrika({id:24049213,
+                    webvisor:true,
+                    clickmap:true,
+                    trackLinks:true,
+                    accurateTrackBounce:true});
+        } catch(e) { }
+    });
+
+    var n = d.getElementsByTagName("script")[0],
+        s = d.createElement("script"),
+        f = function () { n.parentNode.insertBefore(s, n); };
+    s.type = "text/javascript";
+    s.async = true;
+    s.src = (d.location.protocol == "https:" ? "https:" : "http:") + "//mc.yandex.ru/metrika/watch.js";
+
+    if (w.opera == "[object Opera]") {
+        d.addEventListener("DOMContentLoaded", f, false);
+    } else { f(); }
+})(document, window, "yandex_metrika_callbacks");
+</script>
+<noscript>&lt;div&gt;&lt;img src="//mc.yandex.ru/watch/24049213" style="position:absolute; left:-9999px;" alt="" /&gt;&lt;/div&gt;</noscript>
+<!-- /Yandex.Metrika counter -->
+
+
+
+<!-- adriver counter //-->
+<span style="position:absolute;left:-9999px;">
+  <img src="./ZeroNet — Распределенные сайты через Bittorrent и Bitcoin   Хабрахабр_files/rle.cgi" width="1" height="1" alt="">
+</span>
+<!-- adriver counter end //-->
+
+
+    
+
+    <!-- Хабр не резиновый! -->
+  
+
+<div id="tiptip_holder" style="max-width:auto;"><div id="tiptip_arrow"><div id="tiptip_arrow_inner"></div></div><div id="tiptip_content"></div></div><div id="AutocompleteContainter_7ef26" style="position: absolute; z-index: 9999; top: 0px; left: 0px;"><div class="autocomplete-w1"><div class="autocomplete" id="Autocomplete_7ef26" style="display: none; width: 300px; max-height: 400px;"></div></div></div><div id="AutocompleteContainter_ea4ba" style="position: absolute; z-index: 9999; top: 2220px; left: 0px;"><div class="autocomplete-w1"><div class="autocomplete" id="Autocomplete_ea4ba" style="display: none; width: 300px; max-height: 400px;"></div></div></div><div id="xpanel"><a href="http://habrahabr.ru/post/250945/#refresh" class="refresh"></a><a href="http://habrahabr.ru/post/250945/#prev_new" class="prev_new" title="По клику (горячая клавиша - k) переходит к предыдущему непрочитанному комментарию." style="display: none;">↑</a><a href="http://habrahabr.ru/post/250945/#new" class="new" title="Количество новых комментариев. По клику (горячая клавиша - f) переходит к первому непрочитанному комментарию." style="display: none;">0</a><a href="http://habrahabr.ru/post/250945/#next_new" class="next_new" title="По клику (горячая клавиша - j) переходит к следующему непрочитанному комментарию." style="display: none;">↓</a></div><iframe src="./ZeroNet — Распределенные сайты через Bittorrent и Bitcoin   Хабрахабр_files/3(1).html" style="width: 10px; height: 10px; position: absolute; top: -10000px; left: -10000px;"></iframe><iframe src="./ZeroNet — Распределенные сайты через Bittorrent и Bitcoin   Хабрахабр_files/3(2).html" style="width: 10px; height: 10px; position: absolute; top: -10000px; left: -10000px;"></iframe><iframe src="./ZeroNet — Распределенные сайты через Bittorrent и Bitcoin   Хабрахабр_files/3.html" style="width: 10px; height: 10px; position: absolute; top: -10000px; left: -10000px;"></iframe></body></html>
