@@ -11,6 +11,8 @@ Notes
 * [JS_monomorphism.pdf](JS_monomorphism.pdf)
 * [Management of Application Dependencies in YARN - Hortonworks.html](Management%20of%20Application%20Dependencies%20in%20YARN%20-%20Hortonworks.html)
 * [Materials and textures from Blender to Unity 3D.html](Materials%20and%20textures%20from%20Blender%20to%20Unity%203D.html)
+* [Microsoft Makes Apache Storm Generally Available And Improves Productivity for Real-Time Analytics on Big Data | Microsoft Azure Blog.html](Microsoft%20Makes%20Apache%20Storm%20Generally%20Available%20And%20Improves%20Productivity%20for%20Real-Time%20Analytics%20on%20Big%20Data%20%7C%20Microsoft%20Azure%20Blog.html)
+* [New Azure services help more people realize the possibilities of big data - The Official Microsoft Blog.html](New%20Azure%20services%20help%20more%20people%20realize%20the%20possibilities%20of%20big%20data%20-%20The%20Official%20Microsoft%20Blog.html)
 * [README.md](README.md)
 * [Resource Localization in YARN  Deep Dive - Hortonworks.html](Resource%20Localization%20in%20YARN%20%20Deep%20Dive%20-%20Hortonworks.html)
 * [Shipping Applications to Production in Containers with Docker.html](Shipping%20Applications%20to%20Production%20in%20Containers%20with%20Docker.html)
