@@ -1,0 +1,906 @@
+/*
+Theme Name: twilio blog
+Description: A custom WordPress theme for the twilio blog.
+Author: Chris Underwood
+Version: 1.0
+*/
+
+/* RESET ALL FONT SIZES ------------------------------------------------------------------------
+ 
+Copyright (c) 2007, Yahoo! Inc. All rights reserved.
+Code licensed under the BSD License:
+http://developer.yahoo.net/yui/license.txt
+version:2.4.1
+*/
+/**
+ * Percents could work for IE, but for backCompat purposes, we are using keywords.
+ * x-small is for IE6/7 quirks mode.
+ */
+body {font:14px/1.231 "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, sans-serif; font-weight: 300;*font-size:small;*font:x-small;line-height:121%;}
+table {font-size:inherit;font:100%;}
+/**
+ * Bump up IE to get to 13px equivalent
+ */
+pre,code {font-family:monospace;*font-size:108%;line-height:100%;}
+
+/* ----------------------------------------------------------------------------------------- */
+
+/* USE THESE FONT SIZES TO DECLARE TRUE SIZES IN PIXELS ---------------------------------------
+ 
+ {font-size:77%;} 		=>	10px
+ {font-size:85%;} 		=>	11px
+ {font-size:93%;} 		=>	12px
+ {font-size:100%;} 		=>	13px
+ {font-size:108%;} 		=>	14px
+ {font-size:116%;} 		=>	15px
+ {font-size:123.1%;} 		=>	16px
+ {font-size:131%;} 		=>	17px
+ {font-size:138.5%;} 		=>	18px
+ {font-size:146.5%;} 		=>	19px
+ {font-size:153.9%;} 		=>	20px
+ {font-size:161.6%;} 		=>	21px
+ {font-size:167%;} 		=>	22px
+ {font-size:174%;} 		=>	23px
+ {font-size:182%;} 		=>	24px
+ {font-size:189%;} 		=>	25px
+ {font-size:197%;} 		=>	26px
+ {font-size:205%;} 		=>	27px		// the rest were added to use larger fonts
+ {font-size:213%;} 		=>	28px		// and are only a rough estimate!	
+ {font-size:220%;} 		=>	29px		// chris@nicasiodesign.com
+ {font-size:228%;} 		=>	30px
+ {font-size:236%;} 		=>	31px
+ {font-size:243.1%;} 		=>	32px
+ {font-size:251%;} 		=>	33px
+ {font-size:258.5%;} 		=>	34px
+ 
+ 
+------------------------------------------------------------------------------------------- */
+
+@font-face {
+	font-family: 'league_gothicregular';
+	src: url('fonts/leaguegothic-regular-webfont.eot');
+	src: url('fonts/leaguegothic-regular-webfont.eot?#iefix') format('embedded-opentype'),
+		 url('fonts/leaguegothic-regular-webfont.woff') format('woff'),
+		 url('fonts/leaguegothic-regular-webfont.ttf') format('truetype'),
+		 url('fonts/leaguegothic-regular-webfont.svg#league_gothicregular') format('svg');
+	font-weight: normal;
+	font-style: normal;
+
+}
+
+/* RESET MISC. ITEMS ---------------------------------------------------------------------- */
+
+* {margin:0;padding:0;}
+
+a {
+	color: #cc0000;
+	text-decoration: none;
+}
+
+a:hover {
+	color: #cc0000;
+	text-decoration: underline;
+}
+
+img {border:0px;}
+
+.clear {clear:both;height:0px;overflow:hidden;}
+.clear-left {clear:left;height:0px;overflow:hidden;}
+.faux-clear {width:100%;height:0px;overflow:hidden;}
+
+input, textarea, select, legend, button {font-size:100%;font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, sans-serif; font-weight: 300;color:#808080;}
+input, select, textarea, a, button {outline:none;} /* removes the on focus/active blue border in safari + firefox */
+textarea {resize:none;} /* removes ability to resize field in css3 */
+legend, fieldset {border:0px;padding:0px;height:auto;margin:0px;}
+
+
+/* RESET CUSTOM MENUS */
+ul.menu {list-style:none;}
+ul.menu li {float:left;position:relative;z-index:1;}
+ul.menu li a {display:block;}
+ul.menu li ul {position:absolute;top:auto;left:-9999px;z-index: 99999;}
+ul.menu li:hover > ul {left:0px;}
+ul.menu li ul li:hover > ul {top:0px;left:100%;}
+
+
+/* RESET AD SPACE */
+.advertisement * {padding:0px !important;white-space:nowrap;}
+
+/* ADD VERTICAL SCROLLBARS TO EVERY PAGE */
+html, body {height:100%;margin:0 0 1px;}
+html { overflow-y: scroll !important; }
+
+/* HIDE THESE ITEMS */
+#image-preloader, .linklove, .ddsg-wrapper div, .advertisement font {display:none;}
+
+.screen-reader-text {position:absolute;left:-9999px;}
+
+/* STRIP SKYPE */
+span.skype_pnh_container {display:none !important;}
+span.skype_pnh_print_container {display:inline !important;}
+
+
+
+
+/* MAIN LAYOUT ---------------------------------------------------------------------------- */
+
+
+body {text-align:center;background:#f0f0f0;min-width:800px;color:#222;}
+
+#wrapper, .nav-wrapper {width:1050px;margin:0 auto;position:relative;text-align:left;}
+
+#main {clear:both;}
+
+
+
+
+/* HEADER --------------------------------------------------------------------------------- */
+
+#header {position:relative;z-index:1;height:90px;}
+#branding #logo a {
+	color: #424242;
+	font-size: 39px;
+	text-transform: uppercase;
+	font-family: 'Knockout 30 A', 'Knockout 30 B', Helvetica, Arial, sans-serif; font-weight: 400; font-style: normal;
+}
+#branding #logo a:hover{
+	text-decoration: none;
+}
+
+#branding {width:400px;height:61px;overflow:hidden;position:absolute;z-index:1;top:23px;left:0px;}
+#branding a img {display:inline-block; width: 200px;vertical-align: -12px;}
+
+#site-description {position:absolute;left:-9999px;}
+
+#header-section {position:absolute;z-index:1;top:42px;right:0px;}
+
+#header-section #social-networks {display: inline-block;}
+#header-section #social-networks a {float:left;display:block;margin:0 8px 0 0;text-indent:-9999px;overflow:hidden;background:url('images/twilioblog_sprite-social-icons.png') no-repeat;width:29px;height:28px;}
+#header-section #social-networks .twitter {background-position:0 0px;}
+#header-section #social-networks .twitter:hover {background-position:0 -28px;}
+#header-section #social-networks .twitter:active {background-position:0 -56px;}
+#header-section #social-networks .facebook {background-position:-37px 0;}
+#header-section #social-networks .facebook:hover {background-position:-37px -28px;}
+#header-section #social-networks .facebook:active {background-position:-37px -56px;}
+#header-section #social-networks .linkedin {background-position:-74px 0;}
+#header-section #social-networks .linkedin:hover {background-position:-74px -28px;}
+#header-section #social-networks .linkedin:active {background-position:-74px -56px;}
+#header-section #social-networks .google {background-position:-111px 0;}
+#header-section #social-networks .google:hover {background-position:-111px -28px;}
+#header-section #social-networks .google:active {background-position:-111px -56px;}
+#header-section #social-networks .flickr {background-position:-148px 0;}
+#header-section #social-networks .flickr:hover {background-position:-148px -28px;}
+#header-section #social-networks .flickr:active {background-position:-148px -56px;}
+
+
+/* carousel featured posts */
+
+#featured-posts {position:relative;z-index:1;}
+.featured-posts-single {float:left;width:268px;height:264px;margin-bottom:4px;}
+.featured-posts-single a {margin:0 auto;display:block;width:258px;height:258px;border:3px solid #FFF;position:relative;z-index:1;font-weight:bold;font-size:123.1%;line-height:19px;color:#FFF;}
+.featured-posts-single a img {display:block;width:258px;height:258px;}
+.featured-posts-single a .featured-title {position:absolute;bottom:0px;left:0px;padding:25px 20px 20px 20px;font-family:helvetica,arial,sans-serif;font-weight:bold;}
+.featured-posts-single a:hover,
+.featured-posts-single a:hover span {color:#FFF;text-decoration:underline;}
+
+#featured-posts div.cycle-carousel-wrap {margin-left:-2px !important;white-space:normal !important;}
+
+
+
+
+
+/* CONTENT -------------------------------------------------------------------------------- */
+
+#container, #comment-wrapper {margin-bottom:4px;}
+/* used when main widget area had special conditional for positioning above or below blog loop...
+body.home #container {margin-top:4px;margin-bottom:0px;}
+body.paged #container {margin-top:0px;margin-bottom:4px;}
+*/
+
+.box-shadow,
+#container {background:#FFF;-moz-box-shadow:2px 2px 5px 2px rgba(0,0,0,.12);-webkit-box-shadow:2px 2px 5px 2px rgba(0,0,0,.12);box-shadow:2px 2px 5px 2px rgba(0,0,0,.12);}
+
+.header-image {margin-bottom:40px;position:relative;z-index:1;}
+#post-header {padding-top:40px;margin:0px 0px 40px 40px; width:640px;}
+.header-image img {display:block;}
+
+.header-image #search-form {z-index:2;top:90px;width:100%;margin-left: -90px;padding-top: 80px;}
+.header-image #search-form input#s {display:block;border:0px;padding-left:63px;padding-top:0px;padding-bottom:0px;height:66px;width:386px;margin:0 auto;background:#FFF url('images/twilioblog_icon-search-large.jpg') no-repeat 15px 17px;font-size:228%;line-height:35px;line-height:66px\9}
+
+#page-title-top-right {float: right;width: 280px;margin-right: 20px;padding-top: 80px;}
+
+body .page, body.single-post .post {padding:0px 80px 0 40px;}
+
+.loop {padding:40px 80px 0px 40px;}
+
+body .page-noHeader, #comment-wrapper {padding:80px;}
+
+body.single-post .post {padding-bottom:80px;}
+
+#container #right-column {
+	width: 270px;
+	position: absolute;
+	top: 90px;
+	right: 0px;
+	margin: 0px;
+	padding: 40px 20px 20px 35px;
+	line-height: 24px;
+	font-size: 14px;
+	font-weight: 300;
+	border-left-color: rgb(239, 239, 239);
+	border-left-style: solid;
+	border-width: 0px 0px 0px 1px;
+}
+
+#right-column input{
+	font-size: 14px;
+}
+
+#right-column h3 {
+	font-size: 114%;
+	font-weight: 900;
+}
+
+#right-column hr{
+	border-color:#EAEAEA; border-style: solid; border-width: 1px; margin: 10px 0;
+}
+
+#right-column li {
+	list-style: none;
+}
+
+#right-column .featured-posts {
+	color: rgb(204, 0, 0);
+}
+
+#right-column .feature-title{
+	margin-bottom: 10px;
+}
+
+#right-column .feature-sidebar-image {
+	display: inline-block;
+	vertical-align: top;
+	padding-top: 7px;
+}
+
+#right-column .feature-sidebar-title {
+	display: inline-block;
+	width: 175px;
+	padding-left: 10px;
+	line-height: 22px;
+}
+
+.hidden{
+	display: none;
+}
+
+#right-column .newsletter-button {
+	display: inline-block;
+	padding: 2px 8px;
+	width: 32%;
+	font-size: 14px;
+	line-height: 24px;
+	text-align: center;
+	vertical-align: 1px;
+	cursor: pointer;
+	color: #333;
+	border: 1px solid #cccccc;
+	border-bottom-color: #b3b3b3;
+	-webkit-border-radius: 4px;
+	-moz-border-radius: 4px;
+	border-radius: 4px;
+	-webkit-box-shadow: inset 0 1px 0 rgba(255,255,255,.2), 0 1px 2px rgba(0,0,0,.05);
+	-moz-box-shadow: inset 0 1px 0 rgba(255,255,255,.2), 0 1px 2px rgba(0,0,0,.05);
+	box-shadow: inset 0 1px 0 rgba(255,255,255,.2), 0 1px 2px rgba(0,0,0,.05);
+	text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+	background: #ccc;
+	background-repeat: repeat-x;
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffee5f5b', endColorstr='#ffbd362f', GradientType=0);
+	border-color: #bd362f #bd362f #802420;
+	border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+	filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
+}
+
+#right-column a{
+	color: #333;
+}
+
+#searchbar {
+	display: inline-block;
+	vertical-align: 8px;
+	margin-right: 25px;
+}
+
+#searchbar #s {
+	width: 300px;
+}
+
+#content[role="main"]{width: 800px; min-height: 1200px; overflow:auto;}
+
+#content h1, #content h2, #comment-wrapper h2,
+#content div[id*="wp-realtime-sitemap"] h3 {font-size:228%;line-height:35px;font-weight:300;color:#202020;}
+#content h1 a, #content h2 a, #comment-wrapper h2 a {color:#202020;}
+
+#content h1 span {font-style:italic;}
+
+#content h1, #content h2, #comment-wrapper h2,
+#content div[id*="wp-realtime-sitemap"] h3 {margin-top:0px;}
+
+#content h2#entry-title-no-header,
+#content h1#entry-title-no-header {padding-top:74px;margin-top:0px;}
+
+#content h2.archive-section-title,
+#content div[id*="wp-realtime-sitemap"] h3 {margin-top:34px;padding-top:40px;border-top:1px solid #cccccc;margin-bottom:10px;}
+#content .grid-wrapper h2.archive-section-title:first-child,
+#content div[id*="wp-realtime-sitemap"] h3:first-child {padding-top:0px;border-top:0px solid #cccccc;}
+
+#content h3 {font-size:153.9%;line-height:26px;font-weight:300;color:#202020;margin:0px 0px 20px 0px;}
+#content .entry-author-description h3 {margin-bottom:0px;margin-top:-4px;}
+#content .entry-content h3.hasFeaturedImage {margin-bottom:40px;}
+
+#content h4 {margin-bottom:20px;font-size:131%;color:#202020;}
+
+.entry-content {float:left;width:100%;padding-bottom:40px;}
+.loop .entry-content {padding-bottom:35px;}
+.loop .entry-content,
+body.single-post .entry-content {border-bottom:1px solid #cccccc;}
+body.single-post .entry-content {margin-top:30px;margin-bottom:40px;}
+.search-content .entry-content,
+body.page-template-page-author-php #content .entry-content {padding-bottom:0px;}
+
+.grid-wrapper, .search-wrapper {padding-bottom:30px;border-bottom:1px solid #cccccc;}
+.search-wrapper {margin-top:30px;}
+.grid-content {width:120px;height:120px;overflow:hidden;float:left;margin-left:10px;margin-bottom:10px;}
+.grid-row .grid-content:first-child {margin-left:0px;}
+#content .grid-content h2.entry-title {margin-top:0px;font-size:93%;line-height:14px;display:block;width:120px;height:120px;background:#e1e1e1 url('images/twilioblog_grid-content-fade.png') repeat-x 0 0;}
+#content .grid-content h2.entry-title a {display:block;width:100%;height:100%;}
+#content .grid-content h2.entry-title a span {display:block;padding:8px 10px;}
+#content .grid-content h2.entry-title a:hover {color:#202020;}
+
+.overlay-faded {background:transparent url('images/twilioblog_overlay-fade.png') repeat-x 0 0;}
+
+.box-link {display:inline-block;margin-top:10px;background:#333;-moz-box-shadow:inset 0 0 30px 10px #222;-webkit-box-shadow:inset 0 0 30px 10px #222;box-shadow:inset 0 0 30px 10px #222;color:#FFF;text-transform:uppercase;/*font-size:116%;font-size:153.9%;*/font-size:138.5%;line-height:18px;text-align:center;padding:20px 2px;}
+.box-link:hover {background:#222;-moz-box-shadow:none;-webkit-box-shadow:none;box-shadow:none;color:#FFF;text-decoration:none;}
+
+input[type="text"], input[type="password"] {padding: 5px;font-size: 123.1%;border: 1px solid #C2C2C2;-moz-border-radius: 4px;-webkit-border-radius: 4px;border-radius: 4px;-webkit-box-shadow: inset 0 1px 3px 0px #DDD;-moz-box-shadow: inset 0 1px 3px 0px #DDD;box-shadow: inset 0 1px 3px 0px #DDD;}
+input[type="text"]:focus, input[type="password"]:focus {color:#000;}
+
+.loop-thumb {float:left;margin-right:40px;width:158px;}
+.loop-thumb img {display:block;}
+.loop-post-hasThumb {float:left;width:442px;}
+
+.post-meta {margin:1px 0px 0px 0px;line-height:18px;}
+.post-meta,
+.post-meta a {color:#808080;}
+.post-meta a {white-space:nowrap;}
+/* (inconsistencies in design)
+body.single-post .post-meta {color:#202020;}
+body.single-post .post-meta .entry-author a,
+body.single-post .post-meta .entry-date a {color:#cc0000;}
+body.single-post .post-meta .entry-author a:hover,
+body.single-post .post-meta .entry-date a:hover {color:#cc0000;}
+*/
+
+.entry-content p,
+.entry-content li,
+.entry-content td,
+.entry-author-description p {font-size:123.1%;line-height:24px;}
+
+.entry-content p {padding-bottom:20px;}
+.loop .entry-content p,
+.search-content .entry-content p {padding-bottom:0px;}
+
+.search-content .entry-content p {line-height:18px;margin:4px 0px;}
+.search-content .entry-content p a {color:#202020;}
+.search-content .entry-content p a:hover {color:#202020;}
+
+.entry-content blockquote {margin:0px 50px 0px 50px;padding-bottom:5px;padding-top:5px;color:#202020;}
+
+.entry-content ul {margin:0px 0px 0px 48px;padding-bottom:20px;list-style-type:square;}
+.entry-content ol {margin:0px 0px 0px 50px;padding-bottom:20px;}
+.entry-content ul ul,
+.entry-content ul ol,
+.entry-content ol ol,
+.entry-content ol ol {padding-bottom:10px;}
+
+.entry-content code {
+	font-family: Consolas, Monaco, monospace;
+}
+
+.more-link {display:block;margin-top:16px;}
+.more-link a {display:inline-block;text-indent:-9999px;width:34px;height:16px;background:transparent url('images/twilioblog_sprite-readMore-dots.gif') no-repeat 0 0;}
+.more-link a:hover {background-position:0 100%;}
+
+.entry-author-avatar,
+.entry-author-description {float:left;}
+.entry-author-avatar {width:48px;margin-right:20px;}
+.entry-author-avatar img {display:block;}
+.entry-author-description {width:572px;}
+.entry-author-description h3 a {color:#202020;}
+.entry-author-description h3 a:hover {color:#202020;}
+
+
+
+/* Images & Galleries */
+
+#content img {max-width: 640px;}
+#content .attachment img {max-width: 640px; height: auto;}
+#content .header-image img {max-width:800px; height: auto;}
+
+#content .alignleft,
+#content img.alignleft {display: inline;float: left;margin-right: 20px;margin-top: 4px;}
+#content .alignright,
+#content img.alignright {display: inline;float: right;margin-left: 20px;margin-top: 4px;}
+#content .aligncenter,
+#content img.aligncenter {clear: both;display: block;margin-left: auto;margin-right: auto;}
+#content img.alignleft,
+#content img.alignright,
+#content img.aligncenter {margin-bottom: 20px;}
+
+p.wp-caption-text {margin-bottom:10px;padding: 0;font-size:123.1%;font-style:italic;color:#202020;}
+
+
+#content .wp-smiley {margin:0;}
+
+#content .gallery {margin: auto;}
+#content .gallery .gallery-item {float: left;text-align: center;width: 33%;}
+#content .gallery br+br {display: none;}
+
+#container.one-column p.page-title{
+	padding: 40px 0 0 40px;
+}
+
+#container.one-column .attachment.type-attachment{
+	padding: 40px;
+}
+
+#container.one-column .attachment .entry-meta{
+	padding-bottom: 10px;
+}
+
+/* Post, Category, & Paged Nav */
+
+#nav-above {display: none;}
+
+#nav-below {margin:40px 80px;float:right;}
+.nav-previous,
+.nav-next {width:auto;float:left;}
+.nav-next a {margin-left:13px;}
+.nav-previous a, #prevSlide {cursor:pointer;display:block;width:31px;height:31px;background:transparent url('images/twilioblog_sprite-back.png') no-repeat 0 0;text-indent:-9999px;}
+.nav-next a, #nextSlide {cursor:pointer;display:block;width:31px;height:31px;background:transparent url('images/twilioblog_sprite-forward.png') no-repeat 0 0;text-indent:-9999px;}
+#prevSlide {background:transparent url('images/twilioblog_sprite-back-slider.png') no-repeat 0 0;}
+#nextSlide {background:transparent url('images/twilioblog_sprite-forward-slider.png') no-repeat 0 0;}
+.nav-previous a:hover,
+#prevSlide:hover,
+.nav-next a:hover,
+#nextSlide:hover {background-position:0 100%;}
+
+#prevSlide, #nextSlide {position:absolute;top:50%;margin-top:-16px;z-index:99;}
+#prevSlide {left:-45px;}
+#nextSlide {right:-45px;}
+
+
+.nocomments {display:none;}
+
+
+
+
+
+/* MAIN WIDGET AREA/WIDGETS ------------------------------------------------------------------------ */
+
+#main-widget-area .main-widget-area-col {float:left;width:398px;background:#FFF;display:none;}
+#main-widget-area .main-widget-area-col:first-child {margin-right:4px;}
+#main-widget-area .main-widget-area-col ul.xoxo {padding:40px 80px;}
+
+ul.xoxo, .widget-area ul {list-style: none;}
+
+.widget-area ul.xoxo > li + li {margin-top:22px;}
+
+.widget-area h3 {/*font-size:153.9%;*/font-size:197%;line-height:24px;color:#000;text-transform:uppercase;}
+.widget-area p {font-size:123.1%;line-height:21px;color:#333333;}
+
+.widget-area input[type="text"],
+.widget-area input[type="password"] {width:221px;}
+
+.widget-area input#s {padding-left:33px;width:193px;background:#FFF url('images/twilioblog_icon-search-small.jpg') no-repeat 5px 3px;}
+
+
+.widget_twilio-topics p span.last {display:none;}
+
+.widget-area .community-links-grid-row .box-link {float:left;height:60px;padding:0px 2px;line-height:64px;width:110px;margin-left:10px;}
+.widget-area .community-links-grid-row .box-link:first-child {margin-left:0px;}
+.widget-area .box-link span {line-height: 20px !important;display: inline-block;padding-top: 12px;}
+
+
+
+
+
+/* FOOTER --------------------------------------------------------------------------------- */
+
+/* css mostly migrated from main twilio website */
+
+#wrap-footer #main-footer {position: relative;width: 100%;margin: 0 auto;padding: 50px 0 30px;}
+
+#wrap-footer #main-footer #footer-links {width: 490px;display: inline-block;vertical-align: 65%;}
+
+#wrap-footer #main-footer #footer-main-navigation {
+	list-style: none;
+	line-height: 35px;
+	display: inline-block;
+	margin: 0;
+}
+#wrap-footer #main-footer #footer-main-navigation li {
+	float:none;
+	display: inline-block;
+	position:static;
+	zoom: 1;
+}
+#wrap-footer #main-footer #footer-main-navigation li a {
+	display: block;
+	/*padding-left: 20px;*/
+	padding-left: 15px;
+	color: #A3A3AC;
+}
+#wrap-footer #main-footer #footer-main-navigation li a:hover {
+	text-decoration: none;
+	color: red;
+}
+
+#wrap-footer #main-footer #legal {
+	display: inline-block;
+	width: 550px;
+}
+#wrap-footer #main-footer #legal .legal-notice {
+	/*color: #DDD;*/
+	color:#BBB;
+	font-size: 0.8em;
+	margin-top: 10px;
+	margin-bottom:12px;
+	line-height: 1.3em;
+}
+
+#wrap-footer-user #main-footer, #wrap-footer #main-footer {
+	position: relative;
+	width: 964px;
+	margin: 0 auto;
+	padding: 50px 0 30px; }
+
+#wrap-footer-user #main-footer #footer-links {
+	width: 650px;
+	display: inline-block;
+	vertical-align: 65%; }
+#wrap-footer-user #main-footer #footer-logo {
+	background: transparent url(/packages/foundation/img/twilio-logo-35x35.png) no-repeat 0 0;
+	width: 35px;
+	height: 35px;
+	line-height: 35px;
+	display: inline-block;
+	direction: ltr;
+	text-indent: -9999px; }
+#wrap-footer-user #main-footer #footer-main-navigation {
+	list-style: none;
+	line-height: 35px;
+	display: inline-block;
+	margin: 0; }
+#wrap-footer-user #main-footer #footer-main-navigation li {
+	display: inline-block;
+	zoom: 1;
+	*display: inline; }
+#wrap-footer-user #main-footer #footer-main-navigation li a {
+	display: block;
+	padding-left: 20px;
+	color: #a3a3ac; }
+#wrap-footer-user #main-footer #footer-main-navigation li a:hover {
+	text-decoration: none;
+	color: #ff0000; }
+#wrap-footer-user #main-footer #legal {
+	display: inline-block;
+	width: 300px; }
+#wrap-footer-user #main-footer #legal .legal-notice {
+	color: #dddddd;
+	font-size: 0.8em;
+	margin-top: 10px;
+	line-height: 1.3em; }
+
+#wrap-footer ul li {
+	list-style: none; }
+#wrap-footer #main-footer .row {
+	margin: 0 23px; }
+#wrap-footer #main-footer .span2 {
+	margin: 0 26px;
+	width: 100px; }
+#wrap-footer #main-footer h3 {
+	border-bottom: solid 1px #E1E1E1;
+	margin-bottom: 5px; }
+#wrap-footer #main-footer h3, #wrap-footer #main-footer h3 a {
+	font-size: 13px;
+	text-transform: uppercase;
+	font-weight: 600;
+	color: #999;
+	line-height: 1.4em; }
+#wrap-footer #main-footer h3:hover, #wrap-footer #main-footer h3 a:hover {
+	color: #C00;
+	text-decoration: none; }
+#wrap-footer #main-footer ul {
+	font-size: 13px;
+	list-style: none;
+	margin: 0; }
+#wrap-footer #main-footer ul li a {
+	color: #999; }
+#wrap-footer #main-footer ul li a:hover {
+	color: #C00;
+	text-decoration: underline; }
+#wrap-footer #main-footer .legal {
+	margin-top: 30px; }
+#wrap-footer #main-footer .legal p {
+	color: #dddddd;
+	font-size: 0.8em;
+	margin-top: 10px;
+	line-height: 1.3em;
+	float: left;
+	width: 420px; }
+#wrap-footer #main-footer .legal p.left {
+	text-align: left; }
+#wrap-footer #main-footer .legal p.right {
+	text-align: right; }
+#wrap-footer #main-footer #twiliologo-footer {
+	background: url("https://s3.amazonaws.com/ahoy-assets.twilio.com/global/images/twiliologo-footer.png") no-repeat;
+	height: 35px;
+	width: 35px;
+	margin: 0px 20px;
+	float: left; }
+#wrap-footer .span2{
+	display: inline-block;
+	float: left;
+}
+#wrap-footer .row{
+	display: table;
+	content: "";
+}
+
+
+.community-links-grid-row a, h3.widget-title  { font-family: "league_gothicregular",helvetica,arial,sans-serif; }
+
+/* CTA Styles ----------------------------------------------------------------------------- */
+#block-cta {
+	background:url('images/cta-grid.png') #333;
+	padding:50px 0px;
+	height:150px;
+	box-sizing:border-box;
+	-webkit-box-sizing:border-box;
+	-khtml-box-sizing:border-box;
+	-o-box-sizing:border-box;
+	-moz-box-sizing:border-box;
+	font: 13px/1.231 "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+#block-cta .center-content {
+	margin:0px auto;
+	width: 600px;
+}
+#block-cta .pull-left {
+	display: inline-block;
+	margin: 0px 20px;
+	vertical-align: top;
+}
+#block-cta .button.red {
+	width:120px;
+	display: inline-block;
+	*display: inline;
+	/* IE7 inline-block hack */
+
+	*zoom: 1;
+	padding: 8px 12px;
+	margin: 4px;
+	font-size: 18px;
+	line-height: 24px;
+	text-align: center;
+	vertical-align: middle;
+	cursor: pointer;
+	color: #ffffff;
+	border: 1px solid #cccccc;
+	*border: 0;
+	border-bottom-color: #b3b3b3;
+	-webkit-border-radius: 4px;
+	-moz-border-radius: 4px;
+	border-radius: 4px;
+	*margin-left: .3em;
+	-webkit-box-shadow: inset 0 1px 0 rgba(255,255,255,.2), 0 1px 2px rgba(0,0,0,.05);
+	-moz-box-shadow: inset 0 1px 0 rgba(255,255,255,.2), 0 1px 2px rgba(0,0,0,.05);
+	box-shadow: inset 0 1px 0 rgba(255,255,255,.2), 0 1px 2px rgba(0,0,0,.05);
+	text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+	background-color: #d90202;
+	background-image: -moz-linear-gradient(top, #ee5f5b, #bd362f);
+	background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#ee5f5b), to(#bd362f));
+	background-image: -webkit-linear-gradient(top, #ee5f5b, #bd362f);
+	background-image: -o-linear-gradient(top, #ee5f5b, #bd362f);
+	background-image: linear-gradient(to bottom, #ee5f5b, #bd362f);
+	background-repeat: repeat-x;
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffee5f5b', endColorstr='#ffbd362f', GradientType=0);
+	border-color: #bd362f #bd362f #802420;
+	border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+	*background-color: #bd362f;
+	/* Darken IE7 buttons by default so they stand out more given they won't have borders */
+
+	filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
+}
+#block-cta h3 {
+	margin:0px 0px 5px;
+	color:#fff;
+	font-size: 180%;
+	line-height: 26px;
+	font-weight: 200;
+	letter-spacing: 1px;
+}
+#block-cta p {
+	color:#d8aa0e;
+	margin:0px;
+}
+
+/* Nav Styles ----------------------------------------------------------------------------- */
+
+#nav-blog {
+	background:rgb(51, 51, 51);
+	height:58px;
+}
+.nav {
+	padding-left: 0;
+	margin-bottom: 0;
+	list-style: none;
+}
+.nav:before,
+.nav:after {
+	display: table;
+	content: " ";
+}
+
+.nav:after {
+	clear: both;
+}
+.nav > li {
+	position: relative;
+	display: block;
+}
+.nav > li > a {
+	position: relative;
+	display: block;
+	padding: 19px 16px 20px;
+	margin: 83px 10px 0 0;
+	text-decoration: none;
+	color:#f2f2f2;
+	text-transform: uppercase;
+	font-family: "Knockout 27 A","Knockout 27 B",Helvetica,Arial,sans-serif;
+	font-size: 26px;
+	letter-spacing: 1.5px;
+	line-height: 26px;
+}
+.nav > li > a.featured {
+	padding: 18px 15px 18px 16px;
+	border: solid 1px #e6e6e6;
+}
+.nav > li a.featured:hover {
+	background: none rgba(255, 255, 255, 0.05);
+}
+.nav .developer-nav {
+	margin-top: 5px;
+}
+.nav > li.first > a {
+	padding-left:0px;
+}
+.nav > li.last > a {
+	padding-right:0px;
+}
+.nav > li > a:hover,
+.nav > li > a:focus {
+	text-decoration: none;
+	color:#fff;
+}
+
+.nav > li.disabled > a {
+	color: #999999;
+}
+
+.nav > li.disabled > a:hover,
+.nav > li.disabled > a:focus {
+	color: #999999;
+	text-decoration: none;
+	cursor: not-allowed;
+	background-color: transparent;
+}
+.navbar-nav {
+	margin: 7.5px -15px;
+}
+
+.navbar-nav > li > a {
+	line-height: 9px;
+}
+.navbar-nav {
+	float: left;
+	margin: 0;
+}
+.navbar-nav > li {
+	float: left;
+}
+.navbar-nav.pull-right {
+	float:right;
+}
+/* Twilio Recipe Styles --------- added by Jarod Reyes ---------------------------------*/
+.twilio-recipe {
+	background:#eee;
+	padding:10px;
+}
+.twilio-recipe h2 {
+	text-align:center;
+	font-size:22px;
+	display:block;
+	padding:5px 0px;
+	border-bottom:1px dashed #aaa;
+	margin:0px;
+}
+.twilio-recipe a {
+	display:inline-block;
+	background: #fff;
+	border-radius: 4px;
+	-moz-border-radius: 4px;
+	-webkit-border-radius: 4px;
+	padding:5px;
+	margin: 15px 4% 0px;
+	width:40%;
+}
+.twilio-recipe br {
+	display:none;
+}
+/* Print Styles --------------------------------------------------------------------------- */
+
+@media print {
+	body {
+		background:transparent none !important;
+	}
+	#wrapper {
+		float: none !important;
+		clear: both !important;
+		display: block !important;
+		position: relative !important;
+	}
+	#header {
+		border-bottom: 1px solid #ccc;
+		padding-bottom: 18pt;
+		height:auto !important;
+	}
+	#header #branding {position:static;margin-top:40px;}
+	#colophon {
+		border-top: 2pt solid #000;
+	}
+	#site-title {
+		font-size: 13pt;
+	}
+	.entry-content {
+		font-size: 14pt;
+		line-height: 1.6em;
+	}
+	.entry-title {
+		font-size: 21pt;
+	}
+	#primary,
+	#respond,
+	.comment-edit-link,
+	.edit-link,
+	.navigation,
+	.page-link,
+	#footer {
+		display: none !important;
+	}
+	#container,
+	#header {
+		width: 100%;
+		margin: 0;
+	}
+	#content,
+	.one-column #content {
+		width: 100%;
+		margin: 24pt 0 0;
+	}
+
+	#main {
+		display:inline;
+	}
+}

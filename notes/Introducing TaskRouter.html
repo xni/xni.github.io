@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<!-- saved from url=(0071)https://www.twilio.com/blog/2015/02/introducing-the-taskrouter-api.html -->
+<html lang="en-US" xmlns:og="http://ogp.me/ns#" class="wf-alternategothicno1d-n4-inactive wf-inactive"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="UTF-8">
+
+<title>
+	Introducing TaskRouter</title>
+
+<link rel="profile" href="http://gmpg.org/xfn/11">
+<link rel="stylesheet" type="text/css" media="all" href="./Introducing TaskRouter_files/style.css">
+
+<link rel="pingback" href="https://www.twilio.com/blog/xmlrpc.php">
+<script async="" src="./Introducing TaskRouter_files/introducing-the-taskrouter-api.html"></script><script src="./Introducing TaskRouter_files/0384.js" async="" type="text/javascript"></script><script type="text/javascript" async="" src="./Introducing TaskRouter_files/elqCfg.min.js"></script><script type="text/javascript" async="" src="./Introducing TaskRouter_files/cc.js"></script><script async="" src="./Introducing TaskRouter_files/gtm.js"></script><script type="text/javascript" async="" src="./Introducing TaskRouter_files/mixpanel-2.2.min.js"></script><script type="text/javascript" async="" src="./Introducing TaskRouter_files/ga.js"></script><script type="text/javascript" src="./Introducing TaskRouter_files/6082066.js"></script>
+<!-- This site is optimized with the Yoast WordPress SEO plugin v1.4.13 - http://yoast.com/wordpress/seo/ -->
+<title>Introducing TaskRouter</title>
+<meta name="description" content="Introducing TaskRouter">
+<link rel="canonical" href="./Introducing TaskRouter_files/Introducing TaskRouter.html">
+<!-- / Yoast WordPress SEO plugin. -->
+
+<link rel="alternate" type="application/rss+xml" title="Twilio Cloud Communications Blog » Feed" href="https://www.twilio.com/blog/feed">
+<link rel="alternate" type="application/rss+xml" title="Twilio Cloud Communications Blog » Comments Feed" href="https://www.twilio.com/blog/comments/feed">
+
+            <script type="text/javascript">//<![CDATA[
+            // Google Analytics for WordPress by Yoast v4.3.5 | http://yoast.com/wordpress/google-analytics/
+            var _gaq = _gaq || [];
+            _gaq.push(['_setAccount', 'UA-2900316-1']);
+				            _gaq.push(['_trackPageview']);
+            (function () {
+                var ga = document.createElement('script');
+                ga.type = 'text/javascript';
+                ga.async = true;
+                ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+
+                var s = document.getElementsByTagName('script')[0];
+                s.parentNode.insertBefore(ga, s);
+            })();
+            //]]></script>
+			<link rel="alternate" type="application/rss+xml" title="Twilio Cloud Communications Blog » Introducing TaskRouter Comments Feed" href="https://www.twilio.com/blog/2015/02/introducing-the-taskrouter-api.html/feed">
+<link rel="stylesheet" id="crayon-css" href="./Introducing TaskRouter_files/crayon.min.css" type="text/css" media="all">
+<link rel="stylesheet" id="swiftype-css" href="./Introducing TaskRouter_files/autocomplete.css" type="text/css" media="all">
+<link rel="stylesheet" id="easy_table_style-css" href="./Introducing TaskRouter_files/style(1).css" type="text/css" media="all">
+<link rel="stylesheet" id="taxonomy-image-plugin-public-css" href="./Introducing TaskRouter_files/style(2).css" type="text/css" media="screen">
+<script type="text/javascript" src="./Introducing TaskRouter_files/jquery.js"></script>
+<script type="text/javascript" src="./Introducing TaskRouter_files/jquery-migrate.min.js"></script>
+<script type="text/javascript">
+/* <![CDATA[ */
+var CrayonSyntaxSettings = {"version":"2.4.3","is_admin":"0","ajaxurl":"https:\/\/twilioinc.wpengine.com\/wp-admin\/admin-ajax.php","prefix":"crayon-","setting":"crayon-setting","selected":"crayon-setting-selected","changed":"crayon-setting-changed","special":"crayon-setting-special","orig_value":"data-orig-value","debug":""};
+var CrayonSyntaxStrings = {"copy":"Press %s to Copy, %s to Paste","minimize":"Click To Expand Code"};
+/* ]]> */
+</script>
+<script type="text/javascript" src="./Introducing TaskRouter_files/crayon.min.js"></script>
+<script type="text/javascript" src="./Introducing TaskRouter_files/jquery.carouFredSel-6.2.1-packed.js"></script>
+<script type="text/javascript" src="./Introducing TaskRouter_files/comment-reply.min.js"></script>
+<script type="text/javascript">
+/* <![CDATA[ */
+var swiftypeParams = {"engineKey":"UpGyyJZzgUMXHM65YENj"};
+/* ]]> */
+</script>
+<script type="text/javascript" src="./Introducing TaskRouter_files/install_swiftype.min.js"></script>
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="https://www.twilio.com/blog/xmlrpc.php?rsd">
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="https://www.twilio.com/blog/wp-includes/wlwmanifest.xml"> 
+<link rel="shortlink" href="https://www.twilio.com/blog/?p=14659">
+
+<!-- WordPress Facebook Open Graph protocol plugin (WPFBOGP v2.0.7) http://rynoweb.com/wordpress-plugins/ -->
+<meta property="fb:app_id" content="178786575532668">
+<meta property="og:url" content="https://www.twilio.com/blog/2015/02/introducing-the-taskrouter-api.html">
+<meta property="og:title" content="Introducing TaskRouter">
+<meta property="og:site_name" content="Twilio Cloud Communications Blog">
+<meta property="og:description" content="Today we announced the launch of TaskRouter. TaskRouter is the beating heart of a contact center, made available in the cloud as an API for developers looking t">
+<meta property="og:type" content="article">
+<meta property="og:image" content="http://twilioinc.wpengine.com/wp-content/uploads/2015/02/TaskRouter_DigitalAssets_1280x530-300x124.png">
+<meta property="og:locale" content="en_us">
+<!-- // end wpfbogp -->
+
+<script type="text/javascript" src="./Introducing TaskRouter_files/jquery.equalheights.js"></script>
+
+<script type="text/javascript">
+	jQuery(document).ready(function($) {		
+							
+		// Adds a class to li's with a nested ul...
+		$("ul li").has('ul').addClass('has-kids');
+	
+		// Adds a class to last li in a ul...
+		$("ul li:last-child").addClass("last");
+		
+		// Adds a class to last a tag in the twilio topics list for styling help...
+		$("li.widget_twilio-topics p span:last-child").addClass("last");
+							
+		// Adds a class to the 'read more...' links based on exact html string...
+		$(".entry-content a:contains('Read More...')").addClass("more-link");
+		$(".entry-content a:contains('Read More…')").addClass("more-link"); // For WP text
+		
+		// Removes default value from input text fields...
+		$("input[type=text]").focus(function () {
+			var defVal = $(this)[0].defaultValue;
+			if ($(this).val() == defVal) {
+				$(this).val(""); 
+			}
+		});
+
+		// Replaces default value from input text fields...
+		$("input[type=text]").blur(function () {
+			var defVal = $(this)[0].defaultValue;
+			if ($(this).val() == "") {
+				$(this).val(defVal);
+			}			
+		});	
+		
+		// Trigger for equal height functionality...
+		if ($(".equal-height").length) {		
+			// Sets the Columns to same height and shows them after a delay to let the custom fonts and other heights within to have time to render... 
+			setTimeout(function() {
+				$("#main-widget-area .main-widget-area-col").equalHeights();
+				$("#main-widget-area .main-widget-area-col").show();
+			}, 600);
+					
+			// Sets the Columns to same height after text or window resize... 
+			$("#main-widget-area .main-widget-area-col").resize(function(){
+				$("#main-widget-area .main-widget-area-col").equalHeights();
+			});		
+		}
+		
+		// Used when an H3 in the post content has an image to add some special styling...
+		$('.entry-content h3:has("img.size-featured-thumbnail")').addClass('hasFeaturedImage');	
+	});
+	
+</script>
+
+<!-- start Mixpanel -->
+	<script type="text/javascript">(function(f,b){if(!b.__SV){var a,e,i,g;window.mixpanel=b;b._i=[];b.init=function(a,e,d){function f(b,h){var a=h.split(".");2==a.length&&(b=b[a[0]],h=a[1]);b[h]=function(){b.push([h].concat(Array.prototype.slice.call(arguments,0)))}}var c=b;"undefined"!==typeof d?c=b[d]=[]:d="mixpanel";c.people=c.people||[];c.toString=function(b){var a="mixpanel";"mixpanel"!==d&&(a+="."+d);b||(a+=" (stub)");return a};c.people.toString=function(){return c.toString(1)+".people (stub)"};i="disable track track_pageview track_links track_forms register register_once alias unregister identify name_tag set_config people.set people.set_once people.increment people.append people.track_charge people.clear_charges people.delete_user".split(" ");
+		for(g=0;g<i.length;g++)f(c,i[g]);b._i.push([a,e,d])};b.__SV=1.2;a=f.createElement("script");a.type="text/javascript";a.async=!0;a.src="https://cdn.mxpnl.com/libs/mixpanel-2.2.min.js";e=f.getElementsByTagName("script")[0];e.parentNode.insertBefore(a,e)}})(document,window.mixpanel||[]);
+	mixpanel.init("f71c19735fa6ecc5225ff563285e1794");</script>
+<!-- end Mixpanel -->
+
+<!-- Google Tag Manager -->
+<noscript>&lt;iframe src="https://www.twilio.com/blog//www.googletagmanager.com/ns.html?id=GTM-W4RVXH"
+                  height="0" width="0" style="display:none;visibility:hidden"&gt;&lt;/iframe&gt;</noscript>
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+		new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+		j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+		'//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+	})(window,document,'script','dataLayer','GTM-W4RVXH');</script>
+<!-- End Google Tag Manager -->
+
+<script type="text/javascript" src="./Introducing TaskRouter_files/fqa3ulw.js"></script>
+<style type="text/css">.box-link,.widget-area h3{font-family:"alternate-gothic-no-1-d",helvetica,arial,sans-serif;}</style><link rel="stylesheet" href="https://use.typekit.net/c/73c50d/1w;alternate-gothic-no-1-d,1,TV3:H:n4/d?3bb2a6e53c9684ffdc9a9aff135b2a629c74e59eae32629bb0e34561bfc9fa96965126b9fc67cd5bf3930672feedb13f9acae6b788dce2bacf2fbb869e668858e74b47b17a1d97eba9e3e9a29564d33a273e1cea25256ed87665e51a5b081503c978f7"><script type="text/javascript">try{Typekit.load();}catch(e){}</script>
+<link rel="stylesheet" type="text/css" href="./Introducing TaskRouter_files/fonts.css">
+<link rel="stylesheet" type="text/css" href="./Introducing TaskRouter_files/fonts(1).css">
+<script type="text/javascript" async="" src="./Introducing TaskRouter_files/embed.js"></script><script type="text/javascript" src="chrome-extension://phfplpepeojlgfgdfgfgfnmgakolcgoa/js/injected.js"></script><script type="text/javascript" src="./Introducing TaskRouter_files/svrGP"></script><script src="./Introducing TaskRouter_files/alfie.f51946af45e0b561c60f768335c9eb79.js" async="" charset="UTF-8"></script></head>
+<body class="single single-post postid-14659 single-format-standard" style="">
+
+	<div id="nav-blog">
+	<div class="nav-wrapper">
+		<ul class="nav navbar-nav pull-right">
+			<li>
+				<a id="signup" class="developer-nav featured" href="https://www.twilio.com/try-twilio">Signup </a>
+				<script type="text/javascript">
+					mixpanel.track_links("#right-column #signup", "signup_referral", {
+						"url": location.pathname,
+						"site_section": "blog"
+					});
+				</script>
+			</li>
+			<li class="last">
+				<a id="login" class="developer-nav" href="https://www.twilio.com/login">Login</a>
+				<script type="text/javascript">
+					mixpanel.track_links("#nav-blog #login", "login_referral", {
+						"url": location.pathname,
+						"site_section": "blog"
+					});
+				</script>
+			</li>
+		</ul>
+	</div>
+</div>
+
+<div id="wrapper" class="hfeed">
+
+	<div id="header">
+		
+		<div id="branding" role="banner">
+		
+						<div id="logo">
+				<a href="https://www.twilio.com/blog" title="Twilio Cloud Communications Blog" rel="home">
+					<img src="./Introducing TaskRouter_files/wordmark.svg" alt="Twilio Cloud Communications Blog"> Blog
+				</a>
+			</div>
+		
+						<div id="site-description"></div>
+
+		</div><!-- #branding -->
+
+		<div id="header-section">
+			<div id="searchbar">
+				<form role="search" method="get" id="search-form" action="https://www.twilio.com/blog/">
+	<label class="screen-reader-text" for="s">Search the blog:</label>
+    <input type="text" value="Search the blog" name="s" id="s" autocomplete="off">
+    </form>			</div>
+			<div id="social-networks">
+				<a class="twitter" href="https://twitter.com/twilio" title="Follow Twilio on Twitter" target="_blank">Follow Twilio on Twitter</a>
+				<a class="facebook" href="http://www.facebook.com/TeamTwilio" title="Like Twilio on Facebook" target="_blank">Like Twilio on Facebook</a>
+				<a class="linkedin" href="http://www.linkedin.com/groups/Twilio-Developers-Network-2350627?gid=2350627&mostPopular=&trk=tyah" title="Connect with Twilio on LinkedIn" target="_blank">Connect with Twilio on LinkedIn</a>
+				<a class="google" href="https://plus.google.com/communities/107812715896537933874" title="Join Twilio on Google+" target="_blank">Join Twilio on Google+</a>
+							</div><!-- #social-networks -->
+		</div><!-- #header-section -->			
+		
+	</div><!-- #header -->
+	
+			
+	<div id="main">
+
+		<div id="container">
+			
+						<div class="header-image" id="post-header">
+				<img width="640" height="265" src="./Introducing TaskRouter_files/TaskRouter_DigitalAssets_1280x530-640x265.png" class="attachment-post-header-image wp-post-image" alt="TaskRouter">			</div>
+						
+			
+			<div id="right-column">
+
+	<a href="https://www.twilio.com/">
+		<h3>Learn more about Twilio</h3>
+	</a>
+	<p>
+		<a href="http://www.twilio.com/engineering/" title="Engineering Blog" target="_blank" onclick="javascript:_gaq.push([&#39;_trackEvent&#39;,&#39;outbound-widget&#39;,&#39;http://www.twilio.com&#39;]);">Engineering Blog »</a>
+	</p>
+	<p>
+		<a href="https://github.com/twilio" title="See Github projects" target="_blank" onclick="javascript:_gaq.push([&#39;_trackEvent&#39;,&#39;outbound-widget&#39;,&#39;http://www.twilio.com&#39;]);">See Github projects »</a>
+	</p>
+	<p>
+		<a href="https://www.twilio.com/docs/quickstart" title="See Quickstarts" target="_blank" onclick="javascript:_gaq.push([&#39;_trackEvent&#39;,&#39;outbound-widget&#39;,&#39;http://www.twilio.com&#39;]);">See Quickstarts »</a>
+	</p>	
+	<p>
+		<a href="https://www.twilio.com/docs/howto" title="See How-Tos" target="_blank" onclick="javascript:_gaq.push([&#39;_trackEvent&#39;,&#39;outbound-widget&#39;,&#39;http://www.twilio.com&#39;]);">See How-Tos »</a>
+	</p>
+	<p>
+		<a href="https://www.twilio.com/docs/api" title="See API Documentation" target="_blank" onclick="javascript:_gaq.push([&#39;_trackEvent&#39;,&#39;outbound-widget&#39;,&#39;http://www.twilio.com&#39;]);">See API Documentation »</a>
+	</p>
+	<hr style="border-color:#EAEAEA; border-style: solid; border-width: 1px; margin-top: 10px; margin-bottom: 15px">
+	<div>
+		<form id="newsletter-form" method="post" name="UntitledForm-1398891662522" action="http://s815114181.t.eloqua.com/e/f2">
+			<input value="UntitledForm-1398891662522" type="hidden" name="elqFormName">
+			<input value="815114181" type="hidden" name="elqSiteId">
+			<input name="elqCampaignId" type="hidden">
+			<input name="pageUrl" type="hidden" value="https://www.twilio.com/blog/2015/02/introducing-the-taskrouter-api.html">
+			<label for="emailAddress">Sign up for our newsletter</label>
+			<input id="field0" name="emailAddress" type="text" placeholder="Email address">
+			<input id="newsletter-submit" type="submit" value="Subscribe" class="newsletter-button">
+			<input type="hidden" name="elqCustomerGUID" value="3f6938d7-b1e5-4171-a9f4-af723f5338b9">
+			<input type="hidden" name="elqCookieWrite" value="0">
+		</form>
+		<div id="form-submission" class="hidden">
+			<p>Thanks for subscribing!</p>
+		</div>
+	</div>
+	<script src="./Introducing TaskRouter_files/livevalidation_standalone.compressed.js" type="text/javascript"></script>
+	<style type="text/css" media="screen">.LV_validation_message{ font-weight:bold; margin: 0 0 0 5px; }
+	.LV_valid{ color:#00CC00; display:none; }
+	.LV_invalid{ color:#CC0000; font-size:10px; }
+	.LV_valid_field, input.LV_valid_field:hover, input.LV_valid_field:active, textarea.LV_valid_field:hover, textarea.LV_valid_field:active { border: 1px solid #00CC00; }
+	.LV_invalid_field, input.LV_invalid_field:hover, input.LV_invalid_field:active, textarea.LV_invalid_field:hover, textarea.LV_invalid_field:active { border: 1px solid #CC0000; }</style><script type="text/javascript">var field0 = new LiveValidation("field0", {validMessage: "", onlyOnBlur: true});</script>
+	<script type="text/javascript">
+		jQuery(function(){
+
+			jQuery('input[name="pageUrl"]').val(window.location.href);
+
+			var newsletterCookie = document.cookie.replace(/(?:(?:^|.*;\s*)newsletterSignupSuccess\s*\=\s*([^;]*).*$)|^.*$/, "$1");
+
+			if (newsletterCookie) {
+				jQuery('#newsletter-form').hide();
+				jQuery('#form-submission').show();
+			}
+
+			jQuery('#newsletter-form').submit(function(e) {
+				document.cookie = "newsletterSignupSuccess=true";
+				mixpanel.track("signup_newsletter", {
+						"url": "/blog"
+					}
+				);
+			});
+
+		});
+	</script>
+
+	<script type="text/javascript"><!--//
+	var timerId = null, timeout = 5;
+	//--></script>
+	<script type="text/javascript"><!--//
+
+	var _elqQ = _elqQ || [];
+	_elqQ.push(['elqSetSiteId', '815114181']);
+	_elqQ.push(['elqTrackPageView']);
+	_elqQ.push(['elqUseFirstPartyCookie', 'www.twilio.com']);
+
+	(function () {
+	function async_load() {
+	  var s = document.createElement('script'); s.type = 'text/javascript'; s.async = true;
+	  s.src = '//img03.en25.com/i/elqCfg.min.js';
+	  var x = document.getElementsByTagName('script')[0]; x.parentNode.insertBefore(s, x);
+	}
+	if (window.addEventListener) window.addEventListener('DOMContentLoaded', async_load, false);
+	else if (window.attachEvent) window.attachEvent('onload', async_load);
+	})();
+
+	function WaitUntilCustomerGUIDIsRetrieved() {
+	if (!!(timerId)) {
+	    if (timeout == 0) {
+	return;
+	}
+	if (typeof this.GetElqCustomerGUID === 'function') {
+	        document.forms["UntitledForm-1398891662522"].elements["elqCustomerGUID"].value = GetElqCustomerGUID();
+	return;
+	}
+	timeout -= 1;
+	}
+	timerId = setTimeout("WaitUntilCustomerGUIDIsRetrieved()", 500);
+	return;
+	}
+	window.onload = WaitUntilCustomerGUIDIsRetrieved;
+	_elqQ.push(['elqGetCustomerGUID']);
+	//--></script>
+
+	<hr>
+
+	<h3 class="feature-title">Featured Posts</h3>
+		<li>
+		<a href="https://www.twilio.com/blog/2014/10/convert-videos-on-your-phone-into-animated-gifs-using-node-libav-and-imagemagick.html" title="Convert Videos on Your Phone Into Animated GIFs Using Node, Libav &amp; Imagemagick" class="featured-posts">
+								<div>
+						<span class="feature-sidebar-image">
+							<img width="75" height="75" src="./Introducing TaskRouter_files/highfive1-75x75.gif" class="attachment-featured-thumbnail wp-post-image" alt="highfive">						</span>
+						<span class="feature-sidebar-title">Convert Videos on Your Phone Into Animated GIFs Using Node, Libav &amp; Imagemagick</span>
+					</div>
+								</a>
+	</li>
+	<hr>
+
+		<li>
+		<a href="https://www.twilio.com/blog/2014/10/how-to-send-branded-sms-using-twilio-mms.html" title="How to Send Your Users a Branded SMS using Twilio MMS and Illustrator" class="featured-posts">
+								<div>
+						<span class="feature-sidebar-image">
+							<img width="75" height="75" src="./Introducing TaskRouter_files/iphone-feature-75x75.jpg" class="attachment-featured-thumbnail wp-post-image" alt="iphone-feature">						</span>
+						<span class="feature-sidebar-title">How to Send Your Users a Branded SMS using Twilio MMS and Illustrator</span>
+					</div>
+								</a>
+	</li>
+	<hr>
+
+		<li>
+		<a href="https://www.twilio.com/blog/2014/09/getting-started-with-twilio-mms.html" title="Getting Started with Twilio MMS Messaging" class="featured-posts">
+								<div>
+						<span class="feature-sidebar-image">
+							<img width="75" height="75" src="./Introducing TaskRouter_files/Twilio_Blog_MMS1-75x75.jpg" class="attachment-featured-thumbnail wp-post-image" alt="Twilio_Blog_MMS">						</span>
+						<span class="feature-sidebar-title">Getting Started with Twilio MMS Messaging</span>
+					</div>
+								</a>
+	</li>
+	<hr>
+
+		<ul class="xoxo">
+		<li id="text-2" class="widget-container widget_text">
+		<div class="textwidget"></div>
+	</li>
+	<hr style="margin-top: 25px; margin-bottom: 25px; color: rgb(255, 255, 255); border-width: 0px;">
+
+	<h3>Topics</h3>
+		<li><a href="https://www.twilio.com/blog/tips-tricks-sample-code">Tips, Tricks, and Sample Code</a></li>
+		<li><a href="https://www.twilio.com/blog/announcements">Announcements</a></li>
+		<li><a href="https://www.twilio.com/blog/conferences-events">Conferences &amp; Events</a></li>
+		<li><a href="https://www.twilio.com/blog/customer-highlights">Customer Highlights</a></li>
+		<li class="last"><a href="https://www.twilio.com/blog/doers-in-action-2">DOers in Action</a></li>
+	</ul>
+
+	<script type="text/javascript">
+		var loc = window.location.href;
+
+		if(/announcements/.test(loc)) {
+			mixpanel.track("page_view_special", {
+					"url": location.pathname
+				}
+			);
+		}
+
+		if(/tips-tricks-sample-code/.test(loc)) {
+			mixpanel.track("page_view_special", {
+					"url": location.pathname
+				}
+			);
+		}
+	</script>
+	<hr>
+
+	<a id="webinar" href="https://www.twilio.com/customers/stories/uber">Watch our featured customer video:
+		<br>
+		<img src="./Introducing TaskRouter_files/Screen Shot 2014-08-04 at 2.03.33 PM.png" style="width: 250px; border: 2px solid rgb(255, 255, 255);">
+	</a>
+	<hr>
+	<script type="text/javascript">
+		mixpanel.track_links("#right-column #webinar", "asset_leadwall_referral", {
+			"url": location.pathname,
+			"site_section": "blog"
+		});
+	</script>
+</div>
+			
+			<div id="content" role="main">
+
+				
+				<div id="post-14659" class="post-14659 post type-post status-publish format-standard hentry category-announcements tag-task-router tag-twilio tag-twilio-task-router tag-workflow-management">
+
+					<h2 class="entry-title">Introducing TaskRouter</h2>
+					
+					<div class="post-meta">
+						Posted by <span class="entry-author vcard"><a class="url fn n" href="https://www.twilio.com/blog/author/al-cook" title="View posts by Al Cook">Al Cook</a> <span class="entry-date"> on <a href="https://www.twilio.com/blog/2015/02">February 18</a>, <a href="https://www.twilio.com/blog/2015">2015</a></span> </span> in <a href="https://www.twilio.com/blog/announcements" title="View all posts in Announcements" rel="category tag">Announcements</a>					</div>
+
+					<div class="entry-content">
+										
+						<p dir="ltr" id="docs-internal-guid-8709b91a-9da4-5063-7f5e-9090e65b074d">Today we announced the launch of <a href="http://twilio.com/taskrouter" onclick="javascript:_gaq.push([&#39;_trackEvent&#39;,&#39;outbound-article&#39;,&#39;http://twilio.com&#39;]);">TaskRouter</a>. <a href="http://twilio.com/taskrouter" onclick="javascript:_gaq.push([&#39;_trackEvent&#39;,&#39;outbound-article&#39;,&#39;http://twilio.com&#39;]);">TaskRouter</a> is the beating heart of a contact center, made available in the cloud as an API for developers looking to solve any kind of intelligent routing challenge. TaskRouter can dynamically assign tasks of any type to the workers that can best handle them. <a href="http://twilio.com/voice" onclick="javascript:_gaq.push([&#39;_trackEvent&#39;,&#39;outbound-article&#39;,&#39;http://twilio.com&#39;]);">Calls</a>, <a href="http://twilio.com/sms" onclick="javascript:_gaq.push([&#39;_trackEvent&#39;,&#39;outbound-article&#39;,&#39;http://twilio.com&#39;]);">SMS</a>, support tickets, leads or even machine data can be routed based on the “skills” required and the priority set.</p>
+<p dir="ltr">We built TaskRouter after seeing a common thread in the challenges our customers faced in building great customer experiences. Whether the developers were building contact centers from scratch, augmenting CRM systems with communications capabilities, building high-conversion lead management platforms, or creating support desk products that deliver great customer service – at the core of all of these challenges we saw a recurring problem: matching tasks to the right people or processes that can best handle them. We saw this first in the contact center space, but what we realized is it wasn’t a contact-center specific problem – it was a general problem.</p>
+<p dir="ltr">&nbsp;Matching tasks to the right worker is complex. It’s easy to build a basic queue to assign things sequentially, but handling mixed priorities, escalation rules, service level targets and worker presence management gets really hard to build and harder to scale. &nbsp;This is the kind of routing logic that to date has only been available in high end call center software. Call center systems that are not just expensive, but have extremely limited support for applying that routing logic across other channels of communications or across tasks created by other vendors’ systems.</p>
+<p dir="ltr">TaskRouter unlocks the power of call center routing and makes it accessible to every developer as a vendor-agnostic cloud API. TaskRouter manages the state of all the workers and tasks in complex multi-channel communications environments. With TaskRouter, developers can hook the decision points directly into custom business logic. It can be the engine of the call center you’re building, but it can also be the method for assigning work within a CRM interface, assigning support tickets to agents with the right product expertise, building Internet of Things workflows and more. We can’t wait to see what people build with TaskRouter.</p>
+<p dir="ltr">&nbsp;One of the areas we’re most excited by TaskRouter’s potential is its ability to empower CRM platforms. At the heart of a CRM is a database of rich information with huge untapped potential. Today the usual way of allocating leads, tickets and other work items within a CRM is through very simple filters. It is very difficult to ensure agents work on tickets in the right order, to proactively escalate tickets to hit SLA targets. This means the CRM is used as a database and a to-do list, but does not achieve it’s full potential as the primary communication interface. With TaskRouter powering real-time work assignments, the CRM can be the only platform needed. A CRM that leverages these capabilities for embedded real-time customer interactions can be a fundamentally better version of a contact center, at a fraction of the price. Instead of having to choose between customer experience vs agent efficiency, this approach can raise the bar on both.</p>
+<p>Over the next few days and weeks we’ll be posting a series of blog updates around specific examples of what you can build with TaskRouter. Until then, check out the webpage to learn more: <a href="http://www.twilio.com/taskrouter" onclick="javascript:_gaq.push([&#39;_trackEvent&#39;,&#39;outbound-article&#39;,&#39;http://www.twilio.com&#39;]);">www.twilio.com/taskrouter</a>.</p>
+			
+						
+						<div class="faux-clear"></div>
+						
+																	
+						
+					</div><!-- .entry-content -->
+					
+					<div class="faux-clear"></div>
+					
+					<div class="entry-author">
+						<div class="entry-author-avatar">
+							<img alt="" src="./Introducing TaskRouter_files/7cc06bde78dcabc7caa76f98a76f57f3" class="avatar avatar-48 photo" height="48" width="48">						</div><!-- .author-avatar -->
+						<div class="entry-author-description">
+							<h3>Posted by <a class="url fn n" href="" title="View Bio and Posts by Al Cook">Al Cook</a></h3>
+							<p></p>
+													</div><!-- .entry-author-description -->
+						<div class="faux-clear"></div>
+					</div><!-- .entry-author-info -->					
+					
+				</div><!-- #post -->
+				
+
+								
+
+			</div><!-- #content -->
+		</div><!-- #container -->
+
+		<div id="block-cta" class="box-shadow">
+	<div class="center-content">
+		<div class="pull-left">
+			<a id="signup-cta" href="http://www.twilio.com/try-twilio" class="button red">Get Started</a>
+			<script type="text/javascript">
+				mixpanel.track_links("#sign-cta", "signup_referral", {
+					"url": location.pathname,
+					"site_section": "blog"
+				});
+			</script>
+		</div>
+		<div class="pull-left">
+			<h3 class="white">Create an account with Twilio</h3>
+			<p>Build an app that makes calls in under five minutes flat.</p><p>
+		</p></div>
+	</div>
+</div><!-- #block-cta -->
+		
+		<div id="comment-wrapper" class="box-shadow">
+			<h2 class="entry-title">What do you think?</h2>
+			
+<div id="disqus_thread"><iframe id="dsq-2" data-disqus-uid="2" allowtransparency="true" frameborder="0" scrolling="no" tabindex="0" title="Disqus" width="100%" src="./Introducing TaskRouter_files/saved_resource.html" style="width: 100% !important; border: none !important; overflow: hidden !important; height: 610px !important;" horizontalscrolling="no" verticalscrolling="no"></iframe></div>
+
+<script type="text/javascript">
+/* <![CDATA[ */
+    var disqus_url = 'https://www.twilio.com/blog/2015/02/introducing-the-taskrouter-api.html';
+    var disqus_identifier = '14659 http://twilioinc.wpengine.com/?p=14659';
+    var disqus_container_id = 'disqus_thread';
+    var disqus_domain = 'disqus.com';
+    var disqus_shortname = 'twilioblog';
+    var disqus_title = "Introducing TaskRouter";
+        var disqus_config = function () {
+        var config = this; // Access to the config object
+        config.language = '';
+
+        /*
+           All currently supported events:
+            * preData — fires just before we request for initial data
+            * preInit - fires after we get initial data but before we load any dependencies
+            * onInit  - fires when all dependencies are resolved but before dtpl template is rendered
+            * afterRender - fires when template is rendered but before we show it
+            * onReady - everything is done
+         */
+
+        config.callbacks.preData.push(function() {
+            // clear out the container (its filled for SEO/legacy purposes)
+            document.getElementById(disqus_container_id).innerHTML = '';
+        });
+                config.callbacks.onReady.push(function() {
+            // sync comments in the background so we don't block the page
+            var script = document.createElement('script');
+            script.async = true;
+            script.src = '?cf_action=sync_comments&post_id=14659';
+
+            var firstScript = document.getElementsByTagName( "script" )[0];
+            firstScript.parentNode.insertBefore(script, firstScript);
+        });
+                    };
+/* ]]> */
+</script>
+
+<script type="text/javascript">
+/* <![CDATA[ */
+    var DsqLocal = {
+        'trackbacks': [
+        ],
+        'trackback_url': "https:\/\/www.twilio.com\/blog\/2015\/02\/introducing-the-taskrouter-api.html\/trackback"    };
+/* ]]> */
+</script>
+
+<script type="text/javascript">
+/* <![CDATA[ */
+(function() {
+    var dsq = document.createElement('script'); dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.' + 'disqus.com' + '/embed.js?pname=wordpress&pver=2.74';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+})();
+/* ]]> */
+</script>
+		
+		</div>
+
+			
+			
+		<div class="clear"></div>
+						
+	</div><!-- #main -->
+	
+	<!-- 
+		<div id="main-widget-area" class="widget-area equal-height" role="complementary">
+			<div class="main-widget-area-col box-shadow">
+				<ul class="xoxo">
+<li id="text-2" class="widget-container widget_text"><h3 class="widget-title">The Twilio Blog</h3>			<div class="textwidget"><p>
+See what the Twilio community is building, get tips and tricks from our tutorials and stay in the loop on the most current of events.
+</p></div>
+		</li><li id="search-2" class="widget-container widget_search"><form role="search" method="get" id="search-form" action="https://www.twilio.com/blog/" >
+	<label class="screen-reader-text" for="s">Search the blog:</label>
+    <input type="text" value="Search the blog" name="s" id="s" />
+    </form></li><li id="twilio-topics-2" class="widget-container widget_twilio-topics"><h3 class="widget-title">Topics</h3><p>	<a href="https://www.twilio.com/blog/doers-in-action-2" title="View all posts filed under DOers In Action">DOers In Action</a><span>,</span> 
+	<a href="https://www.twilio.com/blog/contests" title="View all posts filed under Contests">Contests</a><span>,</span> 
+	<a href="https://www.twilio.com/blog/inside-twilio" title="View all posts filed under Inside Twilio">Inside Twilio</a><span>,</span> 
+	<a href="https://www.twilio.com/blog/developer-contest" title="Explore the many possibilities for building applications with Twilio APIs for voice and SMS. New contest categories announced each week.">Developer Contest</a><span>,</span> 
+	<a href="https://www.twilio.com/blog/tips-tricks-sample-code" title="View all posts filed under Tips, Tricks &amp; Sample Code">Tips, Tricks &amp; Sample Code</a><span>,</span> 
+	<a href="https://www.twilio.com/blog/conferences-events" title="View all posts filed under Conferences &amp; Events">Conferences &amp; Events</a><span>,</span> 
+	<a href="https://www.twilio.com/blog/announcements" title="View all posts filed under Announcements">Announcements</a><span>,</span> 
+	<a href="https://www.twilio.com/blog/customer-highlights" title="View all posts filed under Customer Highlights">Customer Highlights</a><span>,</span> 
+</p></li>				</ul>
+			</div>
+			<div class="main-widget-area-col box-shadow">			
+				<ul class="xoxo">
+<li id="text-3" class="widget-container widget_text"><h3 class="widget-title">Twilio Community</h3>			<div class="textwidget"><p>
+See where else you can connect with the Twilio community
+</p>
+
+<div class="community-links-grid-row">
+
+<a href="http://www.twilio.com/engineering/" onclick="javascript:_gaq.push(['_trackEvent','outbound-widget','http://www.twilio.com']);" title="Engineering Blog" class="box-link" target="_blank">Engineering Blog</a>
+
+<a href="http://stackoverflow.com/questions/tagged/twilio" onclick="javascript:_gaq.push(['_trackEvent','outbound-widget','http://stackoverflow.com']);" title="Get Technical Help" class="box-link" target="_blank">Get Technical Help</a>
+
+</div>
+
+<div class="community-links-grid-row">
+
+<a href="http://plancast.com/twilio" onclick="javascript:_gaq.push(['_trackEvent','outbound-widget','http://plancast.com']);" title="Upcoming Events" class="box-link" target="_blank">Upcoming Events</a>
+
+<a href="http://www.meetup.com/twiliosf/" onclick="javascript:_gaq.push(['_trackEvent','outbound-widget','http://www.meetup.com']);" title="Join the SF Meetup" class="box-link" target="_blank"><span>Join the SF Meetup</span> </a>
+
+</div>
+
+<div class="community-links-grid-row">
+
+<a href="http://www.feedly.com/home#subscription%2Ffeed%2Fhttp%3A%2F%2Ffeeds.feedburner.com%2Ftwilio%2FOBEN" onclick="javascript:_gaq.push(['_trackEvent','outbound-widget','http://www.feedly.com']);" title="Subscribe to the Twilio blog" class="box-link" target="_blank"><span>Subscribe to the Twilio blog</span></a>
+
+<a href="http://www.twilio.com/conference/2013" onclick="javascript:_gaq.push(['_trackEvent','outbound-widget','http://www.twilio.com']);" title="Watch Videos from TwilioCon 2013" class="box-link" target="_blank"><span>Watch Videos from TwilioCon 2013</span></a>
+
+</div></div>
+		</li>				</ul>
+			</div>
+			<div class="clear"></div>
+		</div><!-- #main-widget-area .widget-area --> 
+<div id="wrap-footer">
+	<div id="main-footer" class="SL_swap">
+		<div class="row">
+			<div class="span2">
+				<h3><a href="https://twilio.com/company">Company</a></h3>
+				<ul>
+					<li><a href="https://twilio.com/company">About Us</a></li>
+					<li><a href="https://twilio.com/company/management">Team</a></li>
+					<li class="last"><a href="https://twilio.com/company/jobs">Jobs</a></li>
+				</ul>
+			</div>
+			<div class="span2">
+				<h3><a href="https://twilio.com/products">Products</a></h3>
+				<ul>
+					<li><a href="https://twilio.com/voice">Voice</a></li>
+					<li><a href="https://twilio.com/client">Client</a></li>
+					<li class="last"><a href="https://twilio.com/sms">Messaging</a></li>
+				</ul>
+			</div>
+			<div class="span2">
+				<h3><a href="https://twilio.com/api">Resources</a></h3>
+				<ul>
+					<li><a href="https://twilio.com/api">API &amp; Docs</a></li>
+					<li><a href="https://twilio.com/docs/security">Security</a></li>
+					<li><a href="https://twilio.com/international">International</a></li>
+					<li class="last"><a href="https://twilio.com/open-source">Open Source</a></li>
+				</ul>
+			</div>
+			<div class="span2">
+				<h3><a href="https://twilio.com/blog">Community</a></h3>
+				<ul>
+					<li><a href="https://twilio.com/blog">Twilio Blog</a></li>
+					<li><a href="https://twilio.com/engineering">Engineering Blog</a></li>
+					<li class="last"><a href="http://www.twilio.org/">Twilio.org</a></li>
+				</ul>
+			</div>
+			<div class="span2">
+				<h3><a href="https://twilio.com/solutions">Solutions</a></h3>
+				<ul>
+					<li><a href="https://twilio.com/elements">Elements</a></li>
+					<li><a href="https://twilio.com/showcase">Showcase</a></li>
+					<li><a href="https://twilio.com/partners">Partners</a></li>
+					<li class="last"><a href="https://twilio.com/doers">DOers</a></li>
+				</ul>
+			</div>
+			<div class="span2">
+				<h3><a href="https://twilio.com/help">Support</a></h3>
+				<ul>
+					<li><a href="https://twilio.com/help">Help Center</a></li>
+					<li><a href="http://status.twilio.com/">Status</a></li>
+					<li class="last"><a href="https://twilio.com/help/sales">Talk to Sales</a></li>
+				</ul>
+			</div>
+		</div>
+		<div class="row">
+			<div class="legal">
+				<p class="right">© 2009 - 2014 Twilio, Inc. All rights reserved. Patents Pending. </p>
+				<div id="twiliologo-footer"></div>
+				<p class="left">Twilio, TwiML, and OpenVBX are trademarks of Twilio, Inc.</p>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+</div><!-- #wrapper -->
+
+<script type="text/javascript">
+setTimeout(function(){var a=document.createElement("script");
+var b=document.getElementsByTagName('script')[0];
+a.src=document.location.protocol+"//dnn506yrbagrg.cloudfront.net/pages/scripts/0011/0384.js";
+a.async=true;a.type="text/javascript";b.parentNode.insertBefore(a,b)}, 1);
+</script>
+<script type="text/javascript" src="./Introducing TaskRouter_files/devicepx-jetpack.js"></script>
+
+
+<div class="swiftype-widget"><div class="autocomplete" style="position: absolute; z-index: 9999; top: 134px; left: 754.09375px; width: 310px; display: none;"><ul></ul></div></div></body></html>

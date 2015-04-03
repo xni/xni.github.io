@@ -1,0 +1,83 @@
+/*
+Theme Name: Arabesque
+Description: Customisations for Twentyeleven for the Arabesque blog
+Author: Tom Ryder <tom@sanctum.geek.nz>
+Template: twentyeleven
+*/
+@import url("../twentyeleven/style.css");
+@import url("http://fonts.googleapis.com/css?family=Nova+Script");
+#site-title a {
+    font: normal normal normal 3.0em/1 "Nova Script", cursive;
+}
+.seriesmeta {
+    margin: 1em 0;
+}
+.series-nav-left {
+	float: left;
+}
+.series-nav-right {
+	float: right;
+}
+article a {
+    text-decoration: underline;
+}
+#main {
+    padding-top: 1em;
+}
+#secondary {
+    margin-right: 3%;
+}
+#content {
+    margin-left: 3%;
+    margin-right: 30%;
+    width: 70%;
+}
+.singular #content {
+    margin-left: 3%;
+    margin-right: 3%;
+}
+.singular #content .entry-content {
+    width: 75%;
+}
+#access .menu {
+    margin-left: 3%;
+    margin-right: 3%;
+}
+#nav-single {
+    white-space: nowrap;
+}
+.single .entry-header,
+.page .entry-header {
+    width: 75%;
+}
+div.sharedaddy .sd-title {
+    width: auto !important;
+}
+div.sharedaddy .sd-content {
+    float: none !important;
+    width: auto !important;
+}
+code,
+pre {
+    background: #0a0a0a !important;
+    color: #ffffff;
+    font-family: "Ubuntu Mono", "Inconsolata", "Consolas", "DejaVu Sans Mono", monospace !important;
+    font-size: 10pt !important;
+    white-space: nowrap;
+}
+code {
+    border-radius: 5px;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    padding: 0.1em 0.25em;
+}
+pre {
+    border-radius: 15px;
+    -moz-border-radius: 15px;
+    -webkit-border-radius: 15px;
+}
+    pre code {
+        padding: 0;
+        white-space: pre;
+    }
+
