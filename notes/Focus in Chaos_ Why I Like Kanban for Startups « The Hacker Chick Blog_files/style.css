@@ -1,0 +1,896 @@
+/*
+Theme Name: HackerChick
+Theme URI: http://HackerChick.com/
+Description: The theme for The Hacker Chick Blog
+Version: 3.0
+Author: Abby Fichtner
+Author URI: http://HackerChick.com/
+Tags: hackerchick
+*/
+/* ------------------------------------
+   Reset Margins
+   ------------------------------------ */
+body, h1, h2, h3, p {
+  	margin: 0;
+}
+html, body{
+    height: 100%;
+}
+body{
+    width: 100%;
+}
+ul{
+    padding:0;
+    margin:0;
+}
+
+/* ------------------------------------
+   Entire Page
+   ------------------------------------ */
+body{
+    font-family: Geneva,Verdana,sans-serif;
+    font-size: 1em;
+}
+
+a:link, a:visited{
+    color: #d24dbf;
+    text-decoration: none;
+}
+a:hover{
+    color: #777;
+}
+
+
+/* ------------------------------------
+   Menu
+   ------------------------------------ */
+.nav-menu-items{
+    float: right;
+    z-index:1010;  /* float above header title */
+    margin: 20px 7px 0 0;
+    list-style-type: none;
+}
+.nav-menu-items li{
+    display: inline;
+    margin-right: .67em;
+}
+
+.menu-items{
+    font-weight: bold;
+    font-family: 'Oswald',Geneva,Verdana,sans-serif;
+    letter-spacing: .025em;
+    font-variant:small-caps;
+    font-size: 1.2em;
+}
+
+#menu-search{
+    width: 24px;
+    float: right;
+    z-index:1010;  /* float above header title */
+    height: 24px;
+    margin: 22px 15px 0 0;
+    background: url('imgs/search.png') bottom no-repeat;
+    background-size: 24px;
+}
+/* I don't like this because then it stays gray as you type in your search text
+#menu-search:hover{
+    background-position: 0 0;
+}
+*/
+
+#menu-search-field{
+  display: none;
+  float: right;
+  width: 350px;
+  margin: 20px 7px 0 0;
+  background-size: 24px;
+  height: 30px;
+  line-height: 30px;
+  color: #D24DBF;
+  border: 0px;
+  outline: none;
+  text-align: right;
+  font-family: Geneva,Verdana,sans-serif;
+  font-weight: normal;
+  font-size: 1.2em;
+}    
+  
+
+/* ------------------------------------
+   Mobile Menu
+   ------------------------------------ */
+#mobile-menu{
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 0;
+    overflow: hidden;
+    background: black;
+}
+
+.mobile-menu-items{
+    list-style-type: none;
+    width: 250px;
+    margin: 0;
+    text-align: center;
+    
+}
+.mobile-menu-items ul{
+    -webkit-padding-start: 0px;
+}
+.mobile-menu-items li{
+    color: white;
+    font-family: Geneva,Verdana,sans-serif;
+    letter-spacing: .1em;
+    font-variant:small-caps;
+    font-size: 1.1em;
+    line-height: 3em;
+}
+
+.mobile-menu-items li a:link, .mobile-menu-items a:visited{
+    color: white;
+}
+
+.mobile-menu-items li a:hover{
+    color: #DF6BD6;
+}
+
+#mobile-menu-search{
+  width: 200px;
+  margin: 20px auto 10px auto;
+  display: block;
+  border: 2px solid rgba(255,255,255,.5);
+  background: transparent url('imgs/search-mobile.png') right center no-repeat;
+  background-size: 24px;
+  height: 30px;
+  line-height: 30px;
+  color: #fff;
+  outline: none;
+  text-align: center;
+  font-family: Geneva,Verdana,sans-serif;
+  font-weight: normal;
+  font-size: 1.2em;
+}    
+
+#mobile-menu, #sitecontainer, .header-titlebar, .header-titlebar-bottomwhitespace{
+    transition: all .2s ease;
+    -webkit-transition: all .2s ease;
+}
+
+/* ------------------------------------
+   Dropdown Menu
+   ------------------------------------ */
+#dropdown-menu{
+    position: fixed;
+    top: 56px;  /* height of title.png + bottomwhitespace */
+    width: auto;
+    height: 0;
+    overflow: hidden;
+    z-index: 9999;
+    background-color: rgba(255,255,255,1);
+}
+
+.dropdown-menu-items{
+    list-style-type: none;
+    margin: 0;
+    padding: 3px 12px 5px 12px;
+    border: 1px black solid;
+}
+.dropdown-menu-items li{
+    color: #d24dbf;
+    margin: 0 0px 5px 0;
+    border-bottom: 1px black solid;
+}
+.dropdown-menu-items li:last-child{
+    border-bottom: 0px;
+    margin-bottom: 0px;
+}
+
+
+/* ------------------------------------
+   Header
+   ------------------------------------ */
+.header-titlebar{
+    height: 45px; /* Height of title.png */
+    width: 100%;
+    background: url('imgs/title-background-fill.png');
+    position: fixed;
+    z-index:1000;  /* always on top */
+    top: 0; /* needed for mobile safari */
+    left: 0; /* needed for mobile safari */
+}
+.header-title{
+    float: left;
+    background: url('imgs/title.png') no-repeat;
+    background-size: contain;
+    width: 355px;
+    height: 45px;
+    max-width: 80%;
+}
+
+#header-mobile-menu-button{
+    float: left;
+    display: none;
+    margin-top: 15px;
+    margin-left: 12px;
+}
+.header-titlebar-bottomwhitespace{
+    height: 11px;   /* height of HC's head extending above the black */
+    width: 100%;
+    background-color: white;
+    box-shadow: 0px 2px 4px rgba(0,0,0,.6);
+    z-index:0; /* position under header */
+    position: fixed;
+    top: 45px; /* needed for mobile safari */
+    left: 0px; /* needed for mobile safari */
+}
+  
+.header-spacer{
+    height: 45px; /* Height of Title.png */
+    margin: 0;
+    padding: 0;
+}
+
+
+.header-bar{
+    height: 220px;  /* height of hackerchick.png */
+    width: 100%;
+    background-color: black;
+    background: -webkit-linear-gradient(180deg, #333, #000);
+    background: -moz-linear-gradient(180deg, #333, #000);
+    background: -o-linear-gradient(180deg, #333, #000);
+    background: -ms-linear-gradient(180deg, #333, #000);
+    margin-bottom: 40px;
+}
+
+.header-hackerchick{
+    height: 220px;  /* height of hackerchick.png */
+    width: 100%;
+    background: url('imgs/hackerchick.png') no-repeat, url('imgs/tagline.png') no-repeat;    
+    /* float above the symbols */
+    position: relative;
+    float: left;
+    z-index: 10;
+}
+.header-symbols{
+    height: 220px;  /* height of hackerchick.png */
+    width: 100%;
+    background: url('imgs/symbols.png') no-repeat right bottom;
+    background-size: cover;
+}
+
+  
+/* ------------------------------------
+   Topics
+   ------------------------------------ */
+.topics{
+    margin: 0 0 1.75em 0;
+    padding: 0 0 1.25em 0;    /* bottom is between boxes & border */
+    border-bottom: .3125em solid #777;
+    text-align: center;
+}
+
+.topic-box{
+    width: 32%;
+    height: 5em;
+    display: inline-block;
+    margin-right: .75%;
+}
+.last{
+    margin-right: 0;
+}
+.topic-box.single{
+    width: 100%;
+    color: #DF6BD6;
+    height: 3.75em;
+}
+
+.topic{
+    height: 80%;
+    padding: .3125em .625em;
+    background-color: #555;
+    white-space: nowrap;
+}
+
+.topic h3{
+    font-family: 'Oswald',Geneva,Verdana,sans-serif;
+    letter-spacing: .1em;
+    font-size:1.3em;
+    font-weight: bold;
+    font-variant: small-caps;
+    margin: 7px 0 0 0;
+}
+
+.topic p{
+    font-size: .9em;
+    color: #FFF;
+    margin: 0;
+}
+
+.topic-box a:link h3, .topic-box a:visited h3{
+    color: #DF6BD6;
+}
+.topic-box a:link p, .topic-box a:visited p{
+    color: white;
+}
+
+.topic-box a:hover .topic{
+    background-color: #ac3895;
+}
+.topic-box a:hover h3, .topic-box a:hover p{
+    color: white;
+    text-decoration: none;
+}  
+
+
+/* ------------------------------------
+   SIDEBAR
+   ------------------------------------ */
+#sidebar{
+    float: right;
+}
+
+#sidebar h2{
+    font-family: 'Oswald', Geneva,Verdana,sans-serif;
+    font-weight: 300;
+    line-height: 1;
+    font-size:1.5em; 
+    text-align: center;
+    margin-top: 0;
+    margin-bottom: .5em;
+}
+
+.social-media{
+    text-align:center;
+    margin-bottom: 1.7em;
+}
+.social-media img{
+    width: 17%;
+}
+
+.bio{
+    margin-top: -0.5em;
+}
+
+.bio p{
+    margin: 1em 0;
+    font-family: Geneva,Verdana,sans-serif;
+    font-size: .9em;
+    color: #333;
+    text-align: justify;
+}
+
+/* for mobile - display bottom-bar instead of sidebar */
+.bottom-bar{
+    display: none;
+}
+  
+/* ------------------------------------
+   Teasers
+   ------------------------------------ */
+.teasers{
+    margin: 0 auto 0 auto;
+}
+
+.teaser{
+    margin-bottom: 2.75em;
+    display: inline-block;
+}
+.teaser-bottom{
+    margin-bottom: 0;    
+}
+
+.teaser-image{
+    max-height: 35%;
+    overflow: hidden;
+}
+
+.teaser img{
+    /* force image to resize based on max-width available */
+    width: 99%;  /* need a pixel for the border */
+    height: auto;
+    margin: 0;
+    border: #DDD 1px solid;
+}
+
+.teaser h3{
+    font-family: 'Oswald',Geneva,Verdana,sans-serif;
+    letter-spacing: -.01em;
+    font-weight: bold;
+    font-size:1.3em;
+    font-variant: small-caps;
+    text-align: center;
+    line-height: 1.1;
+    margin: 4px 0 7px 0;
+    white-space:nowrap;
+    overflow: hidden;
+}
+
+.teaser a:link, .teaser a:visited{
+    color: black;
+    text-decoration: none;
+}
+
+.teaser a:hover{
+    color: #d24dbf;
+    text-decoration: none;
+}
+
+.teaser p{
+    font-family: Geneva,Verdana,sans-serif;
+    font-size: .95em;
+    line-height: 1.25em;
+    margin: 5px 0 0 0;
+    color: #777;
+    height: 4.925em; /* font-size (.95) * line-height (1.25) + a tiny bit for letters that go below (.175) */
+    overflow: hidden;
+    text-overflow: ellipsis;    
+}
+
+/* ------------------------------------
+   Navigation
+   ------------------------------------ */
+.navigation{
+    font-weight: bold;
+    font-family: 'Oswald',Geneva,Verdana,sans-serif;
+    letter-spacing: .01em;
+    font-variant:small-caps;
+    font-size: 1.8em;
+    margin: .8em 0 1em 0;
+}
+.navigation.single{
+    font-size: 1.1em;
+    margin-left: auto;
+    margin-right: auto;
+    color: #777;    
+}
+.navigation.single.bottom{
+    width: 80%;
+}
+#navigation-older{
+    float: left;
+}
+#navigation-newer{
+    float: right;
+}
+.navigation a:link, .navigation a:visited{
+    color: #777;
+    text-decoration: none;    
+}
+.navigation a:hover{
+    color: #d24dbf;
+    text-decoration: none;    
+}
+
+/* ------------------------------------
+   Posts
+   ------------------------------------ */
+.post-cover-image{
+    padding: 0;
+    margin: 3em 2em -1em 2em;
+    border-width: 0;
+    text-align: center;
+    max-height: 40%;
+    overflow: hidden;
+    
+}
+.post-cover-image img{
+    margin: 0 auto;
+    width: 100%;
+    max-width: 1024px;
+    height: auto;
+}
+
+.post{
+  width: 80%;
+  max-width: 675px;
+	margin: auto;
+  line-height: 1.5;
+  padding: .25em;
+
+}
+
+.post .title{
+    font-family: 'Oswald',Geneva,Verdana,sans-serif;
+    font-size:3.5em;
+    font-weight: 900;
+    font-variant:small-caps;
+    line-height: 1;
+    letter-spacing: -.02em;
+    margin-top: 1em;
+    margin-bottom: .2em;
+}
+
+.title.page{
+  margin-top: -10px;
+}
+
+.post h2{
+    font-family: 'Oswald',Geneva,Verdana,sans-serif;
+    font-size: 2em;
+    font-weight: 900;
+    font-variant:small-caps;
+    line-height: 1;
+    letter-spacing: -.02em;
+    margin-top: .75em;
+    margin-bottom: .15em;
+}
+
+.post h2 + p {
+    margin-top: 0;
+}
+
+.post .subtitle{
+    font-family: 'Oswald',Geneva,Verdana,sans-serif;
+    font-style: italic;
+    font-size: 1.25em;
+    font-weight: 300;
+    line-height: 1;
+}
+
+.post-aux-info{
+    margin: 1em 0 1.5em 0;
+    color: #777;
+}
+
+.post-share-buttons img{
+    float: right;
+    height: 1.85em;
+    vertical-align: middle;
+    margin-top:-.2em;
+    margin-left: -.1em;
+    margin-left: .45em;
+}
+
+.title + .subtitle{ 
+    margin-top: 0;
+}
+
+.post p{
+    margin: 1em 0;
+}
+
+.postbody ul{
+    margin-left: .3em;
+}
+.postbody li {
+    margin-left: 1em;
+    padding-left: .3em;
+}
+
+.postbody img{
+    /* force image to resize based on max-width available */
+    max-width: 100%;
+    height: auto;
+}
+
+/* ------------------------------------
+   Google Forms - hide title
+   ------------------------------------ */
+ss-form-container{
+   width: 100%;
+}
+div.ss-form-entry>input {
+    width: 100%
+}
+div.ss-form-entry>textarea {
+    width: 100%
+}
+h1.ss-form-title { display: none; }
+.ss-required-asterisk{ display: none; }
+
+/* ------------------------------------
+   You Might Also Like
+   ------------------------------------ */
+.you-might-also-like{
+    margin: 1em auto;
+    width: 80%;
+}
+.you-might-also-like-contents{
+    max-width: 675px;  /* same as max-width for post */
+    margin: 1em auto;
+}
+.you-might-also-like ul{
+    padding-top: 0.5em;
+    padding-left: 0px;
+}
+.you-might-also-like li{
+  list-style-position:inside;
+}
+
+.more-articles{
+    margin-top: 2em;
+}
+
+/* ------------------------------------
+   Not Found
+   ------------------------------------ */
+.not-found h2{
+    margin-bottom: .25em;
+}
+
+/* ------------------------------------
+   About Footer
+   ------------------------------------ */
+.about-footer{
+    width: 80%;
+    margin: 1em auto 1em auto;
+    color: #777;
+}
+
+.about-footer p{
+    max-width: 675px;  /* same as max-width for post */
+    margin: 1em auto;
+}
+
+.about-footer-social-media img{
+    height: 2.3em;
+    vertical-align: middle;
+    margin: 0 .3em 1em .3em;
+}
+ 
+/* ------------------------------------
+   Footer
+   ------------------------------------ */
+.footer-bar{
+    width: 100%;
+    height: 100px; /* height of footer.jpg */
+}
+
+.footer-image{
+    background: url('imgs/footer.jpg') repeat-x top center;
+    background-size: auto 100px;
+    width: 100%;
+    height: 100%;
+    display: block; /* need this to display in firefox */
+    padding-bottom: 0;
+    margin-bottom: 0;
+}
+
+.footer-bar p{
+    font-size: .7em;
+    color: #D0D0D0;
+    text-align: center;
+    margin: 0;
+    padding:.5em .1em;
+    background-color: black;
+    background: -webkit-linear-gradient(180deg, #333, #000);
+    background: -moz-linear-gradient(180deg, #333, #000);
+    background: -o-linear-gradient(180deg, #333, #000);
+    background: -ms-linear-gradient(180deg, #333, #000);
+}
+
+.footer-bar a:link, .footer-bar a:visited{
+    color: #CC88CC;
+}
+
+/* ------------------------------------
+   404 Page
+   ------------------------------------ */
+.not-found{
+    width: 80%;
+    margin: 0 auto 40px auto;
+}
+
+
+/* ------------------------------------
+   Clear Floats
+   ------------------------------------ */
+.group:before,
+.group:after{
+  content: "";
+  display: table;
+}
+.group:after{
+  clear: both;
+}
+.group{
+  zoom: 1;  /* Fix ie7 and below */
+}
+
+/* ------------------------------------
+   Responsive Design
+   Media queries
+   ------------------------------------ */
+/*************** HEIGHT *****************/
+@media screen and (max-height: 768px){
+  /* shrink cover image a little */
+  .post-cover-image img{
+      margin-bottom: -5%;
+      margin-top: -5%;
+  }
+}
+@media screen and (max-height: 650px){
+  /* shrink cover image a little more */
+  .post-cover-image img{
+      margin-bottom: -7.5%;
+      margin-top: -7.5%;
+  }
+}
+@media screen and (max-height: 350px){
+    /* shrink mobile menu height to fit */
+    .mobile-menu-items li{
+      line-height: 1.9em;
+    }
+}
+
+/*************** WIDTH *****************/   
+@media screen and (max-width: 800px) {
+  /* Drop side-bar & menu on top */
+  #sidebar{
+      display: none;
+  }
+  .menu{
+      display: none;
+  }
+
+  #header-mobile-menu-button{
+      display: inline-block;
+  }
+  
+  .topics{
+      margin-top: -15px;
+  }
+
+  .grid_1 { width: 12.083% }
+  .grid_2 { width: 29.6664% }
+  .grid_3 { width: 47.2498% }
+  .grid_4 { width: 64.8332%; }
+  .grid_5 { width: 82.4166%; }
+  .grid_6,
+  .grid_7,
+  .grid_8
+  { width: 100%; }
+  
+  .grid_1,
+  .grid_2,
+  .grid_3,
+  .grid_4,
+  .grid_5,
+  .grid_6,
+  .grid_7,
+  .grid_8 {
+    margin-right: 5.5004%;
+  }
+  .omega-short{ margin-right: 0px; }
+
+  /* display bottom-bar */
+  .bottom-bar{
+      display: inline;
+  }
+
+  /* shrink teaser image height */
+  .teaser-image{
+      height: 150px;
+      overflow: hidden;
+  }
+  .teaser-image img{
+      max-width: 100%;
+      height: auto;
+      margin-top: -10%;
+  }
+
+  /* Remove padding around cover image */
+  .post-cover-image{
+      padding: 0;
+      margin: 0 0 -1em 0;
+  }
+}
+
+@media screen and (max-width: 650px) {
+  /* shrink the tagline */
+  .header-hackerchick{
+    background: url('imgs/hackerchick.png') no-repeat, url('imgs/tagline-mobile.png') no-repeat;
+    background-size: contain;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .grid-container{
+      width: 80%;
+  }
+  .grid_1,
+  .grid_2,
+  .grid_3,
+  .grid_4,
+  .grid_5,
+  .grid_6,
+  .grid_7,
+  .grid_8 {
+      width: 100%;
+  }
+
+  /* shrink topics boxes to display headers only */
+  .topic-box{
+    height: 45px;
+    margin-right: .5%;
+    width: 31%;
+  }
+  .topic h3{
+    font-size:1em;
+  }
+  .topic p{
+      display: none;
+  }  
+
+  /* shrink teaser image height further */
+  .teaser-image{
+      height: 100px;
+      overflow: hidden;
+  }
+  .teaser-image img{
+      max-width: 100%;
+      height: auto;
+      margin-top: -25%;
+  }
+
+  .teaser-bottom{
+      margin-bottom: 2.75em;  /* set to same as .teaser */
+  }
+  .teaser-bottom.omega-short{
+      margin-bottom: 0;
+  }
+}
+
+@media screen and (max-width: 500px) {
+  body{
+    font-size: .9em;
+  }
+
+  .grid-container{
+      width: 90%;
+  }
+}
+
+@media screen and (max-width: 400px) {
+  /* shrink the tagline even more */
+  .header-hackerchick{
+    background: url('imgs/hackerchick.png') no-repeat, url('imgs/tagline-mobile-narrow.png') no-repeat;
+    background-size: contain;
+  }
+}
+
+@media screen and (max-width: 299px) {
+  /* drop tagline from header */
+  .header-hackerchick{
+    background: url('imgs/hackerchick.png') no-repeat;
+    background-size: contain;
+  }
+  
+  .topic h3{
+    font-size:.9em;
+  }
+}
+
+
+  
+/* ------------------------------------
+Styles for use within the posts
+------------------------------------ */
+.callout{
+    text-align: center;
+    font-size: 1.75em;
+    line-height: 1.25em;
+    letter-spacing: -.02em;
+    padding: .6em;
+}
+
+.emph{
+    color: #7F7F7F;
+    font-weight: 900;
+}
+
+.callToAction{
+    font-weight:900;
+    color:#000;
+}
+
+.bad{
+    color: #c0504d;
+}
+
+.code{
+	font-family:"Courier New", Courier, monospace
+}
+

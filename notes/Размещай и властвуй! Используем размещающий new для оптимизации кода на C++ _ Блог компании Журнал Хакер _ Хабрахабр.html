@@ -1,0 +1,1809 @@
+<!DOCTYPE html>
+<html><head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta content="width=1024" name="viewport">
+
+
+    <title>Размещай и властвуй! Используем размещающий new для оптимизации кода на C++ / Блог компании Журнал Хакер / Хабрахабр</title>
+
+    <meta name="yandex-verification" content="67d46b975fa41645"> <!-- яндекс вебмастер - верификация -->
+
+    <meta name="description" content="
+
+Создавая объект за объектом, мы часто не обращаем внимания на такую «мелочь», как динамическое выделение памяти. Наравне с копированием и сериализацией, выделение памяти из кучи через new...">
+    <meta name="keywords" content="оптимизация кода, размещающий new, c++">
+
+    	<meta property="fb:app_id" content="444736788986613"> 
+<meta property="og:type" content="article"> 
+<meta property="og:url" content="http://habrahabr.ru/company/xakep/blog/257893/"> 
+<meta property="og:title" content="Размещай и властвуй! Используем размещающий new для оптимизации кода на C++">
+	<meta property="og:image" content="https://habrastorage.org/files/d0d/4e3/6bf/d0d4e36bf0624c7b881fce6125434c2b.jpg">
+	<link rel="image_src" href="https://habrastorage.org/files/d0d/4e3/6bf/d0d4e36bf0624c7b881fce6125434c2b.jpg"><meta property="og:image" content="https://xakep.ru/wp-content/uploads/2014/11/COVER_11_2014_LOW-326x420.jpg">
+	<link rel="image_src" href="%D0%A0%D0%B0%D0%B7%D0%BC%D0%B5%D1%89%D0%B0%D0%B8%CC%86%20%D0%B8%20%D0%B2%D0%BB%D0%B0%D1%81%D1%82%D0%B2%D1%83%D0%B8%CC%86%21%20%D0%98%D1%81%D0%BF%D0%BE%D0%BB%D1%8C%D0%B7%D1%83%D0%B5%D0%BC%20%D1%80%D0%B0%D0%B7%D0%BC%D0%B5%D1%89%D0%B0%D1%8E%D1%89%D0%B8%D0%B8%CC%86%20new%20%D0%B4%D0%BB%D1%8F%20%D0%BE%D0%BF%D1%82%D0%B8%D0%BC%D0%B8%D0%B7%D0%B0%D1%86%D0%B8%D0%B8%20%D0%BA%D0%BE%D0%B4%D0%B0%20%D0%BD%D0%B0%20C++%20_%20%D0%91%D0%BB%D0%BE%D0%B3%20%D0%BA%D0%BE%D0%BC%D0%BF%D0%B0%D0%BD%D0%B8%D0%B8%20%D0%96%D1%83%D1%80%D0%BD%D0%B0%D0%BB%20%D0%A5%D0%B0%D0%BA%D0%B5%D1%80%20_%20%D0%A5%D0%B0%D0%B1%D1%80%D0%B0%D1%85%D0%B0%D0%B1%D1%80_files/COVER_11_2014_LOW-326x420.jpg">
+	
+<meta property="og:description" content="Создавая объект за объектом, мы часто не обращаем внимания на такую «мелочь», как динамическое выделение памяти. Наравне с копированием и сериализацией,...">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:site" content="@habrahabr">
+	<link rel="canonical" href="http://habrahabr.ru/company/xakep/blog/257893/">
+    <link rel="alternate" media="only screen and (max-width: 640px)" href="http://m.habrahabr.ru/company/xakep/blog/257893/">
+
+
+
+
+    <link href="%D0%A0%D0%B0%D0%B7%D0%BC%D0%B5%D1%89%D0%B0%D0%B8%CC%86%20%D0%B8%20%D0%B2%D0%BB%D0%B0%D1%81%D1%82%D0%B2%D1%83%D0%B8%CC%86%21%20%D0%98%D1%81%D0%BF%D0%BE%D0%BB%D1%8C%D0%B7%D1%83%D0%B5%D0%BC%20%D1%80%D0%B0%D0%B7%D0%BC%D0%B5%D1%89%D0%B0%D1%8E%D1%89%D0%B8%D0%B8%CC%86%20new%20%D0%B4%D0%BB%D1%8F%20%D0%BE%D0%BF%D1%82%D0%B8%D0%BC%D0%B8%D0%B7%D0%B0%D1%86%D0%B8%D0%B8%20%D0%BA%D0%BE%D0%B4%D0%B0%20%D0%BD%D0%B0%20C++%20_%20%D0%91%D0%BB%D0%BE%D0%B3%20%D0%BA%D0%BE%D0%BC%D0%BF%D0%B0%D0%BD%D0%B8%D0%B8%20%D0%96%D1%83%D1%80%D0%BD%D0%B0%D0%BB%20%D0%A5%D0%B0%D0%BA%D0%B5%D1%80%20_%20%D0%A5%D0%B0%D0%B1%D1%80%D0%B0%D1%85%D0%B0%D0%B1%D1%80_files/global_main.css" rel="stylesheet" media="all">
+    <script src="%D0%A0%D0%B0%D0%B7%D0%BC%D0%B5%D1%89%D0%B0%D0%B8%CC%86%20%D0%B8%20%D0%B2%D0%BB%D0%B0%D1%81%D1%82%D0%B2%D1%83%D0%B8%CC%86%21%20%D0%98%D1%81%D0%BF%D0%BE%D0%BB%D1%8C%D0%B7%D1%83%D0%B5%D0%BC%20%D1%80%D0%B0%D0%B7%D0%BC%D0%B5%D1%89%D0%B0%D1%8E%D1%89%D0%B8%D0%B8%CC%86%20new%20%D0%B4%D0%BB%D1%8F%20%D0%BE%D0%BF%D1%82%D0%B8%D0%BC%D0%B8%D0%B7%D0%B0%D1%86%D0%B8%D0%B8%20%D0%BA%D0%BE%D0%B4%D0%B0%20%D0%BD%D0%B0%20C++%20_%20%D0%91%D0%BB%D0%BE%D0%B3%20%D0%BA%D0%BE%D0%BC%D0%BF%D0%B0%D0%BD%D0%B8%D0%B8%20%D0%96%D1%83%D1%80%D0%BD%D0%B0%D0%BB%20%D0%A5%D0%B0%D0%BA%D0%B5%D1%80%20_%20%D0%A5%D0%B0%D0%B1%D1%80%D0%B0%D1%85%D0%B0%D0%B1%D1%80_files/watch.js" async="" type="text/javascript"></script><script src="%D0%A0%D0%B0%D0%B7%D0%BC%D0%B5%D1%89%D0%B0%D0%B8%CC%86%20%D0%B8%20%D0%B2%D0%BB%D0%B0%D1%81%D1%82%D0%B2%D1%83%D0%B8%CC%86%21%20%D0%98%D1%81%D0%BF%D0%BE%D0%BB%D1%8C%D0%B7%D1%83%D0%B5%D0%BC%20%D1%80%D0%B0%D0%B7%D0%BC%D0%B5%D1%89%D0%B0%D1%8E%D1%89%D0%B8%D0%B8%CC%86%20new%20%D0%B4%D0%BB%D1%8F%20%D0%BE%D0%BF%D1%82%D0%B8%D0%BC%D0%B8%D0%B7%D0%B0%D1%86%D0%B8%D0%B8%20%D0%BA%D0%BE%D0%B4%D0%B0%20%D0%BD%D0%B0%20C++%20_%20%D0%91%D0%BB%D0%BE%D0%B3%20%D0%BA%D0%BE%D0%BC%D0%BF%D0%B0%D0%BD%D0%B8%D0%B8%20%D0%96%D1%83%D1%80%D0%BD%D0%B0%D0%BB%20%D0%A5%D0%B0%D0%BA%D0%B5%D1%80%20_%20%D0%A5%D0%B0%D0%B1%D1%80%D0%B0%D1%85%D0%B0%D0%B1%D1%80_files/analytics.js" async=""></script><script type="text/javascript" src="%D0%A0%D0%B0%D0%B7%D0%BC%D0%B5%D1%89%D0%B0%D0%B8%CC%86%20%D0%B8%20%D0%B2%D0%BB%D0%B0%D1%81%D1%82%D0%B2%D1%83%D0%B8%CC%86%21%20%D0%98%D1%81%D0%BF%D0%BE%D0%BB%D1%8C%D0%B7%D1%83%D0%B5%D0%BC%20%D1%80%D0%B0%D0%B7%D0%BC%D0%B5%D1%89%D0%B0%D1%8E%D1%89%D0%B8%D0%B8%CC%86%20new%20%D0%B4%D0%BB%D1%8F%20%D0%BE%D0%BF%D1%82%D0%B8%D0%BC%D0%B8%D0%B7%D0%B0%D1%86%D0%B8%D0%B8%20%D0%BA%D0%BE%D0%B4%D0%B0%20%D0%BD%D0%B0%20C++%20_%20%D0%91%D0%BB%D0%BE%D0%B3%20%D0%BA%D0%BE%D0%BC%D0%BF%D0%B0%D0%BD%D0%B8%D0%B8%20%D0%96%D1%83%D1%80%D0%BD%D0%B0%D0%BB%20%D0%A5%D0%B0%D0%BA%D0%B5%D1%80%20_%20%D0%A5%D0%B0%D0%B1%D1%80%D0%B0%D1%85%D0%B0%D0%B1%D1%80_files/global_main.js"></script>
+    	<link href="%D0%A0%D0%B0%D0%B7%D0%BC%D0%B5%D1%89%D0%B0%D0%B8%CC%86%20%D0%B8%20%D0%B2%D0%BB%D0%B0%D1%81%D1%82%D0%B2%D1%83%D0%B8%CC%86%21%20%D0%98%D1%81%D0%BF%D0%BE%D0%BB%D1%8C%D0%B7%D1%83%D0%B5%D0%BC%20%D1%80%D0%B0%D0%B7%D0%BC%D0%B5%D1%89%D0%B0%D1%8E%D1%89%D0%B8%D0%B8%CC%86%20new%20%D0%B4%D0%BB%D1%8F%20%D0%BE%D0%BF%D1%82%D0%B8%D0%BC%D0%B8%D0%B7%D0%B0%D1%86%D0%B8%D0%B8%20%D0%BA%D0%BE%D0%B4%D0%B0%20%D0%BD%D0%B0%20C++%20_%20%D0%91%D0%BB%D0%BE%D0%B3%20%D0%BA%D0%BE%D0%BC%D0%BF%D0%B0%D0%BD%D0%B8%D0%B8%20%D0%96%D1%83%D1%80%D0%BD%D0%B0%D0%BB%20%D0%A5%D0%B0%D0%BA%D0%B5%D1%80%20_%20%D0%A5%D0%B0%D0%B1%D1%80%D0%B0%D1%85%D0%B0%D0%B1%D1%80_files/company_post_show_common.css" rel="stylesheet" media="all">
+
+    <link href="%D0%A0%D0%B0%D0%B7%D0%BC%D0%B5%D1%89%D0%B0%D0%B8%CC%86%20%D0%B8%20%D0%B2%D0%BB%D0%B0%D1%81%D1%82%D0%B2%D1%83%D0%B8%CC%86%21%20%D0%98%D1%81%D0%BF%D0%BE%D0%BB%D1%8C%D0%B7%D1%83%D0%B5%D0%BC%20%D1%80%D0%B0%D0%B7%D0%BC%D0%B5%D1%89%D0%B0%D1%8E%D1%89%D0%B8%D0%B8%CC%86%20new%20%D0%B4%D0%BB%D1%8F%20%D0%BE%D0%BF%D1%82%D0%B8%D0%BC%D0%B8%D0%B7%D0%B0%D1%86%D0%B8%D0%B8%20%D0%BA%D0%BE%D0%B4%D0%B0%20%D0%BD%D0%B0%20C++%20_%20%D0%91%D0%BB%D0%BE%D0%B3%20%D0%BA%D0%BE%D0%BC%D0%BF%D0%B0%D0%BD%D0%B8%D0%B8%20%D0%96%D1%83%D1%80%D0%BD%D0%B0%D0%BB%20%D0%A5%D0%B0%D0%BA%D0%B5%D1%80%20_%20%D0%A5%D0%B0%D0%B1%D1%80%D0%B0%D1%85%D0%B0%D0%B1%D1%80_files/printer.css" rel="stylesheet" media="print">
+
+    
+    
+
+
+
+
+    	<script type="text/javascript" src="%D0%A0%D0%B0%D0%B7%D0%BC%D0%B5%D1%89%D0%B0%D0%B8%CC%86%20%D0%B8%20%D0%B2%D0%BB%D0%B0%D1%81%D1%82%D0%B2%D1%83%D0%B8%CC%86%21%20%D0%98%D1%81%D0%BF%D0%BE%D0%BB%D1%8C%D0%B7%D1%83%D0%B5%D0%BC%20%D1%80%D0%B0%D0%B7%D0%BC%D0%B5%D1%89%D0%B0%D1%8E%D1%89%D0%B8%D0%B8%CC%86%20new%20%D0%B4%D0%BB%D1%8F%20%D0%BE%D0%BF%D1%82%D0%B8%D0%BC%D0%B8%D0%B7%D0%B0%D1%86%D0%B8%D0%B8%20%D0%BA%D0%BE%D0%B4%D0%B0%20%D0%BD%D0%B0%20C++%20_%20%D0%91%D0%BB%D0%BE%D0%B3%20%D0%BA%D0%BE%D0%BC%D0%BF%D0%B0%D0%BD%D0%B8%D0%B8%20%D0%96%D1%83%D1%80%D0%BD%D0%B0%D0%BB%20%D0%A5%D0%B0%D0%BA%D0%B5%D1%80%20_%20%D0%A5%D0%B0%D0%B1%D1%80%D0%B0%D1%85%D0%B0%D0%B1%D1%80_files/company_post_show_common.js"></script>
+
+
+      <!-- www.criteo.com/ru -->
+<script type="text/javascript">
+  var crtg_nid="2580";
+  var crtg_cookiename="cto_rtt";
+  var crtg_varname="crtg_content";
+  function crtg_getCookie(c_name){
+    var i,x,y,ARRCookies=document.cookie.split(";");
+    for(i=0;i<ARRCookies.length;i++){
+      x=ARRCookies[i].substr(0,ARRCookies[i].indexOf("="));
+      y=ARRCookies[i].substr(ARRCookies[i].indexOf("=")+1);
+      x=x.replace(/^\s+|\s+$/g,"");
+      if(x==c_name){return unescape(y);}
+    }
+    return'';
+  }
+  var crtg_content = crtg_getCookie(crtg_cookiename);var crtg_rnd=Math.floor(Math.random()*99999999999);
+  var crtg_url=location.protocol+'//rtax.criteo.com/delivery/rta/rta.js?netId='+escape(crtg_nid);crtg_url+='&cookieName='+escape(crtg_cookiename);crtg_url+='&rnd='+crtg_rnd;crtg_url+='&varName=' + escape(crtg_varname);
+  var crtg_script=document.createElement('script');crtg_script.type='text/javascript';crtg_script.src=crtg_url;crtg_script.async=true;
+  if(document.getElementsByTagName("head").length>0)document.getElementsByTagName("head")[0].appendChild(crtg_script);
+  else
+  if(document.getElementsByTagName("body").length>0)document.getElementsByTagName("body")[0].appendChild(crtg_script);
+</script><script async="" src="%D0%A0%D0%B0%D0%B7%D0%BC%D0%B5%D1%89%D0%B0%D0%B8%CC%86%20%D0%B8%20%D0%B2%D0%BB%D0%B0%D1%81%D1%82%D0%B2%D1%83%D0%B8%CC%86%21%20%D0%98%D1%81%D0%BF%D0%BE%D0%BB%D1%8C%D0%B7%D1%83%D0%B5%D0%BC%20%D1%80%D0%B0%D0%B7%D0%BC%D0%B5%D1%89%D0%B0%D1%8E%D1%89%D0%B8%D0%B8%CC%86%20new%20%D0%B4%D0%BB%D1%8F%20%D0%BE%D0%BF%D1%82%D0%B8%D0%BC%D0%B8%D0%B7%D0%B0%D1%86%D0%B8%D0%B8%20%D0%BA%D0%BE%D0%B4%D0%B0%20%D0%BD%D0%B0%20C++%20_%20%D0%91%D0%BB%D0%BE%D0%B3%20%D0%BA%D0%BE%D0%BC%D0%BF%D0%B0%D0%BD%D0%B8%D0%B8%20%D0%96%D1%83%D1%80%D0%BD%D0%B0%D0%BB%20%D0%A5%D0%B0%D0%BA%D0%B5%D1%80%20_%20%D0%A5%D0%B0%D0%B1%D1%80%D0%B0%D1%85%D0%B0%D0%B1%D1%80_files/rta.js" type="text/javascript"></script>
+      <script>
+        var N = 5;
+        var ar_duo1 = Math.floor(Math.random()*N+1);
+      </script>
+      <script type="text/javascript" src="%D0%A0%D0%B0%D0%B7%D0%BC%D0%B5%D1%89%D0%B0%D0%B8%CC%86%20%D0%B8%20%D0%B2%D0%BB%D0%B0%D1%81%D1%82%D0%B2%D1%83%D0%B8%CC%86%21%20%D0%98%D1%81%D0%BF%D0%BE%D0%BB%D1%8C%D0%B7%D1%83%D0%B5%D0%BC%20%D1%80%D0%B0%D0%B7%D0%BC%D0%B5%D1%89%D0%B0%D1%8E%D1%89%D0%B8%D0%B8%CC%86%20new%20%D0%B4%D0%BB%D1%8F%20%D0%BE%D0%BF%D1%82%D0%B8%D0%BC%D0%B8%D0%B7%D0%B0%D1%86%D0%B8%D0%B8%20%D0%BA%D0%BE%D0%B4%D0%B0%20%D0%BD%D0%B0%20C++%20_%20%D0%91%D0%BB%D0%BE%D0%B3%20%D0%BA%D0%BE%D0%BC%D0%BF%D0%B0%D0%BD%D0%B8%D0%B8%20%D0%96%D1%83%D1%80%D0%BD%D0%B0%D0%BB%20%D0%A5%D0%B0%D0%BA%D0%B5%D1%80%20_%20%D0%A5%D0%B0%D0%B1%D1%80%D0%B0%D1%85%D0%B0%D0%B1%D1%80_files/adriver.js"></script>
+
+    
+
+    
+<script type="text/javascript">
+
+      var user_type = 'habrauser';
+
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-726094-1',  'auto' );
+    ga('create', 'UA-726094-24', 'auto', {'name': 'HGM'});
+
+  ga('require', 'displayfeatures');
+  ga('set', 'dimension1', user_type); // user type - guest/readonly/habrauser
+  //ga('set', 'dimension2', username); // username
+
+
+    // аккаунт компании
+      ga('create', 'UA-16546458-9',  'auto', { 'name': 'company' } );
+
+    ga('company.send', 'pageview'); // Send page view for new tracker.
+
+  if(typeof removeUtms === 'undefined') {
+    removeUtms = function(){};
+  }
+  ga('HGM.send', 'pageview');
+  ga('HGM.set', 'dimension1', user_type);
+  ga('HGM.set', 'dimension2', "habrahabr");
+  ga('send', 'pageview', { 'hitCallback': removeUtms });
+
+</script>
+
+
+    <meta content="Хабрахабр" name="apple-mobile-web-app-title">
+<link href="http://habrahabr.ru/images/apple-touch-icon_142x142.png" rel="apple-touch-icon" type="image/png">
+  </head>
+
+  <body><style type="text/css">#navbar .nav_panel .tab.tab_print:hover path,#navbar .nav_panel .tab.tab_print:hover text { fill: #bd002d; } </style>
+    <div id="TMpanel">
+  <div class="container">
+    <div class="menu">
+      <a href="http://tmfeed.ru/?utm_source=tm_habrahabr&amp;utm_medium=tm_top_panel&amp;utm_campaign=tm_promo">TM Feed</a>
+      <a href="http://habrahabr.ru/?utm_source=tm_habrahabr&amp;utm_medium=tm_top_panel&amp;utm_campaign=tm_promo" class="current">Хабрахабр</a>
+      <a href="http://megamozg.ru/?utm_source=tm_habrahabr&amp;utm_medium=tm_top_panel&amp;utm_campaign=tm_promo">Мегамозг</a>
+      <a href="http://geektimes.ru/?utm_source=tm_habrahabr&amp;utm_medium=tm_top_panel&amp;utm_campaign=tm_promo">Geektimes</a>
+      <a href="http://toster.ru/?utm_source=tm_habrahabr&amp;utm_medium=tm_top_panel&amp;utm_campaign=tm_promo">Тостер</a>
+      <a href="http://brainstorage.me/?utm_source=tm_habrahabr&amp;utm_medium=tm_top_panel&amp;utm_campaign=tm_promo">Brainstorage</a>
+      <a href="http://freelansim.ru/?utm_source=habrahabr&amp;utm_medium=referral&amp;utm_campaign=mainpage&amp;utm_content=head_link">Фрилансим</a>
+    </div>
+  </div>
+</div>
+
+
+    <div id="layout">
+      <div id="navbar_overlay" class="hidden"></div>
+<div style="bottom: 29px;" id="navbar">
+    <div class="nav_panel">
+        <a href="http://habrahabr.ru/" class="logo"></a>
+            <a href="http://habrahabr.ru/users/xni/" class="tab tab_user" data-tab="user_tab" title="xni">
+                <img src="%D0%A0%D0%B0%D0%B7%D0%BC%D0%B5%D1%89%D0%B0%D0%B8%CC%86%20%D0%B8%20%D0%B2%D0%BB%D0%B0%D1%81%D1%82%D0%B2%D1%83%D0%B8%CC%86%21%20%D0%98%D1%81%D0%BF%D0%BE%D0%BB%D1%8C%D0%B7%D1%83%D0%B5%D0%BC%20%D1%80%D0%B0%D0%B7%D0%BC%D0%B5%D1%89%D0%B0%D1%8E%D1%89%D0%B8%D0%B8%CC%86%20new%20%D0%B4%D0%BB%D1%8F%20%D0%BE%D0%BF%D1%82%D0%B8%D0%BC%D0%B8%D0%B7%D0%B0%D1%86%D0%B8%D0%B8%20%D0%BA%D0%BE%D0%B4%D0%B0%20%D0%BD%D0%B0%20C++%20_%20%D0%91%D0%BB%D0%BE%D0%B3%20%D0%BA%D0%BE%D0%BC%D0%BF%D0%B0%D0%BD%D0%B8%D0%B8%20%D0%96%D1%83%D1%80%D0%BD%D0%B0%D0%BB%20%D0%A5%D0%B0%D0%BA%D0%B5%D1%80%20_%20%D0%A5%D0%B0%D0%B1%D1%80%D0%B0%D1%85%D0%B0%D0%B1%D1%80_files/stub-user-middle.gif" alt="">
+                <span class="count navbar_count_new_messages"></span>
+            </a>
+            <a href="http://habrahabr.ru/tracker/" class="tab tab_tracker" data-tab="tracker_tab" title="Трекер">
+                <span class="g-icon g-icon-alarm"></span>
+                <span class="count navbar_count_tracker_total">31</span>
+            </a>
+
+            <a href="http://habrahabr.ru/posts/" class="tab tab_menu" data-tab="menu_tab" title="Меню"><span class="g-icon g-icon-burger"></span></a>
+                <a href="http://habrahabr.ru/topic/add" class="tab tab_add_post" title="Новая публикация"><span class="g-icon g-icon-write"></span></a>
+            <a href="http://habrahabr.ru/auth/settings/profile/" class="tab tab_settings " data-tab="settings_tab" title="Настройки"><span class="g-icon g-icon-gear"></span></a>
+
+
+
+        <a href="#" class="scroll_to_up hidden " id="scroll_to_top" title="Наверх"></a>
+    </div>
+    <div class="nav_tabs_content ">
+
+        <div class="nav_tab hidden" id="menu_tab">
+            <div class="title">Разделы</div>
+            <form action="/search/" method="get" class="global_search_form">
+                <div>
+                    <input name="q" placeholder="Поиск" type="text">
+                </div>
+            </form>
+            <div class="menu">
+                <a href="http://habrahabr.ru/posts/top/">Публикации</a>
+                <a href="http://habrahabr.ru/hubs/">Хабы</a>
+                <a href="http://habrahabr.ru/companies/">Компании</a>
+                <a href="http://habrahabr.ru/users/">Пользователи</a>
+                <a href="http://toster.ru/" class="new_window">Q&amp;A</a>
+                <a href="http://habrahabr.ru/sandbox/">Песочница</a>
+                <a href="http://habrahabr.ru/exchange/">Биржа авторов</a>
+
+
+
+            </div>
+
+
+
+        </div>
+
+            <div class="nav_tab hidden" id="user_tab">
+                <div class="title"><a href="http://habrahabr.ru/users/xni/">xni</a></div>
+                    <div class="text">У вас 19 голосов за карму и публикации, и еще 39 за комментарии</div>
+                <div class="menu">
+                    <a href="http://habrahabr.ru/feed/">Моя лента</a>
+                    <a href="http://habrahabr.ru/users/xni/">Мой профиль</a>
+                    <a href="http://habrahabr.ru/users/xni/topics/">Мои публикации</a>
+                    <a href="http://habrahabr.ru/users/xni/comments/">Мои комментарии</a>
+                        <a href="http://habrahabr.ru/conversations/">Мои диалоги <span class="count navbar_count_new_messages"></span></a>
+                    <a href="http://habrahabr.ru/users/xni/favorites/">Моё избранное</a>
+                </div>
+
+
+
+            </div>
+            <div class="nav_tab hidden" id="tracker_tab">
+                <div class="title">Трекер</div>
+                <div class="menu">
+                    <a href="http://habrahabr.ru/tracker/">Публикации <span class="count navbar_count_tracker_posts">20</span></a>
+                    <a href="http://habrahabr.ru/tracker/subscribers/">Подписчики <span class="count navbar_count_tracker_followers">11</span></a>
+                    <a href="http://habrahabr.ru/tracker/mentions/">Упоминания <span class="count navbar_count_tracker_mentions"></span></a>
+                    <a href="http://habrahabr.ru/tracker/apps/">Приложения <span class="count navbar_count_tracker_apps"></span></a>
+                </div>
+
+
+
+            </div>
+            <div class="nav_tab hidden" id="settings_tab">
+                <div class="title">Настройки</div>
+                <div class="menu">
+                    <a href="https://habrahabr.ru/auth/settings/profile/">Профиль</a>
+                    <a href="https://habrahabr.ru/auth/settings/account/" class="new_window">Аккаунт</a>
+                    <a href="https://habrahabr.ru/auth/settings/privacy/">Приватность</a>
+                    <a href="https://habrahabr.ru/auth/settings/notifications/">Уведомления</a>
+                    <a href="https://habrahabr.ru/auth/apps/">Приложения</a>
+                    <a href="https://habrahabr.ru/auth/settings/others/">Разные</a>
+                    <a href="http://habrahabr.ru/logout/xni/3906150659/" class="exit">Выйти</a>
+                </div>
+            </div>
+
+    </div>
+</div>
+
+      <div class="inner">
+        
+
+        
+
+            
+	<div class="company_header">
+	<div class="company_icon"><img src="%D0%A0%D0%B0%D0%B7%D0%BC%D0%B5%D1%89%D0%B0%D0%B8%CC%86%20%D0%B8%20%D0%B2%D0%BB%D0%B0%D1%81%D1%82%D0%B2%D1%83%D0%B8%CC%86%21%20%D0%98%D1%81%D0%BF%D0%BE%D0%BB%D1%8C%D0%B7%D1%83%D0%B5%D0%BC%20%D1%80%D0%B0%D0%B7%D0%BC%D0%B5%D1%89%D0%B0%D1%8E%D1%89%D0%B8%D0%B8%CC%86%20new%20%D0%B4%D0%BB%D1%8F%20%D0%BE%D0%BF%D1%82%D0%B8%D0%BC%D0%B8%D0%B7%D0%B0%D1%86%D0%B8%D0%B8%20%D0%BA%D0%BE%D0%B4%D0%B0%20%D0%BD%D0%B0%20C++%20_%20%D0%91%D0%BB%D0%BE%D0%B3%20%D0%BA%D0%BE%D0%BC%D0%BF%D0%B0%D0%BD%D0%B8%D0%B8%20%D0%96%D1%83%D1%80%D0%BD%D0%B0%D0%BB%20%D0%A5%D0%B0%D0%BA%D0%B5%D1%80%20_%20%D0%A5%D0%B0%D0%B1%D1%80%D0%B0%D1%85%D0%B0%D0%B1%D1%80_files/7e94c7f393c5b95ea3d70250c83a53e9.jpg" alt=""></div>
+	<div class="name"><a href="http://habrahabr.ru/company/xakep/">Журнал Хакер</a></div>
+	
+	<div class="rating" title="Хабраиндекс - абстрактный показатель популярности компании на Хабрахабре"><div class="label">хабраиндекс</div>220,82</div>  
+	<div class="clear"></div>
+</div>
+
+
+	<div class="content_left">
+
+		
+<table class="menu">
+    <tbody><tr>
+        <td class="item profile width33">
+            <a href="http://habrahabr.ru/company/xakep/profile/"><span class="name">Профиль</span></a>
+        </td>
+        <td class="item blog width33 active">
+            <a href="http://habrahabr.ru/company/xakep/blog/"><span class="name">Блог</span> <span class="count_new">+1</span></a>
+        </td>
+        <td class="item fans width33">
+            <a href="http://habrahabr.ru/company/xakep/fans/"><span class="name">Подписчики</span> <span class="count_new">+23</span></a>
+        </td>
+    </tr>
+</tbody></table>
+<div class="submenu ">
+
+</div>
+<div class="clear"></div>
+
+
+
+		<div class="company_post">
+			
+  <div class="post shortcuts_item" id="post_257893">
+  	<div class="published">сегодня в 09:09</div>
+    <h1 class="title">
+	    
+        <span class="post_title">Размещай и властвуй! Используем размещающий new для оптимизации кода на C++</span>
+      <span class="flag flag_tutorial" title="Обучающий материал">tutorial</span>
+			
+  	</h1>
+
+  	<div class="hubs">
+		<a href="http://habrahabr.ru/hub/complete_code/" class="hub " title="Вы не подписаны на этот хаб">Совершенный код</a><span class="profiled_hub" title="Профильный хаб">*</span>, 
+		<a href="http://habrahabr.ru/hub/programming/" class="hub subscribed" title="Вы подписаны на этот хаб">Программирование</a><span class="profiled_hub" title="Профильный хаб">*</span>, 
+		<a href="http://habrahabr.ru/hub/cpp/" class="hub subscribed" title="Вы подписаны на этот хаб">C++</a><span class="profiled_hub" title="Профильный хаб">*</span>, 
+		<a href="http://habrahabr.ru/company/xakep/" class="hub " title="Вы не подписаны на этот хаб">Блог компании Журнал Хакер</a>
+</div>
+
+
+    
+
+  	<div class="content html_format">
+    	<img src="%D0%A0%D0%B0%D0%B7%D0%BC%D0%B5%D1%89%D0%B0%D0%B8%CC%86%20%D0%B8%20%D0%B2%D0%BB%D0%B0%D1%81%D1%82%D0%B2%D1%83%D0%B8%CC%86%21%20%D0%98%D1%81%D0%BF%D0%BE%D0%BB%D1%8C%D0%B7%D1%83%D0%B5%D0%BC%20%D1%80%D0%B0%D0%B7%D0%BC%D0%B5%D1%89%D0%B0%D1%8E%D1%89%D0%B8%D0%B8%CC%86%20new%20%D0%B4%D0%BB%D1%8F%20%D0%BE%D0%BF%D1%82%D0%B8%D0%BC%D0%B8%D0%B7%D0%B0%D1%86%D0%B8%D0%B8%20%D0%BA%D0%BE%D0%B4%D0%B0%20%D0%BD%D0%B0%20C++%20_%20%D0%91%D0%BB%D0%BE%D0%B3%20%D0%BA%D0%BE%D0%BC%D0%BF%D0%B0%D0%BD%D0%B8%D0%B8%20%D0%96%D1%83%D1%80%D0%BD%D0%B0%D0%BB%20%D0%A5%D0%B0%D0%BA%D0%B5%D1%80%20_%20%D0%A5%D0%B0%D0%B1%D1%80%D0%B0%D1%85%D0%B0%D0%B1%D1%80_files/d0d4e36bf0624c7b881fce6125434c2b.jpg"><br>
+<br>
+Создавая объект за объектом, мы часто не обращаем внимания на такую 
+«мелочь», как динамическое выделение памяти. Наравне с копированием и 
+сериализацией, выделение памяти из кучи через new постепенно сводит на 
+нет преимущества C++ в скорости. Чем интенсивнее мы пользуемся заветным 
+new, тем сложнее становится приложению, поскольку память кончается, 
+фрагментируется и всячески стремится утекать. Эта участь уже постигла 
+удобные, но неявно опасные для производительности контейнеры STL: 
+vector, string, deque, map. Особенно обидно терять скорость на выделении
+ небольших объектов в больших количествах. Но есть способ обработать 
+размещение памяти таких объектов на стеке, при этом скрывая детали 
+реализации в специальный класс данных. В этом нам поможет механизм 
+размещающего new — непревзойденный способ оптимизации приложения, 
+полного частых и мелких выделений памяти из кучи.<br>
+<a name="habracut"></a><br>
+В прошлом уроке мы делали поразительные вещи: работали с объектами C++ 
+как с контейнерами, содержащими значения типа, вычисленного на этапе 
+выполнения и заполненного динамически. Мы активно использовали 
+надстройку Copy-on-Write над std::shared_ptr, которым ссылались на 
+реальный тип данных, при заполнении объекта. При этом подразумевалось, 
+что память под любую инициализацию данных мы будем выделять также 
+динамически, вызывая new каждый раз, как только нам понадобятся новые 
+данные произвольного типа.<br>
+<br>
+Такой подход имеет свои преимущества. Данные можно разделять между 
+несколькими объектами, откладывая копирование. Можно, в принципе, ничего
+ не знать заранее о типе данных. Однако есть у этого метода и ряд 
+недостатков, из-за которого Copy-on-Write используется, как правило, для
+ объектов, потенциально довольно больших.<br>
+<br>
+Первый недостаток выясняется сразу же. Массовое динамическое выделение 
+памяти серьезно замедляет выполнение программы, особенно массовое 
+неявное выделение памяти через new. Да, я в курсе и про std::string, и 
+про std::vector, которые зачастую, не спрашивая программиста, начинают 
+перераспределять память, вызывая один new за другим (причем про 
+переразмещение данных в std::vector мы еще поговорим). Хороший 
+специалист в C++ разработке всегда знает об этих забавных особенностях 
+стандартных контейнеров и понимает, как избежать лишних затрат на 
+выделение новых сегментов памяти. Чем всегда был хорош чистый си, так 
+это именно тем, что любая работа с памятью выполнялась прозрачно, в C++ 
+всегда нужно держать в голове целый ряд случаев неявной работы с 
+памятью.<br>
+<br>
+Второй недостаток является следствием первого. Частое выделение 
+небольших сегментов памяти в больших количествах приведет к жуткой 
+фрагментации памяти и невозможности выделить даже довольно небольшой 
+блок памяти единым куском, например для инициализации того же 
+std::vector или std::string. В результате мы получаем bad_alloc безо 
+всяких видимых причин. Памяти намного больше, чем нужно, а выделить 
+непрерывный блок даже небольшого размера в условиях сильно 
+фрагментированной памяти не получится.<br>
+<br>
+Таким образом, для небольших объектов, сравнимых с int64_t, которые 
+можно спокойно размещать на стеке, можно и нужно использовать другую 
+технику обработки данных. Такие объекты можно передавать по значению, 
+можно сколько угодно раз копировать, не откладывая до первого изменения,
+ поскольку банально копируется один-два регистра.<br>
+<br>
+При этом мы не должны отходить от практики объявления деталей данных в 
+реализации. Но кое-чем придется пожертвовать: нам нужно будет заранее 
+знать точный размер данных в байтах. Он потребуется для того, чтобы 
+вместе с обычным указателем на данные держать в классе буфер для 
+размещения данных объекта. Теперь подробнее.<br>
+<br>
+<h4>Первый класс</h4><br>
+Внешне почти ничего не меняется. Все тот же класс, обеспечивающий API 
+объектов. Класс содержит ссылку на данные, класс которых объявлен через 
+forward declaration и будет вынесен в детали реализации. Из-за этого 
+поле класса нельзя объявить объектом данного типа, однако на тип данных 
+можно сослаться простым указателем и заранее завести буфер для хранения 
+данных объекта в самом же объекте. Если объект будет создан, например, 
+на стеке, то и все данные будут храниться на стеке как часть объекта. 
+Теперь рассмотрим пример, чтобы все встало на свои места:<br>
+<br>
+<pre><code class="cpp"><span class="keyword">class</span> object
+{
+<span class="keyword">public</span>:
+    ...
+<span class="keyword">protected</span>:
+    <span class="comment">// Объявление класса данных</span>
+    <span class="keyword">class</span> data;
+    <span class="comment">// Заранее известное количество байтов под данные</span>
+    <span class="keyword">static</span> <span class="keyword">const</span> size_t max_data_size = N;
+<span class="keyword">private</span>:
+    <span class="comment">// Указатель на данные</span>
+    data* m_data;
+    <span class="comment">// Буфер памяти, где будут храниться данные</span>
+    <span class="keyword">char</span> m_buffer[max_data_size];
+};
+</code></pre><br>
+В этом фрагменте кода мы продолжаем идеологию сокрытия данных в 
+реализации, все, что мы знаем о данных класса, — это имя класса и 
+наличие указателя на данные. Однако теперь у нас есть возможность не 
+лезть за памятью в heap. Класс в терминологии C++ все так же хранит 
+данные в виде своих полей. По сути, данные разместятся в буфере 
+m_buffer, память под который выделена уже при создании класса. Осталось 
+лишь объяснить детали, как разместить данные в буфер байт.<br>
+<br>
+<h4>Размещающий new</h4><br>
+Как правило, немногие вспоминают про такое полезное свойство оператора 
+new, как возможность указать готовую область памяти для размещения 
+создаваемого объекта. Все, что нам потребуется, — это написать 
+new(m_buffer) для создания любого типа объекта в выделенном буфере. 
+Звучит просто, однако нужно помнить, что платим мы высокую цену: заранее
+ указывая максимальный размер буфера. Мало того, размер буфера попадает в
+ заголовочный файл и явно участвует в объявлении API.<br>
+<br>
+Зато мы выигрываем в скорости. Если, выделяя данные в куче на каждую 
+инициализацию, мы рискуем отстать от Java, то, размещая все данные в 
+стеке, мы имеем скорость чистого си, недостижимую скорость для почти 
+любого языка высокого уровня, кроме C++. При этом уровень абстракции 
+крайне высок, мы выстраиваем API на обычных объектах C++, скрывая детали
+ реализации. Единственное ограничение — размер, который мы задаем; мы 
+уже не можем запросто менять в реализации набор полей у класса данных, 
+всегда нужно помнить о размере. Мало того, нам необходимо проверять 
+размер данных, описанных в реализации, на соответствие с указанным в 
+заголовочном файле. Просто потому, что сборка библиотеки может 
+расходиться с версией заголовочных файлов, например при получении из 
+различных источников. Рассмотрим пример, как должна выглядеть подобная 
+проверка, как и создание объекта в подготовленной памяти размещающим 
+new.<br>
+<br>
+<pre><code class="cpp">object::object()
+    : m_data(<span class="keyword">new</span>(m_buffer) object::data)
+{
+    <span class="keyword">static_assert</span>(<span class="keyword">sizeof</span>(object::data) &lt;= max_data_size, <span class="string">"..."</span>);
+}
+</code></pre><br>
+Здесь static_assert фактически выполнится на этапе компиляции, поэтому 
+инициализация m_data будет выполнена, только если для object::data 
+достаточно памяти в буфере m_buffer. Аналогично у класса-наследника, 
+например flower, класса object данные также не должны превышать заданную
+ планку, поскольку данные мы храним в реализации базового класса.<br>
+<br>
+<pre><code class="cpp">flower::flower(<span class="built_in">std</span>::<span class="built_in">string</span> <span class="keyword">const</span>&amp; name)
+    : object(<span class="keyword">new</span>(get_buffer()) flower::data(name))
+{
+    <span class="keyword">static_assert</span>(<span class="keyword">sizeof</span>(flower::data) &lt; max_data_size, <span class="string">"..."</span> );
+}
+</code></pre><br>
+Очевидно, что для этого нужен protected-метод get_buffer() для получения
+ адреса m_buffer в базовом классе, а также protected-конструктор object 
+от object::data*. Так же, как и в прошлом выпуске, мы наследуем данные 
+наследников от данных базового класса, поэтому flower::data* совместим с
+ object::data*. Для безопасности стоит в базовый конструктор от 
+object::data* добавить проверку на то, что передан адрес именно заранее 
+выделенного буфера:<br>
+<br>
+<pre><code class="cpp">object::object(object::data* data_ptr)
+{
+    <span class="keyword">if</span> (<span class="keyword">static_cast</span>&lt;<span class="keyword">void</span>*&gt;(data_ptr) != <span class="keyword">static_cast</span>&lt;<span class="keyword">void</span>*&gt;(m_buffer))
+        <span class="keyword">throw</span> some_exception(...);
+    m_data = data_ptr;
+}
+</code></pre><br>
+В результате, как и раньше, мы имеем возможность эмулировать 
+динамическую типизацию, работая с обычными объектами классов. Например, 
+так:<br>
+<br>
+<pre><code class="cpp">object rose = flower(<span class="string">"rose"</span>);
+</code></pre><br>
+<h4>Объекты с данными большого размера</h4><br>
+Осталось выяснить, что делать с объектами, чей размер данных выходит за 
+рамки обозначенного максимума. На самом деле и здесь все довольно 
+просто. Достаточно, чтобы в лимит вписывался размер 
+copy_on_write&lt;data::impl&gt;, который по сути является надстройкой 
+над std::shared_ptr&lt;data::impl&gt;, где impl — реализация класса 
+данных произвольного размера. Поскольку размер 
+std::shared_ptr&lt;data::impl&gt; не зависит от размера самих объектов 
+класса data::impl, мы получаем универсальный способ хранения данных с 
+переходом от хранения по значению к хранению по ссылке.<br>
+<br>
+<pre><code class="cpp"><span class="keyword">class</span> huge
+{
+<span class="keyword">public</span>:
+    ...
+<span class="keyword">protected</span>:
+    <span class="keyword">class</span> data;
+};
+
+<span class="keyword">class</span> huge::data
+{
+<span class="keyword">public</span>:
+    ...
+<span class="keyword">protected</span>:
+    <span class="keyword">class</span> impl;
+<span class="keyword">private</span>:
+    copy_on_write&lt;impl&gt; m_impl;
+};
+</code></pre><br>
+Однако отвлечемся от решения проблемы единого API для объектов с 
+динамической типизацией и рассмотрим другой пример оптимизации через 
+размещающий new.<br>
+<br>
+<blockquote><h4>copy_on_write::flashback</h4><br>
+Если кто-то пропустил прошлый выпуск, то класс copy_on_write — это 
+шаблонный класс для хранения данных с оптимизацией копирования. Эмулируя
+ указатель, этот класс имеет хитрую перегрузку operator-&gt; для const и
+ non-const случаев. При копировании объектов мы ссылаемся на одни и те 
+же данные, не вызывая дорогостоящего копирования. Однако, как только мы 
+вызываем неконстантный метод класса данных, потенциально изменяющий 
+данные, мы отцепляем для текущего объекта свою копию данных. Упрощенно 
+реализация выглядит примерно так:<br>
+<br>
+<pre><code class="cpp"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> impl_type&gt;
+<span class="keyword">class</span> copy_on_write
+{
+<span class="keyword">public</span>:
+    copy_on_write(impl_type* pimpl)
+        : m_pimpl(pimpl) {
+    }
+    impl_type* <span class="keyword">operator</span> -&gt; () {
+        <span class="keyword">if</span> (!m_pimpl.unique())
+            m_pimpl.reset(<span class="keyword">new</span> impl_type(*m_pimpl));
+        <span class="keyword">return</span> m_pimpl.get();
+    }
+    impl_type <span class="keyword">const</span>* <span class="keyword">operator</span> -&gt; () <span class="keyword">const</span> {
+        <span class="keyword">return</span> m_pimpl.get();
+    }
+<span class="keyword">private</span>:
+    <span class="built_in">std</span>::<span class="built_in">shared_ptr</span>&lt;impl_type&gt; m_pimpl;
+};
+</code></pre><br>
+Таким образом, при выборе максимального размера данных для встроенного 
+буфера стоит учесть размер класса, содержащего copy_on_write в качестве 
+поля.</blockquote><br>
+<h4>Поля выборки данных</h4><br>
+Самый мощный способ оптимизации через размещающий new — это поля записей
+ выборки в результате SQL-запроса. Выборка запрашивает набор данных 
+самых разнообразных типов, от целочисленных и вещественных до строк и 
+массивов. Хотя сами данные получаются динамически и типы полей, 
+полученные со стороны базы данных, приходится инициализировать с 
+эмуляцией динамической типизации, но зато все записи содержат один и тот
+ же набор типов полей, по которому можно определить общий размер данных 
+для каждой записи. Это позволяет нам выделить память под поля записи 
+лишь однажды, вычислив размер по типам полей, входящим в каждую запись 
+выборки. Можно также выделить память однажды для всех записей единым 
+блоком, однако, как правило, после выборки над записями производят 
+всевозможные операции, в том числе фильтруя и сортируя их, поэтому сами 
+записи имеет смысл описать в виде Copy-on-Write объектов для удобства 
+последующих операций. Выделять же для каждого поля память из кучи 
+неоправданно дорого.<br>
+<br>
+Так будет выглядеть наш класс запись, если упростить объявление и использовать copy_on_write напрямую от класса данных:<br>
+<br>
+<pre><code class="cpp"><span class="keyword">class</span> record
+{
+<span class="keyword">public</span>:
+    record(<span class="built_in">std</span>::<span class="stl_container"><span class="built_in">vector</span>&lt;field::type&gt;</span> <span class="keyword">const</span>&amp; types);
+    ...
+<span class="keyword">protected</span>:
+    <span class="keyword">class</span> data;
+<span class="keyword">private</span>:
+    copy_on_write&lt;data&gt; m_data;
+};
+
+<span class="keyword">class</span> record::data
+{
+<span class="keyword">public</span>:
+    data(<span class="built_in">std</span>::<span class="stl_container"><span class="built_in">vector</span>&lt;field::type&gt;</span> <span class="keyword">const</span>&amp; types);
+    ...
+<span class="keyword">private</span>:
+    <span class="built_in">std</span>::<span class="stl_container"><span class="built_in">vector</span>&lt;<span class="keyword">char</span>&gt;</span> m_buffer;
+    <span class="built_in">std</span>::<span class="stl_container"><span class="built_in">vector</span>&lt;field*&gt;</span> m_fields;
+};
+</code></pre><br>
+Здесь для упрощения пояснения введен вектор типов полей 
+std::vector&lt;field::type&gt;, массив enum-значений. На самом деле этот
+ массив следует набрать из аргументов через boost::fusion либо, 
+используя Boost.Preprocessor, набрать массив из обобщенных объектов типа
+ object от любого типа аргументов. Нам сейчас важен сам механизм 
+однократного выделения памяти из кучи для каждой записи.<br>
+<br>
+<pre><code class="cpp">record::data::data(<span class="built_in">std</span>::<span class="stl_container"><span class="built_in">vector</span>&lt;field::type&gt;</span> <span class="keyword">const</span>&amp; types)
+    : m_buffer(field::calc_size(types)),
+      m_fields(types.size())
+{
+    size_t offset = <span class="number">0</span>;
+    <span class="built_in">std</span>::transform(types.begin(), types.end(), m_fields.begin(),
+        [&amp;offset](field::type type, field*&amp; field_ptr) {
+           field_ptr = <span class="keyword">new</span>(m_buffer + offset) field(type);
+           offset += field::size(type);
+        }
+    );
+}
+</code></pre><br>
+где field::size вычисляет размер данных по переданному field::type, а 
+field::calc_size вычисляет уже суммарный размер, необходимый под весь 
+набор типов записи, переданный как std::vector&lt;field::type&gt;.<br>
+<br>
+Поле field реализуется аналогично типу object, по сути контейнер 
+динамического содержимого. Большая часть типов: int64_t, bool, double — 
+скаляры и хранятся по значению. Тип std::string также может храниться по
+ значению, однако стоит учитывать то, что почти наверняка данные строки 
+будут храниться в куче и выделяться динамически. Если хочется поддержать
+ некий varchar определенной длины, то здесь, скорее всего, нужен будет 
+свой тип copy_on_write с массивом символов фиксированной длины.<br>
+<br>
+Различные типы полей аналогичны различным типам объектов, унаследованных
+ от класса object. Можно даже не использовать enum, а завязаться 
+напрямую на типы, но, как правило, разбор результата SQL-запроса влечет 
+за собой десериализацию пакета байтов с данными, где все типы полей 
+заранее известны, поэтому enum для удобства здесь никаких ограничений не
+ влечет. Тем более что метапрограммирование — стезя не для слабонервных,
+ и MPL и Boost.Fusion мы здесь рассматривать не будем.<br>
+<br>
+Осталось затронуть последний важный аспект использования размещающего new — пул однотипных объектов в C++.<br>
+<br>
+<h4>Пул однотипных объектов</h4><br>
+Как и прежде, мы оптимизируем динамическое выделение памяти. Что такое 
+пул объектов? Это заранее выделяемый большим скопом массив заготовок для
+ инициализации определенного типа. В некотором смысле record выше был 
+пулом для объектов field. Также ты наверняка встречал пул объектов, если
+ работал с высокоуровневыми языками (C#, Python, Java), ведь для 
+выделения новых объектов они используют заготовленные сегменты памяти, в
+ которых размещают объекты, по сути тип object. После того как один из 
+объектов пула становится не нужен, иными словами на него перестали 
+ссылаться, он либо сразу деинициализируется, либо ждет своей печальной 
+участи в виде очередного обхода Garbage Collector’а — сборщика мусора — 
+специального механизма удаления бесхозного добра. Вообще говоря, 
+деинициализация объектов в пуле — его слабое место. Зато мы получаем 
+скоростное выделение объектов, как правило либо уже инициализированных, 
+либо подготовленных для инициализации. Если делать на основе нашего типа
+ object полноценный пул объектов с деинициализацией по счетчику ссылок и
+ с Garbage Collector’ом, то мы получим Java или Python. Если тебе 
+потребовалось что-то подобное, может, не стоит городить огород и взять 
+готовый язык со сборкой мусора? Однако если для оптимизации однотипных 
+объектов потребовалось выделить заранее большой сегмент памяти и задача 
+действительно требует массовой инициализации большого числа объектов с 
+неким базовым классом, то пул объектов позволит избежать массы 
+динамических выделений памяти.<br>
+<br>
+Чтобы разобраться, нам потребуется понятное прикладное объяснение. Как 
+насчет собственно выборки в результате SQL-запроса с пулом для записей? 
+Это позволит оптимизировать массу выделений памяти для построения 
+объектов записей выборки.<br>
+<br>
+<pre><code class="cpp"><span class="keyword">class</span> selection
+{
+<span class="keyword">public</span>:
+    selection(<span class="built_in">std</span>::<span class="stl_container"><span class="built_in">vector</span>&lt;field::type&gt;</span> <span class="keyword">const</span>&amp; types,
+              size_t row_count);
+    ...
+<span class="keyword">protected</span>:
+    <span class="keyword">class</span> data;
+<span class="keyword">private</span>:
+    copy_on_write&lt;data&gt; m_data;
+};
+
+<span class="keyword">class</span> selection::data
+{
+<span class="keyword">public</span>:
+    data(<span class="built_in">std</span>::<span class="stl_container"><span class="built_in">vector</span>&lt;field::type&gt;</span> <span class="keyword">const</span>&amp; types,
+         size_t row_count);
+    ...
+<span class="keyword">private</span>:
+    <span class="built_in">std</span>::<span class="stl_container"><span class="built_in">vector</span>&lt;field::type&gt;</span> m_types;
+    <span class="built_in">std</span>::<span class="stl_container"><span class="built_in">vector</span>&lt;<span class="keyword">char</span>&gt;</span> m_buffer;
+    <span class="built_in">std</span>::<span class="stl_container"><span class="built_in">vector</span>&lt;record&gt;</span> m_rows;
+};
+
+selection::data::data(<span class="built_in">std</span>::<span class="stl_container"><span class="built_in">vector</span>&lt;field::type&gt;</span> <span class="keyword">const</span>&amp; types,
+                      size_t row_count)
+    : m_types(types)
+{
+    <span class="keyword">if</span> (!row_count) <span class="keyword">return</span>;
+    m_rows.reserve(row_count);
+    size_t row_data_size = field::calc_size(types);
+    m_buffer.resize(row_count * row_data_size);
+    <span class="keyword">char</span>* offset = m_buffer
+    <span class="keyword">for</span> (size_t i = <span class="number">0</span>; i &lt; row_count; ++i)
+    {
+        m_rows.push_back(record::inplace(offset, types));
+        offset += row_data_size;
+    }
+}
+</code></pre><br>
+Где record::inplace по сути создает данные записи не в куче, а по заданному адресу.<br>
+<br>
+<pre><code class="cpp">record record::inplace(<span class="keyword">void</span>* address,
+                       <span class="built_in">std</span>::<span class="stl_container"><span class="built_in">vector</span>&lt;field::type&gt;</span> <span class="keyword">const</span>&amp; types)
+{
+    <span class="keyword">return</span> record(<span class="keyword">new</span>(address) record::data(types));
+}
+</code></pre><br>
+Нам потребуется конструктор record с инициализацией и специальный 
+деструктор, об этом далее. Данный вариант инициализации record делает 
+невозможным использование его в предыдущем варианте, то есть в виде 
+класса, содержащего лишь поле copy_on_write. Мы не сможем, спокойно 
+понадеявшись на динамическое выделение данных в куче, ворочать записями 
+как хотим. С другой стороны, мы получаем сумасшедший прирост 
+производительности при большом наборе данных. Однако есть в размещающем 
+new подвох, о котором следует знать.<br>
+<br>
+<h4>Явный вызов деструктора</h4><br>
+<blockquote><h4>WARNING</h4><br>
+Если кто-то имеет привычку не дочитывать до конца либо читать по 
+диагонали — очень зря. Пропустив этот важный раздел, можно наплодить 
+memory leak’ов — утечек памяти, причем в больших количествах.</blockquote><br>
+Есть еще одно «но» при использовании размещающего new — придется 
+вызывать деструктор самим, вручную, поскольку delete не сделает ровным 
+счетом ничего. Поэтому класс, содержащий данные, выделяющиеся в заранее 
+подготовленную память, должен в деструкторе явно вызвать деструктор 
+созданного в памяти класса. Так, деструктор класса object::~object 
+должен явно вызвать деструктор object::data::~data, а деструктор 
+record::data::~data должен будет позвать целый ряд деструкторов 
+field::~field — по одному на каждое поле. Для того чтобы наглядно 
+показать, как это должно происходить, я более детально распишу класс 
+object.<br>
+<br>
+<pre><code class="cpp"><span class="keyword">class</span> object
+{
+<span class="keyword">public</span>:
+    object();
+    <span class="keyword">virtual</span> ~object();
+    ...
+<span class="keyword">protected</span>:
+    <span class="keyword">class</span> data;
+    <span class="keyword">char</span>* get_buffer();
+    object(data* derived_data);
+    <span class="keyword">static</span> <span class="keyword">const</span> size_t max_data_size = N;
+<span class="keyword">private</span>:
+    data* m_data;
+    <span class="keyword">char</span> m_buffer[max_data_size];
+};
+
+object::object()
+    : m_data(<span class="keyword">new</span>(m_buffer) data)
+{
+    <span class="keyword">static_assert</span>(<span class="keyword">sizeof</span>(data) &lt;= max_data_size, <span class="string">"..."</span>);
+}
+
+object::~object()
+{
+    m_data-&gt;~data();
+}
+</code></pre><br>
+Поскольку деструктор у класса данных должен быть описан как virtual, то и
+ деинициализация данных пройдет успешно, какой бы наследник object::data
+ ни использовался.<br>
+<br>
+Также нужно переопределить конструктор и оператор копирования, как и 
+перемещения, поскольку в отличие от случая с copy_on_write, где нас 
+устраивал автогенерируемый конструктор, здесь каждый объект смотрит на 
+свою область данных простым указателем. Поэтому поправим поведение по 
+умолчанию:<br>
+<br>
+<pre><code class="cpp">object::object(object <span class="keyword">const</span>&amp; another)
+    : m_buffer(max_data_size),
+      m_data(another.clone_data_at(m_buffer))
+{
+}
+
+object&amp; object::<span class="keyword">operator</span> = (object <span class="keyword">const</span>&amp; another)
+{
+    destruct_data(); <span class="comment">// здесь нужно вызвать деструктор</span>
+    m_data = another.clone_data_at(m_buffer);
+    <span class="keyword">return</span> *<span class="keyword">this</span>;
+}
+
+object::data* object::clone_data_at(<span class="keyword">void</span>* address)
+{
+    <span class="keyword">return</span> m_data-&gt;clone_at(address);
+}
+
+<span class="comment">// Этот метод должен быть перегружен</span>
+<span class="comment">// для каждого наследуемого типа данных</span>
+object::data* object::data::clone_at(<span class="keyword">void</span>* address)
+{
+    <span class="keyword">return</span> <span class="keyword">new</span>(address) data(*<span class="keyword">this</span>);
+}
+
+<span class="keyword">void</span> object::destruct_data()
+{
+    m_data-&gt;~data();
+}
+</code></pre><br>
+Здесь наш новый метод desctuct_data() так и просится в деструктор 
+object::~object. Раз просится, значит, там ему самое место. Для 
+конструктора и оператора перемещения поведение похожее:<br>
+<br>
+<pre><code class="cpp">object::object(object&amp;&amp; another)
+    : m_data(another.move_data_to(m_buffer))
+{
+}
+
+object&amp; object::<span class="keyword">operator</span> = (object <span class="keyword">const</span>&amp; another)
+{
+    destruct_data(); <span class="comment">// здесь нужно вызвать деструктор</span>
+    m_data = another.move_data_to(m_buffer);
+    <span class="keyword">return</span> *<span class="keyword">this</span>;
+}
+
+object::data* object::move_data_to(<span class="keyword">void</span>* address)
+{
+    <span class="keyword">return</span> m_data-&gt;move_to(address);
+}
+
+<span class="comment">// Этот метод должен быть перегружен</span>
+<span class="comment">// для каждого наследуемого типа данных</span>
+object::data* object::data::move_to(<span class="keyword">void</span>* address)
+{
+    <span class="keyword">return</span> <span class="keyword">new</span>(address) data(<span class="built_in">std</span>::move(*<span class="keyword">this</span>));
+}
+
+object::~object()
+{
+    destruct_data();
+}
+</code></pre><br>
+Итак, опасность memory leak’ов ликвидирована. Пользователи твоего API могут разрабатывать спокойно.<br>
+<br>
+<h4>Размещающий new против new в куче</h4><br>
+Как ты уже успел заметить, классы, использующие размещающий new, намного
+ сложнее в реализации. Каждый аспект использования класса, 
+реализованного на технике размещения объекта в подготовленную память, 
+должен всесторонне тестироваться. Сложность же обычного new любого 
+класса, как правило, сводится к обертке умного указателя. В чем же тогда
+ выгода, если даже эмуляция динамической типизации усложняется явным 
+указанием максимального размера типа данных?<br>
+<br>
+Выгода в скорости. Сила C++ по сравнению с более удобными C#, Java и 
+Python — в скорости выполнения. Здесь мы достигаем наивысших скоростей, 
+поскольку не идем в кучу за новыми объектами. И не замедляем приложение в
+ дальнейшей перспективе, избегая фрагментации памяти. Фрагментированная 
+память как сыр: полна дырок, и в сумме размер этих дырок позволяет 
+запихать туда апельсин, но на самом деле апельсин не поместится ни в 
+одну из дыр, каждая из них слишком мала. Так и std::vector, как и 
+std::string, требующие сегмент непрерывной памяти, могут в один 
+прекрасный момент получить std::bad_alloc при перераспределении 
+элементов.<br>
+<br>
+<h4>Размещающий new в стандартной библиотеке</h4><br>
+Помнишь, я обещал тебе рассказать про размещающий new в std::vector в 
+начале статьи? Так вот, все конструкторы элементов в std::vector 
+вызываются в подготовленной памяти. И так же активно для элементов 
+вызываются деструкторы. Это не принципиально для векторов от простых 
+POD-типов вроде int или char, но если мы хотим выделить std::vector, 
+причем custom обладает нетривиальным и тяжелым конструктором по 
+умолчанию и не менее тяжелым конструктором копирования, то мы получим 
+массу неприятностей, если не будем знать, как работает std::vector со 
+своими данными.<br>
+<br>
+Итак, что же происходит, когда мы просим вектор изменить размер? Для 
+начала вектор смотрит, что еще не зарезервировал нужное число байтов 
+(буфер вектор всегда выделяет с запасом), после чего выделяет новый 
+буфер. Все существующие элементы переносятся в новый буфер конструктором
+ перемещения через размещающий new по соответствующему адресу. В 
+результате все элементы стоят на своих местах. После чего вектор 
+добирает нужное число элементов в конец массива, создавая каждый 
+размещающим new и конструктором по умолчанию. Так же и в обратную 
+сторону — уменьшение количества элементов вызовет деструкторы «вручную» 
+при удалении элементов.<br>
+<br>
+В отличие от std::vector, контейнер std::string не занимается placement 
+new просто потому, что хранит всегда char, не нуждающийся в 
+конструкторах или деструкторах. Зато целый ряд контейнеров стандартной 
+библиотеки: deque, list, map и другие шаблоны классов для хранения 
+произвольных данных — активно используют размещающий new в своей 
+реализации.<br>
+<br>
+Не нужно думать о размещающем new как о чем-то сродни хаку, это 
+полноценная функция языка, позволяющая инициализировать объект 
+конструктором по указанной памяти. Эта операция аналогична старому трюку
+ языка си, когда выделенный блок байтов объявлялся указателем на некий 
+тип (обычно структуру) и далее работа с этим блоком памяти велась через 
+API этого типа.<br>
+<br>
+<h4>Что в итоге?</h4><br>
+Конечно, умение пользоваться размещающим new там, где надо, и только 
+тогда, когда это действительно нужно, эффективно и оправданно, приходит 
+не сразу. Одни до последнего отбиваются вредом предварительной 
+оптимизации, другие, наоборот, только прочитав статью, бросятся 
+встраивать new(m_buffer), где надо и где не надо. Со временем и те и 
+другие приходят к золотой середине.<br>
+<br>
+Суть метода проста — если есть возможность и необходимость разместить 
+объект класса в заранее приготовленную память, сделать это относительно 
+просто, если помнить пару несложных правил:<br>
+<br>
+<ul>
+<li>память должна жить все время, пока в ней живет объект, если память потрут, то объект начнет ссылаться на битый сегмент памяти;</li>
+<li>деструктор класса для объекта, выделенного размещающим new, должен 
+быть вызван вручную, это печально, но delete не делает с памятью по 
+указателю ровным счетом ничего.</li>
+</ul><br>
+Все остальное ограничивается лишь аккуратностью и безграничной фантазией разработчика. То есть тебя.<br>
+<br>
+<img src="%D0%A0%D0%B0%D0%B7%D0%BC%D0%B5%D1%89%D0%B0%D0%B8%CC%86%20%D0%B8%20%D0%B2%D0%BB%D0%B0%D1%81%D1%82%D0%B2%D1%83%D0%B8%CC%86%21%20%D0%98%D1%81%D0%BF%D0%BE%D0%BB%D1%8C%D0%B7%D1%83%D0%B5%D0%BC%20%D1%80%D0%B0%D0%B7%D0%BC%D0%B5%D1%89%D0%B0%D1%8E%D1%89%D0%B8%D0%B8%CC%86%20new%20%D0%B4%D0%BB%D1%8F%20%D0%BE%D0%BF%D1%82%D0%B8%D0%BC%D0%B8%D0%B7%D0%B0%D1%86%D0%B8%D0%B8%20%D0%BA%D0%BE%D0%B4%D0%B0%20%D0%BD%D0%B0%20C++%20_%20%D0%91%D0%BB%D0%BE%D0%B3%20%D0%BA%D0%BE%D0%BC%D0%BF%D0%B0%D0%BD%D0%B8%D0%B8%20%D0%96%D1%83%D1%80%D0%BD%D0%B0%D0%BB%20%D0%A5%D0%B0%D0%BA%D0%B5%D1%80%20_%20%D0%A5%D0%B0%D0%B1%D1%80%D0%B0%D1%85%D0%B0%D0%B1%D1%80_files/COVER_11_2014_LOW-326x420.jpg" alt="image"><br>
+<br>
+<i>Впервые опубликовано в журнале Хакер #190.<br>
+Автор: Владимир  <a href="http://habrahabr.ru/users/qualab/" class="user_link">Qualab</a> Керимов, ведущий С++ разработчик компании «Тензор»</i><br>
+<br>
+Подпишись на «Хакер»<br>
+<ul>
+<li><a href="https://xakep.ru/wp-admin/profile.php?page=paywall_subscribes">Материалы сайта</a></li>
+<li><a href="http://bit.ly/habr_subscribe_paper">Бумажный вариант</a></li>
+<li><a href="http://bit.ly/xakep_on_ipad">«Хакер» на iOS/iPad</a></li>
+<li><a href="http://bit.ly/habr_android">«Хакер» на Android</a></li>
+</ul>
+    	<div class="clear"></div>
+  	</div>
+    
+<ul class="tags">
+	<li><a href="http://habrahabr.ru/search/?q=%5B%D0%BE%D0%BF%D1%82%D0%B8%D0%BC%D0%B8%D0%B7%D0%B0%D1%86%D0%B8%D1%8F%20%D0%BA%D0%BE%D0%B4%D0%B0%5D&amp;target_type=posts" rel="tag">оптимизация кода</a></li><li>, <a href="http://habrahabr.ru/search/?q=%5B%D1%80%D0%B0%D0%B7%D0%BC%D0%B5%D1%89%D0%B0%D1%8E%D1%89%D0%B8%D0%B9%20new%5D&amp;target_type=posts" rel="tag">размещающий new</a></li><li>, <a href="http://habrahabr.ru/search/?q=%5Bc%2B%2B%5D&amp;target_type=posts" rel="tag">c++</a></li>
+</ul>
+
+    <div class="infopanel_wrapper">
+	<div class="infopanel " id="infopanel_post_257893">
+
+				<div class="voting   ">
+	
+						<a href="#plus" class="plus" title="Нравится" onclick="return posts_vote(this, 257893, '2', 1)"></a>
+	
+					<div class="mark">
+								<a class="score" title="Посмотреть результат" href="#" onclick="return posts_vote(this, 257893, '2', 0)">—</a>
+					</div>
+					
+						<a href="#minus" class="minus" title="Не нравится" onclick="return posts_vote(this, 257893, '2', -1)"></a>
+		
+				</div>
+	
+		<div class="pageviews" title="Просмотры публикации">4563</div>
+			
+		<div class="favorite">
+				<a class="add" title="Добавить в избранное" href="#" onclick="return posts_add_to_favorite(this, '2', 257893)"> </a>
+		</div>
+		<div class="favs_count" title="Количество пользователей, добавивших публикацию в избранное">81</div>
+		
+		
+		
+	
+	
+	
+	
+				<div class="author">
+					<a title="Автор текста" href="http://habrahabr.ru/users/XakepRU/">XakepRU</a>
+					<span class="rating" title="рейтинг пользователя">111,2</span>
+				</div>
+		
+	
+
+			<div class="share">
+				<div class="twitter">
+					<a href="http://twitter.com/intent/tweet?text=%D0%A0%D0%B0%D0%B7%D0%BC%D0%B5%D1%89%D0%B0%D0%B9+%D0%B8+%D0%B2%D0%BB%D0%B0%D1%81%D1%82%D0%B2%D1%83%D0%B9%21+%D0%98%D1%81%D0%BF%D0%BE%D0%BB%D1%8C%D0%B7%D1%83%D0%B5%D0%BC+%D1%80%D0%B0%D0%B7%D0%BC%D0%B5%D1%89%D0%B0%D1%8E%D1%89%D0%B8%D0%B9+new+%D0%B4%D0%BB%D1%8F+%D0%BE%D0%BF%D1%82%D0%B8%D0%BC%D0%B8%D0%B7%D0%B0%D1%86%D0%B8%D0%B8+%D0%BA%D0%BE%D0%B4%D0%B0+%D0%BD%D0%B0+C%2B%2B+http://habr.ru/p/257893/+via+%40habrahabr+%23habr" title="Опубликовать ссылку в Twitter" target="_blank"></a>
+				</div>
+				<div class="vkontakte">
+					<a href="https://vk.com/share.php?url=http://habrahabr.ru/company/xakep/blog/257893/" title="Опубликовать ссылку во ВКонтакте" onclick="window.open(this.href, 'Опубликовать ссылку во Вконтакте', 'width=800,height=300'); return false"></a>
+				</div>
+				<div class="facebook">
+					<a href="https://www.facebook.com/sharer/sharer.php?u=http://habrahabr.ru/company/xakep/blog/257893/" title="Опубликовать ссылку в Facebook" onclick="window.open(this.href, 'Опубликовать ссылку в Facebook', 'width=640,height=436,toolbar=0,status=0'); return false"></a>
+				</div>
+				<div class="googleplus">
+					<a href="https://plus.google.com/share?url=http://habrahabr.ru/company/xakep/blog/257893/" title="Опубликовать ссылку в Google Plus" onclick="window.open(this.href, 'Опубликовать ссылку в Google Plus', 'width=800,height=300'); return false"></a>
+				</div>
+			</div>
+	
+	</div>
+	<div class="clear"></div>
+</div>
+
+
+
+
+
+	</div>
+
+			
+
+            <div class="block_after_post">
+                
+
+
+<div class="similar_posts">
+
+    <h2 class="title">Похожие публикации</h2>
+    <div class="posts_list">
+        <div class="post_item">
+            <span class="bull"></span>
+            <a class="post_name" onclick="if (typeof ga === 'function') { ga('send', 'event', 'tm_block', 'similar_posts', 'common'); }" href="http://habrahabr.ru/post/257891/">Побег из темницы типов. Реализуем работу с данными, тип которых определяется динамически</a>&nbsp;<span class="count">(21)</span>
+        </div>
+    </div>
+</div>
+
+
+
+            </div>
+
+				    <div class="comments_list " id="comments">
+
+        <h2 class="title ">Комментарии (<span id="comments_count">6</span>)
+            		<span class="subscribe_comments">
+			отслеживать новые: 
+			<label><input id="subscribe_comments" rel="{target_type:'2',target_id:257893 }" type="checkbox"> в почте</label>
+			<label><input id="tracker_comments" rel="{target_type:'2',target_id:257893 }" type="checkbox"> в трекере</label>
+		</span>
+
+
+        </h2>
+
+        
+
+            <div class="comment_item" id="comment_8421841">
+
+    <span class="parent_id" data-parent_id="0"></span>
+    <div class="comment_body ">
+        <div class="info  " rel="8421841">
+            <div class="folding-dot-holder"><div class="folding-dot"></div></div>
+            <div id="voting_8421841" class="voting   ">
+                <a href="#minus" class="minus" title="Не нравится" onclick="return comments_vote(this, 8421841, '3',	257893, -1)"></a>
+                <a href="#plus" class="plus" title="Нравится" onclick="return comments_vote(this, 8421841, '3',	 257893, 1)"></a>
+                <div class="mark  ">
+                    <span class="score" title="Всего 0: ↑0 и ↓0">0</span>
+                </div>
+            </div>
+            <a href="http://habrahabr.ru/users/QtRoS/" class="avatar"><img src="%D0%A0%D0%B0%D0%B7%D0%BC%D0%B5%D1%89%D0%B0%D0%B8%CC%86%20%D0%B8%20%D0%B2%D0%BB%D0%B0%D1%81%D1%82%D0%B2%D1%83%D0%B8%CC%86%21%20%D0%98%D1%81%D0%BF%D0%BE%D0%BB%D1%8C%D0%B7%D1%83%D0%B5%D0%BC%20%D1%80%D0%B0%D0%B7%D0%BC%D0%B5%D1%89%D0%B0%D1%8E%D1%89%D0%B8%D0%B8%CC%86%20new%20%D0%B4%D0%BB%D1%8F%20%D0%BE%D0%BF%D1%82%D0%B8%D0%BC%D0%B8%D0%B7%D0%B0%D1%86%D0%B8%D0%B8%20%D0%BA%D0%BE%D0%B4%D0%B0%20%D0%BD%D0%B0%20C++%20_%20%D0%91%D0%BB%D0%BE%D0%B3%20%D0%BA%D0%BE%D0%BC%D0%BF%D0%B0%D0%BD%D0%B8%D0%B8%20%D0%96%D1%83%D1%80%D0%BD%D0%B0%D0%BB%20%D0%A5%D0%B0%D0%BA%D0%B5%D1%80%20_%20%D0%A5%D0%B0%D0%B1%D1%80%D0%B0%D1%85%D0%B0%D0%B1%D1%80_files/ab4c3a3c8af2e9d0e5f43d6bf353a617_small.html" alt=""></a>
+            <a href="http://habrahabr.ru/users/QtRoS/" class="username">QtRoS</a>
+            <time>18 мая 2015 в 11:10</time>
+
+            <a href="#comment_8421841" class="link_to_comment">#</a>
+            
+                    <a href="#" class="favorite add" onclick="return comments_add_to_favorite(this, '3', 8421841 )" title="В избранное"></a>
+            <span class="to_chidren"></span>
+            <div class="clear"></div>
+        </div>
+        <div class="message html_format ">
+            <blockquote>то, размещая все данные в стеке, мы имеем скорость чистого си</blockquote><br>
+Разрешите уточнить — без применения размещающего new у Вас возникала 
+ситуация, когда независимо от расположения объекта (в стеке или куче) 
+реальные данные всегда были в куче? Такой подход в Qt'e активно 
+используется, концепция d-pointer'ов, и определенные преимущества есть —
+ бинарная совместимость не ломается, данные качественно сокрыты и т.д. 
+        </div>
+        <div class="reply_form_placeholder"></div>
+        <div class="reply">
+		            <a href="#reply" class="reply_link" onclick="return comment_show_reply_form(8421841 )">ответить</a>
+            
+        </div>
+    </div>
+
+    <div class="reply_comments" id="reply_comments_8421841">
+        <div class="comment_item" id="comment_8422089">
+
+    <span class="parent_id" data-parent_id="8421841"></span>
+    <div class="comment_body ">
+        <div class="info  " rel="8422089">
+            <div class="folding-dot-holder"><div class="folding-dot"></div></div>
+            <div id="voting_8422089" class="voting   ">
+                <a href="#minus" class="minus" title="Не нравится" onclick="return comments_vote(this, 8422089, '3',	257893, -1)"></a>
+                <a href="#plus" class="plus" title="Нравится" onclick="return comments_vote(this, 8422089, '3',	 257893, 1)"></a>
+                <div class="mark  ">
+                    <span class="score" title="Всего 0: ↑0 и ↓0">0</span>
+                </div>
+            </div>
+            <a href="http://habrahabr.ru/users/Qualab/" class="avatar"><img src="%D0%A0%D0%B0%D0%B7%D0%BC%D0%B5%D1%89%D0%B0%D0%B8%CC%86%20%D0%B8%20%D0%B2%D0%BB%D0%B0%D1%81%D1%82%D0%B2%D1%83%D0%B8%CC%86%21%20%D0%98%D1%81%D0%BF%D0%BE%D0%BB%D1%8C%D0%B7%D1%83%D0%B5%D0%BC%20%D1%80%D0%B0%D0%B7%D0%BC%D0%B5%D1%89%D0%B0%D1%8E%D1%89%D0%B8%D0%B8%CC%86%20new%20%D0%B4%D0%BB%D1%8F%20%D0%BE%D0%BF%D1%82%D0%B8%D0%BC%D0%B8%D0%B7%D0%B0%D1%86%D0%B8%D0%B8%20%D0%BA%D0%BE%D0%B4%D0%B0%20%D0%BD%D0%B0%20C++%20_%20%D0%91%D0%BB%D0%BE%D0%B3%20%D0%BA%D0%BE%D0%BC%D0%BF%D0%B0%D0%BD%D0%B8%D0%B8%20%D0%96%D1%83%D1%80%D0%BD%D0%B0%D0%BB%20%D0%A5%D0%B0%D0%BA%D0%B5%D1%80%20_%20%D0%A5%D0%B0%D0%B1%D1%80%D0%B0%D1%85%D0%B0%D0%B1%D1%80_files/948ac2a37d0484206b56b42e39a65c90_small.html" alt=""></a>
+            <a href="http://habrahabr.ru/users/Qualab/" class="username">Qualab</a>
+            <time>18 мая 2015 в 13:28</time>
+
+            <a href="#comment_8422089" class="link_to_comment">#</a>
+            
+                    <a href="#" class="favorite add" onclick="return comments_add_to_favorite(this, '3', 8422089 )" title="В избранное"></a>
+                <div class="show_tree" data-id="8422089" data-parent_id="8421841" title="Показать ветку комментариев">↵</div>
+                <a href="#comment_8421841" data-id="8422089" data-parent_id="8421841" class="to_parent">↑</a>
+            <span class="to_chidren"></span>
+            <div class="clear"></div>
+        </div>
+        <div class="message html_format ">
+            Тут тоже не ломается бинарная совместимость и о классе с 
+данными мы знаем только то, что он есть, в API вынесен только указатель 
+на него. Мало того, этот подход позволяет не принудительно использовать 
+D-pointer'ы, а применять их только для больших объектов.
+        </div>
+        <div class="reply_form_placeholder"></div>
+        <div class="reply">
+		            <a href="#reply" class="reply_link" onclick="return comment_show_reply_form(8422089 )">ответить</a>
+            
+        </div>
+    </div>
+
+    <div class="reply_comments" id="reply_comments_8422089">
+    </div>
+</div>
+
+    </div>
+</div>
+
+            <div class="comment_item" id="comment_8421909">
+
+    <span class="parent_id" data-parent_id="0"></span>
+    <div class="comment_body ">
+        <div class="info  " rel="8421909">
+            <div class="folding-dot-holder"><div class="folding-dot"></div></div>
+            <div id="voting_8421909" class="voting   ">
+                <a href="#minus" class="minus" title="Не нравится" onclick="return comments_vote(this, 8421909, '3',	257893, -1)"></a>
+                <a href="#plus" class="plus" title="Нравится" onclick="return comments_vote(this, 8421909, '3',	 257893, 1)"></a>
+                <div class="mark  ">
+                    <span class="score" title="Всего 0: ↑0 и ↓0">0</span>
+                </div>
+            </div>
+            <a href="http://habrahabr.ru/users/FoxCanFly/" class="avatar"><img src="%D0%A0%D0%B0%D0%B7%D0%BC%D0%B5%D1%89%D0%B0%D0%B8%CC%86%20%D0%B8%20%D0%B2%D0%BB%D0%B0%D1%81%D1%82%D0%B2%D1%83%D0%B8%CC%86%21%20%D0%98%D1%81%D0%BF%D0%BE%D0%BB%D1%8C%D0%B7%D1%83%D0%B5%D0%BC%20%D1%80%D0%B0%D0%B7%D0%BC%D0%B5%D1%89%D0%B0%D1%8E%D1%89%D0%B8%D0%B8%CC%86%20new%20%D0%B4%D0%BB%D1%8F%20%D0%BE%D0%BF%D1%82%D0%B8%D0%BC%D0%B8%D0%B7%D0%B0%D1%86%D0%B8%D0%B8%20%D0%BA%D0%BE%D0%B4%D0%B0%20%D0%BD%D0%B0%20C++%20_%20%D0%91%D0%BB%D0%BE%D0%B3%20%D0%BA%D0%BE%D0%BC%D0%BF%D0%B0%D0%BD%D0%B8%D0%B8%20%D0%96%D1%83%D1%80%D0%BD%D0%B0%D0%BB%20%D0%A5%D0%B0%D0%BA%D0%B5%D1%80%20_%20%D0%A5%D0%B0%D0%B1%D1%80%D0%B0%D1%85%D0%B0%D0%B1%D1%80_files/stub-user-small.gif" alt=""></a>
+            <a href="http://habrahabr.ru/users/FoxCanFly/" class="username">FoxCanFly</a>
+            <time>18 мая 2015 в 11:43</time>
+
+            <a href="#comment_8421909" class="link_to_comment">#</a>
+            
+                    <a href="#" class="favorite add" onclick="return comments_add_to_favorite(this, '3', 8421909 )" title="В избранное"></a>
+            <span class="to_chidren"></span>
+            <div class="clear"></div>
+        </div>
+        <div class="message html_format ">
+            Как быть с тем, что размер стека обычно очень ограничен?
+        </div>
+        <div class="reply_form_placeholder"></div>
+        <div class="reply">
+		            <a href="#reply" class="reply_link" onclick="return comment_show_reply_form(8421909 )">ответить</a>
+            
+        </div>
+    </div>
+
+    <div class="reply_comments" id="reply_comments_8421909">
+        <div class="comment_item" id="comment_8422079">
+
+    <span class="parent_id" data-parent_id="8421909"></span>
+    <div class="comment_body ">
+        <div class="info  " rel="8422079">
+            <div class="folding-dot-holder"><div class="folding-dot"></div></div>
+            <div id="voting_8422079" class="voting   ">
+                <a href="#minus" class="minus" title="Не нравится" onclick="return comments_vote(this, 8422079, '3',	257893, -1)"></a>
+                <a href="#plus" class="plus" title="Нравится" onclick="return comments_vote(this, 8422079, '3',	 257893, 1)"></a>
+                <div class="mark  ">
+                    <span class="score" title="Всего 0: ↑0 и ↓0">0</span>
+                </div>
+            </div>
+            <a href="http://habrahabr.ru/users/Qualab/" class="avatar"><img src="%D0%A0%D0%B0%D0%B7%D0%BC%D0%B5%D1%89%D0%B0%D0%B8%CC%86%20%D0%B8%20%D0%B2%D0%BB%D0%B0%D1%81%D1%82%D0%B2%D1%83%D0%B8%CC%86%21%20%D0%98%D1%81%D0%BF%D0%BE%D0%BB%D1%8C%D0%B7%D1%83%D0%B5%D0%BC%20%D1%80%D0%B0%D0%B7%D0%BC%D0%B5%D1%89%D0%B0%D1%8E%D1%89%D0%B8%D0%B8%CC%86%20new%20%D0%B4%D0%BB%D1%8F%20%D0%BE%D0%BF%D1%82%D0%B8%D0%BC%D0%B8%D0%B7%D0%B0%D1%86%D0%B8%D0%B8%20%D0%BA%D0%BE%D0%B4%D0%B0%20%D0%BD%D0%B0%20C++%20_%20%D0%91%D0%BB%D0%BE%D0%B3%20%D0%BA%D0%BE%D0%BC%D0%BF%D0%B0%D0%BD%D0%B8%D0%B8%20%D0%96%D1%83%D1%80%D0%BD%D0%B0%D0%BB%20%D0%A5%D0%B0%D0%BA%D0%B5%D1%80%20_%20%D0%A5%D0%B0%D0%B1%D1%80%D0%B0%D1%85%D0%B0%D0%B1%D1%80_files/948ac2a37d0484206b56b42e39a65c90_small.html" alt=""></a>
+            <a href="http://habrahabr.ru/users/Qualab/" class="username">Qualab</a>
+            <time>18 мая 2015 в 13:26</time>
+
+            <a href="#comment_8422079" class="link_to_comment">#</a>
+            
+                    <a href="#" class="favorite add" onclick="return comments_add_to_favorite(this, '3', 8422079 )" title="В избранное"></a>
+                <div class="show_tree" data-id="8422079" data-parent_id="8421909" title="Показать ветку комментариев">↵</div>
+                <a href="#comment_8421909" data-id="8422079" data-parent_id="8421909" class="to_parent">↑</a>
+            <span class="to_chidren"></span>
+            <div class="clear"></div>
+        </div>
+        <div class="message html_format ">
+            Большие объекты не обязательно пихать в стек, для этого есть
+ куча и copy-on-write из прошлой статьи. А вот множество операций над 
+маленькими объектами, теми же скалярами и небольшими составными типами, 
+лучше всего делать на стеке, на это его хватает.
+        </div>
+        <div class="reply_form_placeholder"></div>
+        <div class="reply">
+		            <a href="#reply" class="reply_link" onclick="return comment_show_reply_form(8422079 )">ответить</a>
+            
+        </div>
+    </div>
+
+    <div class="reply_comments" id="reply_comments_8422079">
+    </div>
+</div>
+
+    </div>
+</div>
+
+            <div class="comment_item" id="comment_8421959">
+
+    <span class="parent_id" data-parent_id="0"></span>
+    <div class="comment_body ">
+        <div class="info  " rel="8421959">
+            <div class="folding-dot-holder"><div class="folding-dot"></div></div>
+            <div id="voting_8421959" class="voting   ">
+                <a href="#minus" class="minus" title="Не нравится" onclick="return comments_vote(this, 8421959, '3',	257893, -1)"></a>
+                <a href="#plus" class="plus" title="Нравится" onclick="return comments_vote(this, 8421959, '3',	 257893, 1)"></a>
+                <div class="mark  negative">
+                    <span class="score" title="Всего 2: ↑0 и ↓2">–2</span>
+                </div>
+            </div>
+            <a href="http://habrahabr.ru/users/MaxFactor/" class="avatar"><img src="%D0%A0%D0%B0%D0%B7%D0%BC%D0%B5%D1%89%D0%B0%D0%B8%CC%86%20%D0%B8%20%D0%B2%D0%BB%D0%B0%D1%81%D1%82%D0%B2%D1%83%D0%B8%CC%86%21%20%D0%98%D1%81%D0%BF%D0%BE%D0%BB%D1%8C%D0%B7%D1%83%D0%B5%D0%BC%20%D1%80%D0%B0%D0%B7%D0%BC%D0%B5%D1%89%D0%B0%D1%8E%D1%89%D0%B8%D0%B8%CC%86%20new%20%D0%B4%D0%BB%D1%8F%20%D0%BE%D0%BF%D1%82%D0%B8%D0%BC%D0%B8%D0%B7%D0%B0%D1%86%D0%B8%D0%B8%20%D0%BA%D0%BE%D0%B4%D0%B0%20%D0%BD%D0%B0%20C++%20_%20%D0%91%D0%BB%D0%BE%D0%B3%20%D0%BA%D0%BE%D0%BC%D0%BF%D0%B0%D0%BD%D0%B8%D0%B8%20%D0%96%D1%83%D1%80%D0%BD%D0%B0%D0%BB%20%D0%A5%D0%B0%D0%BA%D0%B5%D1%80%20_%20%D0%A5%D0%B0%D0%B1%D1%80%D0%B0%D1%85%D0%B0%D0%B1%D1%80_files/02effac9451b9cc0087ad883d1164d0f_small.html" alt=""></a>
+            <a href="http://habrahabr.ru/users/MaxFactor/" class="username">MaxFactor</a>
+            <time>18 мая 2015 в 12:04<span class="time_changed"> (комментарий был изменён)</span></time>
+
+            <a href="#comment_8421959" class="link_to_comment">#</a>
+            
+                    <a href="#" class="favorite add" onclick="return comments_add_to_favorite(this, '3', 8421959 )" title="В избранное"></a>
+            <span class="to_chidren"></span>
+            <div class="clear"></div>
+        </div>
+        <div class="message html_format bad bad2">
+            А в Delphi давно (этак с версии Delphi 7 точно) нет проблем с
+ частыми мелкими выделениями частей памяти, там свой менеджер памяти, а 
+многие ругают его за это. Т.е. я так понимаю, что превращают C++ в 
+Delphi
+        </div>
+        <div class="reply_form_placeholder"></div>
+        <div class="reply">
+		            <a href="#reply" class="reply_link" onclick="return comment_show_reply_form(8421959 )">ответить</a>
+            
+        </div>
+    </div>
+
+    <div class="reply_comments" id="reply_comments_8421959">
+    </div>
+</div>
+
+            <div class="comment_item" id="comment_8422175">
+
+    <span class="parent_id" data-parent_id="0"></span>
+    <div class="comment_body ">
+        <div class="info  " rel="8422175">
+            <div class="folding-dot-holder"><div class="folding-dot"></div></div>
+            <div id="voting_8422175" class="voting   ">
+                <a href="#minus" class="minus" title="Не нравится" onclick="return comments_vote(this, 8422175, '3',	257893, -1)"></a>
+                <a href="#plus" class="plus" title="Нравится" onclick="return comments_vote(this, 8422175, '3',	 257893, 1)"></a>
+                <div class="mark  ">
+                    <span class="score" title="Всего 0: ↑0 и ↓0">0</span>
+                </div>
+            </div>
+            <a href="http://habrahabr.ru/users/DmitryMe/" class="avatar"><img src="%D0%A0%D0%B0%D0%B7%D0%BC%D0%B5%D1%89%D0%B0%D0%B8%CC%86%20%D0%B8%20%D0%B2%D0%BB%D0%B0%D1%81%D1%82%D0%B2%D1%83%D0%B8%CC%86%21%20%D0%98%D1%81%D0%BF%D0%BE%D0%BB%D1%8C%D0%B7%D1%83%D0%B5%D0%BC%20%D1%80%D0%B0%D0%B7%D0%BC%D0%B5%D1%89%D0%B0%D1%8E%D1%89%D0%B8%D0%B8%CC%86%20new%20%D0%B4%D0%BB%D1%8F%20%D0%BE%D0%BF%D1%82%D0%B8%D0%BC%D0%B8%D0%B7%D0%B0%D1%86%D0%B8%D0%B8%20%D0%BA%D0%BE%D0%B4%D0%B0%20%D0%BD%D0%B0%20C++%20_%20%D0%91%D0%BB%D0%BE%D0%B3%20%D0%BA%D0%BE%D0%BC%D0%BF%D0%B0%D0%BD%D0%B8%D0%B8%20%D0%96%D1%83%D1%80%D0%BD%D0%B0%D0%BB%20%D0%A5%D0%B0%D0%BA%D0%B5%D1%80%20_%20%D0%A5%D0%B0%D0%B1%D1%80%D0%B0%D1%85%D0%B0%D0%B1%D1%80_files/stub-user-small.gif" alt=""></a>
+            <a href="http://habrahabr.ru/users/DmitryMe/" class="username">DmitryMe</a>
+            <time>18 мая 2015 в 14:11</time>
+
+            <a href="#comment_8422175" class="link_to_comment">#</a>
+            
+                    <a href="#" class="favorite add" onclick="return comments_add_to_favorite(this, '3', 8422175 )" title="В избранное"></a>
+            <span class="to_chidren"></span>
+            <div class="clear"></div>
+        </div>
+        <div class="message html_format ">
+            <pre>object&amp; object::operator = (object const&amp; another)
+{
+    destruct_data(); // здесь нужно вызвать деструктор
+    m_data = another.move_data_to(m_buffer);
+    return *this;
+}
+</pre><br>
+Неправильно отработает, если попытаться присвоить объект самому себе 
+(явно написать a=a или, что потом сложнее искать, использовать два 
+указателя, привязанные к одному и тому же объекту).
+        </div>
+        <div class="reply_form_placeholder"></div>
+        <div class="reply">
+		            <a href="#reply" class="reply_link" onclick="return comment_show_reply_form(8422175 )">ответить</a>
+            
+        </div>
+    </div>
+
+    <div class="reply_comments" id="reply_comments_8422175">
+    </div>
+</div>
+
+    </div>
+
+
+							<div class="comments_form" id="comments_form_placeholder">
+				<h2 class="title"><a href="#" onclick="return comment_show_form()">Написать комментарий</a></h2>
+				<form action="/json/comment/" method="post" id="comments_form">
+
+				<div id="preview_placeholder" class="hidden html_format"></div>
+
+				<input name="ts" value="1431950684" type="hidden">
+				<input name="tt" value="2" type="hidden">
+				<input name="ti" value="257893" type="hidden">  
+				<input name="comment_id" value="0" type="hidden">
+				<input name="parent_id" value="0" type="hidden">
+
+
+				<div class="editor">
+						<div class="panel">
+							<div class="wysiwyg_wrapper">
+	<div class="can_use_html"><a href="#html_help" onclick="$(this).parents('.wysiwyg_wrapper').find('.help_holder').toggleClass('hidden');return false;">html-теги</a></div>
+	<a class="btn" title="Жирный" onclick="return habraWYG.insertTagWithText(this, 'b');" href="#" tabindex="-1"><span class="g-icon g-icon-bold"></span></a>
+	<a class="btn" title="Курсив" onclick="return habraWYG.insertTagWithText(this, 'i');" href="#" tabindex="-1"><span class="g-icon g-icon-italic"></span></a>
+	<a class="btn" title="Подчёркнутый" onclick="return habraWYG.insertTagWithText(this, 'u');" href="#" tabindex="-1"><span class="g-icon g-icon-underline"></span></a>
+	<a class="btn" title="Зачёркнутый" onclick="return habraWYG.insertTagWithText(this, 's');" href="#" tabindex="-1"><span class="g-icon g-icon-strike"></span></a>
+	<a class="btn" title="Цитата" onclick="return habraWYG.insertTagWithText(this, 'blockquote');" href="#" tabindex="-1"><span class="g-icon g-icon-quote"></span></a>
+	<div class="btn btn-dropdown">
+		<span class="g-icon g-icon-list"></span>
+		<select name="list" onchange="habraWYG.insertList(this);" onclick="return false;" tabindex="-1">
+			<option selected="selected" value="" class="title">Список:</option>
+			<option value="ul">UL LI</option>
+			<option value="ol">OL LI</option>
+		</select>
+	</div>
+	<a class="btn" title="Пользователь" onclick="return habraWYG.insertUser(this);" href="#" tabindex="-1"><span class="g-icon g-icon-users"></span></a>
+	<a class="btn" title="Вставить ссылку" onclick="return habraWYG.insertLink(this);" href="#" tabindex="-1"><span class="g-icon g-icon-link"></span></a>
+	<a class="btn" title="Вставить изображение" onclick="return habraWYG.insertImage(this);" href="#" tabindex="-1"><span class="g-icon g-icon-images"></span></a>
+	<a class="btn" title="Вставить видео" onclick="return habraWYG.insertTagWithText(this, 'video');" href="#" tabindex="-1"><span class="g-icon g-icon-video"></span></a>
+	<a class="btn" title="Вставить спойлер" onclick="return habraWYG.insertSpoiler(this);" href="#" tabindex="-1"><span class="g-icon g-icon-spoiler"></span></a>
+	<div class="btn btn-dropdown">
+		<span class="g-icon g-icon-code"></span>
+		<select class="with-title" name="source" title="Используйте этот тег для блочных элементов" onchange="habraWYG.insertSource(this);" tabindex="-1">
+			<option selected="selected" value="" class="title">Source:</option>
+			<option value="bash">Bash</option>
+			<option value="cs">C#</option>
+			<option value="cpp">C++</option>
+			<option value="css">CSS</option>
+			<option value="diff">Diff</option>
+			<option value="html">HTML</option>
+			<option value="xml">XML</option>
+			<option value="java">Java</option>
+			<option value="javascript">JavaScript</option>
+			<option value="php">PHP</option>
+			<option value="perl">Perl</option>
+			<option value="python">Python</option>
+			<option value="ruby">Ruby</option>
+			<option value="sql">SQL</option>
+			<option value="1c">1C</option>
+			<option value="actionscript">ActionScript</option>
+			<option value="apache">Apache</option>
+			<option value="axapta">Axapta</option>
+			<option value="cmake">CMake</option>
+			<option value="coffeescript">CoffeeScript</option>
+			<option value="dos">DOS</option>
+			<option value="delphi">Delphi</option>
+			<option value="django">Django</option>
+			<option value="erlang">Erlang</option>
+			<option value="erlang_repl">Erlang REPL</option>
+      <option value="glsl">GLSL</option>
+			<option value="go">Go</option>
+			<option value="haskell">Haskell</option>
+			<option value="lisp">Lisp</option>
+			<option value="lua">Lua</option>
+			<option value="mel">MEL</option>
+			<option value="markdown">Markdown</option>
+			<option value="matlab">Matlab</option>
+			<option value="nginx">Nginx</option>
+			<option value="objectivec">Objective C</option>
+			<option value="rust">Rust</option>
+			<option value="scala">Scala</option>
+			<option value="smalltalk">Smalltalk</option>
+			<option value="tex">TeX</option>
+			<option value="vbscript">VBScript</option>
+			<option value="vhdl">VHDL</option>
+			<option value="vala">Vala</option>
+		</select>
+	</div>
+	
+
+	<div class="clear"></div>
+
+		<div class="help_holder hidden">
+          <h4>Теги Хабрахабра</h4>
+					<dl class="block_semi">
+						<dt>&lt;habracut&gt;</dt>
+						<dd class="description">Используется только в текстах публикаций, скрывает под кат часть текста, следующую за тегом (будет написано «Читать дальше»).</dd>
+					</dl>
+					<dl class="block_semi">
+	
+						<dt>&lt;habracut text="Подробности" /&gt;</dt>
+						<dd class="description">Так можно превратить надпись «Читать дальше» в любой текст.</dd>
+					</dl>
+					<dl class="block_semi">
+						<dt>&lt;source lang="Язык"&gt;&lt;/source&gt;</dt>
+						<dd class="description">Подсвечивает исходный код (на выбор: 
+						Bash,  C#,  C++,  CSS,  Diff,  HTML, XML,  Ini,  Java,  
+JavaScript,  PHP,  Perl,  Python,  Ruby,  SQL,
+						1C,  AVR Assembler,  ActionScript,  Apache,  Axapta,  CMake,  
+CoffeeScript,  DOS, .bat,  Delphi,  Django,  Erlang,  Erlang REPL,  Go, 
+ Haskell,  Lisp,  Lua,  MEL,  Markdown,  Matlab,  Nginx,  Objective C,  
+Parser3,  Python profile,  RenderMan,  Rust,  Scala,  Smalltalk,  TeX,  
+VBScript,  VHDL,  Vala    
+						).</dd>
+					</dl>
+					<dl class="block_semi">
+						<dt>&lt;video&gt;http://...&lt;/video&gt;</dt>
+	
+						<dd class="description">Добавляет в публикацию видео со следующих хостингов: YouTube, RuTube, Google video, Vimeo, Я.Видео, Ivideon и Видео@Mail.ru<br>Вставляйте между тегами только прямую ссылку на видеоролик.</dd>
+					</dl>
+
+					<dl class="block_semi">
+						<dt>&lt;twitter&gt;http://...&lt;/twitter&gt;</dt>
+
+						<dd class="description">Добавляет в публикацию твит. Необходимо 
+указать полную ссылку на твит. Например: 
+&lt;twitter&gt;https://twitter.com/habrahabr/status/522334394175213568&lt;/twitter&gt;</dd>
+					</dl>
+
+					<dl class="block_semi">
+						<dt>&lt;slideshow&gt;http://...&lt;/slideshow&gt;</dt>						
+	
+						<dd class="description">Вставка интерактивного слайд-шоу. Пока поддерживается только сервис Slideshare.net.</dd>
+					</dl>
+
+					<dl class="block_semi">
+						<dt>@username</dt>
+	
+						<dd class="description">
+							Выводит имя пользователя в тексте и отправляет пользователю 
+уведомление о том, что его упомянули в публикации/комментарии. 
+							Вы можете использовать конструкцию <b>@username</b>, где <b>username</b> — это имя пользователя.
+						</dd>
+					</dl>
+					
+					<dl class="block_semi">
+						<dt>&lt;spoiler title="Заголовок"&gt;Содержимое&lt;/spoiler&gt;</dt>
+	
+						<dd class="description">Вставка спойлера (разворачиваемый блок информации).</dd>
+					</dl>
+					
+					
+					
+					
+					<h4>Стандартные</h4>
+					<table class="wide">
+						<tbody><tr>
+							<td>
+		
+								<dl class="block_semi">
+									<dt>&lt;h1&gt;&lt;/h1&gt;<br>
+										...<br>
+										&lt;h6&gt;&lt;/h6&gt;
+									</dt>
+									<dd class="description">Заголовки разного уровня.</dd>
+								</dl>
+								<dl class="block_semi">
+	
+									<dt>&lt;img src="" /&gt;</dt>
+									<dd class="description">Вставка изображения, в атрибуте src нужно указывать полный путь к изображению. Возможно выравнивание картинки атрибутом align.</dd>
+								</dl>
+								<dl class="block_semi">
+									<dt>&lt;a href="http://..."&gt;Ссылка&lt;/a&gt;</dt>
+	
+									<dd class="description">Вставка ссылки, в атрибуте href указывается желаемый интернет-адрес или якорь (anchor) для навигации по странице.</dd>
+								</dl>								
+								<dl class="block_semi">
+									<dt>&lt;anchor&gt;Example1&lt;/anchor&gt;</dt>
+	
+									<dd class="description">Тег для указания якоря. Для вызова используйте тег вставки ссылок (&lt;a href="#Example1"&gt;Текст&lt;/a&gt;).</dd>
+								</dl>								
+								<dl class="block_semi">
+									<dt>&lt;b&gt;&lt;/b&gt;<br>
+										&lt;strong&gt;&lt;/strong&gt;</dt>
+									<dd class="description">Выделение важного текста, на странице выделяется жирным начертанием.</dd>
+								</dl>
+								<dl class="block_semi">
+	
+									<dt>&lt;i&gt;&lt;/i&gt;<br>
+										&lt;em&gt;&lt;/em&gt;</dt>
+									<dd class="description">Выделение важного текста, на странице выделяется курсивом.</dd>
+								</dl>
+								<dl class="block_semi">
+									<dt>
+										&lt;s&gt;&lt;/s&gt;<br>
+										&lt;strike&gt;&lt;/strike&gt;
+									</dt>
+									<dd class="description">Текст между этими тегами будет отображаться как зачеркнутый.</dd>
+								</dl>
+	
+								<dl class="block_semi">
+									<dt>
+										&lt;u&gt;&lt;/u&gt;
+									</dt>
+									<dd class="description">Текст между этими тегами будет отображаться как подчеркнутый.</dd>
+								</dl>
+	
+								
+							</td>
+							
+							<td width="5%"></td>
+							
+							<td>
+							<dl class="block_semi">
+								<dt>
+									&lt;hr /&gt;
+								</dt>
+								<dd class="description">Тег для вставки горизонтальной линии.</dd>
+							</dl>	
+								<dl class="block_semi">
+									<dt>
+										&lt;blockquote&gt;&lt;/blockquote&gt;
+									</dt>
+									<dd class="description">Используйте этот тег для выделения цитат.</dd>
+	
+								</dl>
+								<dl class="block_semi">
+									<dt>
+										&lt;table&gt;&lt;/table&gt;<br>
+										&lt;th&gt;&lt;/th&gt;<br>
+										&lt;td&gt;&lt;/td&gt;<br>
+	
+										&lt;tr&gt;&lt;/tr&gt;
+									</dt>
+									<dd class="description">Набор тегов для создания таблицы. Тег 
+&lt;td&gt; обозначает ячейку таблицы, тег &lt;th&gt; - ячейку в 
+заголовке, &lt;tr&gt; - строчку таблицы. Все содержимое таблицы 
+помещайте в тег &lt;table&gt;.</dd>
+	
+								</dl>
+								<dl class="block_semi">
+									<dt>
+										&lt;sup&gt;&lt;/sup&gt;<br>
+										&lt;sub&gt;&lt;/sub&gt;
+									</dt>
+									<dd class="description">Текст, заключенный в тег &lt;sup&gt; отображается в виде верхнего индекса, &lt;sub&gt; - в виде нижнего.</dd>
+	
+								</dl>
+								<dl class="block_semi">
+									<dt>
+										&lt;abbr title="" &gt;&lt;/abbr&gt;<br>
+										&lt;acronym title="" &gt;&lt;/acronym&gt;
+									</dt>
+	
+									<dd class="description">Тегом &lt;abbr&gt; выделяется 
+аббревиатура, в атрибуте title указывайте её расшифровку. Используйте 
+тег &lt;acronym&gt; для устоявшихся аббревиатур.</dd>
+								</dl>
+								<dl class="block_semi">
+									<dt>
+										&lt;pre&gt;&lt;/pre&gt;
+	
+									</dt>
+									<dd class="description">Текст в теге &lt;pre&gt; не форматируется автоматически.</dd>
+								</dl>
+								<dl class="block_semi">
+									<dt>
+										&lt;nobr&gt;&lt;/nobr&gt;<br>
+	
+										&lt;br clear="all|left||right" /&gt;
+									</dt>
+									<dd class="description">Текст, помещенный в тег &lt;nobr&gt;, 
+не переносится на странице; для принудительного переноса текста 
+используйте тег &lt;br /&gt;; для аккуратного выравнивания изображений 
+используйте атрибут clear="all|left||right" в теге &lt;br /&gt;.</dd>
+								</dl>
+								
+								<dl class="block_semi">
+									<dt>
+										&lt;ul&gt;&lt;/ul&gt;<br>
+										&lt;li&gt;&lt;/li&gt;
+									</dt>
+									<dd class="description">Ненумерованный список; каждый элемент списка задается тегом &lt;li&gt;, набор элементов списка помещайте в тег &lt;ul&gt;.</dd>
+	
+								</dl>
+								<dl class="block_semi">
+									<dt>
+										&lt;ol&gt;&lt;/ol&gt;<br>
+										&lt;li&gt;&lt;/li&gt;
+									</dt>
+									<dd class="description">Нумерованный список; каждый элемент списка задается тегом &lt;li&gt;, набор элементов списка помещайте в тег &lt;ol&gt;.</dd>
+	
+								</dl>
+							</td>
+						</tr>
+	
+					</tbody></table>
+					
+					<div class="close_html"><a href="#html_help_close" onclick="$(this).parents('.wysiwyg_wrapper').find('.help_holder').toggleClass('hidden');return false;">закрыть</a></div>
+					
+		</div>
+</div>
+						</div>
+						<div class="text-holder">
+						 <textarea cols="30" rows="10" name="text" id="comment_text"></textarea>
+						</div>
+						<span id="error_text" class="error"></span>
+					</div>
+					<div class="buttons">
+						<input class="preview disableble" value="Предпросмотр" disabled="disabled" onclick="comment_preview(this.form, this)" type="button">
+						<input class="submit disableble" value="Написать" disabled="disabled" onclick="comment_send(this.form, this)" type="button">
+						<input class="edit hidden disableble" value="Сохранить" disabled="disabled" onclick="comment_update(this.form, this)" type="button">
+						
+
+						<span class="time_left" title="Оставшееся время редактирования комментария"></span>
+					</div>
+				</form>
+			</div>
+
+
+			
+<form action="/json/favorites/" method="post" id="edit_tags_form" class="hidden">
+  <input name="action" value="add" type="hidden">
+  <input name="ti" value="0" type="hidden">
+  <input name="tt" value="0" type="hidden">
+  <label>Пометьте топик понятными вам метками, если хотите</label>
+  <input autocomplete="off" name="tags_string" class="tags_string" type="text">
+  <div class="description">Метки лучше разделять запятой. Например: <i>общение, социальные сети, myspace.com, подростки, мердок</i></div>
+  <input value="Сохранить" class="submit" type="submit"> или <a href="#" class="close" onclick="return close_edit_tags()">закрыть</a>
+</form>
+
+
+		</div>
+	</div>
+	<div class="sidebar_right">
+			
+			
+			<div class="block company_info">
+  <div class="title">Информация о компании</div>
+  <div class="info">
+
+    <div class="stats">
+      <div class="members_count item">
+      		<a href="http://habrahabr.ru/company/xakep/fans/" id="members_count">4,1к  подписчиков</a>
+      </div>
+      <div class="posts_count item">
+					<a href="http://habrahabr.ru/company/xakep/blog/">65  публикаций</a>
+
+      </div>
+    </div>
+
+		  <div class="join buttons">
+	  		  <input id="addCompanyMember" title="Подписаться на компанию" class="blue hidden" data-id="1210" value="Подписаться" type="button">
+	  		  <input id="removeCompanyMember" title="Отписаться от компании" class="" data-id="1210" value="Подписан" type="button">
+			</div>
+			<div class="clear"></div>
+
+  </div>
+</div>
+
+
+			
+<div class=" company_widgets">
+		<div class="block facebook_like_box no_bg">
+	<div id="facebook_like_box"><iframe src="%D0%A0%D0%B0%D0%B7%D0%BC%D0%B5%D1%89%D0%B0%D0%B8%CC%86%20%D0%B8%20%D0%B2%D0%BB%D0%B0%D1%81%D1%82%D0%B2%D1%83%D0%B8%CC%86%21%20%D0%98%D1%81%D0%BF%D0%BE%D0%BB%D1%8C%D0%B7%D1%83%D0%B5%D0%BC%20%D1%80%D0%B0%D0%B7%D0%BC%D0%B5%D1%89%D0%B0%D1%8E%D1%89%D0%B8%D0%B8%CC%86%20new%20%D0%B4%D0%BB%D1%8F%20%D0%BE%D0%BF%D1%82%D0%B8%D0%BC%D0%B8%D0%B7%D0%B0%D1%86%D0%B8%D0%B8%20%D0%BA%D0%BE%D0%B4%D0%B0%20%D0%BD%D0%B0%20C++%20_%20%D0%91%D0%BB%D0%BE%D0%B3%20%D0%BA%D0%BE%D0%BC%D0%BF%D0%B0%D0%BD%D0%B8%D0%B8%20%D0%96%D1%83%D1%80%D0%BD%D0%B0%D0%BB%20%D0%A5%D0%B0%D0%BA%D0%B5%D1%80%20_%20%D0%A5%D0%B0%D0%B1%D1%80%D0%B0%D1%85%D0%B0%D0%B1%D1%80_files/likebox.html" scrolling="no" style="border:none; overflow:hidden; width:100%; height:260px;" allowtransparency="true" frameborder="0"></iframe></div>
+	<script type="text/javascript">
+		$(window).bind('load', function(){
+			var width = $('#facebook_like_box').width()
+			$('#facebook_like_box').html('<iframe src="//www.facebook.com/plugins/likebox.php?href=https%3A%2F%2Fwww.facebook.com%2FXakepMagazine&amp;width='+width+'&amp;height=260&amp;colorscheme=light&amp;show_faces=true&amp;border_color&amp;stream=false&amp;header=false" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:100%; height:260px;" allowTransparency="true"></iframe>')
+		})
+	</script>
+
+</div>
+
+		<div class="block vkontakte_groups no_bg">
+
+	<script type="text/javascript" src="%D0%A0%D0%B0%D0%B7%D0%BC%D0%B5%D1%89%D0%B0%D0%B8%CC%86%20%D0%B8%20%D0%B2%D0%BB%D0%B0%D1%81%D1%82%D0%B2%D1%83%D0%B8%CC%86%21%20%D0%98%D1%81%D0%BF%D0%BE%D0%BB%D1%8C%D0%B7%D1%83%D0%B5%D0%BC%20%D1%80%D0%B0%D0%B7%D0%BC%D0%B5%D1%89%D0%B0%D1%8E%D1%89%D0%B8%D0%B8%CC%86%20new%20%D0%B4%D0%BB%D1%8F%20%D0%BE%D0%BF%D1%82%D0%B8%D0%BC%D0%B8%D0%B7%D0%B0%D1%86%D0%B8%D0%B8%20%D0%BA%D0%BE%D0%B4%D0%B0%20%D0%BD%D0%B0%20C++%20_%20%D0%91%D0%BB%D0%BE%D0%B3%20%D0%BA%D0%BE%D0%BC%D0%BF%D0%B0%D0%BD%D0%B8%D0%B8%20%D0%96%D1%83%D1%80%D0%BD%D0%B0%D0%BB%20%D0%A5%D0%B0%D0%BA%D0%B5%D1%80%20_%20%D0%A5%D0%B0%D0%B1%D1%80%D0%B0%D1%85%D0%B0%D0%B1%D1%80_files/openapi.js"></script>
+
+	<!-- VK Widget -->
+	<div style="height: 290px; width: 260px; background: none repeat scroll 0% 0% transparent;" id="vk_groups"><iframe style="overflow: hidden; height: 290px;" id="vkwidget1" scrolling="no" src="%D0%A0%D0%B0%D0%B7%D0%BC%D0%B5%D1%89%D0%B0%D0%B8%CC%86%20%D0%B8%20%D0%B2%D0%BB%D0%B0%D1%81%D1%82%D0%B2%D1%83%D0%B8%CC%86%21%20%D0%98%D1%81%D0%BF%D0%BE%D0%BB%D1%8C%D0%B7%D1%83%D0%B5%D0%BC%20%D1%80%D0%B0%D0%B7%D0%BC%D0%B5%D1%89%D0%B0%D1%8E%D1%89%D0%B8%D0%B8%CC%86%20new%20%D0%B4%D0%BB%D1%8F%20%D0%BE%D0%BF%D1%82%D0%B8%D0%BC%D0%B8%D0%B7%D0%B0%D1%86%D0%B8%D0%B8%20%D0%BA%D0%BE%D0%B4%D0%B0%20%D0%BD%D0%B0%20C++%20_%20%D0%91%D0%BB%D0%BE%D0%B3%20%D0%BA%D0%BE%D0%BC%D0%BF%D0%B0%D0%BD%D0%B8%D0%B8%20%D0%96%D1%83%D1%80%D0%BD%D0%B0%D0%BB%20%D0%A5%D0%B0%D0%BA%D0%B5%D1%80%20_%20%D0%A5%D0%B0%D0%B1%D1%80%D0%B0%D1%85%D0%B0%D0%B1%D1%80_files/widget_community.html" name="fXDf7322" frameborder="0" height="200" width="260"></iframe></div>
+	<script type="text/javascript">
+		$(document).ready(function(){
+		
+		$(window).bind('load', function(){
+			var width = $('#vk_groups').width()
+			VK.Widgets.Group("vk_groups", {mode: 0, width: width, height: "290"}, 10933209);
+		})
+
+			
+		})
+	</script>
+</div>
+
+</div>
+
+			
+			<div class="block corporate_blog">
+  <div class="title">Блог</div>
+  <div class="posts_list">
+      <div class="post_item">
+        <a href="http://habrahabr.ru/company/xakep/blog/257893/" class="post_name">Размещай и властвуй! Используем размещающий new для оптимизации кода на C++</a> 
+      </div>
+      <div class="post_item">
+        <a href="http://habrahabr.ru/company/xakep/blog/257891/" class="post_name">Побег из темницы типов. Реализуем работу с данными, тип которых определяется динамически</a> 
+      </div>
+      <div class="post_item">
+        <a href="http://habrahabr.ru/company/xakep/blog/256667/" class="post_name">Проверяем MS SQL на прочность. Векторы атак на MS SQL Server</a> 
+      </div>
+      <div class="post_item">
+        <a href="http://habrahabr.ru/company/xakep/blog/256665/" class="post_name">Играем мускулами. Методы и средства взлома баз данных MySQL</a> 
+      </div>
+      <div class="post_item">
+        <a href="http://habrahabr.ru/company/xakep/blog/256663/" class="post_name">Атака на оракула. Подробный гайд по векторам атак на Oracle DB</a> 
+      </div>
+      <div class="post_item">
+        <a href="http://habrahabr.ru/company/xakep/blog/256661/" class="post_name">Car Hacking: так ли безопасны системы безопасности автомобиля?</a> 
+      </div>
+      <div class="post_item">
+        <a href="http://habrahabr.ru/company/xakep/blog/244477/" class="post_name">Веб на чистой Java. Изучаем Vaadin — крутой фреймворк для создания веб-приложений</a> 
+      </div>
+      <div class="post_item">
+        <a href="http://habrahabr.ru/company/xakep/blog/244467/" class="post_name">Stealer на C#. Мы уложились в 9 Кб исполнимого файла</a> 
+      </div>
+      <div class="post_item">
+        <a href="http://habrahabr.ru/company/xakep/blog/253997/" class="post_name">Яблочный forensic. Извлекаем данные из iOS-устройств при помощи open source инструментов</a> 
+      </div>
+      <div class="post_item">
+        <a href="http://habrahabr.ru/company/xakep/blog/254129/" class="post_name">Я тебя по сетям вычислю: используем API крупнейших соцсетей в своих корыстных целях</a> 
+      </div>
+  </div>
+</div>
+
+			
+			
+	</div>
+	<div class="clear"></div>
+
+
+
+        
+        
+
+
+        <div class="clear"></div>
+
+        <div class="footer_panel">
+          <div id="footer">
+	<dl class="user">
+		<dt><a href="http://habrahabr.ru/users/xni/">xni</a></dt>
+		<dd><a href="http://habrahabr.ru/feed/">Лента</a></dd>
+		<dd><a href="http://habrahabr.ru/tracker/">Трекер</a></dd>
+			<dd><a href="http://habrahabr.ru/topic/add/">Написать</a></dd>
+			<dd><a href="http://habrahabr.ru/conversations/">Диалоги</a></dd>
+			<dd><a href="https://habrahabr.ru/auth/settings/">Настройки</a></dd>
+			<dd><a href="http://habrahabr.ru/ppa/">ППА</a></dd>
+	</dl>
+	<dl>
+		<dt>Разделы</dt>
+		<dd><a href="http://habrahabr.ru/posts/top/">Публикации</a></dd>
+		<dd><a href="http://habrahabr.ru/hubs/">Хабы</a></dd>
+		<dd><a href="http://habrahabr.ru/companies/">Компании</a></dd>
+		<dd><a href="http://habrahabr.ru/users/">Пользователи</a></dd>
+		<dd><a href="http://toster.ru/?_aa=press_anykey">Q&amp;A</a></dd>
+		<dd><a href="http://habrahabr.ru/sandbox/">Песочница</a></dd>
+		
+	</dl>	
+	<dl>
+		<dt>Инфо</dt>
+		<dd><a href="http://habrahabr.ru/info/about/">О сайте</a></dd>
+		<dd><a href="http://habrahabr.ru/info/help/rules/">Правила</a></dd>
+		<dd><a href="http://habrahabr.ru/info/help/">Помощь</a></dd>
+		<dd><a href="http://habrahabr.ru/info/agreement/">Соглашение</a></dd>
+	</dl>
+	<dl>
+		<dt>Услуги</dt>
+		<dd><a href="http://special.habrahabr.ru/advertising/">Реклама</a></dd>
+        <dd><a href="http://special.habrahabr.ru/">Спецпроекты</a></dd>
+        <dd><a href="http://special.habrahabr.ru/corporate/">Тарифы</a></dd>
+        <dd><a href="http://special.habrahabr.ru/content/">Контент</a></dd>
+        <dd><a href="http://special.habrahabr.ru/workshops/">Семинары</a></dd>
+	</dl>
+	<dl>
+		<dt>Разное</dt>
+		<dd><a href="http://habrahabr.ru/apps/">Приложения</a></dd>
+		<dd><a href="http://habrahabr.ru/special/testdrive/">Тест-драйвы</a></dd>
+		<dd><a href="http://special.habrahabr.ru/hello_startup/habrahabr/">Помощь стартапам</a></dd>
+	</dl>
+	<div class="copyright">
+
+		<div class="about">
+			<a href="http://tmtm.ru/">© TM</a>
+			
+			<br><br>
+			<a href="http://habrahabr.ru/feedback/">Служба поддержки</a><br><br>
+                <a href="http://m.habrahabr.ru/post/257893/?mobile=yes">Мобильная версия</a><br><br>
+			
+
+			<div class="social_accounts">
+				<a href="https://twitter.com/habrahabr" class="tw"></a>
+				<a href="https://www.facebook.com/habrahabr.ru" class="fb"></a>
+				<a href="http://vk.com/habr" class="vk"></a>
+				<!-- <a href="" class="gp"></a> //-->
+			</div>
+
+		</div>
+	</div>
+
+</div>
+
+        </div>
+      </div>
+    </div>
+
+
+
+    <script type="text/javascript">
+  // global vars
+  var g_base_url = 'habrahabr.ru';
+  var g_show_xpanel = true;
+  var g_base_fullurl = 'http://habrahabr.ru/';
+  var g_is_guest = true;
+  var g_user_login = 'xni';
+  var g_user_id = 18017;
+  var g_user_avatar = '//habrahabr.ru/i/avatars/stub-user-middle.gif';   
+</script> 
+
+      <script type="text/javascript" src="%D0%A0%D0%B0%D0%B7%D0%BC%D0%B5%D1%89%D0%B0%D0%B8%CC%86%20%D0%B8%20%D0%B2%D0%BB%D0%B0%D1%81%D1%82%D0%B2%D1%83%D0%B8%CC%86%21%20%D0%98%D1%81%D0%BF%D0%BE%D0%BB%D1%8C%D0%B7%D1%83%D0%B5%D0%BC%20%D1%80%D0%B0%D0%B7%D0%BC%D0%B5%D1%89%D0%B0%D1%8E%D1%89%D0%B8%D0%B8%CC%86%20new%20%D0%B4%D0%BB%D1%8F%20%D0%BE%D0%BF%D1%82%D0%B8%D0%BC%D0%B8%D0%B7%D0%B0%D1%86%D0%B8%D0%B8%20%D0%BA%D0%BE%D0%B4%D0%B0%20%D0%BD%D0%B0%20C++%20_%20%D0%91%D0%BB%D0%BE%D0%B3%20%D0%BA%D0%BE%D0%BC%D0%BF%D0%B0%D0%BD%D0%B8%D0%B8%20%D0%96%D1%83%D1%80%D0%BD%D0%B0%D0%BB%20%D0%A5%D0%B0%D0%BA%D0%B5%D1%80%20_%20%D0%A5%D0%B0%D0%B1%D1%80%D0%B0%D1%85%D0%B0%D0%B1%D1%80_files/shortcuts.js"></script>
+
+    <script type="text/javascript" src="%D0%A0%D0%B0%D0%B7%D0%BC%D0%B5%D1%89%D0%B0%D0%B8%CC%86%20%D0%B8%20%D0%B2%D0%BB%D0%B0%D1%81%D1%82%D0%B2%D1%83%D0%B8%CC%86%21%20%D0%98%D1%81%D0%BF%D0%BE%D0%BB%D1%8C%D0%B7%D1%83%D0%B5%D0%BC%20%D1%80%D0%B0%D0%B7%D0%BC%D0%B5%D1%89%D0%B0%D1%8E%D1%89%D0%B8%D0%B8%CC%86%20new%20%D0%B4%D0%BB%D1%8F%20%D0%BE%D0%BF%D1%82%D0%B8%D0%BC%D0%B8%D0%B7%D0%B0%D1%86%D0%B8%D0%B8%20%D0%BA%D0%BE%D0%B4%D0%B0%20%D0%BD%D0%B0%20C++%20_%20%D0%91%D0%BB%D0%BE%D0%B3%20%D0%BA%D0%BE%D0%BC%D0%BF%D0%B0%D0%BD%D0%B8%D0%B8%20%D0%96%D1%83%D1%80%D0%BD%D0%B0%D0%BB%20%D0%A5%D0%B0%D0%BA%D0%B5%D1%80%20_%20%D0%A5%D0%B0%D0%B1%D1%80%D0%B0%D1%85%D0%B0%D0%B1%D1%80_files/global_footer_main.js"></script>
+
+    	<script type="text/javascript" src="%D0%A0%D0%B0%D0%B7%D0%BC%D0%B5%D1%89%D0%B0%D0%B8%CC%86%20%D0%B8%20%D0%B2%D0%BB%D0%B0%D1%81%D1%82%D0%B2%D1%83%D0%B8%CC%86%21%20%D0%98%D1%81%D0%BF%D0%BE%D0%BB%D1%8C%D0%B7%D1%83%D0%B5%D0%BC%20%D1%80%D0%B0%D0%B7%D0%BC%D0%B5%D1%89%D0%B0%D1%8E%D1%89%D0%B8%D0%B8%CC%86%20new%20%D0%B4%D0%BB%D1%8F%20%D0%BE%D0%BF%D1%82%D0%B8%D0%BC%D0%B8%D0%B7%D0%B0%D1%86%D0%B8%D0%B8%20%D0%BA%D0%BE%D0%B4%D0%B0%20%D0%BD%D0%B0%20C++%20_%20%D0%91%D0%BB%D0%BE%D0%B3%20%D0%BA%D0%BE%D0%BC%D0%BF%D0%B0%D0%BD%D0%B8%D0%B8%20%D0%96%D1%83%D1%80%D0%BD%D0%B0%D0%BB%20%D0%A5%D0%B0%D0%BA%D0%B5%D1%80%20_%20%D0%A5%D0%B0%D0%B1%D1%80%D0%B0%D1%85%D0%B0%D0%B1%D1%80_files/a.js"></script>
+
+    
+
+<!-- Yandex.Metrika counter -->
+<script type="text/javascript">
+(function (d, w, c) {
+    (w[c] = w[c] || []).push(function() {
+        try {
+            w.yaCounter24049213 = new Ya.Metrika({id:24049213,
+                    webvisor:true,
+                    clickmap:true,
+                    trackLinks:true,
+                    accurateTrackBounce:true});
+        } catch(e) { }
+    });
+
+    var n = d.getElementsByTagName("script")[0],
+        s = d.createElement("script"),
+        f = function () { n.parentNode.insertBefore(s, n); };
+    s.type = "text/javascript";
+    s.async = true;
+    s.src = (d.location.protocol == "https:" ? "https:" : "http:") + "//mc.yandex.ru/metrika/watch.js";
+
+    if (w.opera == "[object Opera]") {
+        d.addEventListener("DOMContentLoaded", f, false);
+    } else { f(); }
+})(document, window, "yandex_metrika_callbacks");
+</script>
+<noscript><div><img src="//mc.yandex.ru/watch/24049213" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+<!-- /Yandex.Metrika counter -->
+
+
+
+<!-- adriver counter //-->
+<span style="position:absolute;left:-9999px;">
+  <img src="%D0%A0%D0%B0%D0%B7%D0%BC%D0%B5%D1%89%D0%B0%D0%B8%CC%86%20%D0%B8%20%D0%B2%D0%BB%D0%B0%D1%81%D1%82%D0%B2%D1%83%D0%B8%CC%86%21%20%D0%98%D1%81%D0%BF%D0%BE%D0%BB%D1%8C%D0%B7%D1%83%D0%B5%D0%BC%20%D1%80%D0%B0%D0%B7%D0%BC%D0%B5%D1%89%D0%B0%D1%8E%D1%89%D0%B8%D0%B8%CC%86%20new%20%D0%B4%D0%BB%D1%8F%20%D0%BE%D0%BF%D1%82%D0%B8%D0%BC%D0%B8%D0%B7%D0%B0%D1%86%D0%B8%D0%B8%20%D0%BA%D0%BE%D0%B4%D0%B0%20%D0%BD%D0%B0%20C++%20_%20%D0%91%D0%BB%D0%BE%D0%B3%20%D0%BA%D0%BE%D0%BC%D0%BF%D0%B0%D0%BD%D0%B8%D0%B8%20%D0%96%D1%83%D1%80%D0%BD%D0%B0%D0%BB%20%D0%A5%D0%B0%D0%BA%D0%B5%D1%80%20_%20%D0%A5%D0%B0%D0%B1%D1%80%D0%B0%D1%85%D0%B0%D0%B1%D1%80_files/rle.txt" alt="" height="1" width="1">
+</span>
+<!-- adriver counter end //-->
+
+
+    
+
+    <!-- Хабр не резиновый! -->
+  
+
+<div id="AutocompleteContainter_e1f76" style="position: absolute; z-index: 9999; top: 2px; left: 0px;"><div class="autocomplete-w1"><div class="autocomplete" id="Autocomplete_e1f76" style="display: none; width: 300px; max-height: 400px;"></div></div></div><div id="AutocompleteContainter_9cf6c" style="position: absolute; z-index: 9999; top: 2px; left: 0px;"><div class="autocomplete-w1"><div class="autocomplete" id="Autocomplete_9cf6c" style="display: none; width: 300px; max-height: 400px;"></div></div></div><div id="xpanel"><a href="#refresh" class="refresh"></a><a style="display: none;" href="#prev_new" class="prev_new" title="По клику (горячая клавиша - k) переходит к предыдущему непрочитанному комментарию.">↑</a><a style="display: none;" href="#new" class="new" title="Количество новых комментариев. По клику (горячая клавиша - f) переходит к первому непрочитанному комментарию.">0</a><a style="display: none;" href="#next_new" class="next_new" title="По клику (горячая клавиша - j) переходит к следующему непрочитанному комментарию.">↓</a></div></body></html>
