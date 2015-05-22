@@ -1,0 +1,66 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "title": "Yandex.Taxi MQC DataXChange",
+        "description": "Обмен данными с партнёрами по МКК",
+        "version": "1.0.0"
+    },
+    "host": "taxi-mqc-tst.mobile.yandex.net",
+    "schemes": [
+        "https"
+    ],
+    "basePath": "/1.x",
+    "produces": [
+        "application/json"
+    ],
+    "paths": {
+        "/status": {
+            "get": {
+                "summary": "Статус заказа",
+                "description": "Возвращает статус заказа\n",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "query",
+                        "description": "id клиента, который сделал заказ.",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "orderid",
+                        "in": "query",
+                        "description": "id заказа, полученный от вызова функции /order.",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "An array of products",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/OrderStatus"
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "OrderStatus": {
+            "properties": {
+                "status": {
+                    "type": "string",
+                    "enum": [
+                        "pending",
+                        "assigned",
+                        "cancelled",
+                        "complete"
+                    ]
+                }
+            }
+        }
+    }
+}
