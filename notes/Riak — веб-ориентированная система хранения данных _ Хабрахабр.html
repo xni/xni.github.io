@@ -1,0 +1,3169 @@
+<!DOCTYPE html>
+<html><head><script src="Riak%20%E2%80%94%20%D0%B2%D0%B5%D0%B1-%D0%BE%D1%80%D0%B8%D0%B5%D0%BD%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%BD%D0%B0%D1%8F%20%D1%81%D0%B8%D1%81%D1%82%D0%B5%D0%BC%D0%B0%20%D1%85%D1%80%D0%B0%D0%BD%D0%B5%D0%BD%D0%B8%D1%8F%20%D0%B4%D0%B0%D0%BD%D0%BD%D1%8B%D1%85%20_%20%D0%A5%D0%B0%D0%B1%D1%80%D0%B0%D1%85%D0%B0%D0%B1%D1%80_files/watch.js" async="" type="text/javascript"></script><script src="Riak%20%E2%80%94%20%D0%B2%D0%B5%D0%B1-%D0%BE%D1%80%D0%B8%D0%B5%D0%BD%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%BD%D0%B0%D1%8F%20%D1%81%D0%B8%D1%81%D1%82%D0%B5%D0%BC%D0%B0%20%D1%85%D1%80%D0%B0%D0%BD%D0%B5%D0%BD%D0%B8%D1%8F%20%D0%B4%D0%B0%D0%BD%D0%BD%D1%8B%D1%85%20_%20%D0%A5%D0%B0%D0%B1%D1%80%D0%B0%D1%85%D0%B0%D0%B1%D1%80_files/analytics.js" async=""></script>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta content="width=1024" name="viewport">
+
+
+    <title>Riak — веб-ориентированная система хранения данных / Хабрахабр</title>
+
+    <meta name="yandex-verification" content="67d46b975fa41645"> <!-- яндекс вебмастер - верификация -->
+
+    <meta name="description" content="
+
+Немного статей на хабре посвящены новому движению в IT индустрии — NoSQL. Я решил изменить это и написал статью-перевод-обзор об одном из докладов с конференции NoSQL прошедшей 5 октября в...">
+    <meta name="keywords" content="nosql, riak, key-value storage, nosql rocks!, basho">
+
+    	<meta property="fb:app_id" content="444736788986613"> 
+<meta property="og:type" content="article"> 
+<meta property="og:url" content="http://habrahabr.ru/post/75202/"> 
+<meta property="og:title" content="Riak — веб-ориентированная система хранения данных">
+	<meta property="og:image" content="http://habrastorage.org/storage1/9311bd19/23960a79/1fee6930/8c510da4.png">
+	<link rel="image_src" href="Riak%20%E2%80%94%20%D0%B2%D0%B5%D0%B1-%D0%BE%D1%80%D0%B8%D0%B5%D0%BD%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%BD%D0%B0%D1%8F%20%D1%81%D0%B8%D1%81%D1%82%D0%B5%D0%BC%D0%B0%20%D1%85%D1%80%D0%B0%D0%BD%D0%B5%D0%BD%D0%B8%D1%8F%20%D0%B4%D0%B0%D0%BD%D0%BD%D1%8B%D1%85%20_%20%D0%A5%D0%B0%D0%B1%D1%80%D0%B0%D1%85%D0%B0%D0%B1%D1%80_files/8c510da4.png"><meta property="og:image" content="http://habrastorage.org/storage1/6f495342/f36fec4f/54f621c2/fd540bbc.png">
+	<link rel="image_src" href="Riak%20%E2%80%94%20%D0%B2%D0%B5%D0%B1-%D0%BE%D1%80%D0%B8%D0%B5%D0%BD%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%BD%D0%B0%D1%8F%20%D1%81%D0%B8%D1%81%D1%82%D0%B5%D0%BC%D0%B0%20%D1%85%D1%80%D0%B0%D0%BD%D0%B5%D0%BD%D0%B8%D1%8F%20%D0%B4%D0%B0%D0%BD%D0%BD%D1%8B%D1%85%20_%20%D0%A5%D0%B0%D0%B1%D1%80%D0%B0%D1%85%D0%B0%D0%B1%D1%80_files/fd540bbc.png"><meta property="og:image" content="http://habrastorage.org/storage1/1dd97b8f/c3398f24/63c61524/455a5c00.png">
+	<link rel="image_src" href="Riak%20%E2%80%94%20%D0%B2%D0%B5%D0%B1-%D0%BE%D1%80%D0%B8%D0%B5%D0%BD%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%BD%D0%B0%D1%8F%20%D1%81%D0%B8%D1%81%D1%82%D0%B5%D0%BC%D0%B0%20%D1%85%D1%80%D0%B0%D0%BD%D0%B5%D0%BD%D0%B8%D1%8F%20%D0%B4%D0%B0%D0%BD%D0%BD%D1%8B%D1%85%20_%20%D0%A5%D0%B0%D0%B1%D1%80%D0%B0%D1%85%D0%B0%D0%B1%D1%80_files/455a5c00.png"><meta property="og:image" content="http://habrastorage.org/storage1/9e0e8351/e54fdcad/d6f8ad58/887c6e91.png">
+	<link rel="image_src" href="Riak%20%E2%80%94%20%D0%B2%D0%B5%D0%B1-%D0%BE%D1%80%D0%B8%D0%B5%D0%BD%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%BD%D0%B0%D1%8F%20%D1%81%D0%B8%D1%81%D1%82%D0%B5%D0%BC%D0%B0%20%D1%85%D1%80%D0%B0%D0%BD%D0%B5%D0%BD%D0%B8%D1%8F%20%D0%B4%D0%B0%D0%BD%D0%BD%D1%8B%D1%85%20_%20%D0%A5%D0%B0%D0%B1%D1%80%D0%B0%D1%85%D0%B0%D0%B1%D1%80_files/887c6e91.png"><meta property="og:image" content="http://habrastorage.org/storage1/01ba3041/18afbe80/c9d67f63/ac297f89.png">
+	<link rel="image_src" href="Riak%20%E2%80%94%20%D0%B2%D0%B5%D0%B1-%D0%BE%D1%80%D0%B8%D0%B5%D0%BD%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%BD%D0%B0%D1%8F%20%D1%81%D0%B8%D1%81%D1%82%D0%B5%D0%BC%D0%B0%20%D1%85%D1%80%D0%B0%D0%BD%D0%B5%D0%BD%D0%B8%D1%8F%20%D0%B4%D0%B0%D0%BD%D0%BD%D1%8B%D1%85%20_%20%D0%A5%D0%B0%D0%B1%D1%80%D0%B0%D1%85%D0%B0%D0%B1%D1%80_files/ac297f89.png"><meta property="og:image" content="http://habrastorage.org/storage1/ace244dd/4f6629f8/5d7ebd4b/860c3b6d.png">
+	<link rel="image_src" href="Riak%20%E2%80%94%20%D0%B2%D0%B5%D0%B1-%D0%BE%D1%80%D0%B8%D0%B5%D0%BD%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%BD%D0%B0%D1%8F%20%D1%81%D0%B8%D1%81%D1%82%D0%B5%D0%BC%D0%B0%20%D1%85%D1%80%D0%B0%D0%BD%D0%B5%D0%BD%D0%B8%D1%8F%20%D0%B4%D0%B0%D0%BD%D0%BD%D1%8B%D1%85%20_%20%D0%A5%D0%B0%D0%B1%D1%80%D0%B0%D1%85%D0%B0%D0%B1%D1%80_files/860c3b6d.png"><meta property="og:image" content="http://habrastorage.org/storage1/6b58e515/4fc0b6c3/f441da64/be14991b.png">
+	<link rel="image_src" href="Riak%20%E2%80%94%20%D0%B2%D0%B5%D0%B1-%D0%BE%D1%80%D0%B8%D0%B5%D0%BD%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%BD%D0%B0%D1%8F%20%D1%81%D0%B8%D1%81%D1%82%D0%B5%D0%BC%D0%B0%20%D1%85%D1%80%D0%B0%D0%BD%D0%B5%D0%BD%D0%B8%D1%8F%20%D0%B4%D0%B0%D0%BD%D0%BD%D1%8B%D1%85%20_%20%D0%A5%D0%B0%D0%B1%D1%80%D0%B0%D1%85%D0%B0%D0%B1%D1%80_files/be14991b.png"><meta property="og:image" content="http://habrastorage.org/storage1/8dae81cc/188fce8d/a363fd37/492fc907.png">
+	<link rel="image_src" href="Riak%20%E2%80%94%20%D0%B2%D0%B5%D0%B1-%D0%BE%D1%80%D0%B8%D0%B5%D0%BD%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%BD%D0%B0%D1%8F%20%D1%81%D0%B8%D1%81%D1%82%D0%B5%D0%BC%D0%B0%20%D1%85%D1%80%D0%B0%D0%BD%D0%B5%D0%BD%D0%B8%D1%8F%20%D0%B4%D0%B0%D0%BD%D0%BD%D1%8B%D1%85%20_%20%D0%A5%D0%B0%D0%B1%D1%80%D0%B0%D1%85%D0%B0%D0%B1%D1%80_files/492fc907.png"><meta property="og:image" content="http://habrastorage.org/storage1/62f44724/4678ee8c/ee08ab34/ac56218c.png">
+	<link rel="image_src" href="Riak%20%E2%80%94%20%D0%B2%D0%B5%D0%B1-%D0%BE%D1%80%D0%B8%D0%B5%D0%BD%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%BD%D0%B0%D1%8F%20%D1%81%D0%B8%D1%81%D1%82%D0%B5%D0%BC%D0%B0%20%D1%85%D1%80%D0%B0%D0%BD%D0%B5%D0%BD%D0%B8%D1%8F%20%D0%B4%D0%B0%D0%BD%D0%BD%D1%8B%D1%85%20_%20%D0%A5%D0%B0%D0%B1%D1%80%D0%B0%D1%85%D0%B0%D0%B1%D1%80_files/ac56218c.png"><meta property="og:image" content="http://habrastorage.org/storage1/544207eb/2ee16f56/f9090856/22273e5a.png">
+	<link rel="image_src" href="Riak%20%E2%80%94%20%D0%B2%D0%B5%D0%B1-%D0%BE%D1%80%D0%B8%D0%B5%D0%BD%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%BD%D0%B0%D1%8F%20%D1%81%D0%B8%D1%81%D1%82%D0%B5%D0%BC%D0%B0%20%D1%85%D1%80%D0%B0%D0%BD%D0%B5%D0%BD%D0%B8%D1%8F%20%D0%B4%D0%B0%D0%BD%D0%BD%D1%8B%D1%85%20_%20%D0%A5%D0%B0%D0%B1%D1%80%D0%B0%D1%85%D0%B0%D0%B1%D1%80_files/22273e5a.png"><meta property="og:image" content="http://habrastorage.org/storage1/b1574855/5d0860e9/23d71f26/cb58e3af.png">
+	<link rel="image_src" href="Riak%20%E2%80%94%20%D0%B2%D0%B5%D0%B1-%D0%BE%D1%80%D0%B8%D0%B5%D0%BD%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%BD%D0%B0%D1%8F%20%D1%81%D0%B8%D1%81%D1%82%D0%B5%D0%BC%D0%B0%20%D1%85%D1%80%D0%B0%D0%BD%D0%B5%D0%BD%D0%B8%D1%8F%20%D0%B4%D0%B0%D0%BD%D0%BD%D1%8B%D1%85%20_%20%D0%A5%D0%B0%D0%B1%D1%80%D0%B0%D1%85%D0%B0%D0%B1%D1%80_files/cb58e3af.png"><meta property="og:image" content="http://habrastorage.org/storage1/89e836de/4c1d7f68/c78b96f3/aedaa17d.png">
+	<link rel="image_src" href="Riak%20%E2%80%94%20%D0%B2%D0%B5%D0%B1-%D0%BE%D1%80%D0%B8%D0%B5%D0%BD%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%BD%D0%B0%D1%8F%20%D1%81%D0%B8%D1%81%D1%82%D0%B5%D0%BC%D0%B0%20%D1%85%D1%80%D0%B0%D0%BD%D0%B5%D0%BD%D0%B8%D1%8F%20%D0%B4%D0%B0%D0%BD%D0%BD%D1%8B%D1%85%20_%20%D0%A5%D0%B0%D0%B1%D1%80%D0%B0%D1%85%D0%B0%D0%B1%D1%80_files/aedaa17d.png"><meta property="og:image" content="http://habrastorage.org/storage1/ccba3727/f8e04498/893766d5/2e57075d.png">
+	<link rel="image_src" href="Riak%20%E2%80%94%20%D0%B2%D0%B5%D0%B1-%D0%BE%D1%80%D0%B8%D0%B5%D0%BD%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%BD%D0%B0%D1%8F%20%D1%81%D0%B8%D1%81%D1%82%D0%B5%D0%BC%D0%B0%20%D1%85%D1%80%D0%B0%D0%BD%D0%B5%D0%BD%D0%B8%D1%8F%20%D0%B4%D0%B0%D0%BD%D0%BD%D1%8B%D1%85%20_%20%D0%A5%D0%B0%D0%B1%D1%80%D0%B0%D1%85%D0%B0%D0%B1%D1%80_files/2e57075d.png"><meta property="og:image" content="http://habrastorage.org/storage1/17040e09/5c0f0175/58769254/f905b864.png">
+	<link rel="image_src" href="Riak%20%E2%80%94%20%D0%B2%D0%B5%D0%B1-%D0%BE%D1%80%D0%B8%D0%B5%D0%BD%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%BD%D0%B0%D1%8F%20%D1%81%D0%B8%D1%81%D1%82%D0%B5%D0%BC%D0%B0%20%D1%85%D1%80%D0%B0%D0%BD%D0%B5%D0%BD%D0%B8%D1%8F%20%D0%B4%D0%B0%D0%BD%D0%BD%D1%8B%D1%85%20_%20%D0%A5%D0%B0%D0%B1%D1%80%D0%B0%D1%85%D0%B0%D0%B1%D1%80_files/f905b864.png"><meta property="og:image" content="http://habrastorage.org/storage1/c8109f15/08c2f2d6/dae85468/f9812bc4.png">
+	<link rel="image_src" href="Riak%20%E2%80%94%20%D0%B2%D0%B5%D0%B1-%D0%BE%D1%80%D0%B8%D0%B5%D0%BD%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%BD%D0%B0%D1%8F%20%D1%81%D0%B8%D1%81%D1%82%D0%B5%D0%BC%D0%B0%20%D1%85%D1%80%D0%B0%D0%BD%D0%B5%D0%BD%D0%B8%D1%8F%20%D0%B4%D0%B0%D0%BD%D0%BD%D1%8B%D1%85%20_%20%D0%A5%D0%B0%D0%B1%D1%80%D0%B0%D1%85%D0%B0%D0%B1%D1%80_files/f9812bc4.png"><meta property="og:image" content="http://habrastorage.org/storage1/99f0796c/ac88ce1e/2112347f/1c6ed8e2.png">
+	<link rel="image_src" href="Riak%20%E2%80%94%20%D0%B2%D0%B5%D0%B1-%D0%BE%D1%80%D0%B8%D0%B5%D0%BD%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%BD%D0%B0%D1%8F%20%D1%81%D0%B8%D1%81%D1%82%D0%B5%D0%BC%D0%B0%20%D1%85%D1%80%D0%B0%D0%BD%D0%B5%D0%BD%D0%B8%D1%8F%20%D0%B4%D0%B0%D0%BD%D0%BD%D1%8B%D1%85%20_%20%D0%A5%D0%B0%D0%B1%D1%80%D0%B0%D1%85%D0%B0%D0%B1%D1%80_files/1c6ed8e2.png"><meta property="og:image" content="http://habrastorage.org/storage1/83aa5a1c/ae55fef8/6bd95770/3e1a5e2e.png">
+	<link rel="image_src" href="Riak%20%E2%80%94%20%D0%B2%D0%B5%D0%B1-%D0%BE%D1%80%D0%B8%D0%B5%D0%BD%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%BD%D0%B0%D1%8F%20%D1%81%D0%B8%D1%81%D1%82%D0%B5%D0%BC%D0%B0%20%D1%85%D1%80%D0%B0%D0%BD%D0%B5%D0%BD%D0%B8%D1%8F%20%D0%B4%D0%B0%D0%BD%D0%BD%D1%8B%D1%85%20_%20%D0%A5%D0%B0%D0%B1%D1%80%D0%B0%D1%85%D0%B0%D0%B1%D1%80_files/3e1a5e2e.png">
+	
+<meta property="og:description" content="Немного статей на хабре посвящены новому движению в IT индустрии — NoSQL. Я решил изменить это и написал статью-перевод-обзор об одном из докладов с...">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:site" content="@habrahabr">
+	<meta property="al:ios:url" content="habrahabr://post/75202">
+<meta property="al:ios:app_store_id" content="778613673">
+<meta property="al:ios:app_name" content="Habrahabr">
+<meta property="al:android:url" content="habrahabr://post/75202">
+<meta property="al:android:app_name" content="Habrahabr">
+<meta property="al:android:package" content="ru.habrahabr">
+<meta property="al:windows_phone:url" content="habrahabr://post/75202">
+<meta property="al:windows_phone:app_name" content="Habrahabr">
+<meta property="al:windows_phone:app_id" content="460a6bd6-8955-470f-935e-9ea1726a6060">
+	<link rel="canonical" href="http://habrahabr.ru/post/75202/">
+    <link rel="alternate" media="only screen and (max-width: 640px)" href="http://m.habrahabr.ru/post/75202/">
+
+
+
+
+    <link href="Riak%20%E2%80%94%20%D0%B2%D0%B5%D0%B1-%D0%BE%D1%80%D0%B8%D0%B5%D0%BD%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%BD%D0%B0%D1%8F%20%D1%81%D0%B8%D1%81%D1%82%D0%B5%D0%BC%D0%B0%20%D1%85%D1%80%D0%B0%D0%BD%D0%B5%D0%BD%D0%B8%D1%8F%20%D0%B4%D0%B0%D0%BD%D0%BD%D1%8B%D1%85%20_%20%D0%A5%D0%B0%D0%B1%D1%80%D0%B0%D1%85%D0%B0%D0%B1%D1%80_files/global_main.css" rel="stylesheet" media="all">
+    <script type="text/javascript" src="Riak%20%E2%80%94%20%D0%B2%D0%B5%D0%B1-%D0%BE%D1%80%D0%B8%D0%B5%D0%BD%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%BD%D0%B0%D1%8F%20%D1%81%D0%B8%D1%81%D1%82%D0%B5%D0%BC%D0%B0%20%D1%85%D1%80%D0%B0%D0%BD%D0%B5%D0%BD%D0%B8%D1%8F%20%D0%B4%D0%B0%D0%BD%D0%BD%D1%8B%D1%85%20_%20%D0%A5%D0%B0%D0%B1%D1%80%D0%B0%D1%85%D0%B0%D0%B1%D1%80_files/global_main.js"></script>
+        <link href="Riak%20%E2%80%94%20%D0%B2%D0%B5%D0%B1-%D0%BE%D1%80%D0%B8%D0%B5%D0%BD%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%BD%D0%B0%D1%8F%20%D1%81%D0%B8%D1%81%D1%82%D0%B5%D0%BC%D0%B0%20%D1%85%D1%80%D0%B0%D0%BD%D0%B5%D0%BD%D0%B8%D1%8F%20%D0%B4%D0%B0%D0%BD%D0%BD%D1%8B%D1%85%20_%20%D0%A5%D0%B0%D0%B1%D1%80%D0%B0%D1%85%D0%B0%D0%B1%D1%80_files/post_common_css.css" rel="stylesheet" media="all">
+    <link href="Riak%20%E2%80%94%20%D0%B2%D0%B5%D0%B1-%D0%BE%D1%80%D0%B8%D0%B5%D0%BD%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%BD%D0%B0%D1%8F%20%D1%81%D0%B8%D1%81%D1%82%D0%B5%D0%BC%D0%B0%20%D1%85%D1%80%D0%B0%D0%BD%D0%B5%D0%BD%D0%B8%D1%8F%20%D0%B4%D0%B0%D0%BD%D0%BD%D1%8B%D1%85%20_%20%D0%A5%D0%B0%D0%B1%D1%80%D0%B0%D1%85%D0%B0%D0%B1%D1%80_files/all.css" rel="stylesheet" media="all">
+
+    <link href="Riak%20%E2%80%94%20%D0%B2%D0%B5%D0%B1-%D0%BE%D1%80%D0%B8%D0%B5%D0%BD%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%BD%D0%B0%D1%8F%20%D1%81%D0%B8%D1%81%D1%82%D0%B5%D0%BC%D0%B0%20%D1%85%D1%80%D0%B0%D0%BD%D0%B5%D0%BD%D0%B8%D1%8F%20%D0%B4%D0%B0%D0%BD%D0%BD%D1%8B%D1%85%20_%20%D0%A5%D0%B0%D0%B1%D1%80%D0%B0%D1%85%D0%B0%D0%B1%D1%80_files/printer.css" rel="stylesheet" media="print">
+
+    
+    
+
+
+
+
+        <script type="text/javascript" src="Riak%20%E2%80%94%20%D0%B2%D0%B5%D0%B1-%D0%BE%D1%80%D0%B8%D0%B5%D0%BD%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%BD%D0%B0%D1%8F%20%D1%81%D0%B8%D1%81%D1%82%D0%B5%D0%BC%D0%B0%20%D1%85%D1%80%D0%B0%D0%BD%D0%B5%D0%BD%D0%B8%D1%8F%20%D0%B4%D0%B0%D0%BD%D0%BD%D1%8B%D1%85%20_%20%D0%A5%D0%B0%D0%B1%D1%80%D0%B0%D1%85%D0%B0%D0%B1%D1%80_files/post_common_js.js"></script>
+    <script type="text/javascript" src="Riak%20%E2%80%94%20%D0%B2%D0%B5%D0%B1-%D0%BE%D1%80%D0%B8%D0%B5%D0%BD%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%BD%D0%B0%D1%8F%20%D1%81%D0%B8%D1%81%D1%82%D0%B5%D0%BC%D0%B0%20%D1%85%D1%80%D0%B0%D0%BD%D0%B5%D0%BD%D0%B8%D1%8F%20%D0%B4%D0%B0%D0%BD%D0%BD%D1%8B%D1%85%20_%20%D0%A5%D0%B0%D0%B1%D1%80%D0%B0%D1%85%D0%B0%D0%B1%D1%80_files/all.js"></script>
+
+
+      <!-- www.criteo.com/ru -->
+<script type="text/javascript">
+  var crtg_nid="2580";
+  var crtg_cookiename="cto_rtt";
+  var crtg_varname="crtg_content";
+  function crtg_getCookie(c_name){
+    var i,x,y,ARRCookies=document.cookie.split(";");
+    for(i=0;i<ARRCookies.length;i++){
+      x=ARRCookies[i].substr(0,ARRCookies[i].indexOf("="));
+      y=ARRCookies[i].substr(ARRCookies[i].indexOf("=")+1);
+      x=x.replace(/^\s+|\s+$/g,"");
+      if(x==c_name){return unescape(y);}
+    }
+    return'';
+  }
+  var crtg_content = crtg_getCookie(crtg_cookiename);var crtg_rnd=Math.floor(Math.random()*99999999999);
+  var crtg_url=location.protocol+'//rtax.criteo.com/delivery/rta/rta.js?netId='+escape(crtg_nid);crtg_url+='&cookieName='+escape(crtg_cookiename);crtg_url+='&rnd='+crtg_rnd;crtg_url+='&varName=' + escape(crtg_varname);
+  var crtg_script=document.createElement('script');crtg_script.type='text/javascript';crtg_script.src=crtg_url;crtg_script.async=true;
+  if(document.getElementsByTagName("head").length>0)document.getElementsByTagName("head")[0].appendChild(crtg_script);
+  else
+  if(document.getElementsByTagName("body").length>0)document.getElementsByTagName("body")[0].appendChild(crtg_script);
+</script><script async="" src="Riak%20%E2%80%94%20%D0%B2%D0%B5%D0%B1-%D0%BE%D1%80%D0%B8%D0%B5%D0%BD%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%BD%D0%B0%D1%8F%20%D1%81%D0%B8%D1%81%D1%82%D0%B5%D0%BC%D0%B0%20%D1%85%D1%80%D0%B0%D0%BD%D0%B5%D0%BD%D0%B8%D1%8F%20%D0%B4%D0%B0%D0%BD%D0%BD%D1%8B%D1%85%20_%20%D0%A5%D0%B0%D0%B1%D1%80%D0%B0%D1%85%D0%B0%D0%B1%D1%80_files/rta.js" type="text/javascript"></script>
+      <script>
+        var N = 5;
+        var ar_duo1 = Math.floor(Math.random()*N+1);
+      </script>
+      <script type="text/javascript" src="Riak%20%E2%80%94%20%D0%B2%D0%B5%D0%B1-%D0%BE%D1%80%D0%B8%D0%B5%D0%BD%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%BD%D0%B0%D1%8F%20%D1%81%D0%B8%D1%81%D1%82%D0%B5%D0%BC%D0%B0%20%D1%85%D1%80%D0%B0%D0%BD%D0%B5%D0%BD%D0%B8%D1%8F%20%D0%B4%D0%B0%D0%BD%D0%BD%D1%8B%D1%85%20_%20%D0%A5%D0%B0%D0%B1%D1%80%D0%B0%D1%85%D0%B0%D0%B1%D1%80_files/adriver.js"></script>
+
+    <link title="Хабрахабр / Комментарии к публикации «Riak — веб-ориентированная система хранения данных»" type="application/rss+xml" rel="alternate" href="http://habrahabr.ru/rss/post/75202/">
+
+    
+<script type="text/javascript">
+
+      var user_type = 'habrauser';
+
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-726094-1',  'auto' );
+    ga('create', 'UA-726094-24', 'auto', {'name': 'HGM'});
+
+  ga('require', 'displayfeatures');
+  ga('set', 'dimension1', user_type); // user type - guest/readonly/habrauser
+  //ga('set', 'dimension2', username); // username
+
+
+
+  if(typeof removeUtms === 'undefined') {
+    removeUtms = function(){};
+  }
+  ga('HGM.send', 'pageview');
+  ga('HGM.set', 'dimension1', user_type);
+  ga('HGM.set', 'dimension2', "habrahabr");
+  ga('send', 'pageview', { 'hitCallback': removeUtms });
+
+</script>
+
+
+    <meta content="Хабрахабр" name="apple-mobile-web-app-title">
+<link href="http://habrahabr.ru/images/apple-touch-icon_142x142.png" rel="apple-touch-icon" type="image/png">
+  </head>
+
+  <body><style type="text/css">#navbar .nav_panel .tab.tab_print:hover path,#navbar .nav_panel .tab.tab_print:hover text { fill: #00a8ff; } </style>
+    <div id="TMpanel">
+  <div class="container">
+    <div class="menu">
+      <a href="http://tmfeed.ru/?utm_source=tm_habrahabr&amp;utm_medium=tm_top_panel&amp;utm_campaign=tm_promo">TM Feed</a>
+      <a href="http://habrahabr.ru/?utm_source=tm_habrahabr&amp;utm_medium=tm_top_panel&amp;utm_campaign=tm_promo" class="current">Хабрахабр</a>
+      <a href="http://megamozg.ru/?utm_source=tm_habrahabr&amp;utm_medium=tm_top_panel&amp;utm_campaign=tm_promo">Мегамозг</a>
+      <a href="http://geektimes.ru/?utm_source=tm_habrahabr&amp;utm_medium=tm_top_panel&amp;utm_campaign=tm_promo">Geektimes</a>
+      <a href="http://toster.ru/?utm_source=tm_habrahabr&amp;utm_medium=tm_top_panel&amp;utm_campaign=tm_promo">Тостер</a>
+      <a href="http://brainstorage.me/?utm_source=tm_habrahabr&amp;utm_medium=tm_top_panel&amp;utm_campaign=tm_promo">Brainstorage</a>
+      <a href="http://freelansim.ru/?utm_source=habrahabr&amp;utm_medium=referral&amp;utm_campaign=mainpage&amp;utm_content=head_link">Фрилансим</a>
+    </div>
+      <div class="menu special"><a href="http://special.geektimes.ru/hp/citilink/#pavilion-x360" target="_blank" style="color: blue">На все 360</a><a href="http://ritfest.ru/?utm_source=habr&amp;utm_medium=cpm&amp;utm_campaign=ritfest.2015&amp;utm_content=ritfest.banners" target="_blank" style="color: black">Скидка на РИТ++ по коду IAmHabr</a><a href="http://brainstorage.me/companies/alfabank/jobs" target="_blank" style="color: red">Альфа вакансии</a></div>
+  </div>
+</div>
+
+
+    <div id="layout">
+      <div id="navbar_overlay" class="hidden"></div>
+<div class="" style="bottom: 29px;" id="navbar">
+    <div class="nav_panel">
+        <a href="http://habrahabr.ru/" class="logo"></a>
+            <a href="http://habrahabr.ru/users/xni/" class="tab tab_user" data-tab="user_tab" title="xni">
+                <img src="Riak%20%E2%80%94%20%D0%B2%D0%B5%D0%B1-%D0%BE%D1%80%D0%B8%D0%B5%D0%BD%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%BD%D0%B0%D1%8F%20%D1%81%D0%B8%D1%81%D1%82%D0%B5%D0%BC%D0%B0%20%D1%85%D1%80%D0%B0%D0%BD%D0%B5%D0%BD%D0%B8%D1%8F%20%D0%B4%D0%B0%D0%BD%D0%BD%D1%8B%D1%85%20_%20%D0%A5%D0%B0%D0%B1%D1%80%D0%B0%D1%85%D0%B0%D0%B1%D1%80_files/stub-user-middle.gif" alt="">
+                <span class="count navbar_count_new_messages"></span>
+            </a>
+            <a href="http://habrahabr.ru/tracker/" class="tab tab_tracker" data-tab="tracker_tab" title="Трекер">
+                <span class="g-icon g-icon-alarm"></span>
+                <span class="count navbar_count_tracker_total">31</span>
+            </a>
+
+            <a href="http://habrahabr.ru/posts/" class="tab tab_menu" data-tab="menu_tab" title="Меню"><span class="g-icon g-icon-burger"></span></a>
+                <a href="http://habrahabr.ru/topic/add" class="tab tab_add_post" title="Новая публикация"><span class="g-icon g-icon-write"></span></a>
+            <a href="http://habrahabr.ru/auth/settings/profile/" class="tab tab_settings " data-tab="settings_tab" title="Настройки"><span class="g-icon g-icon-gear"></span></a>
+
+
+        <a href="http://ad.adriver.ru/cgi-bin/click.cgi?sid=1&amp;ad=518249&amp;bt=21&amp;pid=1930910&amp;bid=3851683&amp;bn=3851683&amp;rnd=581105030" class="tab tab_print tab_print_for_habrauser" id="print_tab" target="_blank" data-post-id="75202"><svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 200 200" enable-background="new 0 0 200 200" xml:space="preserve">
+<g>
+	<path fill="#C0C0C0" d="M135.3,113.2h-8.4h-8c-4.8,0-8.7-3.9-8.7-8.7l0.1-4.5H93l-0.1,4.5c0,4.8-3.9,8.7-8.7,8.7H73.1h-5.3
+		c-1.2,0-2.1,0.9-2.1,2.1s0.9,2.1,2.1,2.1h67.5c1.2,0,2.1-0.9,2.1-2.1S136.5,113.2,135.3,113.2z"></path>
+	<path fill="#C0C0C0" d="M143.9,32.9H59.2c-3.1,0-5.7,2.5-5.7,5.7v51.7c0,3,2.4,5.4,5.4,5.4h85.1c3,0,5.4-2.4,5.4-5.4V38.6
+		C149.5,35.4,147,32.9,143.9,32.9z M60.2,40h82.6v45H60.2V40z"></path>
+</g>
+<path fill="#C0C0C0" d="M172.5,134.1c0-1.7,1.4-3.1,3.1-3.1c0.8,0,1.6,0.3,2.2,0.9c0.6,0.6,0.9,1.4,0.9,2.2c0,0.8-0.3,1.6-0.9,2.2
+	c-0.6,0.6-1.4,0.9-2.2,0.9C173.9,137.2,172.5,135.8,172.5,134.1z M172.2,134.1c0,1.9,1.5,3.4,3.4,3.4c0.9,0,1.7-0.3,2.4-1
+	c0.6-0.6,1-1.5,1-2.4c0-0.9-0.3-1.7-1-2.4c-0.6-0.6-1.5-1-2.4-1C173.8,130.7,172.2,132.2,172.2,134.1z M174.4,136.1h0.5v-1.6h1.1
+	c0.2,0,0.3,0,0.4,0.1c0.2,0.1,0.2,0.2,0.2,0.5l0,0.6c0,0.1,0,0.2,0,0.3c0,0,0,0.1,0,0.1h0.6V136c-0.1,0-0.1-0.1-0.2-0.2
+	c0-0.1,0-0.2,0-0.3l0-0.5c0-0.2,0-0.4-0.1-0.5c-0.1-0.1-0.2-0.2-0.3-0.2c0.2-0.1,0.3-0.2,0.4-0.3c0.1-0.1,0.1-0.3,0.1-0.5
+	c0-0.4-0.2-0.7-0.5-0.9c-0.2-0.1-0.4-0.1-0.7-0.1h-1.6V136.1z M174.8,134.1v-1.3h1.1c0.2,0,0.3,0,0.4,0.1c0.2,0.1,0.3,0.3,0.3,0.5
+	c0,0.2-0.1,0.4-0.2,0.5c-0.1,0.1-0.3,0.1-0.5,0.1H174.8z M39.6,138.7l-13.9,21.5h9.5l13.3-20.6L39.6,138.7z M96.7,138.3v-8h-27
+	c-3.7,0.2-5.3,2-6.5,3.2c-1.3,1.3-2,4.1-2,4.1v-7.3c0,0-13.2,0-14.3,0c-1.1,0-2.1,0.5-2.9,1.5c-0.8,1.1-4.1,6.4-4.1,6.4H96.7z
+	 M170.1,138.3v-8h-28.9c-3.7,0.2-5.3,2-6.5,3.2c-1.3,1.3-2,4.1-2,4.1v0.6L170.1,138.3z M106.2,130.3h-8.1v7.9h8.1V130.3z
+	 M132.6,130.3h-8.1v7.9h8.1V130.3z M132.6,141.1l-7.9-0.5v9.2c0,0,0,2.6-2.6,2.6c-2.6,0-13.6,0-13.6,0s-2.3-0.2-2.3-2.6
+	c0-2.4,0-10.5,0-10.5l-8-0.6v14.1c1.3,6.8,7.5,7.3,7.5,7.3s0.6,0,0.7,0.1h18.4c0,0,7.9-0.6,7.9-8.1
+	C132.6,144.7,132.6,141.1,132.6,141.1z M53,160.2h37.7c6.6-1.3,7.3-7.2,7.3-7.2c0.3-1.8,0.1-3.2,0.1-3.2c-0.2-1.2-2.5-6.4-7.4-6.9
+	c-2.9-0.3-29.1-2.3-29.1-2.3c0.5,2.6,1.7,3.9,2.5,4.7c1.8,1.7,4.7,2.2,4.7,2.2c0.7,0.1,20.2,1.7,20.2,1.7c0.6,0,1.8,0.2,1.8,1.7
+	c0,0.2-0.2,1.5-1.7,1.5c-1.8,0-28.2,0-28.2,0v-11.8L53,140V160.2z M132.7,160.3h28.9c7.2-0.4,8.3-7.2,8.3-7.2c0.3-1.8,0-3.2,0-3.2
+	c-0.2-1.6-2.5-6.4-7.5-6.9c-2.9-0.3-29.3-1.8-29.3-1.8c0.8,2.7,1.8,3.5,2.6,4.2c1.8,1.7,4.6,2.2,4.6,2.2c0.7,0.1,20.4,1.7,20.4,1.7
+	c0.6,0,1.9,0.1,1.9,1.6c0,0.5-0.2,0.9-0.5,1.2c0,0-0.7,0.4-1.3,0.4c-1.8,0-28,0-28,0L132.7,160.3z"></path>
+</svg></a>
+
+        <a href="#" class="scroll_to_up hidden" id="scroll_to_top" title="Наверх"></a>
+    </div>
+    <div class="nav_tabs_content ">
+
+        <div class="nav_tab hidden" id="menu_tab">
+            <div class="title">Разделы</div>
+            <form action="/search/" method="get" class="global_search_form">
+                <div>
+                    <input name="q" placeholder="Поиск" type="text">
+                </div>
+            </form>
+            <div class="menu">
+                <a href="http://habrahabr.ru/posts/top/">Публикации</a>
+                <a href="http://habrahabr.ru/hubs/">Хабы</a>
+                <a href="http://habrahabr.ru/companies/">Компании</a>
+                <a href="http://habrahabr.ru/users/">Пользователи</a>
+                <a href="http://toster.ru/" class="new_window">Q&amp;A</a>
+                <a href="http://habrahabr.ru/sandbox/">Песочница</a>
+                <a href="http://habrahabr.ru/exchange/">Биржа авторов</a>
+
+
+
+            </div>
+
+                
+
+                        <div class="line"></div>
+                        <div class="title">Спецпроекты</div>
+                        <div class="menu">
+
+                        <a href="http://ad.adriver.ru/cgi-bin/click.cgi?sid=1&amp;ad=523714&amp;bt=21&amp;pid=1991966&amp;bid=3877094&amp;bn=3877094&amp;rnd=1141982803" target="_blank">Windows Server 2003</a>
+
+                        <a href="http://ad.adriver.ru/cgi-bin/click.cgi?sid=1&amp;ad=521220&amp;bt=21&amp;pid=1948555&amp;bid=3841192&amp;bn=3841192&amp;rnd=884600230" target="_blank">Деньги на образование</a>
+
+                        <a href="http://special.habrahabr.ru/intel/realsense/?utm_source=left_menu" target="_blank">Будущее уже наступило</a>
+                        </div>
+
+
+        </div>
+
+            <div class="nav_tab hidden" id="user_tab">
+                <div class="title"><a href="http://habrahabr.ru/users/xni/">xni</a></div>
+                    <div class="text">У вас 19 голосов за карму и публикации, и еще 39 за комментарии</div>
+                <div class="menu">
+                    <a href="http://habrahabr.ru/feed/">Моя лента</a>
+                    <a href="http://habrahabr.ru/users/xni/">Мой профиль</a>
+                    <a href="http://habrahabr.ru/users/xni/topics/">Мои публикации</a>
+                    <a href="http://habrahabr.ru/users/xni/comments/">Мои комментарии</a>
+                        <a href="http://habrahabr.ru/conversations/">Мои диалоги <span class="count navbar_count_new_messages"></span></a>
+                    <a href="http://habrahabr.ru/users/xni/favorites/">Моё избранное</a>
+                </div>
+
+                    
+
+                            <div class="line"></div>
+                            <div class="title">Спецпроекты</div>
+                            <div class="menu">
+
+                        <a href="http://ad.adriver.ru/cgi-bin/click.cgi?sid=1&amp;ad=523714&amp;bt=21&amp;pid=1991966&amp;bid=3877094&amp;bn=3877094&amp;rnd=1141982803">Windows Server 2003</a>
+
+                        <a href="http://ad.adriver.ru/cgi-bin/click.cgi?sid=1&amp;ad=521220&amp;bt=21&amp;pid=1948555&amp;bid=3841192&amp;bn=3841192&amp;rnd=884600230">Деньги на образование</a>
+
+                        <a href="http://special.habrahabr.ru/intel/realsense/?utm_source=left_menu">Будущее уже наступило</a>
+                            </div>
+
+
+            </div>
+            <div class="nav_tab hidden" id="tracker_tab">
+                <div class="title">Трекер</div>
+                <div class="menu">
+                    <a href="http://habrahabr.ru/tracker/">Публикации <span class="count navbar_count_tracker_posts">20</span></a>
+                    <a href="http://habrahabr.ru/tracker/subscribers/">Подписчики <span class="count navbar_count_tracker_followers">11</span></a>
+                    <a href="http://habrahabr.ru/tracker/mentions/">Упоминания <span class="count navbar_count_tracker_mentions"></span></a>
+                    <a href="http://habrahabr.ru/tracker/apps/">Приложения <span class="count navbar_count_tracker_apps"></span></a>
+                </div>
+
+                    
+
+                            <div class="line"></div>
+                            <div class="title">Спецпроекты</div>
+                            <div class="menu">
+
+                        <a href="http://ad.adriver.ru/cgi-bin/click.cgi?sid=1&amp;ad=523714&amp;bt=21&amp;pid=1991966&amp;bid=3877094&amp;bn=3877094&amp;rnd=1141982803">Windows Server 2003</a>
+
+                        <a href="http://ad.adriver.ru/cgi-bin/click.cgi?sid=1&amp;ad=521220&amp;bt=21&amp;pid=1948555&amp;bid=3841192&amp;bn=3841192&amp;rnd=884600230">Деньги на образование</a>
+
+                        <a href="http://special.habrahabr.ru/intel/realsense/?utm_source=left_menu">Будущее уже наступило</a>
+                            </div>
+
+
+            </div>
+            <div class="nav_tab hidden" id="settings_tab">
+                <div class="title">Настройки</div>
+                <div class="menu">
+                    <a href="https://habrahabr.ru/auth/settings/profile/">Профиль</a>
+                    <a href="https://habrahabr.ru/auth/settings/account/" class="new_window">Аккаунт</a>
+                    <a href="https://habrahabr.ru/auth/settings/privacy/">Приватность</a>
+                    <a href="https://habrahabr.ru/auth/settings/notifications/">Уведомления</a>
+                    <a href="https://habrahabr.ru/auth/apps/">Приложения</a>
+                    <a href="https://habrahabr.ru/auth/settings/others/">Разные</a>
+                    <a href="http://habrahabr.ru/logout/xni/3906150659/" class="exit">Выйти</a>
+                </div>
+            </div>
+
+    </div>
+</div>
+
+      <div class="inner">
+        
+
+        
+
+        
+    <div class="user_header">
+
+	<a class="avatar" href="http://habrahabr.ru/users/SilenceAndy/"><img src="Riak%20%E2%80%94%20%D0%B2%D0%B5%D0%B1-%D0%BE%D1%80%D0%B8%D0%B5%D0%BD%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%BD%D0%B0%D1%8F%20%D1%81%D0%B8%D1%81%D1%82%D0%B5%D0%BC%D0%B0%20%D1%85%D1%80%D0%B0%D0%BD%D0%B5%D0%BD%D0%B8%D1%8F%20%D0%B4%D0%B0%D0%BD%D0%BD%D1%8B%D1%85%20_%20%D0%A5%D0%B0%D0%B1%D1%80%D0%B0%D1%85%D0%B0%D0%B1%D1%80_files/3253f9c4b722ddde930a380f47f7a417.png" alt="avatar"></a>
+	<h2 class="username"><a href="http://habrahabr.ru/users/SilenceAndy/">SilenceAndy</a></h2>
+
+
+
+	<div class="karma">
+		<div class="label">карма</div>
+		<div class="score">
+				 
+					<a href="#up" onclick="return karma_vote(this, 7647, 1, 1);" class="vote_plus " title="Повысить карму"></a>
+				 
+
+				<div class="num">196,5</div>
+
+				 
+					<a href="#down" onclick="return karma_vote(this, 7647, 1, -1);" class="vote_minus " title=" Понизить карму"></a>
+				 
+		</div>
+		<div class="votes">285 голосов</div>
+	</div>
+	<div class="rating">
+		<div class="label">рейтинг</div>
+		<div class="num">19,7</div>
+	</div>
+
+					<!--a href="/users/xni/mail/write/SilenceAndy/sendmail/" class="send_mail" title="Написать письмо"></a-->
+					<a href="http://habrahabr.ru/conversations/SilenceAndy/" class="send_mail" title="Написать письмо"></a>
+
+
+	<div class="clear"></div>
+</div>
+
+  <div class="content_left">
+  	
+<table class="menu">
+    <tbody><tr>
+        <td class="item ">
+            <a href="http://habrahabr.ru/users/SilenceAndy/"><span class="name">Профиль</span></a>
+        </td>
+        <td class="item  active">
+            <a href="http://habrahabr.ru/users/SilenceAndy/topics/"><span class="name">Публикации (<span class="count">10</span>)</span></a>
+        </td>
+        <td class="item ">
+            <a href="http://habrahabr.ru/users/SilenceAndy/comments/"><span class="name">Комментарии (<span class="count">306</span>)</span></a>
+        </td>
+        <td class="item ">
+            <a href="http://habrahabr.ru/users/SilenceAndy/favorites/"><span class="name">Избранное (<span class="count">431</span>)</span></a>
+        </td>
+    </tr>
+</tbody></table>
+<div class="submenu ">
+
+</div>
+<div class="clear"></div>
+
+
+
+    <div class="post_show">
+  	  
+  <div class="post shortcuts_item" id="post_75202">
+  	<div class="published">16 ноября 2009 в 11:48</div>
+    <h1 class="title">
+	    
+        <span class="post_title">Riak — веб-ориентированная система хранения данных</span>
+      
+			
+  	</h1>
+
+  	<div class="hubs">
+		<a href="http://habrahabr.ru/hub/nosql/" class="hub " title="Вы не подписаны на этот хаб">NoSQL</a><span class="profiled_hub" title="Профильный хаб">*</span>
+</div>
+
+
+    
+
+  	<div class="content html_format">
+    	<img src="Riak%20%E2%80%94%20%D0%B2%D0%B5%D0%B1-%D0%BE%D1%80%D0%B8%D0%B5%D0%BD%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%BD%D0%B0%D1%8F%20%D1%81%D0%B8%D1%81%D1%82%D0%B5%D0%BC%D0%B0%20%D1%85%D1%80%D0%B0%D0%BD%D0%B5%D0%BD%D0%B8%D1%8F%20%D0%B4%D0%B0%D0%BD%D0%BD%D1%8B%D1%85%20_%20%D0%A5%D0%B0%D0%B1%D1%80%D0%B0%D1%85%D0%B0%D0%B1%D1%80_files/8c510da4.png"><br>
+<br>
+Немного статей на хабре посвящены новому движению в IT индустрии — <a href="http://en.wikipedia.org/wiki/NoSQL">NoSQL</a>. Я решил изменить это и написал статью-перевод-обзор об одном из докладов с <a href="http://sqlfreenyc.org/conference/">конференции NoSQL</a>
+ прошедшей 5 октября в Нью-Йорке. В этой статье будет говорится о 
+системе Riak, с которой мне довелось иметь счастье работать последнее 
+время.<br>
+<br>
+Что такое Riak? Многие модные слова популярные сейчас, можно отнести к&nbsp;Riak. Riak&nbsp;— это <nobr>документно-ориентированная</nobr> база данных. Riak&nbsp;— это децентрализованное <nobr>key-value</nobr> хранилище данных, с&nbsp;поддержкой стандартных операций&nbsp;— <i>get</i>, <i>put </i>и&nbsp;<i>delete</i>.
+ Riak&nbsp;— это распределенное, масштабируемое, отказоустойчивое 
+решение для хранения информации. А&nbsp;так&nbsp;же Riak&nbsp;— это 
+система с&nbsp;открытым <a href="http://bitbucket.org/justin/riak/">исходным кодом</a> и&nbsp;поддержкой обращений с&nbsp;помощью HTTP, JSON и&nbsp;REST. Ну&nbsp;и&nbsp;конечно RIAK&nbsp;— это NoSQL.<br>
+<br>
+<a name="habracut"></a>Если копнуть глубже, можно увидеть, что на&nbsp;Riak оказало сильное влияние <a href="http://s3.amazonaws.com/AllThingsDistributed/sosp/amazon-dynamo-sosp2007.pdf">Amazon Dynamo</a>, <a href="http://riak.basho.com/cap.html">теорема CAP</a> (<b>C</b>onsistency, <b>A</b>vailability and <b>P</b>artition
+ Tolerance) Эрика Бревера (Eric Brewer), сама система Интернета 
+в&nbsp;целом, а&nbsp;так&nbsp;же опыт команды разработки <a href="http://basho.com/">Basho</a>
+ в&nbsp;разработке сетевых сред. Мы&nbsp;начали разрабатывать Riak 
+осенью 2007 года, для использования в&nbsp;двух приложениях для Basho, 
+которые были запущенны на&nbsp;Riak и&nbsp;работали на&nbsp;нем большую 
+часть времени.<br>
+<br>
+Чтобы понять почему Riak настолько мощный, требуется рассказать немного 
+теории. Вначале поговорим об&nbsp;Amazon Dynamo.В&nbsp;документе 
+описывающем Amazon Dynamo есть три термина для описания поведения 
+распределенной системы хранения данных: <i>N</i>, <i>R</i>&nbsp;и&nbsp;<i>W</i>. <i>N</i>&nbsp;— это количество реплик каждого значения в&nbsp;хранилище. <i>R</i>&nbsp;— количество данных реплик для выполнения операции чтения. <i>W</i>&nbsp;— количество реплик необходимых для выполнения операции записи. Цель Riak&nbsp;— перенести <i>N</i>, <i>R</i>, и&nbsp;<i>W</i>&nbsp;в&nbsp;логику приложения. Это позволяет Riak адаптироваться к&nbsp;требованиям отдельных приложений.<br>
+<br>
+<img src="Riak%20%E2%80%94%20%D0%B2%D0%B5%D0%B1-%D0%BE%D1%80%D0%B8%D0%B5%D0%BD%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%BD%D0%B0%D1%8F%20%D1%81%D0%B8%D1%81%D1%82%D0%B5%D0%BC%D0%B0%20%D1%85%D1%80%D0%B0%D0%BD%D0%B5%D0%BD%D0%B8%D1%8F%20%D0%B4%D0%B0%D0%BD%D0%BD%D1%8B%D1%85%20_%20%D0%A5%D0%B0%D0%B1%D1%80%D0%B0%D1%85%D0%B0%D0%B1%D1%80_files/fd540bbc.png"><br>
+<br>
+Riak использует разные значения <i>N</i>&nbsp;для каждого сегмента (<i>bucket</i>). Например все объекты в&nbsp;сегменте «artist» будут иметь одинаковое значение <i>N</i>,
+ а&nbsp;объекты в&nbsp;сегменте «album» совсем другое. Система 
+использует непротиворечивый алгоритм хеширования для выбора места 
+сохранения <i>N</i>&nbsp;количества реплик ваших данных. Когда поступает
+ запрос, Riak использует хеширование для преобразования текстового ключа
+ в&nbsp;<nobr>160-битное</nobr> число. Когда узел кластера добавляется в&nbsp;Riak, он&nbsp;получает части от&nbsp;<nobr>160-битного</nobr> пространства ключей. Узел имеющий ближайшее значение хэша от&nbsp;ключа (<nobr>160-битное</nobr> число) и&nbsp;содержит в&nbsp;себе первую реплику. Остальные N&nbsp;реплик сохранены на&nbsp;узлах с&nbsp;другими <nobr><i>N-1</i></nobr> частями <nobr>160-битного</nobr> пространства ключей.Непротиворечивый алгоритм кэширования <b>очень важен</b>&nbsp;—
+ он&nbsp;позволяет каждому узлу Riak выполнить любой запрос. Поскольку 
+любой узел может вычислить, с&nbsp;какими именно другими узлами 
+необходимо связаться, чтобы выполнить запрос, любой узел может выступать
+ в&nbsp;качестве организатора для любого клиента. Тут нет <i>управляющего сервера</i>, нет <i>единой</i> точки для сбоя в&nbsp;системе.<br>
+<br>
+<img src="Riak%20%E2%80%94%20%D0%B2%D0%B5%D0%B1-%D0%BE%D1%80%D0%B8%D0%B5%D0%BD%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%BD%D0%B0%D1%8F%20%D1%81%D0%B8%D1%81%D1%82%D0%B5%D0%BC%D0%B0%20%D1%85%D1%80%D0%B0%D0%BD%D0%B5%D0%BD%D0%B8%D1%8F%20%D0%B4%D0%B0%D0%BD%D0%BD%D1%8B%D1%85%20_%20%D0%A5%D0%B0%D0%B1%D1%80%D0%B0%D1%85%D0%B0%D0%B1%D1%80_files/455a5c00.png"><br>
+<br>
+Riak использует разные значения <i>R</i>&nbsp;для каждого запроса. 
+Каждый раз когда вы&nbsp;делаете запрос на&nbsp;получение данных, 
+вы&nbsp;можете использовать разное значение <i>R</i>. Значение <i>R</i>&nbsp;определяет
+ количество узлов, которым необходимо вернуть успешный ответ, перед тем 
+как Riak вернет запрашивающему клиенту ответ. Riak пытается прочитать 
+все возможные реплики (<i>N</i>), но&nbsp;когда будет достигнуто значение <i>R</i>, данные будут отправлены обратно клиенту.<br>
+<br>
+<img src="Riak%20%E2%80%94%20%D0%B2%D0%B5%D0%B1-%D0%BE%D1%80%D0%B8%D0%B5%D0%BD%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%BD%D0%B0%D1%8F%20%D1%81%D0%B8%D1%81%D1%82%D0%B5%D0%BC%D0%B0%20%D1%85%D1%80%D0%B0%D0%BD%D0%B5%D0%BD%D0%B8%D1%8F%20%D0%B4%D0%B0%D0%BD%D0%BD%D1%8B%D1%85%20_%20%D0%A5%D0%B0%D0%B1%D1%80%D0%B0%D1%85%D0%B0%D0%B1%D1%80_files/887c6e91.png"><br>
+<br>
+Riak использует разные значения <i>W</i>&nbsp;для каждого запроса. Значение <i>W</i>&nbsp;определяет
+ количество узлов, которым необходимо вернуть успешный ответ, перед тем 
+как Riak вернет запрашивающему клиенту ответ. Riak пытается записать все
+ возможные реплики (<i>N</i>) данных, но&nbsp;когда будет достигнуто значение <i>W</i>, результат будет отправлен обратно клиенту.<br>
+<br>
+Предоставление клиенту возможности для указания значений <i>R</i>&nbsp;и&nbsp;<i>W</i>&nbsp;во&nbsp;время
+ запроса, означает, что во&nbsp;время запроса приложение может указать 
+точно, сколько узлов могут выйти из&nbsp;строя. Это очень просто: для 
+каждого запроса, <nobr><i>N-R</i></nobr> (для чтения) или <nobr><i>N-W</i></nobr> (для записи) узлов может быть недоступно, однако кластер и&nbsp;данные будут <nobr>по-прежнему</nobr> вполне доступны.<br>
+<br>
+<img src="Riak%20%E2%80%94%20%D0%B2%D0%B5%D0%B1-%D0%BE%D1%80%D0%B8%D0%B5%D0%BD%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%BD%D0%B0%D1%8F%20%D1%81%D0%B8%D1%81%D1%82%D0%B5%D0%BC%D0%B0%20%D1%85%D1%80%D0%B0%D0%BD%D0%B5%D0%BD%D0%B8%D1%8F%20%D0%B4%D0%B0%D0%BD%D0%BD%D1%8B%D1%85%20_%20%D0%A5%D0%B0%D0%B1%D1%80%D0%B0%D1%85%D0%B0%D0%B1%D1%80_files/ac297f89.png"><br>
+<br>
+Итак, в&nbsp;примере который мы&nbsp;использовали с&nbsp;<i>N=3</i> и&nbsp;<i>R=W=2</i>, мы&nbsp;можем иметь <i>3–2=1</i>
+ узел недоступным в&nbsp;кластере, но&nbsp;кластер по&nbsp;прежнему 
+будет предоставлять данные. Для особо важных данных, мы&nbsp;можем 
+увеличить значение <i>N</i>&nbsp;до&nbsp;10, и&nbsp;если мы&nbsp;все ещё будем использовать значение <i>R</i>&nbsp;или <i>W</i>&nbsp;равное 2, мы&nbsp;можем иметь <b>8</b>
+ недоступных узлов в&nbsp;кластере, но&nbsp;запросы на&nbsp;чтение 
+и&nbsp;запись будут проходить успешно. Riak дает возможность изменять 
+значения <i>N/R/W</i> так как это хороший способ улучшить поведение приложения при использовании <i>теоремы CAP</i>.<br>
+<br>
+Если вы&nbsp;знакомы с&nbsp;теоремой CAP Эрика Бревера, вы&nbsp;знаете, 
+что есть три аспекта, которые необходимо учитывать при рассуждениях 
+о&nbsp;хранении данных: целостность данных, доступность данных 
+в&nbsp;хранилище, и&nbsp;устойчивость к&nbsp;разделению. Если 
+вы&nbsp;знакомы с&nbsp;исследованием, вы&nbsp;также знаете, что 
+невозможно реализовать систему отвечающую всем трем условиям.<br>
+<br>
+Поскольку вы&nbsp;не&nbsp;можете реализовать все три условия, 
+большинство систем хранения данных используют два. Riak позволяет, 
+не&nbsp;только выбрать <b>любые</b> из&nbsp;них, но и разные приложения 
+могут выбрать&nbsp;различные объемы каждого. Вероятнее всего 
+вы&nbsp;выберите доступность и&nbsp;устойчивость к&nbsp;разделению. 
+Однако вы&nbsp;разрабатываете аппликации которые работают 
+на&nbsp;реальных машинах и&nbsp;вы&nbsp;хотите чтобы они были доступны 
+в&nbsp;любое время для пользователей. Структура Riak реализована для 
+поддержки этой возможности (мы&nbsp;хотим чтобы наши приложения работали
+ все время). Это означает, что вы&nbsp;готовы пожертвовать целостностью 
+данных. Есть много советов как выв можете гарантировать целостность 
+данных (например <nobr>read-your-writes</nobr>) в&nbsp;документе описывающем Amazon Dynamo и&nbsp;я&nbsp;советую вам перечитать этот документ.<br>
+<br>
+Вот простой пример как может быть решен вопрос с&nbsp;целостностью 
+данных. Давайте посмотрим на&nbsp;кластер который уже работает 
+и&nbsp;имеет документ с&nbsp;версией 0.<br>
+<br>
+<img src="Riak%20%E2%80%94%20%D0%B2%D0%B5%D0%B1-%D0%BE%D1%80%D0%B8%D0%B5%D0%BD%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%BD%D0%B0%D1%8F%20%D1%81%D0%B8%D1%81%D1%82%D0%B5%D0%BC%D0%B0%20%D1%85%D1%80%D0%B0%D0%BD%D0%B5%D0%BD%D0%B8%D1%8F%20%D0%B4%D0%B0%D0%BD%D0%BD%D1%8B%D1%85%20_%20%D0%A5%D0%B0%D0%B1%D1%80%D0%B0%D1%85%D0%B0%D0%B1%D1%80_files/860c3b6d.png"><br>
+<br>
+Вдруг в&nbsp;сети происходит сбой. Узлы 0 и&nbsp;2 находятся в&nbsp;<nobr>Нью-Йорке</nobr>, узлы 1 и&nbsp;3 в&nbsp;<nobr>Лос-Анджелесе</nobr> и&nbsp;трансконтинентальная связь рвется. Как поведет себя каждая часть кластера? Если вы&nbsp;установили значения <i>N/R/W</i>
+ надлежащим образом, обе части кластера по&nbsp;сути будут предоставлять
+ версию 0 документа, как и&nbsp;раньше. Клиенты не&nbsp;будут знать 
+о&nbsp;сбое. Теперь предположим что клиент внес изменения 
+в&nbsp;документ, хранящийся в&nbsp;половине кластера находящегося 
+в&nbsp;<nobr>Нью-Йорке</nobr> (вы&nbsp;же указали <i>N/R/W</i> так, 
+чтобы это было разрешено?). Этот клиент ввел некоторое несоответствие. 
+Теперь клиенты присоединившиеся к&nbsp;части кластера находящегося 
+в&nbsp;<nobr>Нью-Йорке</nobr> получат версию 1 документа, в&nbsp;то&nbsp;время как клиенты присоединившееся к&nbsp;части находящейся в&nbsp;<nobr>Лос-Анджелесе</nobr>
+ получат версию 0 этого документа. Теперь предположим что 
+трансконтинентальная связь восстанавливается и&nbsp;обе половины 
+кластера работают вместе. Что должен сделать Riak с&nbsp;двумя разными 
+версиями документа?<br>
+<br>
+В&nbsp;этом случае Riak использует <i>алгоритм вектора времени</i>, для определения какая версия документа более корректная. Алгоритм вектора времени это специальная реализация <a href="http://en.wikipedia.org/wiki/Lamport_timestamps">алгоритма временных меток Лампорта</a>
+ (Lamport clocks / Lamport timestamps). В&nbsp;отличии от&nbsp;обычных 
+временных меток, система временных меток Лампорта построена таким 
+образом, что происхождение и&nbsp;преемственность, может быть определена
+ путем простого сравнения. Каждый раз когда данные сохраняются 
+в&nbsp;Riak, их&nbsp;вектор времени увеличивается, и&nbsp;когда кластер 
+восстановиться Riak сможет определить какие данные сохранить. 
+В&nbsp;нашем случае Riak определит что версия 1 является приемником 
+версии 0, и&nbsp;версия 0 будет заменена версией 1, и&nbsp;данные снова 
+будут целостны.<br>
+<br>
+<img src="Riak%20%E2%80%94%20%D0%B2%D0%B5%D0%B1-%D0%BE%D1%80%D0%B8%D0%B5%D0%BD%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%BD%D0%B0%D1%8F%20%D1%81%D0%B8%D1%81%D1%82%D0%B5%D0%BC%D0%B0%20%D1%85%D1%80%D0%B0%D0%BD%D0%B5%D0%BD%D0%B8%D1%8F%20%D0%B4%D0%B0%D0%BD%D0%BD%D1%8B%D1%85%20_%20%D0%A5%D0%B0%D0%B1%D1%80%D0%B0%D1%85%D0%B0%D0%B1%D1%80_files/be14991b.png"><br>
+<br>
+Все становится немного более интересно, если в&nbsp;то&nbsp;время как 
+части не&nbsp;связанны, клиенты внесут изменения в&nbsp;обоих частях 
+кластера. Теперь когда кластер восстановится, вектор времени покажет, 
+что ни&nbsp;одна из&nbsp;версий является преемницей другой версии. Riak 
+не&nbsp;может определить какая из&nbsp;версий должна быть выбрана, 
+поэтому в&nbsp;этом случае как и&nbsp;с&nbsp;возможностью изменить 
+значения N/R/W, Riak переносит возможность урегулирования конфликта 
+в&nbsp;приложение. Вместо реализации произвольного правила выбора версии
+ как это сделано в&nbsp;других системах, Riak возвращает <b>оба значения</b>
+ приложению предоставляя возможность выбора более верного варианта. 
+Конечно если вы&nbsp;хотите использовать просто правило&nbsp;— данные 
+пришедшие последними и&nbsp;используются, в&nbsp;Riak есть простой флаг 
+для включения такого поведения (allow_mult свойство сегмента)<br>
+<br>
+<img src="Riak%20%E2%80%94%20%D0%B2%D0%B5%D0%B1-%D0%BE%D1%80%D0%B8%D0%B5%D0%BD%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%BD%D0%B0%D1%8F%20%D1%81%D0%B8%D1%81%D1%82%D0%B5%D0%BC%D0%B0%20%D1%85%D1%80%D0%B0%D0%BD%D0%B5%D0%BD%D0%B8%D1%8F%20%D0%B4%D0%B0%D0%BD%D0%BD%D1%8B%D1%85%20_%20%D0%A5%D0%B0%D0%B1%D1%80%D0%B0%D1%85%D0%B0%D0%B1%D1%80_files/492fc907.png"><br>
+<br>
+После всей этой теории как насчет нескольких примеров кода для демонстрации как легко работать с&nbsp;Riak?<br>
+<br>
+Так как Riak написан на&nbsp;Erlang, давайте начнем с&nbsp;Erlang.<br>
+<br>
+<img src="Riak%20%E2%80%94%20%D0%B2%D0%B5%D0%B1-%D0%BE%D1%80%D0%B8%D0%B5%D0%BD%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%BD%D0%B0%D1%8F%20%D1%81%D0%B8%D1%81%D1%82%D0%B5%D0%BC%D0%B0%20%D1%85%D1%80%D0%B0%D0%BD%D0%B5%D0%BD%D0%B8%D1%8F%20%D0%B4%D0%B0%D0%BD%D0%BD%D1%8B%D1%85%20_%20%D0%A5%D0%B0%D0%B1%D1%80%D0%B0%D1%85%D0%B0%D0%B1%D1%80_files/ac56218c.png"><br>
+<br>
+Первая строка кода описывает присоединение нашего клиента 
+к&nbsp;кластеру Riak. Вторая строка создает новый объект (документ, пара
+ ключ/значение). Третья строка сохраняет объект в&nbsp;Riak. Четвертая 
+возвращает объект обратно из&nbsp;Riak. последние две строки изменяют 
+значение нашего объекта и&nbsp;сохраняют его снова в&nbsp;кластер Riak.<br>
+<br>
+Если вы&nbsp;не&nbsp;хотите использовать Erlang, Riak так&nbsp;же поставляется с&nbsp;библиотеками для Python…<br>
+<br>
+<img src="Riak%20%E2%80%94%20%D0%B2%D0%B5%D0%B1-%D0%BE%D1%80%D0%B8%D0%B5%D0%BD%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%BD%D0%B0%D1%8F%20%D1%81%D0%B8%D1%81%D1%82%D0%B5%D0%BC%D0%B0%20%D1%85%D1%80%D0%B0%D0%BD%D0%B5%D0%BD%D0%B8%D1%8F%20%D0%B4%D0%B0%D0%BD%D0%BD%D1%8B%D1%85%20_%20%D0%A5%D0%B0%D0%B1%D1%80%D0%B0%D1%85%D0%B0%D0%B1%D1%80_files/22273e5a.png"><br>
+…Riak так&nbsp;же имеет библиотеки для Ruby…<br>
+<img src="Riak%20%E2%80%94%20%D0%B2%D0%B5%D0%B1-%D0%BE%D1%80%D0%B8%D0%B5%D0%BD%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%BD%D0%B0%D1%8F%20%D1%81%D0%B8%D1%81%D1%82%D0%B5%D0%BC%D0%B0%20%D1%85%D1%80%D0%B0%D0%BD%D0%B5%D0%BD%D0%B8%D1%8F%20%D0%B4%D0%B0%D0%BD%D0%BD%D1%8B%D1%85%20_%20%D0%A5%D0%B0%D0%B1%D1%80%D0%B0%D1%85%D0%B0%D0%B1%D1%80_files/cb58e3af.png"><br>
+… Java…<br>
+<img src="Riak%20%E2%80%94%20%D0%B2%D0%B5%D0%B1-%D0%BE%D1%80%D0%B8%D0%B5%D0%BD%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%BD%D0%B0%D1%8F%20%D1%81%D0%B8%D1%81%D1%82%D0%B5%D0%BC%D0%B0%20%D1%85%D1%80%D0%B0%D0%BD%D0%B5%D0%BD%D0%B8%D1%8F%20%D0%B4%D0%B0%D0%BD%D0%BD%D1%8B%D1%85%20_%20%D0%A5%D0%B0%D0%B1%D1%80%D0%B0%D1%85%D0%B0%D0%B1%D1%80_files/aedaa17d.png"><br>
+<br>
+… PHP…<br>
+<img src="Riak%20%E2%80%94%20%D0%B2%D0%B5%D0%B1-%D0%BE%D1%80%D0%B8%D0%B5%D0%BD%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%BD%D0%B0%D1%8F%20%D1%81%D0%B8%D1%81%D1%82%D0%B5%D0%BC%D0%B0%20%D1%85%D1%80%D0%B0%D0%BD%D0%B5%D0%BD%D0%B8%D1%8F%20%D0%B4%D0%B0%D0%BD%D0%BD%D1%8B%D1%85%20_%20%D0%A5%D0%B0%D0%B1%D1%80%D0%B0%D1%85%D0%B0%D0%B1%D1%80_files/2e57075d.png"><br>
+… JavaScript…<br>
+<img src="Riak%20%E2%80%94%20%D0%B2%D0%B5%D0%B1-%D0%BE%D1%80%D0%B8%D0%B5%D0%BD%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%BD%D0%B0%D1%8F%20%D1%81%D0%B8%D1%81%D1%82%D0%B5%D0%BC%D0%B0%20%D1%85%D1%80%D0%B0%D0%BD%D0%B5%D0%BD%D0%B8%D1%8F%20%D0%B4%D0%B0%D0%BD%D0%BD%D1%8B%D1%85%20_%20%D0%A5%D0%B0%D0%B1%D1%80%D0%B0%D1%85%D0%B0%D0%B1%D1%80_files/f905b864.png"><br>
+…но на&nbsp;самом деле все эти библиотеки работают с&nbsp;Riak 
+с&nbsp;помощью стандартного RESTful HTTP, и&nbsp;это позволяет 
+использовать Riak на&nbsp;<b>любой системе поддерживающей HTTP</b>&nbsp;— например используя инструменты командной строки такие как <i>curl</i> или <i>wget</i>.<br>
+<br>
+<img src="Riak%20%E2%80%94%20%D0%B2%D0%B5%D0%B1-%D0%BE%D1%80%D0%B8%D0%B5%D0%BD%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%BD%D0%B0%D1%8F%20%D1%81%D0%B8%D1%81%D1%82%D0%B5%D0%BC%D0%B0%20%D1%85%D1%80%D0%B0%D0%BD%D0%B5%D0%BD%D0%B8%D1%8F%20%D0%B4%D0%B0%D0%BD%D0%BD%D1%8B%D1%85%20_%20%D0%A5%D0%B0%D0%B1%D1%80%D0%B0%D1%85%D0%B0%D0%B1%D1%80_files/f9812bc4.png"><br>
+Это хорошо когда вам нужно отправить или получить данные из&nbsp;Riak, 
+но&nbsp;что делать когда вы&nbsp;хотите сделать запрос 
+по&nbsp;нескольким объектам одновременно? Это&nbsp;же NoSQL, ведь так? 
+Как насчет небольшого Map/Reduce?<br>
+<br>
+<img src="Riak%20%E2%80%94%20%D0%B2%D0%B5%D0%B1-%D0%BE%D1%80%D0%B8%D0%B5%D0%BD%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%BD%D0%B0%D1%8F%20%D1%81%D0%B8%D1%81%D1%82%D0%B5%D0%BC%D0%B0%20%D1%85%D1%80%D0%B0%D0%BD%D0%B5%D0%BD%D0%B8%D1%8F%20%D0%B4%D0%B0%D0%BD%D0%BD%D1%8B%D1%85%20_%20%D0%A5%D0%B0%D0%B1%D1%80%D0%B0%D1%85%D0%B0%D0%B1%D1%80_files/1c6ed8e2.png"><br>
+Система Map/Reduce Riak имеет много общего с&nbsp;другими системами 
+Map/Reduce. Функция Map происходит на&nbsp;узле где находятся данные, 
+увеличивая локальность данных одновременно с&nbsp;распределением 
+вычислений в&nbsp;кластере. Часть Map/Reduce Riak которая более всего 
+отличается от&nbsp;других решений заметна в&nbsp;том, что Riak 
+не&nbsp;запускает метод Map над всеми данными в&nbsp;сегменте (bucket). 
+Вместо этого Riak дает возможность клиенту предоставить список ключей 
+объектов на&nbsp;которых должен быть запущен метод Map. Методы Map могут
+ предоставлять больше ключей для более поздних фаз выполнения методов 
+Map, но&nbsp;список ключей для метода Map должен быть определен всегда. 
+Конечно вы&nbsp;можете указать любое количество ключей которое 
+вы&nbsp;хотите, например если вы&nbsp;<b>хотите </b>выполнить метод Map 
+по&nbsp;всем значениям в&nbsp;сегменте, достаточно включить их&nbsp;все 
+в&nbsp;запрос Map/Reduce (функции list_keys или list_bucket могут быть 
+полезны в&nbsp;таких случаях).<br>
+<br>
+Различия в&nbsp;реализации Map/Reduce Riak при сравнении с&nbsp;другими системами обусловлены сильным желанием поддержки <b>ссылок</b>
+ в Riak. Первый вопрос при переходе из&nbsp;мира RDBMS это&nbsp;— «Как 
+я&nbsp;могу организовать связи между моими данными?» 
+Было&nbsp;решено&nbsp;что лучший ответ на&nbsp;этот вопрос&nbsp;— 
+ссылки.<br>
+<br>
+<img src="Riak%20%E2%80%94%20%D0%B2%D0%B5%D0%B1-%D0%BE%D1%80%D0%B8%D0%B5%D0%BD%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%BD%D0%B0%D1%8F%20%D1%81%D0%B8%D1%81%D1%82%D0%B5%D0%BC%D0%B0%20%D1%85%D1%80%D0%B0%D0%BD%D0%B5%D0%BD%D0%B8%D1%8F%20%D0%B4%D0%B0%D0%BD%D0%BD%D1%8B%D1%85%20_%20%D0%A5%D0%B0%D0%B1%D1%80%D0%B0%D1%85%D0%B0%D0%B1%D1%80_files/3e1a5e2e.png"><br>
+Например если вы&nbsp;хотите организовать связи между записью 
+исполнителя и&nbsp;несколькими записями альбомов, вы&nbsp;хотите 
+создавать ссылки к&nbsp;альбомам в&nbsp;записи исполнителя. Аналогично 
+вы&nbsp;можете создать ссылки в&nbsp;записи альбома к&nbsp;записям 
+композиций входящим в&nbsp;этот альбом. Как только вы&nbsp;добавите 
+ссылки и&nbsp;определите как Riak может получить эти ссылки 
+из&nbsp;ваших объектов, вы&nbsp;получите доступ к&nbsp;новому синтаксису
+ Map/Reduce. Например в&nbsp;данном примере вы&nbsp;можете видеть 
+простой синтаксис позволяющий нам сказать&nbsp;— «Начни 
+с&nbsp;исполнителя REM, потом следуй ко&nbsp;всем альбомам 
+с&nbsp;которым связан исполнитель, потом следуй ко&nbsp;всем композициям
+ с&nbsp;которыми связан альбом, потом извлеки имена этих композиций." 
+Результатом этого запроса будут имена всех композиций REM которые были <nobr>когда-либо</nobr> выпущены.<br>
+<br>
+Разработчики&nbsp;решили что <nobr>link-walking</nobr> (переход 
+по&nbsp;ссылкам) настолько полезный, что даже реализовали URL синтаксис 
+для него. Вверху вы&nbsp;можете видеть ссылку похожую на&nbsp;URL, 
+и&nbsp;выполнение GET запроса по&nbsp;этому URL вернет вам список всех 
+объектов композиций, который ранее мы&nbsp;получили в&nbsp;примере 
+с&nbsp;Map/Reduce.<br>
+<br>
+Можно ещё много чего рассказать про Riak, включая как создавать 
+подключаемые бэкэнды, как использовать систему событий, как отслеживать 
+состояние кластеров Riak и&nbsp;как реализовать межкластерную 
+репликацию. Но&nbsp;это подождет до&nbsp;другой презентации.<br>
+<br>
+Если вы&nbsp;заинтересованы в&nbsp;получении дополнительной информации, вы&nbsp;можете посетить сайт <a href="http://riak.basho.com/">http://riak.basho.com/</a> где вы&nbsp;можете изучить документацию и&nbsp;загрузить Riak для ваших экспериментов. Так&nbsp;же существует список рассылки <a href="mailto:riak-users@lists.basho.com"><nobr>riak-users</nobr>@lists.basho.com</a>. Ну и конечно вы можете посмотреть <a href="http://vimeo.com/6973519">видео</a> данного доклада.<br>
+<br>
+***<br>
+<font color="#999"><i>Надеюсь вы почерпнули из данной статьи много 
+интересной и полезной информации. В дальнейшем если данная тема найдет 
+отклик на сайте, торжественно заявляю, что буду продолжать серию статей 
+на тему <b>NoSQL</b>. Передаю респекты командам проектов <a href="http://translated.by/">Translated.by</a> и <a href="http://www.typograf.ru/">Типограф</a>, благодаря им создание данной статьи было приятным времяпрепровождением.</i></font>
+    	<div class="clear"></div>
+  	</div>
+    
+<ul class="tags">
+	<li><a href="http://habrahabr.ru/search/?q=%5Bnosql%5D&amp;target_type=posts" rel="tag">nosql</a></li><li>, <a href="http://habrahabr.ru/search/?q=%5Briak%5D&amp;target_type=posts" rel="tag">riak</a></li><li>, <a href="http://habrahabr.ru/search/?q=%5Bkey-value%20storage%5D&amp;target_type=posts" rel="tag">key-value storage</a></li><li>, <a href="http://habrahabr.ru/search/?q=%5Bnosql%20rocks%21%5D&amp;target_type=posts" rel="tag">nosql rocks!</a></li><li>, <a href="http://habrahabr.ru/search/?q=%5Bbasho%5D&amp;target_type=posts" rel="tag">basho</a></li>
+</ul>
+
+    <div class="infopanel_wrapper">
+	<div class="infopanel " id="infopanel_post_75202">
+
+				<div class="voting   ">
+	
+						<span class="plus" title="Срок голосования истек."></span>
+	
+					<div class="mark positive ">
+							<span class="score" title="Всего 80: ↑74 и ↓6">+68</span>
+					</div>
+					
+						<span class="minus" title="Срок голосования истек."></span>
+		
+				</div>
+	
+		<div class="pageviews" title="Просмотры публикации">12778</div>
+			
+		<div class="favorite">
+				<a class="add" title="Добавить в избранное" href="#" onclick="return posts_add_to_favorite(this, '2', 75202)"> </a>
+		</div>
+		<div class="favs_count" title="Количество пользователей, добавивших публикацию в избранное">213</div>
+		
+		
+		
+	
+	
+	
+	
+				<div class="author">
+					<a title="Автор текста" href="http://habrahabr.ru/users/SilenceAndy/">SilenceAndy</a>
+					<span class="rating" title="рейтинг пользователя">19,7</span>
+				</div>
+		
+	
+
+			<div class="share">
+				<div class="twitter">
+					<a href="http://twitter.com/intent/tweet?text=Riak+%E2%80%94+%D0%B2%D0%B5%D0%B1-%D0%BE%D1%80%D0%B8%D0%B5%D0%BD%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%BD%D0%B0%D1%8F+%D1%81%D0%B8%D1%81%D1%82%D0%B5%D0%BC%D0%B0+%D1%85%D1%80%D0%B0%D0%BD%D0%B5%D0%BD%D0%B8%D1%8F+%D0%B4%D0%B0%D0%BD%D0%BD%D1%8B%D1%85+http://habr.ru/p/75202/+via+%40habrahabr+%23habr" title="Опубликовать ссылку в Twitter" target="_blank"></a>
+				</div>
+				<div class="vkontakte">
+					<a href="https://vk.com/share.php?url=http://habrahabr.ru/post/75202/" title="Опубликовать ссылку во ВКонтакте" onclick="window.open(this.href, 'Опубликовать ссылку во Вконтакте', 'width=800,height=300'); return false"></a>
+				</div>
+				<div class="facebook">
+					<a href="https://www.facebook.com/sharer/sharer.php?u=http://habrahabr.ru/post/75202/" title="Опубликовать ссылку в Facebook" onclick="window.open(this.href, 'Опубликовать ссылку в Facebook', 'width=640,height=436,toolbar=0,status=0'); return false"></a>
+				</div>
+				<div class="googleplus">
+					<a href="https://plus.google.com/share?url=http://habrahabr.ru/post/75202/" title="Опубликовать ссылку в Google Plus" onclick="window.open(this.href, 'Опубликовать ссылку в Google Plus', 'width=800,height=300'); return false"></a>
+				</div>
+			</div>
+	
+	</div>
+	<div class="clear"></div>
+</div>
+
+
+
+
+
+	</div>
+
+    </div>
+
+  	
+  <div title="" id="adriver_banner_132032996">
+<style type="text/css">
+    .post_inner_banner.megafon7_inner_banner { display:block;overflow:hidden;text-align:center;height:71px;border:1px solid #d4d4d4;border-radius:15px; position: relative; font-family: Verdana;}
+    .post_inner_banner.megafon7_inner_banner a { display:block; overflow: hidden; }
+    .post_inner_banner.megafon7_inner_banner div { display:block;float:left;text-align:left; }
+    .post_inner_banner.megafon7_inner_banner .er-arr { margin-top: 24px; margin-left: 35px; background:url(http://special.habrahabr.ru/img/1432112515/htmlblock/megafon3/arr.png) no-repeat right 0px; width: 13px; height: 22px; float: right; margin-right: 20px; }
+    .post_inner_banner.megafon7_inner_banner .slogan { margin:0 0 0 411px;width: 390px;padding-top:6px;letter-spacing: -1px;color:#000;font-size:13px;line-height:19px;-moz-box-sizing: border-box;-webkit-box-sizing: border-box;box-sizing: border-box; background:url(http://special.habrahabr.ru/img/1432112515/htmlblock/megafon7/slogan.png) no-repeat right 0px; height:71px; }
+    .post_inner_banner.megafon7_inner_banner .slogan b { font-size: 15px; }
+    .post_inner_banner.megafon7_inner_banner b {color: #5a257d;}
+    .post_inner_banner.megafon7_inner_banner .over-left { width: 390px; height: 71px; background:url(http://special.habrahabr.ru/img/1432112515/htmlblock/megafon7/left.png) no-repeat; position: absolute; top: 0; left: 0; cursor: pointer; }
+    .post_inner_banner.megafon7_inner_banner.active .over-left { width: 390px; height: 71px; background:url(http://special.habrahabr.ru/img/1432112515/htmlblock/megafon3/left.png) no-repeat; position: absolute; top: 0; left: 0; }
+    .post_inner_banner.megafon7_inner_banner.active .slogan {background-position: right -71px;}
+
+    @media (max-width: 1320px) {
+        .post_inner_banner.megafon7_inner_banner .over-left { width: 86px; height: 71px; background:url(http://special.habrahabr.ru/img/1432112515/htmlblock/megafon3/left-small.png) no-repeat; }
+        .post_inner_banner.megafon7_inner_banner.active .over-left { width: 390px; height: 71px; background:url(http://special.habrahabr.ru/img/1432112515/htmlblock/megafon3/left.png) no-repeat; }
+        .post_inner_banner.megafon7_inner_banner .slogan { margin-left: 108px; }
+    }
+</style>
+<div class="megafon7_inner_banner post_inner_banner">
+    <div class="over-left"></div>
+    <a href="http://ad.adriver.ru/cgi-bin/click.cgi?sid=1&amp;ad=525497&amp;bt=21&amp;pid=2010541&amp;bid=3875087&amp;bn=3875087&amp;rnd=1902588225" target="_blank" class="block_url">
+        <div class="slogan"><b>Смартфон<br>Alcatel Onetouch Pop2</b><br>Спец. цена в салонах МегаФона</div>
+        <div class="er-arr"></div>
+    </a>
+</div>
+</div>
+
+  <script type="text/javascript">
+      /** Для блоков гугла **/
+      function requireAdsafe(file){
+          var head = document.getElementsByTagName("head")[0];
+          var script = document.createElement('script');
+          script.src = file;
+          script.type = 'text/javascript';
+          head.appendChild(script);
+      }
+
+      function show_inner_banner_block(name, url){
+          if( typeof(name) !== 'undefined'){
+              //$.get('/html/'+name+'/1432045781/', function(html){
+              $.get('http://special.habrahabr.ru/api/htmlblock/'+name+'/', function(html){
+                  $('#adriver_banner_132032996').html(html);
+                  $('.'+name+'_inner_banner').removeClass('hidden');
+                  if( typeof(url) !== 'undefined'){
+                      $('.'+name+'_inner_banner .block_url').attr('href', url);
+                  }
+              }, 'html')
+          }
+      }
+
+        $(function(){
+          var check_scroll_position = function() {
+            var height = $(window).height();
+            var scrollTop = $(window).scrollTop();
+            var scrollBottom = $(window).scrollTop() + height;
+            var blockTop = $('#adriver_banner_132032996').position().top;
+            var show = scrollTop < blockTop && blockTop < scrollBottom;
+
+            if( show ){
+                $( window ).off('scroll', check_scroll_position);
+                $( window ).trigger('show_bn3');
+            }
+          };
+
+          //$( window ).on('scroll', check_scroll_position);
+
+          $( window ).on('show_bn3', function(){
+            var keyword = '';
+            if (typeof crtg_content !== 'undefined' && crtg_content) { keyword = crtg_content; }
+            var custom = { 4:ar_duo1 };
+                custom[1] = 'nosql';
+
+            //if (true)
+            //    show_inner_banner_block('raiffaizen2');
+            //else
+                new adriver("adriver_banner_132032996", {sid: 176776, bt: 52, bn: 3, custom: custom, keyword: keyword});
+          });
+
+          $( window ).trigger('show_bn3');
+        });
+    </script>
+
+
+
+
+
+      <div class="block_after_post">
+        
+
+
+<div class="similar_posts">
+
+    <h2 class="title">Похожие публикации</h2>
+    <div class="posts_list">
+        <div class="post_item">
+            <span class="bull"></span>
+            <a class="post_name" onclick="if (typeof ga === 'function') { ga('send', 'event', 'tm_block', 'similar_posts', 'common'); }" href="http://habrahabr.ru/post/243451/">Битва key-value хранилищ</a>&nbsp;<span class="count">(56)</span>
+        </div>
+        <div class="post_item">
+            <span class="bull"></span>
+            <a class="post_name" onclick="if (typeof ga === 'function') { ga('send', 'event', 'tm_block', 'similar_posts', 'common'); }" href="http://habrahabr.ru/post/234173/">RocksDB сервер – быстрое key-value хранилище для SSD накопителей</a>&nbsp;<span class="count">(39)</span>
+        </div>
+        <div class="post_item">
+            <span class="bull"></span>
+            <a class="post_name" onclick="if (typeof ga === 'function') { ga('send', 'event', 'tm_block', 'similar_posts', 'common'); }" href="http://habrahabr.ru/post/214647/">PHP и различные виды NoSQL</a>&nbsp;<span class="count">(34)</span>
+        </div>
+        <div class="post_item">
+            <span class="bull"></span>
+            <a class="post_name" onclick="if (typeof ga === 'function') { ga('send', 'event', 'tm_block', 'similar_posts', 'common'); }" href="http://habrahabr.ru/post/153667/">Тезисы к докладу на Highload++ «Опыт создания собственных key/value хранилищ для небольших высоконагруженных проектов»</a>&nbsp;<span class="count">(2)</span>
+        </div>
+        <div class="post_item">
+            <span class="bull"></span>
+            <a class="post_name" onclick="if (typeof ga === 'function') { ga('send', 'event', 'tm_block', 'similar_posts', 'common'); }" href="http://habrahabr.ru/post/55077/">Марш против RDBMS или проекты распределенных хранилищ (key-value stores)</a>&nbsp;<span class="count">(31)</span>
+        </div>
+    </div>
+</div>
+
+
+
+      </div>
+
+  		    <div class="comments_list " id="comments">
+
+        <h2 class="title ">Комментарии (<span id="comments_count">32</span>)
+            		<span class="subscribe_comments">
+			отслеживать новые: 
+			<label><input id="subscribe_comments" rel="{target_type:'2',target_id:75202 }" type="checkbox"> в почте</label>
+			<label><input id="tracker_comments" rel="{target_type:'2',target_id:75202 }" type="checkbox"> в трекере</label>
+		</span>
+
+
+        </h2>
+
+        
+
+            <div class="comment_item" id="comment_2184858">
+
+    <span class="parent_id" data-parent_id="0"></span>
+    <div class="comment_body ">
+        <div class="info  " rel="2184858">
+            <div class="folding-dot-holder"><div class="folding-dot"></div></div>
+            <div id="voting_2184858" class="voting   ">
+                <span class="minus" title="Срок голосования истек "></span>
+                <span class="plus" title="Срок голосования истек "></span>
+                <div class="mark  ">
+                    <span class="score" title="Всего 0: ↑0 и ↓0">0</span>
+                </div>
+            </div>
+            <a href="http://habrahabr.ru/users/otaqsun/" class="avatar"><img src="Riak%20%E2%80%94%20%D0%B2%D0%B5%D0%B1-%D0%BE%D1%80%D0%B8%D0%B5%D0%BD%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%BD%D0%B0%D1%8F%20%D1%81%D0%B8%D1%81%D1%82%D0%B5%D0%BC%D0%B0%20%D1%85%D1%80%D0%B0%D0%BD%D0%B5%D0%BD%D0%B8%D1%8F%20%D0%B4%D0%B0%D0%BD%D0%BD%D1%8B%D1%85%20_%20%D0%A5%D0%B0%D0%B1%D1%80%D0%B0%D1%85%D0%B0%D0%B1%D1%80_files/54515007ce287d4cd7761f0526c65a1a_small.jpg" alt=""></a>
+            <a href="http://habrahabr.ru/users/otaqsun/" class="username">otaqsun</a>
+            <time>16 ноября 2009 в 12:19</time>
+
+            <a href="#comment_2184858" class="link_to_comment">#</a>
+            
+                    <a href="#" class="favorite add" onclick="return comments_add_to_favorite(this, '3', 2184858 )" title="В избранное"></a>
+            <span class="to_chidren"></span>
+            <div class="clear"></div>
+        </div>
+        <div class="message html_format ">
+            С виду вроде штука вроде интересная, надо будет поиграться на досуге.
+        </div>
+        <div class="reply_form_placeholder"></div>
+        <div class="reply">
+		            <a href="#reply" class="reply_link" onclick="return comment_show_reply_form(2184858 )">ответить</a>
+            
+        </div>
+    </div>
+
+    <div class="reply_comments" id="reply_comments_2184858">
+    </div>
+</div>
+
+            <div class="comment_item" id="comment_2185090">
+
+    <span class="parent_id" data-parent_id="0"></span>
+    <div class="comment_body ">
+        <div class="info  " rel="2185090">
+            <div class="folding-dot-holder"><div class="folding-dot"></div></div>
+            <div id="voting_2185090" class="voting   ">
+                <span class="minus" title="Срок голосования истек "></span>
+                <span class="plus" title="Срок голосования истек "></span>
+                <div class="mark  negative">
+                    <span class="score" title="Всего 17: ↑4 и ↓13">–9</span>
+                </div>
+            </div>
+            <a href="http://habrahabr.ru/users/LDEV/" class="avatar"><img src="Riak%20%E2%80%94%20%D0%B2%D0%B5%D0%B1-%D0%BE%D1%80%D0%B8%D0%B5%D0%BD%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%BD%D0%B0%D1%8F%20%D1%81%D0%B8%D1%81%D1%82%D0%B5%D0%BC%D0%B0%20%D1%85%D1%80%D0%B0%D0%BD%D0%B5%D0%BD%D0%B8%D1%8F%20%D0%B4%D0%B0%D0%BD%D0%BD%D1%8B%D1%85%20_%20%D0%A5%D0%B0%D0%B1%D1%80%D0%B0%D1%85%D0%B0%D0%B1%D1%80_files/41fed41f0a497328b2c2a141b2a0807d_small.jpg" alt=""></a>
+            <a href="http://habrahabr.ru/users/LDEV/" class="username">LDEV</a>
+            <time>16 ноября 2009 в 13:30</time>
+
+            <a href="#comment_2185090" class="link_to_comment">#</a>
+            
+                    <a href="#" class="favorite add" onclick="return comments_add_to_favorite(this, '3', 2185090 )" title="В избранное"></a>
+            <span class="to_chidren"></span>
+            <div class="clear"></div>
+        </div>
+        <div class="message html_format bad bad5">
+            Напоминает обычный memcache, со своей либой для выбора сервера данных, или еще лучше — memcacheq или memcachedb.
+        </div>
+        <div class="reply_form_placeholder"></div>
+        <div class="reply">
+		            <a href="#reply" class="reply_link" onclick="return comment_show_reply_form(2185090 )">ответить</a>
+            
+        </div>
+    </div>
+
+    <div class="reply_comments" id="reply_comments_2185090">
+        <div class="comment_item" id="comment_2185212">
+
+    <span class="parent_id" data-parent_id="2185090"></span>
+    <div class="comment_body ">
+        <div class="info  is_topic_starter  " rel="2185212">
+            <div class="folding-dot-holder"><div class="folding-dot"></div></div>
+            <div id="voting_2185212" class="voting   ">
+                <span class="minus" title="Срок голосования истек "></span>
+                <span class="plus" title="Срок голосования истек "></span>
+                <div class="mark positive ">
+                    <span class="score" title="Всего 6: ↑6 и ↓0">+6</span>
+                </div>
+            </div>
+            <a href="http://habrahabr.ru/users/SilenceAndy/" class="avatar"><img src="Riak%20%E2%80%94%20%D0%B2%D0%B5%D0%B1-%D0%BE%D1%80%D0%B8%D0%B5%D0%BD%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%BD%D0%B0%D1%8F%20%D1%81%D0%B8%D1%81%D1%82%D0%B5%D0%BC%D0%B0%20%D1%85%D1%80%D0%B0%D0%BD%D0%B5%D0%BD%D0%B8%D1%8F%20%D0%B4%D0%B0%D0%BD%D0%BD%D1%8B%D1%85%20_%20%D0%A5%D0%B0%D0%B1%D1%80%D0%B0%D1%85%D0%B0%D0%B1%D1%80_files/3253f9c4b722ddde930a380f47f7a417_small.png" alt=""></a>
+            <a href="http://habrahabr.ru/users/SilenceAndy/" class="username">SilenceAndy</a>
+            <time>16 ноября 2009 в 14:06</time>
+
+            <a href="#comment_2185212" class="link_to_comment">#</a>
+            
+                    <a href="#" class="favorite add" onclick="return comments_add_to_favorite(this, '3', 2185212 )" title="В избранное"></a>
+                <div class="show_tree" data-id="2185212" data-parent_id="2185090" title="Показать ветку комментариев">↵</div>
+                <a href="#comment_2185090" data-id="2185212" data-parent_id="2185090" class="to_parent">↑</a>
+            <span class="to_chidren"></span>
+            <div class="clear"></div>
+        </div>
+        <div class="message html_format ">
+            Отличий о memcache очень много, начиная от того, что Riak 
+хранит данные не в памяти а на жестких дисках, и заканчивая упором на 
+fault tolerance (отказоустойчивость). Они схожи в одном — оба NoSQL 
+продукты.
+        </div>
+        <div class="reply_form_placeholder"></div>
+        <div class="reply">
+		            <a href="#reply" class="reply_link" onclick="return comment_show_reply_form(2185212 )">ответить</a>
+            
+        </div>
+    </div>
+
+    <div class="reply_comments" id="reply_comments_2185212">
+        <div class="comment_item" id="comment_2185228">
+
+    <span class="parent_id" data-parent_id="2185212"></span>
+    <div class="comment_body ">
+        <div class="info  " rel="2185228">
+            <div class="folding-dot-holder"><div class="folding-dot"></div></div>
+            <div id="voting_2185228" class="voting   ">
+                <span class="minus" title="Срок голосования истек "></span>
+                <span class="plus" title="Срок голосования истек "></span>
+                <div class="mark  negative">
+                    <span class="score" title="Всего 14: ↑3 и ↓11">–8</span>
+                </div>
+            </div>
+            <a href="http://habrahabr.ru/users/LDEV/" class="avatar"><img src="Riak%20%E2%80%94%20%D0%B2%D0%B5%D0%B1-%D0%BE%D1%80%D0%B8%D0%B5%D0%BD%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%BD%D0%B0%D1%8F%20%D1%81%D0%B8%D1%81%D1%82%D0%B5%D0%BC%D0%B0%20%D1%85%D1%80%D0%B0%D0%BD%D0%B5%D0%BD%D0%B8%D1%8F%20%D0%B4%D0%B0%D0%BD%D0%BD%D1%8B%D1%85%20_%20%D0%A5%D0%B0%D0%B1%D1%80%D0%B0%D1%85%D0%B0%D0%B1%D1%80_files/41fed41f0a497328b2c2a141b2a0807d_small.jpg" alt=""></a>
+            <a href="http://habrahabr.ru/users/LDEV/" class="username">LDEV</a>
+            <time>16 ноября 2009 в 14:09</time>
+
+            <a href="#comment_2185228" class="link_to_comment">#</a>
+            
+                    <a href="#" class="favorite add" onclick="return comments_add_to_favorite(this, '3', 2185228 )" title="В избранное"></a>
+                <div class="show_tree" data-id="2185228" data-parent_id="2185212" title="Показать ветку комментариев">↵</div>
+                <a href="#comment_2185212" data-id="2185228" data-parent_id="2185212" class="to_parent">↑</a>
+            <span class="to_chidren"></span>
+            <div class="clear"></div>
+        </div>
+        <div class="message html_format bad bad5">
+            memcacheq тоже складывает всё на диск в berkleydb, и при ребуте восстанавливает «куда надо».<br>
+<br>
+Riak — это некий велосипед для тех, кто не может построить его из уже существующих решений.
+        </div>
+        <div class="reply_form_placeholder"></div>
+        <div class="reply">
+		            <a href="#reply" class="reply_link" onclick="return comment_show_reply_form(2185228 )">ответить</a>
+            
+        </div>
+    </div>
+
+    <div class="reply_comments" id="reply_comments_2185228">
+        <div class="comment_item" id="comment_2185254">
+
+    <span class="parent_id" data-parent_id="2185228"></span>
+    <div class="comment_body ">
+        <div class="info  is_topic_starter  " rel="2185254">
+            <div class="folding-dot-holder"><div class="folding-dot"></div></div>
+            <div id="voting_2185254" class="voting   ">
+                <span class="minus" title="Срок голосования истек "></span>
+                <span class="plus" title="Срок голосования истек "></span>
+                <div class="mark positive ">
+                    <span class="score" title="Всего 5: ↑5 и ↓0">+5</span>
+                </div>
+            </div>
+            <a href="http://habrahabr.ru/users/SilenceAndy/" class="avatar"><img src="Riak%20%E2%80%94%20%D0%B2%D0%B5%D0%B1-%D0%BE%D1%80%D0%B8%D0%B5%D0%BD%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%BD%D0%B0%D1%8F%20%D1%81%D0%B8%D1%81%D1%82%D0%B5%D0%BC%D0%B0%20%D1%85%D1%80%D0%B0%D0%BD%D0%B5%D0%BD%D0%B8%D1%8F%20%D0%B4%D0%B0%D0%BD%D0%BD%D1%8B%D1%85%20_%20%D0%A5%D0%B0%D0%B1%D1%80%D0%B0%D1%85%D0%B0%D0%B1%D1%80_files/3253f9c4b722ddde930a380f47f7a417_small.png" alt=""></a>
+            <a href="http://habrahabr.ru/users/SilenceAndy/" class="username">SilenceAndy</a>
+            <time>16 ноября 2009 в 14:17</time>
+
+            <a href="#comment_2185254" class="link_to_comment">#</a>
+            
+                    <a href="#" class="favorite add" onclick="return comments_add_to_favorite(this, '3', 2185254 )" title="В избранное"></a>
+                <div class="show_tree" data-id="2185254" data-parent_id="2185228" title="Показать ветку комментариев">↵</div>
+                <a href="#comment_2185228" data-id="2185254" data-parent_id="2185228" class="to_parent">↑</a>
+            <span class="to_chidren"></span>
+            <div class="clear"></div>
+        </div>
+        <div class="message html_format ">
+            У обоих продуктов разные цели. Riak направлен на то чтобы 
+дать возможность разработчикам сделать массивные продукты с максимальной
+ отказоустойчивостью. memcacheq — это система очередей, а не хранения 
+данных. Врятли с ее помощью мы сможем организовать систему которая 
+сможет хранить несколько десятков терабайт данных, и предоставлять при 
+этом Map/Reduce функциональность. <br>
+<br>
+Riak — это не велосипед, это скорее санки. Когда все изобретали 
+велосипеды, ребята и basho (бывшие разработчики из Akamai) поставили 
+себе сделать отказоустойчивую систему, исследовали возможности и уже 
+готовые реализации, дабы не ходить по граблям. Я не говорю что система 
+идеальна, но поверьте, она заслуживает внимания, если вы занимаетесь 
+разработкой больших проектов.
+        </div>
+        <div class="reply_form_placeholder"></div>
+        <div class="reply">
+		            <a href="#reply" class="reply_link" onclick="return comment_show_reply_form(2185254 )">ответить</a>
+            
+        </div>
+    </div>
+
+    <div class="reply_comments" id="reply_comments_2185254">
+        <div class="comment_item" id="comment_2185271">
+
+    <span class="parent_id" data-parent_id="2185254"></span>
+    <div class="comment_body ">
+        <div class="info  " rel="2185271">
+            <div class="folding-dot-holder"><div class="folding-dot"></div></div>
+            <div id="voting_2185271" class="voting   ">
+                <span class="minus" title="Срок голосования истек "></span>
+                <span class="plus" title="Срок голосования истек "></span>
+                <div class="mark  negative">
+                    <span class="score" title="Всего 7: ↑2 и ↓5">–3</span>
+                </div>
+            </div>
+            <a href="http://habrahabr.ru/users/LDEV/" class="avatar"><img src="Riak%20%E2%80%94%20%D0%B2%D0%B5%D0%B1-%D0%BE%D1%80%D0%B8%D0%B5%D0%BD%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%BD%D0%B0%D1%8F%20%D1%81%D0%B8%D1%81%D1%82%D0%B5%D0%BC%D0%B0%20%D1%85%D1%80%D0%B0%D0%BD%D0%B5%D0%BD%D0%B8%D1%8F%20%D0%B4%D0%B0%D0%BD%D0%BD%D1%8B%D1%85%20_%20%D0%A5%D0%B0%D0%B1%D1%80%D0%B0%D1%85%D0%B0%D0%B1%D1%80_files/41fed41f0a497328b2c2a141b2a0807d_small.jpg" alt=""></a>
+            <a href="http://habrahabr.ru/users/LDEV/" class="username">LDEV</a>
+            <time>16 ноября 2009 в 14:22</time>
+
+            <a href="#comment_2185271" class="link_to_comment">#</a>
+            
+                    <a href="#" class="favorite add" onclick="return comments_add_to_favorite(this, '3', 2185271 )" title="В избранное"></a>
+                <div class="show_tree" data-id="2185271" data-parent_id="2185254" title="Показать ветку комментариев">↵</div>
+                <a href="#comment_2185254" data-id="2185271" data-parent_id="2185254" class="to_parent">↑</a>
+            <span class="to_chidren"></span>
+            <div class="clear"></div>
+        </div>
+        <div class="message html_format bad bad3">
+            Отказоустойчивость строится не только на программной среде. 
+Достаточно одного гвоздя в винчестер, чтобы убить даже мастер-сервер. А 
+гвоздями могут быть и питание по 1й категории, и резервные каналы и всё,
+ что стоит до и после Riak.<br>
+<br>
+В статье идет упор, что это отказоустойчивое решение, а не приложение. 
+Получается, они установкой одной софтины гарантируют отказоусточивость 
+всех компонентов, даже рубильника в серверной — что если его дёрнуть, 
+аплинки не выключатся и все ноды будут отвечать на запросы…
+        </div>
+        <div class="reply_form_placeholder"></div>
+        <div class="reply">
+		            <a href="#reply" class="reply_link" onclick="return comment_show_reply_form(2185271 )">ответить</a>
+            
+        </div>
+    </div>
+
+    <div class="reply_comments" id="reply_comments_2185271">
+        <div class="comment_item" id="comment_2185300">
+
+    <span class="parent_id" data-parent_id="2185271"></span>
+    <div class="comment_body ">
+        <div class="info  is_topic_starter  " rel="2185300">
+            <div class="folding-dot-holder"><div class="folding-dot"></div></div>
+            <div id="voting_2185300" class="voting   ">
+                <span class="minus" title="Срок голосования истек "></span>
+                <span class="plus" title="Срок голосования истек "></span>
+                <div class="mark positive ">
+                    <span class="score" title="Всего 1: ↑1 и ↓0">+1</span>
+                </div>
+            </div>
+            <a href="http://habrahabr.ru/users/SilenceAndy/" class="avatar"><img src="Riak%20%E2%80%94%20%D0%B2%D0%B5%D0%B1-%D0%BE%D1%80%D0%B8%D0%B5%D0%BD%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%BD%D0%B0%D1%8F%20%D1%81%D0%B8%D1%81%D1%82%D0%B5%D0%BC%D0%B0%20%D1%85%D1%80%D0%B0%D0%BD%D0%B5%D0%BD%D0%B8%D1%8F%20%D0%B4%D0%B0%D0%BD%D0%BD%D1%8B%D1%85%20_%20%D0%A5%D0%B0%D0%B1%D1%80%D0%B0%D1%85%D0%B0%D0%B1%D1%80_files/3253f9c4b722ddde930a380f47f7a417_small.png" alt=""></a>
+            <a href="http://habrahabr.ru/users/SilenceAndy/" class="username">SilenceAndy</a>
+            <time>16 ноября 2009 в 14:35</time>
+
+            <a href="#comment_2185300" class="link_to_comment">#</a>
+            
+                    <a href="#" class="favorite add" onclick="return comments_add_to_favorite(this, '3', 2185300 )" title="В избранное"></a>
+                <div class="show_tree" data-id="2185300" data-parent_id="2185271" title="Показать ветку комментариев">↵</div>
+                <a href="#comment_2185271" data-id="2185300" data-parent_id="2185271" class="to_parent">↑</a>
+            <span class="to_chidren"></span>
+            <div class="clear"></div>
+        </div>
+        <div class="message html_format ">
+            <blockquote>Отказоустойчивость строится не только на программной среде.</blockquote><br>
+Отказоустойчивость строится не только на программной среде. Достаточно 
+одного гвоздя в винчестер, чтобы убить даже мастер-сервер. А гвоздями 
+могут быть и питание по 1й категории, и резервные каналы и всё, что 
+стоит до и после Riak.<br>
+1. Мастре сервера в системе нет. Это p2p. <br>
+2. Мы говорим об организации отказоустойчивости с помощью архитектуры 
+проекта, конечно если на датацентр упадет метеорит, это вас не спасет.<br>
+<br>
+<blockquote>Получается, они установкой одной софтины гарантируют 
+отказоусточивость всех компонентов, даже рубильника в серверной — что 
+если его дёрнуть, аплинки не выключатся и все ноды будут отвечать на 
+запросы…</blockquote><br>
+Вы думаете сейчас на уровне системы с 10-20 серверами. Это решение для 
+больших систем, прям БОЛЬШИХ. &gt;100 серверов. Когда сервера стоят в 
+разных датацентрах в разных странах. На меньших объемах это решение в 
+общем не нужно. Можно использовать MySQL с репликацией и MySQL Proxy.<br>
+<br>
+Ну если уж вы мне не верите, посмотрите на <a href="http://www.facebook.com/note.php?note_id=24413138919">Cassandra</a>, эта аналогичная система используемая в Facebook. Вот ресурсы которые она использует:<br>
+<blockquote>The system currently stores TB’s of indexes across a cluster of 600+ cores and 120+ TB of disk space.</blockquote><br>
+
+        </div>
+        <div class="reply_form_placeholder"></div>
+        <div class="reply">
+		            <a href="#reply" class="reply_link" onclick="return comment_show_reply_form(2185300 )">ответить</a>
+            
+        </div>
+    </div>
+
+    <div class="reply_comments" id="reply_comments_2185300">
+        <div class="comment_item" id="comment_2185327">
+
+    <span class="parent_id" data-parent_id="2185300"></span>
+    <div class="comment_body ">
+        <div class="info  " rel="2185327">
+            <div class="folding-dot-holder"><div class="folding-dot"></div></div>
+            <div id="voting_2185327" class="voting   ">
+                <span class="minus" title="Срок голосования истек "></span>
+                <span class="plus" title="Срок голосования истек "></span>
+                <div class="mark  negative">
+                    <span class="score" title="Всего 7: ↑2 и ↓5">–3</span>
+                </div>
+            </div>
+            <a href="http://habrahabr.ru/users/LDEV/" class="avatar"><img src="Riak%20%E2%80%94%20%D0%B2%D0%B5%D0%B1-%D0%BE%D1%80%D0%B8%D0%B5%D0%BD%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%BD%D0%B0%D1%8F%20%D1%81%D0%B8%D1%81%D1%82%D0%B5%D0%BC%D0%B0%20%D1%85%D1%80%D0%B0%D0%BD%D0%B5%D0%BD%D0%B8%D1%8F%20%D0%B4%D0%B0%D0%BD%D0%BD%D1%8B%D1%85%20_%20%D0%A5%D0%B0%D0%B1%D1%80%D0%B0%D1%85%D0%B0%D0%B1%D1%80_files/41fed41f0a497328b2c2a141b2a0807d_small.jpg" alt=""></a>
+            <a href="http://habrahabr.ru/users/LDEV/" class="username">LDEV</a>
+            <time>16 ноября 2009 в 14:41</time>
+
+            <a href="#comment_2185327" class="link_to_comment">#</a>
+            
+                    <a href="#" class="favorite add" onclick="return comments_add_to_favorite(this, '3', 2185327 )" title="В избранное"></a>
+                <div class="show_tree" data-id="2185327" data-parent_id="2185300" title="Показать ветку комментариев">↵</div>
+                <a href="#comment_2185300" data-id="2185327" data-parent_id="2185300" class="to_parent">↑</a>
+            <span class="to_chidren"></span>
+            <div class="clear"></div>
+        </div>
+        <div class="message html_format bad bad3">
+            Для разнесенных серверов по странам встает вопрос об 
+актуальности данных на всех серверах. Даже Mysql-репликация может лагать
+ — оптимально 1-2 секунды на тяжелые запросы, но ведь каналы могут 
+падать и актуальность таких данных под вопросом.<br>
+<br>
+Riak не панацея от всех проблем, связанных с доступностью и актуальностью данных.
+        </div>
+        <div class="reply_form_placeholder"></div>
+        <div class="reply">
+		            <a href="#reply" class="reply_link" onclick="return comment_show_reply_form(2185327 )">ответить</a>
+            
+        </div>
+    </div>
+
+    <div class="reply_comments" id="reply_comments_2185327">
+        <div class="comment_item" id="comment_2185392">
+
+    <span class="parent_id" data-parent_id="2185327"></span>
+    <div class="comment_body ">
+        <div class="info  is_topic_starter  " rel="2185392">
+            <div class="folding-dot-holder"><div class="folding-dot"></div></div>
+            <div id="voting_2185392" class="voting   ">
+                <span class="minus" title="Срок голосования истек "></span>
+                <span class="plus" title="Срок голосования истек "></span>
+                <div class="mark positive ">
+                    <span class="score" title="Всего 2: ↑2 и ↓0">+2</span>
+                </div>
+            </div>
+            <a href="http://habrahabr.ru/users/SilenceAndy/" class="avatar"><img src="Riak%20%E2%80%94%20%D0%B2%D0%B5%D0%B1-%D0%BE%D1%80%D0%B8%D0%B5%D0%BD%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%BD%D0%B0%D1%8F%20%D1%81%D0%B8%D1%81%D1%82%D0%B5%D0%BC%D0%B0%20%D1%85%D1%80%D0%B0%D0%BD%D0%B5%D0%BD%D0%B8%D1%8F%20%D0%B4%D0%B0%D0%BD%D0%BD%D1%8B%D1%85%20_%20%D0%A5%D0%B0%D0%B1%D1%80%D0%B0%D1%85%D0%B0%D0%B1%D1%80_files/3253f9c4b722ddde930a380f47f7a417_small.png" alt=""></a>
+            <a href="http://habrahabr.ru/users/SilenceAndy/" class="username">SilenceAndy</a>
+            <time>16 ноября 2009 в 14:58</time>
+
+            <a href="#comment_2185392" class="link_to_comment">#</a>
+            
+                    <a href="#" class="favorite add" onclick="return comments_add_to_favorite(this, '3', 2185392 )" title="В избранное"></a>
+                <div class="show_tree" data-id="2185392" data-parent_id="2185327" title="Показать ветку комментариев">↵</div>
+                <a href="#comment_2185327" data-id="2185392" data-parent_id="2185327" class="to_parent">↑</a>
+            <span class="to_chidren"></span>
+            <div class="clear"></div>
+        </div>
+        <div class="message html_format ">
+            <blockquote>Riak не панацея от всех проблем, связанных с доступностью и актуальностью данных. </blockquote><br>
+Точно. В статье об этом написано.
+        </div>
+        <div class="reply_form_placeholder"></div>
+        <div class="reply">
+		            <a href="#reply" class="reply_link" onclick="return comment_show_reply_form(2185392 )">ответить</a>
+            
+        </div>
+    </div>
+
+    <div class="reply_comments" id="reply_comments_2185392">
+    </div>
+</div>
+
+    </div>
+</div>
+
+    </div>
+</div>
+
+        <div class="comment_item" id="comment_2185386">
+
+    <span class="parent_id" data-parent_id="2185271"></span>
+    <div class="comment_body ">
+        <div class="info  " rel="2185386">
+            <div class="folding-dot-holder"><div class="folding-dot"></div></div>
+            <div id="voting_2185386" class="voting   ">
+                <span class="minus" title="Срок голосования истек "></span>
+                <span class="plus" title="Срок голосования истек "></span>
+                <div class="mark positive ">
+                    <span class="score" title="Всего 2: ↑2 и ↓0">+2</span>
+                </div>
+            </div>
+            <a href="http://habrahabr.ru/users/LighteR/" class="avatar"><img src="Riak%20%E2%80%94%20%D0%B2%D0%B5%D0%B1-%D0%BE%D1%80%D0%B8%D0%B5%D0%BD%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%BD%D0%B0%D1%8F%20%D1%81%D0%B8%D1%81%D1%82%D0%B5%D0%BC%D0%B0%20%D1%85%D1%80%D0%B0%D0%BD%D0%B5%D0%BD%D0%B8%D1%8F%20%D0%B4%D0%B0%D0%BD%D0%BD%D1%8B%D1%85%20_%20%D0%A5%D0%B0%D0%B1%D1%80%D0%B0%D1%85%D0%B0%D0%B1%D1%80_files/stub-user-small.gif" alt=""></a>
+            <a href="http://habrahabr.ru/users/LighteR/" class="username">LighteR</a>
+            <time>16 ноября 2009 в 14:55</time>
+
+            <a href="#comment_2185386" class="link_to_comment">#</a>
+            
+                    <a href="#" class="favorite add" onclick="return comments_add_to_favorite(this, '3', 2185386 )" title="В избранное"></a>
+                <div class="show_tree" data-id="2185386" data-parent_id="2185271" title="Показать ветку комментариев">↵</div>
+                <a href="#comment_2185271" data-id="2185386" data-parent_id="2185271" class="to_parent">↑</a>
+            <span class="to_chidren"></span>
+            <div class="clear"></div>
+        </div>
+        <div class="message html_format ">
+            Что-то вас понесло уже совсем в другую сторону.
+        </div>
+        <div class="reply_form_placeholder"></div>
+        <div class="reply">
+		            <a href="#reply" class="reply_link" onclick="return comment_show_reply_form(2185386 )">ответить</a>
+            
+        </div>
+    </div>
+
+    <div class="reply_comments" id="reply_comments_2185386">
+    </div>
+</div>
+
+    </div>
+</div>
+
+    </div>
+</div>
+
+    </div>
+</div>
+
+    </div>
+</div>
+
+    </div>
+</div>
+
+            <div class="comment_item" id="comment_2185118">
+
+    <span class="parent_id" data-parent_id="0"></span>
+    <div class="comment_body ">
+        <div class="info  " rel="2185118">
+            <div class="folding-dot-holder"><div class="folding-dot"></div></div>
+            <div id="voting_2185118" class="voting   ">
+                <span class="minus" title="Срок голосования истек "></span>
+                <span class="plus" title="Срок голосования истек "></span>
+                <div class="mark positive ">
+                    <span class="score" title="Всего 1: ↑1 и ↓0">+1</span>
+                </div>
+            </div>
+            <a href="http://habrahabr.ru/users/Quiz/" class="avatar"><img src="Riak%20%E2%80%94%20%D0%B2%D0%B5%D0%B1-%D0%BE%D1%80%D0%B8%D0%B5%D0%BD%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%BD%D0%B0%D1%8F%20%D1%81%D0%B8%D1%81%D1%82%D0%B5%D0%BC%D0%B0%20%D1%85%D1%80%D0%B0%D0%BD%D0%B5%D0%BD%D0%B8%D1%8F%20%D0%B4%D0%B0%D0%BD%D0%BD%D1%8B%D1%85%20_%20%D0%A5%D0%B0%D0%B1%D1%80%D0%B0%D1%85%D0%B0%D0%B1%D1%80_files/f428a8edc3bd4cfaf958c69cb59d3058_small.png" alt=""></a>
+            <a href="http://habrahabr.ru/users/Quiz/" class="username">Quiz</a>
+            <time>16 ноября 2009 в 13:38</time>
+
+            <a href="#comment_2185118" class="link_to_comment">#</a>
+            
+                    <a href="#" class="favorite add" onclick="return comments_add_to_favorite(this, '3', 2185118 )" title="В избранное"></a>
+            <span class="to_chidren"></span>
+            <div class="clear"></div>
+        </div>
+        <div class="message html_format ">
+            Было бы здорово увидеть пару рабочих примеров. Не тестовых, а которые используются непосредственно в работе.<br>
+Ну и производительность, конечно.
+        </div>
+        <div class="reply_form_placeholder"></div>
+        <div class="reply">
+		            <a href="#reply" class="reply_link" onclick="return comment_show_reply_form(2185118 )">ответить</a>
+            
+        </div>
+    </div>
+
+    <div class="reply_comments" id="reply_comments_2185118">
+        <div class="comment_item" id="comment_2185164">
+
+    <span class="parent_id" data-parent_id="2185118"></span>
+    <div class="comment_body ">
+        <div class="info  " rel="2185164">
+            <div class="folding-dot-holder"><div class="folding-dot"></div></div>
+            <div id="voting_2185164" class="voting   ">
+                <span class="minus" title="Срок голосования истек "></span>
+                <span class="plus" title="Срок голосования истек "></span>
+                <div class="mark  ">
+                    <span class="score" title="Всего 0: ↑0 и ↓0">0</span>
+                </div>
+            </div>
+            <a href="http://habrahabr.ru/users/otaqsun/" class="avatar"><img src="Riak%20%E2%80%94%20%D0%B2%D0%B5%D0%B1-%D0%BE%D1%80%D0%B8%D0%B5%D0%BD%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%BD%D0%B0%D1%8F%20%D1%81%D0%B8%D1%81%D1%82%D0%B5%D0%BC%D0%B0%20%D1%85%D1%80%D0%B0%D0%BD%D0%B5%D0%BD%D0%B8%D1%8F%20%D0%B4%D0%B0%D0%BD%D0%BD%D1%8B%D1%85%20_%20%D0%A5%D0%B0%D0%B1%D1%80%D0%B0%D1%85%D0%B0%D0%B1%D1%80_files/54515007ce287d4cd7761f0526c65a1a_small.jpg" alt=""></a>
+            <a href="http://habrahabr.ru/users/otaqsun/" class="username">otaqsun</a>
+            <time>16 ноября 2009 в 13:53</time>
+
+            <a href="#comment_2185164" class="link_to_comment">#</a>
+            
+                    <a href="#" class="favorite add" onclick="return comments_add_to_favorite(this, '3', 2185164 )" title="В избранное"></a>
+                <div class="show_tree" data-id="2185164" data-parent_id="2185118" title="Показать ветку комментариев">↵</div>
+                <a href="#comment_2185118" data-id="2185164" data-parent_id="2185118" class="to_parent">↑</a>
+            <span class="to_chidren"></span>
+            <div class="clear"></div>
+        </div>
+        <div class="message html_format ">
+            Тут наверно нужно понять что в данном подходе главное масштабируемость и отказоустойчивость.
+        </div>
+        <div class="reply_form_placeholder"></div>
+        <div class="reply">
+		            <a href="#reply" class="reply_link" onclick="return comment_show_reply_form(2185164 )">ответить</a>
+            
+        </div>
+    </div>
+
+    <div class="reply_comments" id="reply_comments_2185164">
+    </div>
+</div>
+
+        <div class="comment_item" id="comment_2185201">
+
+    <span class="parent_id" data-parent_id="2185118"></span>
+    <div class="comment_body ">
+        <div class="info  is_topic_starter  " rel="2185201">
+            <div class="folding-dot-holder"><div class="folding-dot"></div></div>
+            <div id="voting_2185201" class="voting   ">
+                <span class="minus" title="Срок голосования истек "></span>
+                <span class="plus" title="Срок голосования истек "></span>
+                <div class="mark  ">
+                    <span class="score" title="Всего 0: ↑0 и ↓0">0</span>
+                </div>
+            </div>
+            <a href="http://habrahabr.ru/users/SilenceAndy/" class="avatar"><img src="Riak%20%E2%80%94%20%D0%B2%D0%B5%D0%B1-%D0%BE%D1%80%D0%B8%D0%B5%D0%BD%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%BD%D0%B0%D1%8F%20%D1%81%D0%B8%D1%81%D1%82%D0%B5%D0%BC%D0%B0%20%D1%85%D1%80%D0%B0%D0%BD%D0%B5%D0%BD%D0%B8%D1%8F%20%D0%B4%D0%B0%D0%BD%D0%BD%D1%8B%D1%85%20_%20%D0%A5%D0%B0%D0%B1%D1%80%D0%B0%D1%85%D0%B0%D0%B1%D1%80_files/3253f9c4b722ddde930a380f47f7a417_small.png" alt=""></a>
+            <a href="http://habrahabr.ru/users/SilenceAndy/" class="username">SilenceAndy</a>
+            <time>16 ноября 2009 в 14:04</time>
+
+            <a href="#comment_2185201" class="link_to_comment">#</a>
+            
+                    <a href="#" class="favorite add" onclick="return comments_add_to_favorite(this, '3', 2185201 )" title="В избранное"></a>
+                <div class="show_tree" data-id="2185201" data-parent_id="2185118" title="Показать ветку комментариев">↵</div>
+                <a href="#comment_2185118" data-id="2185201" data-parent_id="2185118" class="to_parent">↑</a>
+            <span class="to_chidren"></span>
+            <div class="clear"></div>
+        </div>
+        <div class="message html_format ">
+            К сожалению их не так много. В основном из общения с 
+разработчиками в списке рассылки я понял, что на данный момент есть 
+только один большой кластер Riak — у самих разработчиков. Тесты и свои 
+впечатления от работы с системой, я постараюсь выложить в следующих 
+статьях. Кстати я забыл упоминуть в статье о том, что система <a href="http://www.basho.com/enterpriseds.html" ""="">рассчитана</a> на рынок Enterprise платформ.
+        </div>
+        <div class="reply_form_placeholder"></div>
+        <div class="reply">
+		            <a href="#reply" class="reply_link" onclick="return comment_show_reply_form(2185201 )">ответить</a>
+            
+        </div>
+    </div>
+
+    <div class="reply_comments" id="reply_comments_2185201">
+        <div class="comment_item" id="comment_2185818">
+
+    <span class="parent_id" data-parent_id="2185201"></span>
+    <div class="comment_body ">
+        <div class="info  " rel="2185818">
+            <div class="folding-dot-holder"><div class="folding-dot"></div></div>
+            <div id="voting_2185818" class="voting   ">
+                <span class="minus" title="Срок голосования истек "></span>
+                <span class="plus" title="Срок голосования истек "></span>
+                <div class="mark positive ">
+                    <span class="score" title="Всего 1: ↑1 и ↓0">+1</span>
+                </div>
+            </div>
+            <a href="http://habrahabr.ru/users/Quiz/" class="avatar"><img src="Riak%20%E2%80%94%20%D0%B2%D0%B5%D0%B1-%D0%BE%D1%80%D0%B8%D0%B5%D0%BD%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%BD%D0%B0%D1%8F%20%D1%81%D0%B8%D1%81%D1%82%D0%B5%D0%BC%D0%B0%20%D1%85%D1%80%D0%B0%D0%BD%D0%B5%D0%BD%D0%B8%D1%8F%20%D0%B4%D0%B0%D0%BD%D0%BD%D1%8B%D1%85%20_%20%D0%A5%D0%B0%D0%B1%D1%80%D0%B0%D1%85%D0%B0%D0%B1%D1%80_files/f428a8edc3bd4cfaf958c69cb59d3058_small.png" alt=""></a>
+            <a href="http://habrahabr.ru/users/Quiz/" class="username">Quiz</a>
+            <time>16 ноября 2009 в 16:48</time>
+
+            <a href="#comment_2185818" class="link_to_comment">#</a>
+            
+                    <a href="#" class="favorite add" onclick="return comments_add_to_favorite(this, '3', 2185818 )" title="В избранное"></a>
+                <div class="show_tree" data-id="2185818" data-parent_id="2185201" title="Показать ветку комментариев">↵</div>
+                <a href="#comment_2185201" data-id="2185818" data-parent_id="2185201" class="to_parent">↑</a>
+            <span class="to_chidren"></span>
+            <div class="clear"></div>
+        </div>
+        <div class="message html_format ">
+            Звучит заманчиво.<br>
+Попробую накопать дополнительную информацию по данному вопросу.<br>
+Ну и, конечно, ждём продолжения :)
+        </div>
+        <div class="reply_form_placeholder"></div>
+        <div class="reply">
+		            <a href="#reply" class="reply_link" onclick="return comment_show_reply_form(2185818 )">ответить</a>
+            
+        </div>
+    </div>
+
+    <div class="reply_comments" id="reply_comments_2185818">
+    </div>
+</div>
+
+    </div>
+</div>
+
+    </div>
+</div>
+
+            <div class="comment_item" id="comment_2185307">
+
+    <span class="parent_id" data-parent_id="0"></span>
+    <div class="comment_body ">
+        <div class="info  " rel="2185307">
+            <div class="folding-dot-holder"><div class="folding-dot"></div></div>
+            <div id="voting_2185307" class="voting   ">
+                <span class="minus" title="Срок голосования истек "></span>
+                <span class="plus" title="Срок голосования истек "></span>
+                <div class="mark positive ">
+                    <span class="score" title="Всего 1: ↑1 и ↓0">+1</span>
+                </div>
+            </div>
+            <a href="http://habrahabr.ru/users/max_m/" class="avatar"><img src="Riak%20%E2%80%94%20%D0%B2%D0%B5%D0%B1-%D0%BE%D1%80%D0%B8%D0%B5%D0%BD%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%BD%D0%B0%D1%8F%20%D1%81%D0%B8%D1%81%D1%82%D0%B5%D0%BC%D0%B0%20%D1%85%D1%80%D0%B0%D0%BD%D0%B5%D0%BD%D0%B8%D1%8F%20%D0%B4%D0%B0%D0%BD%D0%BD%D1%8B%D1%85%20_%20%D0%A5%D0%B0%D0%B1%D1%80%D0%B0%D1%85%D0%B0%D0%B1%D1%80_files/fdd0ab4af213b42a949d589776157865_small.jpg" alt=""></a>
+            <a href="http://habrahabr.ru/users/max_m/" class="username">max_m</a>
+            <time>16 ноября 2009 в 14:36</time>
+
+            <a href="#comment_2185307" class="link_to_comment">#</a>
+            
+                    <a href="#" class="favorite add" onclick="return comments_add_to_favorite(this, '3', 2185307 )" title="В избранное"></a>
+            <span class="to_chidren"></span>
+            <div class="clear"></div>
+        </div>
+        <div class="message html_format ">
+            Статья познавательная. Спасибо.<br>
+Но я поражаюсь, как легко многие жертвуют целостностью.<br>
+Отказ от целостности — это битые данные, глюки и жалобы пользователей.<br>
+ИМХО на нетранзакционные хранилища можно переходить, только имея за 
+плечами опыт работы с ACID-транзакционными базами данных, зная что 
+значит каждая буковка в слове ACID и что она дает. 
+        </div>
+        <div class="reply_form_placeholder"></div>
+        <div class="reply">
+		            <a href="#reply" class="reply_link" onclick="return comment_show_reply_form(2185307 )">ответить</a>
+            
+        </div>
+    </div>
+
+    <div class="reply_comments" id="reply_comments_2185307">
+        <div class="comment_item" id="comment_2185388">
+
+    <span class="parent_id" data-parent_id="2185307"></span>
+    <div class="comment_body ">
+        <div class="info  is_topic_starter  " rel="2185388">
+            <div class="folding-dot-holder"><div class="folding-dot"></div></div>
+            <div id="voting_2185388" class="voting   ">
+                <span class="minus" title="Срок голосования истек "></span>
+                <span class="plus" title="Срок голосования истек "></span>
+                <div class="mark positive ">
+                    <span class="score" title="Всего 1: ↑1 и ↓0">+1</span>
+                </div>
+            </div>
+            <a href="http://habrahabr.ru/users/SilenceAndy/" class="avatar"><img src="Riak%20%E2%80%94%20%D0%B2%D0%B5%D0%B1-%D0%BE%D1%80%D0%B8%D0%B5%D0%BD%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%BD%D0%B0%D1%8F%20%D1%81%D0%B8%D1%81%D1%82%D0%B5%D0%BC%D0%B0%20%D1%85%D1%80%D0%B0%D0%BD%D0%B5%D0%BD%D0%B8%D1%8F%20%D0%B4%D0%B0%D0%BD%D0%BD%D1%8B%D1%85%20_%20%D0%A5%D0%B0%D0%B1%D1%80%D0%B0%D1%85%D0%B0%D0%B1%D1%80_files/3253f9c4b722ddde930a380f47f7a417_small.png" alt=""></a>
+            <a href="http://habrahabr.ru/users/SilenceAndy/" class="username">SilenceAndy</a>
+            <time>16 ноября 2009 в 14:55</time>
+
+            <a href="#comment_2185388" class="link_to_comment">#</a>
+            
+                    <a href="#" class="favorite add" onclick="return comments_add_to_favorite(this, '3', 2185388 )" title="В избранное"></a>
+                <div class="show_tree" data-id="2185388" data-parent_id="2185307" title="Показать ветку комментариев">↵</div>
+                <a href="#comment_2185307" data-id="2185388" data-parent_id="2185307" class="to_parent">↑</a>
+            <span class="to_chidren"></span>
+            <div class="clear"></div>
+        </div>
+        <div class="message html_format ">
+            Всегда пожалуйста :)<br>
+<br>
+<blockquote>Но я поражаюсь, как легко многие жертвуют целостностью.</blockquote><br>
+Могу сказать почему. Реализация контроля целостности, более легкая 
+задача. Для отказоустойчивости в большинстве случаев нужна продуманная и
+ серьезная архитектура. Контроль целостности реализовать проще. Для 
+контроля целостности можно использовать избыточность данных и хэши 
+сообщений (проверка хэша сообщение и в случае повреждения либо повторный
+ запрос либо получение с другого сервера). Но как сказано в статье можно
+ выбрать всего 2 пункта из трех.<br>
+<blockquote>на нетранзакционные хранилища можно переходить, только имея за плечами опыт работы с ACID-транзакционными базами данных</blockquote><br>
+Абсолютно согласен. Я бы еще посоветовал при использовании той или иной 
+технологии, обдумывать какие фичи из нее вам нужны и расставить им 
+приоритеты.
+        </div>
+        <div class="reply_form_placeholder"></div>
+        <div class="reply">
+		            <a href="#reply" class="reply_link" onclick="return comment_show_reply_form(2185388 )">ответить</a>
+            
+        </div>
+    </div>
+
+    <div class="reply_comments" id="reply_comments_2185388">
+    </div>
+</div>
+
+    </div>
+</div>
+
+            <div class="comment_item" id="comment_2185804">
+
+    <span class="parent_id" data-parent_id="0"></span>
+    <div class="comment_body ">
+        <div class="info  " rel="2185804">
+            <div class="folding-dot-holder"><div class="folding-dot"></div></div>
+            <div id="voting_2185804" class="voting   ">
+                <span class="minus" title="Срок голосования истек "></span>
+                <span class="plus" title="Срок голосования истек "></span>
+                <div class="mark  negative">
+                    <span class="score" title="Всего 7: ↑3 и ↓4">–1</span>
+                </div>
+            </div>
+            <a href="http://habrahabr.ru/users/vladon/" class="avatar"><img src="Riak%20%E2%80%94%20%D0%B2%D0%B5%D0%B1-%D0%BE%D1%80%D0%B8%D0%B5%D0%BD%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%BD%D0%B0%D1%8F%20%D1%81%D0%B8%D1%81%D1%82%D0%B5%D0%BC%D0%B0%20%D1%85%D1%80%D0%B0%D0%BD%D0%B5%D0%BD%D0%B8%D1%8F%20%D0%B4%D0%B0%D0%BD%D0%BD%D1%8B%D1%85%20_%20%D0%A5%D0%B0%D0%B1%D1%80%D0%B0%D1%85%D0%B0%D0%B1%D1%80_files/stub-user-small.gif" alt=""></a>
+            <a href="http://habrahabr.ru/users/vladon/" class="username">vladon</a>
+            <time>16 ноября 2009 в 16:45</time>
+
+            <a href="#comment_2185804" class="link_to_comment">#</a>
+            
+                    <a href="#" class="favorite add" onclick="return comments_add_to_favorite(this, '3', 2185804 )" title="В избранное"></a>
+            <span class="to_chidren"></span>
+            <div class="clear"></div>
+        </div>
+        <div class="message html_format bad bad1">
+            блин, сколько можно, не «вэб», а «веб».
+        </div>
+        <div class="reply_form_placeholder"></div>
+        <div class="reply">
+		            <a href="#reply" class="reply_link" onclick="return comment_show_reply_form(2185804 )">ответить</a>
+            
+        </div>
+    </div>
+
+    <div class="reply_comments" id="reply_comments_2185804">
+        <div class="comment_item" id="comment_2185917">
+
+    <span class="parent_id" data-parent_id="2185804"></span>
+    <div class="comment_body ">
+        <div class="info  " rel="2185917">
+            <div class="folding-dot-holder"><div class="folding-dot"></div></div>
+            <div id="voting_2185917" class="voting   ">
+                <span class="minus" title="Срок голосования истек "></span>
+                <span class="plus" title="Срок голосования истек "></span>
+                <div class="mark  ">
+                    <span class="score" title="Всего 2: ↑1 и ↓1">0</span>
+                </div>
+            </div>
+            <a href="http://habrahabr.ru/users/xandro/" class="avatar"><img src="Riak%20%E2%80%94%20%D0%B2%D0%B5%D0%B1-%D0%BE%D1%80%D0%B8%D0%B5%D0%BD%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%BD%D0%B0%D1%8F%20%D1%81%D0%B8%D1%81%D1%82%D0%B5%D0%BC%D0%B0%20%D1%85%D1%80%D0%B0%D0%BD%D0%B5%D0%BD%D0%B8%D1%8F%20%D0%B4%D0%B0%D0%BD%D0%BD%D1%8B%D1%85%20_%20%D0%A5%D0%B0%D0%B1%D1%80%D0%B0%D1%85%D0%B0%D0%B1%D1%80_files/stub-user-small.gif" alt=""></a>
+            <a href="http://habrahabr.ru/users/xandro/" class="username">xandro</a>
+            <time>16 ноября 2009 в 17:12</time>
+
+            <a href="#comment_2185917" class="link_to_comment">#</a>
+            
+                    <a href="#" class="favorite add" onclick="return comments_add_to_favorite(this, '3', 2185917 )" title="В избранное"></a>
+                <div class="show_tree" data-id="2185917" data-parent_id="2185804" title="Показать ветку комментариев">↵</div>
+                <a href="#comment_2185804" data-id="2185917" data-parent_id="2185804" class="to_parent">↑</a>
+            <span class="to_chidren"></span>
+            <div class="clear"></div>
+        </div>
+        <div class="message html_format ">
+            Лучше уж пусть будет web
+        </div>
+        <div class="reply_form_placeholder"></div>
+        <div class="reply">
+		            <a href="#reply" class="reply_link" onclick="return comment_show_reply_form(2185917 )">ответить</a>
+            
+        </div>
+    </div>
+
+    <div class="reply_comments" id="reply_comments_2185917">
+    </div>
+</div>
+
+    </div>
+</div>
+
+            <div class="comment_item" id="comment_2185874">
+
+    <span class="parent_id" data-parent_id="0"></span>
+    <div class="comment_body ">
+        <div class="author_banned">НЛО прилетело и опубликовало эту надпись здесь</div>
+    </div>
+
+    <div class="reply_comments" id="reply_comments_2185874">
+        <div class="comment_item" id="comment_2186012">
+
+    <span class="parent_id" data-parent_id="2185874"></span>
+    <div class="comment_body ">
+        <div class="info  is_topic_starter  " rel="2186012">
+            <div class="folding-dot-holder"><div class="folding-dot"></div></div>
+            <div id="voting_2186012" class="voting   ">
+                <span class="minus" title="Срок голосования истек "></span>
+                <span class="plus" title="Срок голосования истек "></span>
+                <div class="mark  ">
+                    <span class="score" title="Всего 0: ↑0 и ↓0">0</span>
+                </div>
+            </div>
+            <a href="http://habrahabr.ru/users/SilenceAndy/" class="avatar"><img src="Riak%20%E2%80%94%20%D0%B2%D0%B5%D0%B1-%D0%BE%D1%80%D0%B8%D0%B5%D0%BD%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%BD%D0%B0%D1%8F%20%D1%81%D0%B8%D1%81%D1%82%D0%B5%D0%BC%D0%B0%20%D1%85%D1%80%D0%B0%D0%BD%D0%B5%D0%BD%D0%B8%D1%8F%20%D0%B4%D0%B0%D0%BD%D0%BD%D1%8B%D1%85%20_%20%D0%A5%D0%B0%D0%B1%D1%80%D0%B0%D1%85%D0%B0%D0%B1%D1%80_files/3253f9c4b722ddde930a380f47f7a417_small.png" alt=""></a>
+            <a href="http://habrahabr.ru/users/SilenceAndy/" class="username">SilenceAndy</a>
+            <time>16 ноября 2009 в 17:35</time>
+
+            <a href="#comment_2186012" class="link_to_comment">#</a>
+            
+                    <a href="#" class="favorite add" onclick="return comments_add_to_favorite(this, '3', 2186012 )" title="В избранное"></a>
+                <div class="show_tree" data-id="2186012" data-parent_id="2185874" title="Показать ветку комментариев">↵</div>
+                <a href="#comment_2185874" data-id="2186012" data-parent_id="2185874" class="to_parent">↑</a>
+            <span class="to_chidren"></span>
+            <div class="clear"></div>
+        </div>
+        <div class="message html_format ">
+            Нет, в начале есть фраза: <i>«Riak — это документно-ориентированная база данных.»</i>
+ Суть в том, что вы можете сами выбирать как использовать систему. Можно
+ как key-value хранилище, а можете как документно-ориентированную базу 
+данных (<i>основных баз такого типа на данный момент 3 — Riak, CouchDB и MongoDB</i>).
+        </div>
+        <div class="reply_form_placeholder"></div>
+        <div class="reply">
+		            <a href="#reply" class="reply_link" onclick="return comment_show_reply_form(2186012 )">ответить</a>
+            
+        </div>
+    </div>
+
+    <div class="reply_comments" id="reply_comments_2186012">
+        <div class="comment_item" id="comment_2186311">
+
+    <span class="parent_id" data-parent_id="2186012"></span>
+    <div class="comment_body ">
+        <div class="author_banned">НЛО прилетело и опубликовало эту надпись здесь</div>
+    </div>
+
+    <div class="reply_comments" id="reply_comments_2186311">
+    </div>
+</div>
+
+    </div>
+</div>
+
+    </div>
+</div>
+
+            <div class="comment_item" id="comment_2186358">
+
+    <span class="parent_id" data-parent_id="0"></span>
+    <div class="comment_body ">
+        <div class="info  is_topic_starter  " rel="2186358">
+            <div class="folding-dot-holder"><div class="folding-dot"></div></div>
+            <div id="voting_2186358" class="voting   ">
+                <span class="minus" title="Срок голосования истек "></span>
+                <span class="plus" title="Срок голосования истек "></span>
+                <div class="mark  ">
+                    <span class="score" title="Всего 0: ↑0 и ↓0">0</span>
+                </div>
+            </div>
+            <a href="http://habrahabr.ru/users/SilenceAndy/" class="avatar"><img src="Riak%20%E2%80%94%20%D0%B2%D0%B5%D0%B1-%D0%BE%D1%80%D0%B8%D0%B5%D0%BD%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%BD%D0%B0%D1%8F%20%D1%81%D0%B8%D1%81%D1%82%D0%B5%D0%BC%D0%B0%20%D1%85%D1%80%D0%B0%D0%BD%D0%B5%D0%BD%D0%B8%D1%8F%20%D0%B4%D0%B0%D0%BD%D0%BD%D1%8B%D1%85%20_%20%D0%A5%D0%B0%D0%B1%D1%80%D0%B0%D1%85%D0%B0%D0%B1%D1%80_files/3253f9c4b722ddde930a380f47f7a417_small.png" alt=""></a>
+            <a href="http://habrahabr.ru/users/SilenceAndy/" class="username">SilenceAndy</a>
+            <time>16 ноября 2009 в 19:25</time>
+
+            <a href="#comment_2186358" class="link_to_comment">#</a>
+            
+                    <a href="#" class="favorite add" onclick="return comments_add_to_favorite(this, '3', 2186358 )" title="В избранное"></a>
+            <span class="to_chidren"></span>
+            <div class="clear"></div>
+        </div>
+        <div class="message html_format ">
+            Нет, я именно имею ввиду <a href="http://en.wikipedia.org/wiki/Document-oriented_database">документо-ориентированную базу данных</a>.<br>
+<br>
+Тут я описал базовый функционал. На сайте разработчиков есть <a href="http://www.basho.com/enterpriseds.html">список</a> всех фичерсов системы.<br>
+<br>
+Насчет сравнения, думаю написать в следующей статье перевод интересного сравнения всех NoSQL систем.
+        </div>
+        <div class="reply_form_placeholder"></div>
+        <div class="reply">
+		            <a href="#reply" class="reply_link" onclick="return comment_show_reply_form(2186358 )">ответить</a>
+            
+        </div>
+    </div>
+
+    <div class="reply_comments" id="reply_comments_2186358">
+        <div class="comment_item" id="comment_2187153">
+
+    <span class="parent_id" data-parent_id="2186358"></span>
+    <div class="comment_body ">
+        <div class="author_banned">НЛО прилетело и опубликовало эту надпись здесь</div>
+    </div>
+
+    <div class="reply_comments" id="reply_comments_2187153">
+    </div>
+</div>
+
+    </div>
+</div>
+
+            <div class="comment_item" id="comment_2187289">
+
+    <span class="parent_id" data-parent_id="0"></span>
+    <div class="comment_body ">
+        <div class="info  " rel="2187289">
+            <div class="folding-dot-holder"><div class="folding-dot"></div></div>
+            <div id="voting_2187289" class="voting   ">
+                <span class="minus" title="Срок голосования истек "></span>
+                <span class="plus" title="Срок голосования истек "></span>
+                <div class="mark  ">
+                    <span class="score" title="Всего 0: ↑0 и ↓0">0</span>
+                </div>
+            </div>
+            <a href="http://habrahabr.ru/users/davojan/" class="avatar"><img src="Riak%20%E2%80%94%20%D0%B2%D0%B5%D0%B1-%D0%BE%D1%80%D0%B8%D0%B5%D0%BD%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%BD%D0%B0%D1%8F%20%D1%81%D0%B8%D1%81%D1%82%D0%B5%D0%BC%D0%B0%20%D1%85%D1%80%D0%B0%D0%BD%D0%B5%D0%BD%D0%B8%D1%8F%20%D0%B4%D0%B0%D0%BD%D0%BD%D1%8B%D1%85%20_%20%D0%A5%D0%B0%D0%B1%D1%80%D0%B0%D1%85%D0%B0%D0%B1%D1%80_files/f3323eb1a35010c6585592c0d3384f62_small.jpg" alt=""></a>
+            <a href="http://habrahabr.ru/users/davojan/" class="username">davojan</a>
+            <time>17 ноября 2009 в 00:53</time>
+
+            <a href="#comment_2187289" class="link_to_comment">#</a>
+            
+                    <a href="#" class="favorite add" onclick="return comments_add_to_favorite(this, '3', 2187289 )" title="В избранное"></a>
+            <span class="to_chidren"></span>
+            <div class="clear"></div>
+        </div>
+        <div class="message html_format ">
+            Я что-то не до конца понял про репликацию. В списке фич есть
+ такая строчка «Masterless multi-site replication» для 
+Enterprise-версии. Разве репликация не предполагается самим принципом, 
+который вы описали (N, R и W)? Или это что-то другое?<br>
+<br>
+И ещё: сколько стоит Enterprise-версия или хотя бы от чего зависит цена?
+        </div>
+        <div class="reply_form_placeholder"></div>
+        <div class="reply">
+		            <a href="#reply" class="reply_link" onclick="return comment_show_reply_form(2187289 )">ответить</a>
+            
+        </div>
+    </div>
+
+    <div class="reply_comments" id="reply_comments_2187289">
+        <div class="comment_item" id="comment_2188018">
+
+    <span class="parent_id" data-parent_id="2187289"></span>
+    <div class="comment_body ">
+        <div class="info  is_topic_starter  " rel="2188018">
+            <div class="folding-dot-holder"><div class="folding-dot"></div></div>
+            <div id="voting_2188018" class="voting   ">
+                <span class="minus" title="Срок голосования истек "></span>
+                <span class="plus" title="Срок голосования истек "></span>
+                <div class="mark  ">
+                    <span class="score" title="Всего 0: ↑0 и ↓0">0</span>
+                </div>
+            </div>
+            <a href="http://habrahabr.ru/users/SilenceAndy/" class="avatar"><img src="Riak%20%E2%80%94%20%D0%B2%D0%B5%D0%B1-%D0%BE%D1%80%D0%B8%D0%B5%D0%BD%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%BD%D0%B0%D1%8F%20%D1%81%D0%B8%D1%81%D1%82%D0%B5%D0%BC%D0%B0%20%D1%85%D1%80%D0%B0%D0%BD%D0%B5%D0%BD%D0%B8%D1%8F%20%D0%B4%D0%B0%D0%BD%D0%BD%D1%8B%D1%85%20_%20%D0%A5%D0%B0%D0%B1%D1%80%D0%B0%D1%85%D0%B0%D0%B1%D1%80_files/3253f9c4b722ddde930a380f47f7a417_small.png" alt=""></a>
+            <a href="http://habrahabr.ru/users/SilenceAndy/" class="username">SilenceAndy</a>
+            <time>17 ноября 2009 в 11:21</time>
+
+            <a href="#comment_2188018" class="link_to_comment">#</a>
+            
+                    <a href="#" class="favorite add" onclick="return comments_add_to_favorite(this, '3', 2188018 )" title="В избранное"></a>
+                <div class="show_tree" data-id="2188018" data-parent_id="2187289" title="Показать ветку комментариев">↵</div>
+                <a href="#comment_2187289" data-id="2188018" data-parent_id="2187289" class="to_parent">↑</a>
+            <span class="to_chidren"></span>
+            <div class="clear"></div>
+        </div>
+        <div class="message html_format ">
+            <blockquote>Разве репликация не предполагается самим принципом, который вы описали (N, R и W)?</blockquote><br>
+Это репликация внутри кластера, в Enterprise версии есть поддержка <a href="http://www.basho.com/replication.html">межкластерной репликации</a> данных. Это в основном нужно если кластеры в разных гео зонах.<br>
+<br>
+<blockquote>сколько стоит Enterprise-версия или хотя бы от чего зависит цена?</blockquote><br>
+Честно скажу, этого я не знаю.
+        </div>
+        <div class="reply_form_placeholder"></div>
+        <div class="reply">
+		            <a href="#reply" class="reply_link" onclick="return comment_show_reply_form(2188018 )">ответить</a>
+            
+        </div>
+    </div>
+
+    <div class="reply_comments" id="reply_comments_2188018">
+    </div>
+</div>
+
+    </div>
+</div>
+
+            <div class="comment_item" id="comment_2189532">
+
+    <span class="parent_id" data-parent_id="0"></span>
+    <div class="comment_body ">
+        <div class="info  " rel="2189532">
+            <div class="folding-dot-holder"><div class="folding-dot"></div></div>
+            <div id="voting_2189532" class="voting   ">
+                <span class="minus" title="Срок голосования истек "></span>
+                <span class="plus" title="Срок голосования истек "></span>
+                <div class="mark positive ">
+                    <span class="score" title="Всего 1: ↑1 и ↓0">+1</span>
+                </div>
+            </div>
+            <a href="http://habrahabr.ru/users/davojan/" class="avatar"><img src="Riak%20%E2%80%94%20%D0%B2%D0%B5%D0%B1-%D0%BE%D1%80%D0%B8%D0%B5%D0%BD%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%BD%D0%B0%D1%8F%20%D1%81%D0%B8%D1%81%D1%82%D0%B5%D0%BC%D0%B0%20%D1%85%D1%80%D0%B0%D0%BD%D0%B5%D0%BD%D0%B8%D1%8F%20%D0%B4%D0%B0%D0%BD%D0%BD%D1%8B%D1%85%20_%20%D0%A5%D0%B0%D0%B1%D1%80%D0%B0%D1%85%D0%B0%D0%B1%D1%80_files/f3323eb1a35010c6585592c0d3384f62_small.jpg" alt=""></a>
+            <a href="http://habrahabr.ru/users/davojan/" class="username">davojan</a>
+            <time>17 ноября 2009 в 18:31</time>
+
+            <a href="#comment_2189532" class="link_to_comment">#</a>
+            
+                    <a href="#" class="favorite add" onclick="return comments_add_to_favorite(this, '3', 2189532 )" title="В избранное"></a>
+            <span class="to_chidren"></span>
+            <div class="clear"></div>
+        </div>
+        <div class="message html_format ">
+            В таком случае другой вопрос: схема обеспечения целостности 
+данных, описанная в топике, подразумевала репликацию внутри кластера или
+ платную межкластерную репликацию? Просто вы оперировали как раз 
+географически удалёнными узлами.
+        </div>
+        <div class="reply_form_placeholder"></div>
+        <div class="reply">
+		            <a href="#reply" class="reply_link" onclick="return comment_show_reply_form(2189532 )">ответить</a>
+            
+        </div>
+    </div>
+
+    <div class="reply_comments" id="reply_comments_2189532">
+        <div class="comment_item" id="comment_2189923">
+
+    <span class="parent_id" data-parent_id="2189532"></span>
+    <div class="comment_body ">
+        <div class="info  is_topic_starter  " rel="2189923">
+            <div class="folding-dot-holder"><div class="folding-dot"></div></div>
+            <div id="voting_2189923" class="voting   ">
+                <span class="minus" title="Срок голосования истек "></span>
+                <span class="plus" title="Срок голосования истек "></span>
+                <div class="mark  ">
+                    <span class="score" title="Всего 0: ↑0 и ↓0">0</span>
+                </div>
+            </div>
+            <a href="http://habrahabr.ru/users/SilenceAndy/" class="avatar"><img src="Riak%20%E2%80%94%20%D0%B2%D0%B5%D0%B1-%D0%BE%D1%80%D0%B8%D0%B5%D0%BD%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%BD%D0%B0%D1%8F%20%D1%81%D0%B8%D1%81%D1%82%D0%B5%D0%BC%D0%B0%20%D1%85%D1%80%D0%B0%D0%BD%D0%B5%D0%BD%D0%B8%D1%8F%20%D0%B4%D0%B0%D0%BD%D0%BD%D1%8B%D1%85%20_%20%D0%A5%D0%B0%D0%B1%D1%80%D0%B0%D1%85%D0%B0%D0%B1%D1%80_files/3253f9c4b722ddde930a380f47f7a417_small.png" alt=""></a>
+            <a href="http://habrahabr.ru/users/SilenceAndy/" class="username">SilenceAndy</a>
+            <time>17 ноября 2009 в 20:16</time>
+
+            <a href="#comment_2189923" class="link_to_comment">#</a>
+            
+                    <a href="#" class="favorite add" onclick="return comments_add_to_favorite(this, '3', 2189923 )" title="В избранное"></a>
+                <div class="show_tree" data-id="2189923" data-parent_id="2189532" title="Показать ветку комментариев">↵</div>
+                <a href="#comment_2189532" data-id="2189923" data-parent_id="2189532" class="to_parent">↑</a>
+            <span class="to_chidren"></span>
+            <div class="clear"></div>
+        </div>
+        <div class="message html_format ">
+            В статье шла речь о целостности данных внутри кластера. 
+Межкластерная репликация как пишут сам разработчики нужна в случае если 
+вы хотите сделать несколько кластеров read-only (простейший пример CDN) 
+или для бекапов.<br>
+<br>
+
+        </div>
+        <div class="reply_form_placeholder"></div>
+        <div class="reply">
+		            <a href="#reply" class="reply_link" onclick="return comment_show_reply_form(2189923 )">ответить</a>
+            
+        </div>
+    </div>
+
+    <div class="reply_comments" id="reply_comments_2189923">
+        <div class="comment_item" id="comment_2191716">
+
+    <span class="parent_id" data-parent_id="2189923"></span>
+    <div class="comment_body ">
+        <div class="info  " rel="2191716">
+            <div class="folding-dot-holder"><div class="folding-dot"></div></div>
+            <div id="voting_2191716" class="voting   ">
+                <span class="minus" title="Срок голосования истек "></span>
+                <span class="plus" title="Срок голосования истек "></span>
+                <div class="mark  ">
+                    <span class="score" title="Всего 0: ↑0 и ↓0">0</span>
+                </div>
+            </div>
+            <a href="http://habrahabr.ru/users/davojan/" class="avatar"><img src="Riak%20%E2%80%94%20%D0%B2%D0%B5%D0%B1-%D0%BE%D1%80%D0%B8%D0%B5%D0%BD%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%BD%D0%B0%D1%8F%20%D1%81%D0%B8%D1%81%D1%82%D0%B5%D0%BC%D0%B0%20%D1%85%D1%80%D0%B0%D0%BD%D0%B5%D0%BD%D0%B8%D1%8F%20%D0%B4%D0%B0%D0%BD%D0%BD%D1%8B%D1%85%20_%20%D0%A5%D0%B0%D0%B1%D1%80%D0%B0%D1%85%D0%B0%D0%B1%D1%80_files/f3323eb1a35010c6585592c0d3384f62_small.jpg" alt=""></a>
+            <a href="http://habrahabr.ru/users/davojan/" class="username">davojan</a>
+            <time>18 ноября 2009 в 11:46</time>
+
+            <a href="#comment_2191716" class="link_to_comment">#</a>
+            
+                    <a href="#" class="favorite add" onclick="return comments_add_to_favorite(this, '3', 2191716 )" title="В избранное"></a>
+                <div class="show_tree" data-id="2191716" data-parent_id="2189923" title="Показать ветку комментариев">↵</div>
+                <a href="#comment_2189923" data-id="2191716" data-parent_id="2189923" class="to_parent">↑</a>
+            <span class="to_chidren"></span>
+            <div class="clear"></div>
+        </div>
+        <div class="message html_format ">
+            Т.е. получается, что можно настроить кластер так?: разделяем
+ узлы на две половинки, одну половинка находится в датацентре A, другая —
+ в датацентре B, и говорим riak'у, что он должен сделать так, чтобы на 
+обоих половинках были полные данные? Можно?<br>
+<br>
+Если можно, то тогда непонятно, зачем нужна межкластерная репликация, 
+если ту же функциональность можно обеспечечить и средствами одного 
+кластера и бесплатно (просто не писать в одну из половинок).
+        </div>
+        <div class="reply_form_placeholder"></div>
+        <div class="reply">
+		            <a href="#reply" class="reply_link" onclick="return comment_show_reply_form(2191716 )">ответить</a>
+            
+        </div>
+    </div>
+
+    <div class="reply_comments" id="reply_comments_2191716">
+        <div class="comment_item" id="comment_2194609">
+
+    <span class="parent_id" data-parent_id="2191716"></span>
+    <div class="comment_body ">
+        <div class="info  is_topic_starter  " rel="2194609">
+            <div class="folding-dot-holder"><div class="folding-dot"></div></div>
+            <div id="voting_2194609" class="voting   ">
+                <span class="minus" title="Срок голосования истек "></span>
+                <span class="plus" title="Срок голосования истек "></span>
+                <div class="mark  ">
+                    <span class="score" title="Всего 0: ↑0 и ↓0">0</span>
+                </div>
+            </div>
+            <a href="http://habrahabr.ru/users/SilenceAndy/" class="avatar"><img src="Riak%20%E2%80%94%20%D0%B2%D0%B5%D0%B1-%D0%BE%D1%80%D0%B8%D0%B5%D0%BD%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%BD%D0%B0%D1%8F%20%D1%81%D0%B8%D1%81%D1%82%D0%B5%D0%BC%D0%B0%20%D1%85%D1%80%D0%B0%D0%BD%D0%B5%D0%BD%D0%B8%D1%8F%20%D0%B4%D0%B0%D0%BD%D0%BD%D1%8B%D1%85%20_%20%D0%A5%D0%B0%D0%B1%D1%80%D0%B0%D1%85%D0%B0%D0%B1%D1%80_files/3253f9c4b722ddde930a380f47f7a417_small.png" alt=""></a>
+            <a href="http://habrahabr.ru/users/SilenceAndy/" class="username">SilenceAndy</a>
+            <time>19 ноября 2009 в 01:15</time>
+
+            <a href="#comment_2194609" class="link_to_comment">#</a>
+            
+                    <a href="#" class="favorite add" onclick="return comments_add_to_favorite(this, '3', 2194609 )" title="В избранное"></a>
+                <div class="show_tree" data-id="2194609" data-parent_id="2191716" title="Показать ветку комментариев">↵</div>
+                <a href="#comment_2191716" data-id="2194609" data-parent_id="2191716" class="to_parent">↑</a>
+            <span class="to_chidren"></span>
+            <div class="clear"></div>
+        </div>
+        <div class="message html_format ">
+            Конечно можно. <br>
+<br>
+Вот простейший пример когда это нужно: у вас есть 2 кластера — продакшен
+ и деплоймент. В продакшене хранятся и накапливаются данные используемые
+ для обработки (скажем сторонние клиенты предоставляют вам данные). При 
+разработке вам нужны эти данные, для тестов или для проверки, но вы сами
+ понимаете делать это с данными находящимися в продакшене вам никто не 
+даст, и правильным решением тут выступает именно репликация продакшен 
+кластера на деплоймент.
+        </div>
+        <div class="reply_form_placeholder"></div>
+        <div class="reply">
+		            <a href="#reply" class="reply_link" onclick="return comment_show_reply_form(2194609 )">ответить</a>
+            
+        </div>
+    </div>
+
+    <div class="reply_comments" id="reply_comments_2194609">
+    </div>
+</div>
+
+    </div>
+</div>
+
+    </div>
+</div>
+
+    </div>
+</div>
+
+            <div class="comment_item" id="comment_2189728">
+
+    <span class="parent_id" data-parent_id="0"></span>
+    <div class="comment_body ">
+        <div class="info  " rel="2189728">
+            <div class="folding-dot-holder"><div class="folding-dot"></div></div>
+            <div id="voting_2189728" class="voting   ">
+                <span class="minus" title="Срок голосования истек "></span>
+                <span class="plus" title="Срок голосования истек "></span>
+                <div class="mark positive ">
+                    <span class="score" title="Всего 1: ↑1 и ↓0">+1</span>
+                </div>
+            </div>
+            <a href="http://habrahabr.ru/users/fisher/" class="avatar"><img src="Riak%20%E2%80%94%20%D0%B2%D0%B5%D0%B1-%D0%BE%D1%80%D0%B8%D0%B5%D0%BD%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%BD%D0%B0%D1%8F%20%D1%81%D0%B8%D1%81%D1%82%D0%B5%D0%BC%D0%B0%20%D1%85%D1%80%D0%B0%D0%BD%D0%B5%D0%BD%D0%B8%D1%8F%20%D0%B4%D0%B0%D0%BD%D0%BD%D1%8B%D1%85%20_%20%D0%A5%D0%B0%D0%B1%D1%80%D0%B0%D1%85%D0%B0%D0%B1%D1%80_files/cdc113b57f7e06067e78bd4fb52bd3a4_small.jpg" alt=""></a>
+            <a href="http://habrahabr.ru/users/fisher/" class="username">fisher</a>
+            <time>17 ноября 2009 в 19:21</time>
+
+            <a href="#comment_2189728" class="link_to_comment">#</a>
+            
+                    <a href="#" class="favorite add" onclick="return comments_add_to_favorite(this, '3', 2189728 )" title="В избранное"></a>
+            <span class="to_chidren"></span>
+            <div class="clear"></div>
+        </div>
+        <div class="message html_format ">
+            хорошая статья и правильный рекрутинг, так держать! ;)
+        </div>
+        <div class="reply_form_placeholder"></div>
+        <div class="reply">
+		            <a href="#reply" class="reply_link" onclick="return comment_show_reply_form(2189728 )">ответить</a>
+            
+        </div>
+    </div>
+
+    <div class="reply_comments" id="reply_comments_2189728">
+        <div class="comment_item" id="comment_2189925">
+
+    <span class="parent_id" data-parent_id="2189728"></span>
+    <div class="comment_body ">
+        <div class="info  is_topic_starter  " rel="2189925">
+            <div class="folding-dot-holder"><div class="folding-dot"></div></div>
+            <div id="voting_2189925" class="voting   ">
+                <span class="minus" title="Срок голосования истек "></span>
+                <span class="plus" title="Срок голосования истек "></span>
+                <div class="mark  ">
+                    <span class="score" title="Всего 0: ↑0 и ↓0">0</span>
+                </div>
+            </div>
+            <a href="http://habrahabr.ru/users/SilenceAndy/" class="avatar"><img src="Riak%20%E2%80%94%20%D0%B2%D0%B5%D0%B1-%D0%BE%D1%80%D0%B8%D0%B5%D0%BD%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%BD%D0%B0%D1%8F%20%D1%81%D0%B8%D1%81%D1%82%D0%B5%D0%BC%D0%B0%20%D1%85%D1%80%D0%B0%D0%BD%D0%B5%D0%BD%D0%B8%D1%8F%20%D0%B4%D0%B0%D0%BD%D0%BD%D1%8B%D1%85%20_%20%D0%A5%D0%B0%D0%B1%D1%80%D0%B0%D1%85%D0%B0%D0%B1%D1%80_files/3253f9c4b722ddde930a380f47f7a417_small.png" alt=""></a>
+            <a href="http://habrahabr.ru/users/SilenceAndy/" class="username">SilenceAndy</a>
+            <time>17 ноября 2009 в 20:17</time>
+
+            <a href="#comment_2189925" class="link_to_comment">#</a>
+            
+                    <a href="#" class="favorite add" onclick="return comments_add_to_favorite(this, '3', 2189925 )" title="В избранное"></a>
+                <div class="show_tree" data-id="2189925" data-parent_id="2189728" title="Показать ветку комментариев">↵</div>
+                <a href="#comment_2189728" data-id="2189925" data-parent_id="2189728" class="to_parent">↑</a>
+            <span class="to_chidren"></span>
+            <div class="clear"></div>
+        </div>
+        <div class="message html_format ">
+            Спасибо :)
+        </div>
+        <div class="reply_form_placeholder"></div>
+        <div class="reply">
+		            <a href="#reply" class="reply_link" onclick="return comment_show_reply_form(2189925 )">ответить</a>
+            
+        </div>
+    </div>
+
+    <div class="reply_comments" id="reply_comments_2189925">
+    </div>
+</div>
+
+    </div>
+</div>
+
+            <div class="comment_item" id="comment_2223550">
+
+    <span class="parent_id" data-parent_id="0"></span>
+    <div class="comment_body ">
+        <div class="info  " rel="2223550">
+            <div class="folding-dot-holder"><div class="folding-dot"></div></div>
+            <div id="voting_2223550" class="voting   ">
+                <span class="minus" title="Срок голосования истек "></span>
+                <span class="plus" title="Срок голосования истек "></span>
+                <div class="mark  ">
+                    <span class="score" title="Всего 0: ↑0 и ↓0">0</span>
+                </div>
+            </div>
+            <a href="http://habrahabr.ru/users/anight/" class="avatar"><img src="Riak%20%E2%80%94%20%D0%B2%D0%B5%D0%B1-%D0%BE%D1%80%D0%B8%D0%B5%D0%BD%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%BD%D0%B0%D1%8F%20%D1%81%D0%B8%D1%81%D1%82%D0%B5%D0%BC%D0%B0%20%D1%85%D1%80%D0%B0%D0%BD%D0%B5%D0%BD%D0%B8%D1%8F%20%D0%B4%D0%B0%D0%BD%D0%BD%D1%8B%D1%85%20_%20%D0%A5%D0%B0%D0%B1%D1%80%D0%B0%D1%85%D0%B0%D0%B1%D1%80_files/7644b66218d574945fa0f79caf0f5404_small.jpg" alt=""></a>
+            <a href="http://habrahabr.ru/users/anight/" class="username">anight</a>
+            <time>26 ноября 2009 в 21:18</time>
+
+            <a href="#comment_2223550" class="link_to_comment">#</a>
+            
+                    <a href="#" class="favorite add" onclick="return comments_add_to_favorite(this, '3', 2223550 )" title="В избранное"></a>
+            <span class="to_chidren"></span>
+            <div class="clear"></div>
+        </div>
+        <div class="message html_format ">
+            &gt; Однако вы разрабатываете аппликации<br>
+<br>
+Даже промпт перевел бы «приложения»
+        </div>
+        <div class="reply_form_placeholder"></div>
+        <div class="reply">
+		            <a href="#reply" class="reply_link" onclick="return comment_show_reply_form(2223550 )">ответить</a>
+            
+        </div>
+    </div>
+
+    <div class="reply_comments" id="reply_comments_2223550">
+    </div>
+</div>
+
+    </div>
+
+
+  					<div class="comments_form" id="comments_form_placeholder">
+				<h2 class="title"><a href="#" onclick="return comment_show_form()">Написать комментарий</a></h2>
+				<form action="/json/comment/" method="post" id="comments_form">
+
+				<div id="preview_placeholder" class="hidden html_format"></div>
+
+				<input name="ts" value="1432114120" type="hidden">
+				<input name="tt" value="2" type="hidden">
+				<input name="ti" value="75202" type="hidden">  
+				<input name="comment_id" value="0" type="hidden">
+				<input name="parent_id" value="0" type="hidden">
+
+
+				<div class="editor">
+						<div class="panel">
+							<div class="wysiwyg_wrapper">
+	<div class="can_use_html"><a href="#html_help" onclick="$(this).parents('.wysiwyg_wrapper').find('.help_holder').toggleClass('hidden');return false;">html-теги</a></div>
+	<a class="btn" title="Жирный" onclick="return habraWYG.insertTagWithText(this, 'b');" href="#" tabindex="-1"><span class="g-icon g-icon-bold"></span></a>
+	<a class="btn" title="Курсив" onclick="return habraWYG.insertTagWithText(this, 'i');" href="#" tabindex="-1"><span class="g-icon g-icon-italic"></span></a>
+	<a class="btn" title="Подчёркнутый" onclick="return habraWYG.insertTagWithText(this, 'u');" href="#" tabindex="-1"><span class="g-icon g-icon-underline"></span></a>
+	<a class="btn" title="Зачёркнутый" onclick="return habraWYG.insertTagWithText(this, 's');" href="#" tabindex="-1"><span class="g-icon g-icon-strike"></span></a>
+	<a class="btn" title="Цитата" onclick="return habraWYG.insertTagWithText(this, 'blockquote');" href="#" tabindex="-1"><span class="g-icon g-icon-quote"></span></a>
+	<div class="btn btn-dropdown">
+		<span class="g-icon g-icon-list"></span>
+		<select name="list" onchange="habraWYG.insertList(this);" onclick="return false;" tabindex="-1">
+			<option selected="selected" value="" class="title">Список:</option>
+			<option value="ul">UL LI</option>
+			<option value="ol">OL LI</option>
+		</select>
+	</div>
+	<a class="btn" title="Пользователь" onclick="return habraWYG.insertUser(this);" href="#" tabindex="-1"><span class="g-icon g-icon-users"></span></a>
+	<a class="btn" title="Вставить ссылку" onclick="return habraWYG.insertLink(this);" href="#" tabindex="-1"><span class="g-icon g-icon-link"></span></a>
+	<a class="btn" title="Вставить изображение" onclick="return habraWYG.insertImage(this);" href="#" tabindex="-1"><span class="g-icon g-icon-images"></span></a>
+	<a class="btn" title="Вставить видео" onclick="return habraWYG.insertTagWithText(this, 'video');" href="#" tabindex="-1"><span class="g-icon g-icon-video"></span></a>
+	<a class="btn" title="Вставить спойлер" onclick="return habraWYG.insertSpoiler(this);" href="#" tabindex="-1"><span class="g-icon g-icon-spoiler"></span></a>
+	<div class="btn btn-dropdown">
+		<span class="g-icon g-icon-code"></span>
+		<select class="with-title" name="source" title="Используйте этот тег для блочных элементов" onchange="habraWYG.insertSource(this);" tabindex="-1">
+			<option selected="selected" value="" class="title">Source:</option>
+			<option value="bash">Bash</option>
+			<option value="cs">C#</option>
+			<option value="cpp">C++</option>
+			<option value="css">CSS</option>
+			<option value="diff">Diff</option>
+			<option value="html">HTML</option>
+			<option value="xml">XML</option>
+			<option value="java">Java</option>
+			<option value="javascript">JavaScript</option>
+			<option value="php">PHP</option>
+			<option value="perl">Perl</option>
+			<option value="python">Python</option>
+			<option value="ruby">Ruby</option>
+			<option value="sql">SQL</option>
+			<option value="1c">1C</option>
+			<option value="actionscript">ActionScript</option>
+			<option value="apache">Apache</option>
+			<option value="axapta">Axapta</option>
+			<option value="cmake">CMake</option>
+			<option value="coffeescript">CoffeeScript</option>
+			<option value="dos">DOS</option>
+			<option value="delphi">Delphi</option>
+			<option value="django">Django</option>
+			<option value="erlang">Erlang</option>
+			<option value="erlang_repl">Erlang REPL</option>
+      <option value="glsl">GLSL</option>
+			<option value="go">Go</option>
+			<option value="haskell">Haskell</option>
+			<option value="lisp">Lisp</option>
+			<option value="lua">Lua</option>
+			<option value="mel">MEL</option>
+			<option value="markdown">Markdown</option>
+			<option value="matlab">Matlab</option>
+			<option value="nginx">Nginx</option>
+			<option value="objectivec">Objective C</option>
+			<option value="rust">Rust</option>
+			<option value="scala">Scala</option>
+			<option value="smalltalk">Smalltalk</option>
+			<option value="tex">TeX</option>
+			<option value="vbscript">VBScript</option>
+			<option value="vhdl">VHDL</option>
+			<option value="vala">Vala</option>
+		</select>
+	</div>
+	
+
+	<div class="clear"></div>
+
+		<div class="help_holder hidden">
+          <h4>Теги Хабрахабра</h4>
+					<dl class="block_semi">
+						<dt>&lt;habracut&gt;</dt>
+						<dd class="description">Используется только в текстах публикаций, скрывает под кат часть текста, следующую за тегом (будет написано «Читать дальше»).</dd>
+					</dl>
+					<dl class="block_semi">
+	
+						<dt>&lt;habracut text="Подробности" /&gt;</dt>
+						<dd class="description">Так можно превратить надпись «Читать дальше» в любой текст.</dd>
+					</dl>
+					<dl class="block_semi">
+						<dt>&lt;source lang="Язык"&gt;&lt;/source&gt;</dt>
+						<dd class="description">Подсвечивает исходный код (на выбор: 
+						Bash,  C#,  C++,  CSS,  Diff,  HTML, XML,  Ini,  Java,  
+JavaScript,  PHP,  Perl,  Python,  Ruby,  SQL,
+						1C,  AVR Assembler,  ActionScript,  Apache,  Axapta,  CMake,  
+CoffeeScript,  DOS, .bat,  Delphi,  Django,  Erlang,  Erlang REPL,  Go, 
+ Haskell,  Lisp,  Lua,  MEL,  Markdown,  Matlab,  Nginx,  Objective C,  
+Parser3,  Python profile,  RenderMan,  Rust,  Scala,  Smalltalk,  TeX,  
+VBScript,  VHDL,  Vala    
+						).</dd>
+					</dl>
+					<dl class="block_semi">
+						<dt>&lt;video&gt;http://...&lt;/video&gt;</dt>
+	
+						<dd class="description">Добавляет в публикацию видео со следующих хостингов: YouTube, RuTube, Google video, Vimeo, Я.Видео, Ivideon и Видео@Mail.ru<br>Вставляйте между тегами только прямую ссылку на видеоролик.</dd>
+					</dl>
+
+					<dl class="block_semi">
+						<dt>&lt;twitter&gt;http://...&lt;/twitter&gt;</dt>
+
+						<dd class="description">Добавляет в публикацию твит. Необходимо 
+указать полную ссылку на твит. Например: 
+&lt;twitter&gt;https://twitter.com/habrahabr/status/522334394175213568&lt;/twitter&gt;</dd>
+					</dl>
+
+					<dl class="block_semi">
+						<dt>&lt;slideshow&gt;http://...&lt;/slideshow&gt;</dt>						
+	
+						<dd class="description">Вставка интерактивного слайд-шоу. Пока поддерживается только сервис Slideshare.net.</dd>
+					</dl>
+
+					<dl class="block_semi">
+						<dt>@username</dt>
+	
+						<dd class="description">
+							Выводит имя пользователя в тексте и отправляет пользователю 
+уведомление о том, что его упомянули в публикации/комментарии. 
+							Вы можете использовать конструкцию <b>@username</b>, где <b>username</b> — это имя пользователя.
+						</dd>
+					</dl>
+					
+					<dl class="block_semi">
+						<dt>&lt;spoiler title="Заголовок"&gt;Содержимое&lt;/spoiler&gt;</dt>
+	
+						<dd class="description">Вставка спойлера (разворачиваемый блок информации).</dd>
+					</dl>
+					
+					
+					
+					
+					<h4>Стандартные</h4>
+					<table class="wide">
+						<tbody><tr>
+							<td>
+		
+								<dl class="block_semi">
+									<dt>&lt;h1&gt;&lt;/h1&gt;<br>
+										...<br>
+										&lt;h6&gt;&lt;/h6&gt;
+									</dt>
+									<dd class="description">Заголовки разного уровня.</dd>
+								</dl>
+								<dl class="block_semi">
+	
+									<dt>&lt;img src="" /&gt;</dt>
+									<dd class="description">Вставка изображения, в атрибуте src нужно указывать полный путь к изображению. Возможно выравнивание картинки атрибутом align.</dd>
+								</dl>
+								<dl class="block_semi">
+									<dt>&lt;a href="http://..."&gt;Ссылка&lt;/a&gt;</dt>
+	
+									<dd class="description">Вставка ссылки, в атрибуте href указывается желаемый интернет-адрес или якорь (anchor) для навигации по странице.</dd>
+								</dl>								
+								<dl class="block_semi">
+									<dt>&lt;anchor&gt;Example1&lt;/anchor&gt;</dt>
+	
+									<dd class="description">Тег для указания якоря. Для вызова используйте тег вставки ссылок (&lt;a href="#Example1"&gt;Текст&lt;/a&gt;).</dd>
+								</dl>								
+								<dl class="block_semi">
+									<dt>&lt;b&gt;&lt;/b&gt;<br>
+										&lt;strong&gt;&lt;/strong&gt;</dt>
+									<dd class="description">Выделение важного текста, на странице выделяется жирным начертанием.</dd>
+								</dl>
+								<dl class="block_semi">
+	
+									<dt>&lt;i&gt;&lt;/i&gt;<br>
+										&lt;em&gt;&lt;/em&gt;</dt>
+									<dd class="description">Выделение важного текста, на странице выделяется курсивом.</dd>
+								</dl>
+								<dl class="block_semi">
+									<dt>
+										&lt;s&gt;&lt;/s&gt;<br>
+										&lt;strike&gt;&lt;/strike&gt;
+									</dt>
+									<dd class="description">Текст между этими тегами будет отображаться как зачеркнутый.</dd>
+								</dl>
+	
+								<dl class="block_semi">
+									<dt>
+										&lt;u&gt;&lt;/u&gt;
+									</dt>
+									<dd class="description">Текст между этими тегами будет отображаться как подчеркнутый.</dd>
+								</dl>
+	
+								
+							</td>
+							
+							<td width="5%"></td>
+							
+							<td>
+							<dl class="block_semi">
+								<dt>
+									&lt;hr /&gt;
+								</dt>
+								<dd class="description">Тег для вставки горизонтальной линии.</dd>
+							</dl>	
+								<dl class="block_semi">
+									<dt>
+										&lt;blockquote&gt;&lt;/blockquote&gt;
+									</dt>
+									<dd class="description">Используйте этот тег для выделения цитат.</dd>
+	
+								</dl>
+								<dl class="block_semi">
+									<dt>
+										&lt;table&gt;&lt;/table&gt;<br>
+										&lt;th&gt;&lt;/th&gt;<br>
+										&lt;td&gt;&lt;/td&gt;<br>
+	
+										&lt;tr&gt;&lt;/tr&gt;
+									</dt>
+									<dd class="description">Набор тегов для создания таблицы. Тег 
+&lt;td&gt; обозначает ячейку таблицы, тег &lt;th&gt; - ячейку в 
+заголовке, &lt;tr&gt; - строчку таблицы. Все содержимое таблицы 
+помещайте в тег &lt;table&gt;.</dd>
+	
+								</dl>
+								<dl class="block_semi">
+									<dt>
+										&lt;sup&gt;&lt;/sup&gt;<br>
+										&lt;sub&gt;&lt;/sub&gt;
+									</dt>
+									<dd class="description">Текст, заключенный в тег &lt;sup&gt; отображается в виде верхнего индекса, &lt;sub&gt; - в виде нижнего.</dd>
+	
+								</dl>
+								<dl class="block_semi">
+									<dt>
+										&lt;abbr title="" &gt;&lt;/abbr&gt;<br>
+										&lt;acronym title="" &gt;&lt;/acronym&gt;
+									</dt>
+	
+									<dd class="description">Тегом &lt;abbr&gt; выделяется 
+аббревиатура, в атрибуте title указывайте её расшифровку. Используйте 
+тег &lt;acronym&gt; для устоявшихся аббревиатур.</dd>
+								</dl>
+								<dl class="block_semi">
+									<dt>
+										&lt;pre&gt;&lt;/pre&gt;
+	
+									</dt>
+									<dd class="description">Текст в теге &lt;pre&gt; не форматируется автоматически.</dd>
+								</dl>
+								<dl class="block_semi">
+									<dt>
+										&lt;nobr&gt;&lt;/nobr&gt;<br>
+	
+										&lt;br clear="all|left||right" /&gt;
+									</dt>
+									<dd class="description">Текст, помещенный в тег &lt;nobr&gt;, 
+не переносится на странице; для принудительного переноса текста 
+используйте тег &lt;br /&gt;; для аккуратного выравнивания изображений 
+используйте атрибут clear="all|left||right" в теге &lt;br /&gt;.</dd>
+								</dl>
+								
+								<dl class="block_semi">
+									<dt>
+										&lt;ul&gt;&lt;/ul&gt;<br>
+										&lt;li&gt;&lt;/li&gt;
+									</dt>
+									<dd class="description">Ненумерованный список; каждый элемент списка задается тегом &lt;li&gt;, набор элементов списка помещайте в тег &lt;ul&gt;.</dd>
+	
+								</dl>
+								<dl class="block_semi">
+									<dt>
+										&lt;ol&gt;&lt;/ol&gt;<br>
+										&lt;li&gt;&lt;/li&gt;
+									</dt>
+									<dd class="description">Нумерованный список; каждый элемент списка задается тегом &lt;li&gt;, набор элементов списка помещайте в тег &lt;ol&gt;.</dd>
+	
+								</dl>
+							</td>
+						</tr>
+	
+					</tbody></table>
+					
+					<div class="close_html"><a href="#html_help_close" onclick="$(this).parents('.wysiwyg_wrapper').find('.help_holder').toggleClass('hidden');return false;">закрыть</a></div>
+					
+		</div>
+</div>
+						</div>
+						<div class="text-holder">
+						 <textarea cols="30" rows="10" name="text" id="comment_text"></textarea>
+						</div>
+						<span id="error_text" class="error"></span>
+					</div>
+					<div class="buttons">
+						<input class="preview disableble" value="Предпросмотр" disabled="disabled" onclick="comment_preview(this.form, this)" type="button">
+						<input class="submit disableble" value="Написать" disabled="disabled" onclick="comment_send(this.form, this)" type="button">
+						<input class="edit hidden disableble" value="Сохранить" disabled="disabled" onclick="comment_update(this.form, this)" type="button">
+						
+
+						<span class="time_left" title="Оставшееся время редактирования комментария"></span>
+					</div>
+				</form>
+			</div>
+
+
+
+    <div class="block_after_post">
+      
+
+  <div class="live_broadcast">
+    <h2 class="title">Что обсуждают?</h2>
+    <div class="posts_list">
+          <div class="post_item">
+            <span class="bull"></span>
+            <a href="http://habrahabr.ru/post/257121#comments" onclick="if (typeof ga === 'function') { ga('send', 'event', 'tm_block', 'live_broadcast_activity', 'post'); }" class="post_name">Анализ изображений и видео. Сегментация изображений</a>&nbsp;<span class="count">(3)</span>
+          </div>
+          <div class="post_item">
+            <span class="bull"></span>
+            <a href="http://habrahabr.ru/post/257953#comments" onclick="if (typeof ga === 'function') { ga('send', 'event', 'tm_block', 'live_broadcast_activity', 'post'); }" class="post_name">О бытовом заблуждении</a>&nbsp;<span class="count">(382)</span>
+          </div>
+          <div class="post_item">
+            <span class="bull"></span>
+            <a href="http://habrahabr.ru/post/258235#comments" onclick="if (typeof ga === 'function') { ga('send', 'event', 'tm_block', 'live_broadcast_activity', 'post'); }" class="post_name">В продажу поступили ПК и серверы на базе процессоров «Эльбрус-4С»</a>&nbsp;<span class="count">(299)</span>
+          </div>
+          <div class="post_item">
+            <span class="bull"></span>
+            <a href="http://habrahabr.ru/post/256151#comments" onclick="if (typeof ga === 'function') { ga('send', 'event', 'tm_block', 'live_broadcast_activity', 'post'); }" class="post_name">DLang плагин для IntelliJ IDEA (Alpha, EAP, POC)</a>&nbsp;<span class="count">(19)</span>
+          </div>
+          <div class="post_item">
+            <span class="bull"></span>
+            <a href="http://habrahabr.ru/post/258165#comments" onclick="if (typeof ga === 'function') { ga('send', 'event', 'tm_block', 'live_broadcast_activity', 'post'); }" class="post_name">Как мы делаем лэндинги</a>&nbsp;<span class="count">(11)</span>
+          </div>
+          <div class="post_item">
+            <span class="bull"></span>
+            <a href="http://habrahabr.ru/post/257237#comments" onclick="if (typeof ga === 'function') { ga('send', 'event', 'tm_block', 'live_broadcast_activity', 'post'); }" class="post_name">Чего ждать, когда ждешь ребенка: PHP 7, часть 1</a>&nbsp;<span class="count">(85)</span>
+          </div>
+          <div class="post_item">
+            <span class="bull"></span>
+            <a href="http://habrahabr.ru/post/257935#comments" onclick="if (typeof ga === 'function') { ga('send', 'event', 'tm_block', 'live_broadcast_activity', 'post'); }" class="post_name">Всё, что нажито непосильным трудом. Об использовании бесплатной версии Arcserve UDP в быту</a>&nbsp;<span class="count">(25)</span>
+          </div>
+          <div class="post_item">
+            <span class="bull"></span>
+            <a href="http://habrahabr.ru/post/258193#comments" onclick="if (typeof ga === 'function') { ga('send', 'event', 'tm_block', 'live_broadcast_activity', 'post'); }" class="post_name">nanoCAD Plus 7: развитие САПР платформы длиною в год</a>&nbsp;<span class="count">(28)</span>
+          </div>
+          <div class="post_item">
+            <span class="bull"></span>
+            <a href="http://habrahabr.ru/post/257141#comments" onclick="if (typeof ga === 'function') { ga('send', 'event', 'tm_block', 'live_broadcast_activity', 'post'); }" class="post_name">Спящий режим и автономное питание ESP8266</a>&nbsp;<span class="count">(71)</span>
+          </div>
+          <div class="post_item">
+            <span class="bull"></span>
+            <a href="http://habrahabr.ru/post/258139#comments" onclick="if (typeof ga === 'function') { ga('send', 'event', 'tm_block', 'live_broadcast_activity', 'post'); }" class="post_name">Чего ждать, когда ждешь ребенка: PHP 7, часть 2</a>&nbsp;<span class="count">(53)</span>
+          </div>
+    </div>
+  </div>
+
+    </div>
+
+  	
+<form action="/json/favorites/" method="post" id="edit_tags_form" class="hidden">
+  <input name="action" value="add" type="hidden">
+  <input name="ti" value="0" type="hidden">
+  <input name="tt" value="0" type="hidden">
+  <label>Пометьте топик понятными вам метками, если хотите</label>
+  <input autocomplete="off" name="tags_string" class="tags_string" type="text">
+  <div class="description">Метки лучше разделять запятой. Например: <i>общение, социальные сети, myspace.com, подростки, мердок</i></div>
+  <input value="Сохранить" class="submit" type="submit"> или <a href="#" class="close" onclick="return close_edit_tags()">закрыть</a>
+</form>
+
+
+
+  </div>
+  <div class="sidebar_right">
+  			<div class="banner_300x500">
+		<div style="width: 300px; height: 500px; text-align: center; margin: 0px auto;" title="" id="adriver_banner_1863387959"><a href="http://ad.adriver.ru/cgi-bin/click.cgi?sid=176776&amp;ad=490575&amp;bid=3872433&amp;bt=52&amp;bn=1&amp;pz=0&amp;xpid=Cy5xLeJB7SUtXxhP1SCbrrd4iL-ZShvag&amp;ref=http:%2f%2fhabrahabr.ru%2fpost%2f75202%2f&amp;custom=1%3Dnosql%3B4%3D4&amp;rleurl=" onclick="adriver('adriver_banner_1863387959').sendPixel('');" target="_blank"><img src="Riak%20%E2%80%94%20%D0%B2%D0%B5%D0%B1-%D0%BE%D1%80%D0%B8%D0%B5%D0%BD%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%BD%D0%B0%D1%8F%20%D1%81%D0%B8%D1%81%D1%82%D0%B5%D0%BC%D0%B0%20%D1%85%D1%80%D0%B0%D0%BD%D0%B5%D0%BD%D0%B8%D1%8F%20%D0%B4%D0%B0%D0%BD%D0%BD%D1%8B%D1%85%20_%20%D0%A5%D0%B0%D0%B1%D1%80%D0%B0%D1%85%D0%B0%D0%B1%D1%80_files/300x500.png" alt="AdRiver" border="0"></a></div>
+		<script type="text/javascript">
+            function show_bn1_block(name, url){
+                console.log('show' + name);
+                if( typeof(name) !== 'undefined'){
+                    $.get('/html/'+name+'/1432045781/', function(html){
+                        $('#adriver_banner_1863387959').html(html);
+                        if( typeof(url) !== 'undefined'){
+                            $('.'+name+'_inner_banner .block_url').attr('href', url);
+                        }
+                    })
+                }
+            }
+
+
+
+			$(function(){
+
+                // конвертирут кириллицу в cp1251
+                // doc: http://www.adriver.ru/doc/edu-n/pub/settargt/standtrgt/scentrgt/scentrgt.html#9
+				function esc(s){
+                    for(var i=0,l=s.length,r='';i<l;i++){
+                        var c = s.charCodeAt(i);r += String.fromCharCode(c>1039&&c<1104 ? c-848 : c==1105 ? 184 : c==1025 ? 168 : c);
+                    }
+                    return r;
+                }
+
+                var keyword = '';
+
+                if (typeof crtg_content !== 'undefined' && crtg_content) { keyword = crtg_content; }
+                
+                
+
+				var custom = {4:ar_duo1};
+					custom[1] = 'nosql';
+
+                 new adriver("adriver_banner_1863387959", {sid: 176776, bt: 52, bn: 1, custom: custom, keyword: keyword});
+			}());
+
+
+
+            
+		</script>
+	</div>
+
+  		
+  		
+<div style="width: auto; opacity: 1;" class="block daily_best_posts">
+  <div class="title">Популярное за сутки</div>
+  <div class="posts_list">
+      <div class="post_item">
+        
+				
+				
+				
+				
+				
+
+        <a href="http://habrahabr.ru/company/dataart/blog/258301/" onclick="if (typeof ga === 'function') { ga('send', 'event', 'tm_block', 'daily_best_posts', $(this).parents('.daily_best_posts').hasClass('float_block') ? 'float' : 'common'); }" class="post_name">50+ лучших дополнений к Bootstrap</a>
+      </div>
+      <div class="post_item">
+        
+				
+				
+				
+				
+				
+
+        <a href="http://habrahabr.ru/post/258285/" onclick="if (typeof ga === 'function') { ga('send', 'event', 'tm_block', 'daily_best_posts', $(this).parents('.daily_best_posts').hasClass('float_block') ? 'float' : 'common'); }" class="post_name">Что такое TLS</a>
+      </div>
+      <div class="post_item">
+        
+				
+				
+				
+				
+				
+
+        <a href="http://habrahabr.ru/post/258291/" onclick="if (typeof ga === 'function') { ga('send', 'event', 'tm_block', 'daily_best_posts', $(this).parents('.daily_best_posts').hasClass('float_block') ? 'float' : 'common'); }" class="post_name">Лампа-радуга своими руками</a>
+      </div>
+      <div class="post_item">
+        
+				
+				
+				
+				
+				
+
+        <a href="http://habrahabr.ru/company/mailru/blog/258205/" onclick="if (typeof ga === 'function') { ga('send', 'event', 'tm_block', 'daily_best_posts', $(this).parents('.daily_best_posts').hasClass('float_block') ? 'float' : 'common'); }" class="post_name">Elasticsearch — сортируем выдачу руками</a>
+      </div>
+      <div class="post_item">
+        
+				
+				
+				
+				
+				
+
+        <a href="http://habrahabr.ru/company/devconf/blog/258329/" onclick="if (typeof ga === 'function') { ga('send', 'event', 'tm_block', 'daily_best_posts', $(this).parents('.daily_best_posts').hasClass('float_block') ? 'float' : 'common'); }" class="post_name">DevConf 2015: 38 попугаев или как конференция сообществ разработчиков пытается выжить в блокаде импортозамещения</a>
+      </div>
+      <div class="post_item">
+        
+				
+				
+				
+				
+				
+
+        <a href="http://habrahabr.ru/post/258227/" onclick="if (typeof ga === 'function') { ga('send', 'event', 'tm_block', 'daily_best_posts', $(this).parents('.daily_best_posts').hasClass('float_block') ? 'float' : 'common'); }" class="post_name">LFS: Темная сторона силы. Часть 3</a>
+      </div>
+      <div class="post_item">
+        
+				
+				
+				
+				
+				
+
+        <a href="http://habrahabr.ru/company/quickresto/blog/257389/" onclick="if (typeof ga === 'function') { ga('send', 'event', 'tm_block', 'daily_best_posts', $(this).parents('.daily_best_posts').hasClass('float_block') ? 'float' : 'common'); }" class="post_name">Как мы делали облачную систему автоматизации ресторанного бизнеса</a>
+      </div>
+      <div class="post_item">
+        
+				
+				
+				
+				
+				
+
+        <a href="http://habrahabr.ru/post/189660/" onclick="if (typeof ga === 'function') { ga('send', 'event', 'tm_block', 'daily_best_posts', $(this).parents('.daily_best_posts').hasClass('float_block') ? 'float' : 'common'); }" class="post_name">Kivy и Play Store</a>
+      </div>
+      <div class="post_item">
+        
+				
+				
+				
+				
+				
+
+        <a href="http://habrahabr.ru/company/tmru/blog/258281/" onclick="if (typeof ga === 'function') { ga('send', 'event', 'tm_block', 'daily_best_posts', $(this).parents('.daily_best_posts').hasClass('float_block') ? 'float' : 'common'); }" class="post_name">Релиз новой версии WordPress 4.2 Powell и брешь в безопасности</a>
+      </div>
+      <div class="post_item">
+        
+				
+				
+				
+				
+				
+
+        <a href="http://habrahabr.ru/post/258335/" onclick="if (typeof ga === 'function') { ga('send', 'event', 'tm_block', 'daily_best_posts', $(this).parents('.daily_best_posts').hasClass('float_block') ? 'float' : 'common'); }" class="post_name">Уязвимость в KCodes NetUSB в роутерах D-Link, NETGEAR, TP-LINK, Trendnet, ZyXEL и других</a>
+      </div>
+      <div class="post_item">
+        
+				
+				
+				
+				
+				
+
+        <a href="http://habrahabr.ru/company/pentestit/blog/258297/" onclick="if (typeof ga === 'function') { ga('send', 'event', 'tm_block', 'daily_best_posts', $(this).parents('.daily_best_posts').hasClass('float_block') ? 'float' : 'common'); }" class="post_name">Исследование безопасности коммерческих сайтов</a>
+      </div>
+      <div class="post_item">
+        
+				
+				
+				
+				
+				
+
+        <a href="http://habrahabr.ru/company/hp/blog/258303/" onclick="if (typeof ga === 'function') { ga('send', 'event', 'tm_block', 'daily_best_posts', $(this).parents('.daily_best_posts').hasClass('float_block') ? 'float' : 'common'); }" class="post_name">Запуск нагрузочных тестов, сделанных в JMeter при помощи StormRunner Load</a>
+      </div>
+      <div class="post_item">
+        
+				
+				
+				
+				
+				
+
+        <a href="http://habrahabr.ru/company/pechkin/blog/258313/" onclick="if (typeof ga === 'function') { ga('send', 'event', 'tm_block', 'daily_best_posts', $(this).parents('.daily_best_posts').hasClass('float_block') ? 'float' : 'common'); }" class="post_name">Использование media queries в вёрстке email-писем: за и против</a>
+      </div>
+      <div class="post_item">
+        
+				
+				
+				
+				
+				
+
+        <a href="http://habrahabr.ru/company/ringcloud/blog/258311/" onclick="if (typeof ga === 'function') { ga('send', 'event', 'tm_block', 'daily_best_posts', $(this).parents('.daily_best_posts').hasClass('float_block') ? 'float' : 'common'); }" class="post_name">API RingCloud, всё только начинается</a>
+      </div>
+      <div class="post_item">
+        
+				
+				
+				
+				
+				
+
+        <a href="http://habrahabr.ru/company/mailru/blog/257999/" onclick="if (typeof ga === 'function') { ga('send', 'event', 'tm_block', 'daily_best_posts', $(this).parents('.daily_best_posts').hasClass('float_block') ? 'float' : 'common'); }" class="post_name">Внутреннее представление значений в PHP7 (часть 1)</a>
+      </div>
+      <div class="post_item">
+        
+				
+				
+				
+				
+				
+
+        <a href="http://habrahabr.ru/post/258295/" onclick="if (typeof ga === 'function') { ga('send', 'event', 'tm_block', 'daily_best_posts', $(this).parents('.daily_best_posts').hasClass('float_block') ? 'float' : 'common'); }" class="post_name">Анализ связей в проекте своими руками</a>
+      </div>
+      <div class="post_item">
+        
+				
+				
+				
+				
+				
+
+        <a href="http://habrahabr.ru/company/xakep/blog/257895/" onclick="if (typeof ga === 'function') { ga('send', 'event', 'tm_block', 'daily_best_posts', $(this).parents('.daily_best_posts').hasClass('float_block') ? 'float' : 'common'); }" class="post_name">Грустная история забытых символов. Как не сойти с ума при работе с кодировками в C++</a>
+      </div>
+      <div class="post_item">
+        
+				
+				
+				
+				
+				
+
+        <a href="http://habrahabr.ru/post/258155/" onclick="if (typeof ga === 'function') { ga('send', 'event', 'tm_block', 'daily_best_posts', $(this).parents('.daily_best_posts').hasClass('float_block') ? 'float' : 'common'); }" class="post_name">Электронный замок с беспроводным управлением на базе Energia Launchpad</a>
+      </div>
+      <div class="post_item">
+        
+				
+				
+				
+				
+				
+
+        <a href="http://habrahabr.ru/post/258293/" onclick="if (typeof ga === 'function') { ga('send', 'event', 'tm_block', 'daily_best_posts', $(this).parents('.daily_best_posts').hasClass('float_block') ? 'float' : 'common'); }" class="post_name">Object Storage — Ближайшее будущее систем хранения данных</a>
+      </div>
+      <div class="post_item">
+        
+				
+				
+				
+				
+				
+
+        <a href="http://habrahabr.ru/company/e-Legion/blog/258359/" onclick="if (typeof ga === 'function') { ga('send', 'event', 'tm_block', 'daily_best_posts', $(this).parents('.daily_best_posts').hasClass('float_block') ? 'float' : 'common'); }" class="post_name">Конференция MBLT15 уже завтра</a>
+      </div>
+  </div>
+  <div class="all"><a href="http://habrahabr.ru/top/">все лучшие</a></div>
+</div>
+
+	    
+
+<div class="block geektimes_top">
+	<a href="http://geektimes.ru/" data-utm="?utm_source=tm_habrahabr&amp;utm_medium=tm_block&amp;utm_campaign=tm_promo" class="title">Лучшее на Geektimes</a>
+	<div class="posts_list">
+  		<div class="post_item">
+  			<a class="post_name" href="http://geektimes.ru/post/250620/" data-utm="?utm_source=tm_habrahabr&amp;utm_medium=tm_block&amp;utm_campaign=tm_promo">Делаем планшет из ноутбука</a>
+  		</div>
+  		<div class="post_item">
+  			<a class="post_name" href="http://geektimes.ru/post/250668/" data-utm="?utm_source=tm_habrahabr&amp;utm_medium=tm_block&amp;utm_campaign=tm_promo">Пиратская бухта снова переезжает</a>
+  		</div>
+  		<div class="post_item">
+  			<a class="post_name" href="http://geektimes.ru/post/250664/" data-utm="?utm_source=tm_habrahabr&amp;utm_medium=tm_block&amp;utm_campaign=tm_promo">Российские учёные завершили первый этап строительства крупнейшей нейтринной обсерватории на озере Байкал</a>
+  		</div>
+  		<div class="post_item">
+  			<a class="post_name" href="http://geektimes.ru/post/250486/" data-utm="?utm_source=tm_habrahabr&amp;utm_medium=tm_block&amp;utm_campaign=tm_promo">Умные часы Pebble Time: анбоксинг и первые впечатления</a>
+  		</div>
+  		<div class="post_item">
+  			<a class="post_name" href="http://geektimes.ru/post/250632/" data-utm="?utm_source=tm_habrahabr&amp;utm_medium=tm_block&amp;utm_campaign=tm_promo">Обзор сегвея Inmotion R2 и моноколеса Inmotion V3</a>
+  		</div>
+  		<div class="post_item">
+  			<a class="post_name" href="http://geektimes.ru/post/250672/" data-utm="?utm_source=tm_habrahabr&amp;utm_medium=tm_block&amp;utm_campaign=tm_promo">Термостат на левитирующих каплях</a>
+  		</div>
+  		<div class="post_item">
+  			<a class="post_name" href="http://geektimes.ru/post/250628/" data-utm="?utm_source=tm_habrahabr&amp;utm_medium=tm_block&amp;utm_campaign=tm_promo">EFF критикует проект Internet.org</a>
+  		</div>
+  		<div class="post_item">
+  			<a class="post_name" href="http://geektimes.ru/post/250658/" data-utm="?utm_source=tm_habrahabr&amp;utm_medium=tm_block&amp;utm_campaign=tm_promo">В сети появились первые кадры экранизации WarCraft</a>
+  		</div>
+  		<div class="post_item">
+  			<a class="post_name" href="http://geektimes.ru/post/250676/" data-utm="?utm_source=tm_habrahabr&amp;utm_medium=tm_block&amp;utm_campaign=tm_promo">Созданы дрожжи, которые синтезируют морфин из глюкозы</a>
+  		</div>
+  		<div class="post_item">
+  			<a class="post_name" href="http://geektimes.ru/post/250618/" data-utm="?utm_source=tm_habrahabr&amp;utm_medium=tm_block&amp;utm_campaign=tm_promo">Зачем нужно ASIO для аудиофилов?</a>
+  		</div>
+	</div>
+	<div class="all"><a href="http://geektimes.ru/" data-utm="?utm_source=tm_habrahabr&amp;utm_medium=tm_block&amp;utm_campaign=tm_promo">все публикации</a></div>
+</div>
+
+	  	
+
+<div class="block geektimes_top">
+    <a href="http://megamozg.ru/" data-utm="?utm_source=tm_habrahabr&amp;utm_medium=tm_block&amp;utm_campaign=tm_promo" class="title">Лучшее на Мегамозге</a>
+    <div class="posts_list">
+        <div class="post_item">
+            <a class="post_name" href="http://megamozg.ru/post/15554/" data-utm="?utm_source=tm_habrahabr&amp;utm_medium=tm_block&amp;utm_campaign=tm_promo">Советы основателя. Максим Каракулов, сооснователь «Дарудара»</a>
+        </div>
+        <div class="post_item">
+            <a class="post_name" href="http://megamozg.ru/post/15532/" data-utm="?utm_source=tm_habrahabr&amp;utm_medium=tm_block&amp;utm_campaign=tm_promo">Кто зарабатывает на ИТ-аутсорсинге и внедрении 1С?</a>
+        </div>
+        <div class="post_item">
+            <a class="post_name" href="http://megamozg.ru/post/15518/" data-utm="?utm_source=tm_habrahabr&amp;utm_medium=tm_block&amp;utm_campaign=tm_promo">Ваш сайт болен, но у нас есть таблетка</a>
+        </div>
+        <div class="post_item">
+            <a class="post_name" href="http://megamozg.ru/post/15536/" data-utm="?utm_source=tm_habrahabr&amp;utm_medium=tm_block&amp;utm_campaign=tm_promo">Операторы сотовой связи США могут начать блокировать рекламу</a>
+        </div>
+        <div class="post_item">
+            <a class="post_name" href="http://megamozg.ru/post/15440/" data-utm="?utm_source=tm_habrahabr&amp;utm_medium=tm_block&amp;utm_campaign=tm_promo">Управление рок-группой</a>
+        </div>
+        <div class="post_item">
+            <a class="post_name" href="http://megamozg.ru/post/15544/" data-utm="?utm_source=tm_habrahabr&amp;utm_medium=tm_block&amp;utm_campaign=tm_promo">«ВКонтакте» удалила пиратскую музыку, но правообладатели добиваются выполнения остальных требований через суд</a>
+        </div>
+        <div class="post_item">
+            <a class="post_name" href="http://megamozg.ru/post/15530/" data-utm="?utm_source=tm_habrahabr&amp;utm_medium=tm_block&amp;utm_campaign=tm_promo">Запуск стримингового сервиса Apple могут начать с России</a>
+        </div>
+        <div class="post_item">
+            <a class="post_name" href="http://megamozg.ru/post/15534/" data-utm="?utm_source=tm_habrahabr&amp;utm_medium=tm_block&amp;utm_campaign=tm_promo">Qiwi и «Почта России» открывают сервис денежных переводов</a>
+        </div>
+        <div class="post_item">
+            <a class="post_name" href="http://megamozg.ru/post/15558/" data-utm="?utm_source=tm_habrahabr&amp;utm_medium=tm_block&amp;utm_campaign=tm_promo">Большие данные. Подготовка волнорезов</a>
+        </div>
+        <div class="post_item">
+            <a class="post_name" href="http://megamozg.ru/post/15552/" data-utm="?utm_source=tm_habrahabr&amp;utm_medium=tm_block&amp;utm_campaign=tm_promo">Yota Devices запустила краудфандинговую кампанию для подготовки к выходу на рынок США</a>
+        </div>
+
+    </div>
+    <div class="all"><a href="http://megamozg.ru/" data-utm="?utm_source=tm_habrahabr&amp;utm_medium=tm_block&amp;utm_campaign=tm_promo">все публикации</a></div>
+</div>
+
+
+  	  
+<div class="block similar_questions">
+	<div class="title">Вопросы по теме</div>
+
+	<div class="posts_list">
+    	<div class="post_item">
+    	    <a class="post_name" data-utm="?utm_source=tm_habrahabr&amp;utm_medium=tm_block&amp;utm_campaign=tm_promo" href="http://toster.ru/q/217266">RavenDB, сколько времени может создаваться индекс?</a>
+		</div>
+    	<div class="post_item">
+    	    <a class="post_name" data-utm="?utm_source=tm_habrahabr&amp;utm_medium=tm_block&amp;utm_campaign=tm_promo" href="http://toster.ru/q/215884">Стоит ли использовать noSQL для каталогов с фильтрами (товары, недвижимость и все что в исчислимом количестве)?</a>
+		</div>
+    	<div class="post_item">
+    	    <a class="post_name" data-utm="?utm_source=tm_habrahabr&amp;utm_medium=tm_block&amp;utm_campaign=tm_promo" href="http://toster.ru/q/213901">Можно ли использовать MongoDB в случае over 200 полей?</a>
+		</div>
+    	<div class="post_item">
+    	    <a class="post_name" data-utm="?utm_source=tm_habrahabr&amp;utm_medium=tm_block&amp;utm_campaign=tm_promo" href="http://toster.ru/q/213723">Какую базу NOSQL использовать для хранения миллиардов записей?</a>
+		</div>
+    	<div class="post_item">
+    	    <a class="post_name" data-utm="?utm_source=tm_habrahabr&amp;utm_medium=tm_block&amp;utm_campaign=tm_promo" href="http://toster.ru/q/211121">Как лучше организовать работу с NOSQL(Realm)базой данных?</a>
+		</div>
+    	<div class="post_item">
+    	    <a class="post_name" data-utm="?utm_source=tm_habrahabr&amp;utm_medium=tm_block&amp;utm_campaign=tm_promo" href="http://toster.ru/q/209970">Панель для aerospike?</a>
+		</div>
+    	<div class="post_item">
+    	    <a class="post_name" data-utm="?utm_source=tm_habrahabr&amp;utm_medium=tm_block&amp;utm_campaign=tm_promo" href="http://toster.ru/q/206426">Можете посоветовать распределенное сетевое хранилище?</a>
+		</div>
+    	<div class="post_item">
+    	    <a class="post_name" data-utm="?utm_source=tm_habrahabr&amp;utm_medium=tm_block&amp;utm_campaign=tm_promo" href="http://toster.ru/q/197089">Зачем/когда использовать Mongodb (document/collection level) blocking?</a>
+		</div>
+    	<div class="post_item">
+    	    <a class="post_name" data-utm="?utm_source=tm_habrahabr&amp;utm_medium=tm_block&amp;utm_campaign=tm_promo" href="http://toster.ru/q/193239">Какие есть document stores базы данных с низким потреблением памяти?</a>
+		</div>
+    	<div class="post_item">
+    	    <a class="post_name" data-utm="?utm_source=tm_habrahabr&amp;utm_medium=tm_block&amp;utm_campaign=tm_promo" href="http://toster.ru/q/191193">Какой стек приложений под высоконагруженный сервис выбрать?</a>
+		</div>
+    	<div class="post_item">
+    	    <a class="post_name" data-utm="?utm_source=tm_habrahabr&amp;utm_medium=tm_block&amp;utm_campaign=tm_promo" href="http://toster.ru/q/190763">Какую базу данных выбрать для большого количества товаров?</a>
+		</div>
+    	<div class="post_item">
+    	    <a class="post_name" data-utm="?utm_source=tm_habrahabr&amp;utm_medium=tm_block&amp;utm_campaign=tm_promo" href="http://toster.ru/q/186729">Что лучше использовать CouchDB или CouchBase?</a>
+		</div>
+    	<div class="post_item">
+    	    <a class="post_name" data-utm="?utm_source=tm_habrahabr&amp;utm_medium=tm_block&amp;utm_campaign=tm_promo" href="http://toster.ru/q/180693">Каковы современные подходы в создании "Ленты новостей"?</a>
+		</div>
+    	<div class="post_item">
+    	    <a class="post_name" data-utm="?utm_source=tm_habrahabr&amp;utm_medium=tm_block&amp;utm_campaign=tm_promo" href="http://toster.ru/q/180581">Как тестировать Android приложение, использующее Realm?</a>
+		</div>
+    	<div class="post_item">
+    	    <a class="post_name" data-utm="?utm_source=tm_habrahabr&amp;utm_medium=tm_block&amp;utm_campaign=tm_promo" href="http://toster.ru/q/178909">Где хранить данные, которые меняются раз в 3-6 месяцев?</a>
+		</div>
+    	<div class="post_item">
+    	    <a class="post_name" data-utm="?utm_source=tm_habrahabr&amp;utm_medium=tm_block&amp;utm_campaign=tm_promo" href="http://toster.ru/q/174749">Как лучше организовать базу данных веб сервиса типа "домашняя бухгалтерия"?</a>
+		</div>
+    	<div class="post_item">
+    	    <a class="post_name" data-utm="?utm_source=tm_habrahabr&amp;utm_medium=tm_block&amp;utm_campaign=tm_promo" href="http://toster.ru/q/170939">Какую графовую БД использовать для построения онтологий на основе данных из DBpedia?</a>
+		</div>
+    	<div class="post_item">
+    	    <a class="post_name" data-utm="?utm_source=tm_habrahabr&amp;utm_medium=tm_block&amp;utm_campaign=tm_promo" href="http://toster.ru/q/162435">Где и как хранить данные рекомендательного сервиса?</a>
+		</div>
+    	<div class="post_item">
+    	    <a class="post_name" data-utm="?utm_source=tm_habrahabr&amp;utm_medium=tm_block&amp;utm_campaign=tm_promo" href="http://toster.ru/q/159927">Mongodb master-slave: почему slave не может слить базу?</a>
+		</div>
+    	<div class="post_item">
+    	    <a class="post_name" data-utm="?utm_source=tm_habrahabr&amp;utm_medium=tm_block&amp;utm_campaign=tm_promo" href="http://toster.ru/q/150143">Что плохого вы можете рассказать про OrientDB?</a>
+		</div>
+  </div>
+
+</div>
+
+
+  		<!--  AdRiver code START. Type:AjaxJS Site: habrahabr PZ: 0 BN: 2 -->
+
+<div style="width: 300px; height: 500px; text-align: center; margin: 0px auto;" title="" id="adriver_banner_480931290" class="adbanner"><a href="http://ad.adriver.ru/cgi-bin/click.cgi?sid=176776&amp;ad=523709&amp;bid=3856098&amp;bt=52&amp;bn=2&amp;pz=0&amp;xpid=Cab3lCFk-Cfnw24_WCOAqTEzKiOslMCGe&amp;ref=http:%2f%2fhabrahabr.ru%2fpost%2f75202%2f&amp;custom=1%3Dnosql%3B4%3D4&amp;rleurl=" onclick="adriver('adriver_banner_480931290').sendPixel('');" target="_blank"><img src="Riak%20%E2%80%94%20%D0%B2%D0%B5%D0%B1-%D0%BE%D1%80%D0%B8%D0%B5%D0%BD%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%BD%D0%B0%D1%8F%20%D1%81%D0%B8%D1%81%D1%82%D0%B5%D0%BC%D0%B0%20%D1%85%D1%80%D0%B0%D0%BD%D0%B5%D0%BD%D0%B8%D1%8F%20%D0%B4%D0%B0%D0%BD%D0%BD%D1%8B%D1%85%20_%20%D0%A5%D0%B0%D0%B1%D1%80%D0%B0%D1%85%D0%B0%D0%B1%D1%80_files/sl_msk.jpg" alt="AdRiver" border="0"></a></div>
+
+
+<script type="text/javascript">
+    function show_bn2_block(name, url){
+        if( typeof(name) !== 'undefined'){
+            $.get('/html/'+name+'/1432045781/', function(html){
+                $('#adriver_banner_480931290').html(html);
+                if( typeof(url) !== 'undefined'){
+                    $('.'+name+'_inner_banner .block_url').attr('href', url);
+                }
+            })
+        }
+    }
+
+    $(function(){
+
+        var check_scroll_position = function() {
+            var height = $(window).height();
+            var scrollTop = $(window).scrollTop();
+            var scrollBottom = $(window).scrollTop() + height;
+            var blockTop = $('#adriver_banner_480931290').position().top;
+            var show = scrollTop < blockTop && blockTop < scrollBottom;
+            if( show ){
+                $( window ).off('scroll', check_scroll_position);
+                $( window ).trigger('show_bn2');
+            }
+        };
+        $( window ).on('scroll', check_scroll_position);
+
+        $( window ).on('show_bn2', function(){
+            var keyword = '';
+            if (typeof crtg_content !== 'undefined' && crtg_content) { keyword = crtg_content; }
+            var custom = {4:ar_duo1};
+            custom[1] = 'nosql';
+            new adriver("adriver_banner_480931290", {sid: 176776, bt: 52, bn: 2, custom: custom, keyword: keyword});
+        });
+    });
+    </script>
+<!--  AdRiver code END  -->
+
+  		
+
+  		
+  		
+  		
+  </div>
+  <div class="clear"></div>
+
+  <script>
+    // hubs to GA
+      ga('send', 'event', 'Post_view', 'nosql (NoSQL)',  window.location.pathname + window.location.search);
+  </script>
+
+
+
+
+        	
+	<div class="rotated_posts">
+			<div class="rotated_post ">
+				<a href="http://habrahabr.ru/post/252267/" class="grey" onclick="if (typeof ga === 'function') { ga('send', 'event', 'tm_block', 'posts_rotation_block'); }">Игра за 14 дней [Для тех, кто годами собирает команду, но так и не сделал прототип]</a>
+			</div>
+			<div class="rotated_post ">
+				<a href="http://habrahabr.ru/company/ua-hosting/blog/247471/" class="grey" onclick="if (typeof ga === 'function') { ga('send', 'event', 'tm_block', 'posts_rotation_block'); }">Сообщения в глубине: удивительная история подводного Интернета</a>
+			</div>
+			<div class="rotated_post last">
+				<a href="http://habrahabr.ru/post/250083/" class="grey" onclick="if (typeof ga === 'function') { ga('send', 'event', 'tm_block', 'posts_rotation_block'); }">Разбор текстов интерфейса на Букинге — как я делал им аудит</a>
+			</div>
+		<div class="clear"></div>
+	</div>
+
+        <div class="bottom_promo_blocks">
+    <div class="left">
+            
+	<div class="block new_vacanies">
+  <a href="http://brainstorage.me/jobs" data-utm="?utm_source=tm_habrahabr&amp;utm_medium=tm_block&amp;utm_campaign=tm_promo" class="title">Brainstorage</a>
+  <div class="vacancies">
+		<div class="job_item ">
+			<a href="http://brainstorage.me/jobs/9765" data-utm="?utm_source=tm_habrahabr&amp;utm_medium=tm_block&amp;utm_campaign=tm_promo">PHP–разработчик</a>
+		</div>
+		<div class="job_item marked">
+			<a href="http://brainstorage.me/jobs/22297" data-utm="?utm_source=tm_habrahabr&amp;utm_medium=tm_block&amp;utm_campaign=tm_promo">PHP разработчик</a>
+		</div>
+		<div class="job_item marked">
+			<a href="http://brainstorage.me/jobs/22299" data-utm="?utm_source=tm_habrahabr&amp;utm_medium=tm_block&amp;utm_campaign=tm_promo">Front-end разработчик</a>
+		</div>
+		<div class="job_item marked">
+			<a href="http://brainstorage.me/jobs/28249" data-utm="?utm_source=tm_habrahabr&amp;utm_medium=tm_block&amp;utm_campaign=tm_promo">Flash-разработчик </a>
+		</div>
+		<div class="job_item ">
+			<a href="http://brainstorage.me/jobs/29843" data-utm="?utm_source=tm_habrahabr&amp;utm_medium=tm_block&amp;utm_campaign=tm_promo">Java Developer</a>
+		</div>
+		<div class="job_item ">
+			<a href="http://brainstorage.me/jobs/3333" data-utm="?utm_source=tm_habrahabr&amp;utm_medium=tm_block&amp;utm_campaign=tm_promo">Java/Scala Developer в проект семантического анализа</a>
+		</div>
+		<div class="job_item ">
+			<a href="http://brainstorage.me/jobs/29867" data-utm="?utm_source=tm_habrahabr&amp;utm_medium=tm_block&amp;utm_campaign=tm_promo">Python TeamLead (играющий тренер)</a>
+		</div>
+		<div class="job_item ">
+			<a href="http://brainstorage.me/jobs/29861" data-utm="?utm_source=tm_habrahabr&amp;utm_medium=tm_block&amp;utm_campaign=tm_promo">Дизайнер</a>
+		</div>
+		<div class="job_item marked">
+			<a href="http://brainstorage.me/jobs/29849" data-utm="?utm_source=tm_habrahabr&amp;utm_medium=tm_block&amp;utm_campaign=tm_promo">Middle front-end developer</a>
+		</div>
+		<div class="job_item marked">
+			<a href="http://brainstorage.me/jobs/29859" data-utm="?utm_source=tm_habrahabr&amp;utm_medium=tm_block&amp;utm_campaign=tm_promo">Дизайнер приложений</a>
+		</div>
+  </div>
+  <div class="all"><a href="http://brainstorage.me/jobs" data-utm="?utm_source=tm_habrahabr&amp;utm_medium=tm_block&amp;utm_campaign=tm_promo">все вакансии</a></div>
+</div>
+
+    </div>
+    <div class="right">
+        
+	<div class="block freelansim">
+	  <a href="http://freelansim.ru/" data-utm="?utm_source=habrahabr&amp;utm_medium=referral&amp;utm_campaign=mainpage&amp;utm_content=block_freelansim" class="title"></a>
+	  <div class="tasks">
+				<div class="task ">
+					<a href="http://freelansim.ru/tasks/94369" data-utm="?utm_source=habrahabr&amp;utm_medium=referral&amp;utm_campaign=mainpage&amp;utm_content=block_freelansim">Написать acceptance тесты на codecaption</a>
+				</div>
+				<div class="task ">
+					<a href="http://freelansim.ru/tasks/94039" data-utm="?utm_source=habrahabr&amp;utm_medium=referral&amp;utm_campaign=mainpage&amp;utm_content=block_freelansim">Переписать сайт на 1С-Битрикс</a>
+				</div>
+				<div class="task ">
+					<a href="http://freelansim.ru/tasks/92877" data-utm="?utm_source=habrahabr&amp;utm_medium=referral&amp;utm_campaign=mainpage&amp;utm_content=block_freelansim">Перенос сайта на wordpress</a>
+				</div>
+				<div class="task ">
+					<a href="http://freelansim.ru/tasks/76813" data-utm="?utm_source=habrahabr&amp;utm_medium=referral&amp;utm_campaign=mainpage&amp;utm_content=block_freelansim">Разработать плагин для Wordpress</a>
+				</div>
+				<div class="task ">
+					<a href="http://freelansim.ru/tasks/89881" data-utm="?utm_source=habrahabr&amp;utm_medium=referral&amp;utm_campaign=mainpage&amp;utm_content=block_freelansim">Требуются люди со своим интернет-магазином для тестов</a>
+				</div>
+				<div class="task ">
+					<a href="http://freelansim.ru/tasks/89833" data-utm="?utm_source=habrahabr&amp;utm_medium=referral&amp;utm_campaign=mainpage&amp;utm_content=block_freelansim">Требуется протестировать e-commerce сервис на баги и дизайн</a>
+				</div>
+				<div class="task ">
+					<a href="http://freelansim.ru/tasks/89493" data-utm="?utm_source=habrahabr&amp;utm_medium=referral&amp;utm_campaign=mainpage&amp;utm_content=block_freelansim">Фронтенд на основе фреймфорка AngularJS (только Москва)</a>
+				</div>
+				<div class="task ">
+					<a href="http://freelansim.ru/tasks/77527" data-utm="?utm_source=habrahabr&amp;utm_medium=referral&amp;utm_campaign=mainpage&amp;utm_content=block_freelansim">Сайт-парсер фотографий с Reddit</a>
+				</div>
+				<div class="task ">
+					<a href="http://freelansim.ru/tasks/51444" data-utm="?utm_source=habrahabr&amp;utm_medium=referral&amp;utm_campaign=mainpage&amp;utm_content=block_freelansim">Ищу партнёра для бизнеса в интернет среде.</a>
+				</div>
+				<div class="task ">
+					<a href="http://freelansim.ru/tasks/50916" data-utm="?utm_source=habrahabr&amp;utm_medium=referral&amp;utm_campaign=mainpage&amp;utm_content=block_freelansim">Требуется специалист по Wordpress и дизайну интерфейсов.</a>
+				</div>
+
+	  </div>
+	  <div class="all"><a href="http://freelansim.ru/tasks" data-utm="?utm_source=habrahabr&amp;utm_medium=referral&amp;utm_campaign=mainpage&amp;utm_content=block_freelansim">все заказы</a></div>
+	</div>
+
+    </div>
+    <div class="clear"></div>
+</div>
+
+
+
+        <div class="clear"></div>
+
+        <div class="footer_panel">
+          <div id="footer">
+	<dl class="user">
+		<dt><a href="http://habrahabr.ru/users/xni/">xni</a></dt>
+		<dd><a href="http://habrahabr.ru/feed/">Лента</a></dd>
+		<dd><a href="http://habrahabr.ru/tracker/">Трекер</a></dd>
+			<dd><a href="http://habrahabr.ru/topic/add/">Написать</a></dd>
+			<dd><a href="http://habrahabr.ru/conversations/">Диалоги</a></dd>
+			<dd><a href="https://habrahabr.ru/auth/settings/">Настройки</a></dd>
+			<dd><a href="http://habrahabr.ru/ppa/">ППА</a></dd>
+	</dl>
+	<dl>
+		<dt>Разделы</dt>
+		<dd><a href="http://habrahabr.ru/posts/top/">Публикации</a></dd>
+		<dd><a href="http://habrahabr.ru/hubs/">Хабы</a></dd>
+		<dd><a href="http://habrahabr.ru/companies/">Компании</a></dd>
+		<dd><a href="http://habrahabr.ru/users/">Пользователи</a></dd>
+		<dd><a href="http://toster.ru/?_aa=press_anykey">Q&amp;A</a></dd>
+		<dd><a href="http://habrahabr.ru/sandbox/">Песочница</a></dd>
+		
+	</dl>	
+	<dl>
+		<dt>Инфо</dt>
+		<dd><a href="http://habrahabr.ru/info/about/">О сайте</a></dd>
+		<dd><a href="http://habrahabr.ru/info/help/rules/">Правила</a></dd>
+		<dd><a href="http://habrahabr.ru/info/help/">Помощь</a></dd>
+		<dd><a href="http://habrahabr.ru/info/agreement/">Соглашение</a></dd>
+	</dl>
+	<dl>
+		<dt>Услуги</dt>
+		<dd><a href="http://special.habrahabr.ru/advertising/">Реклама</a></dd>
+        <dd><a href="http://special.habrahabr.ru/">Спецпроекты</a></dd>
+        <dd><a href="http://special.habrahabr.ru/corporate/">Тарифы</a></dd>
+        <dd><a href="http://special.habrahabr.ru/content/">Контент</a></dd>
+        <dd><a href="http://special.habrahabr.ru/workshops/">Семинары</a></dd>
+	</dl>
+	<dl>
+		<dt>Разное</dt>
+		<dd><a href="http://habrahabr.ru/apps/">Приложения</a></dd>
+		<dd><a href="http://habrahabr.ru/special/testdrive/">Тест-драйвы</a></dd>
+		<dd><a href="http://special.habrahabr.ru/hello_startup/habrahabr/">Помощь стартапам</a></dd>
+	</dl>
+	<div class="copyright">
+
+		<div class="about">
+			<a href="http://tmtm.ru/">© TM</a>
+			
+			<br><br>
+			<a href="http://habrahabr.ru/feedback/">Служба поддержки</a><br><br>
+                <a href="http://m.habrahabr.ru/post/75202/?mobile=yes">Мобильная версия</a><br><br>
+			
+
+			<div class="social_accounts">
+				<a href="https://twitter.com/habrahabr" class="tw"></a>
+				<a href="https://www.facebook.com/habrahabr.ru" class="fb"></a>
+				<a href="http://vk.com/habr" class="vk"></a>
+				<!-- <a href="" class="gp"></a> //-->
+			</div>
+
+		</div>
+	</div>
+
+</div>
+
+        </div>
+      </div>
+    </div>
+
+
+
+    <script type="text/javascript">
+  // global vars
+  var g_base_url = 'habrahabr.ru';
+  var g_show_xpanel = true;
+  var g_base_fullurl = 'http://habrahabr.ru/';
+  var g_is_guest = true;
+  var g_user_login = 'xni';
+  var g_user_id = 18017;
+  var g_user_avatar = '//habrahabr.ru/i/avatars/stub-user-middle.gif';   
+</script> 
+
+      <script type="text/javascript" src="Riak%20%E2%80%94%20%D0%B2%D0%B5%D0%B1-%D0%BE%D1%80%D0%B8%D0%B5%D0%BD%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%BD%D0%B0%D1%8F%20%D1%81%D0%B8%D1%81%D1%82%D0%B5%D0%BC%D0%B0%20%D1%85%D1%80%D0%B0%D0%BD%D0%B5%D0%BD%D0%B8%D1%8F%20%D0%B4%D0%B0%D0%BD%D0%BD%D1%8B%D1%85%20_%20%D0%A5%D0%B0%D0%B1%D1%80%D0%B0%D1%85%D0%B0%D0%B1%D1%80_files/shortcuts.js"></script>
+
+    <script type="text/javascript" src="Riak%20%E2%80%94%20%D0%B2%D0%B5%D0%B1-%D0%BE%D1%80%D0%B8%D0%B5%D0%BD%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%BD%D0%B0%D1%8F%20%D1%81%D0%B8%D1%81%D1%82%D0%B5%D0%BC%D0%B0%20%D1%85%D1%80%D0%B0%D0%BD%D0%B5%D0%BD%D0%B8%D1%8F%20%D0%B4%D0%B0%D0%BD%D0%BD%D1%8B%D1%85%20_%20%D0%A5%D0%B0%D0%B1%D1%80%D0%B0%D1%85%D0%B0%D0%B1%D1%80_files/global_footer_main.js"></script>
+
+    	<script type="text/javascript" src="Riak%20%E2%80%94%20%D0%B2%D0%B5%D0%B1-%D0%BE%D1%80%D0%B8%D0%B5%D0%BD%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%BD%D0%B0%D1%8F%20%D1%81%D0%B8%D1%81%D1%82%D0%B5%D0%BC%D0%B0%20%D1%85%D1%80%D0%B0%D0%BD%D0%B5%D0%BD%D0%B8%D1%8F%20%D0%B4%D0%B0%D0%BD%D0%BD%D1%8B%D1%85%20_%20%D0%A5%D0%B0%D0%B1%D1%80%D0%B0%D1%85%D0%B0%D0%B1%D1%80_files/a.js"></script>
+
+    
+
+<!-- Yandex.Metrika counter -->
+<script type="text/javascript">
+(function (d, w, c) {
+    (w[c] = w[c] || []).push(function() {
+        try {
+            w.yaCounter24049213 = new Ya.Metrika({id:24049213,
+                    webvisor:true,
+                    clickmap:true,
+                    trackLinks:true,
+                    accurateTrackBounce:true});
+        } catch(e) { }
+    });
+
+    var n = d.getElementsByTagName("script")[0],
+        s = d.createElement("script"),
+        f = function () { n.parentNode.insertBefore(s, n); };
+    s.type = "text/javascript";
+    s.async = true;
+    s.src = (d.location.protocol == "https:" ? "https:" : "http:") + "//mc.yandex.ru/metrika/watch.js";
+
+    if (w.opera == "[object Opera]") {
+        d.addEventListener("DOMContentLoaded", f, false);
+    } else { f(); }
+})(document, window, "yandex_metrika_callbacks");
+</script>
+<noscript><div><img src="//mc.yandex.ru/watch/24049213" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+<!-- /Yandex.Metrika counter -->
+
+
+
+<!-- adriver counter //-->
+<span style="position:absolute;left:-9999px;">
+  <img src="Riak%20%E2%80%94%20%D0%B2%D0%B5%D0%B1-%D0%BE%D1%80%D0%B8%D0%B5%D0%BD%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%BD%D0%B0%D1%8F%20%D1%81%D0%B8%D1%81%D1%82%D0%B5%D0%BC%D0%B0%20%D1%85%D1%80%D0%B0%D0%BD%D0%B5%D0%BD%D0%B8%D1%8F%20%D0%B4%D0%B0%D0%BD%D0%BD%D1%8B%D1%85%20_%20%D0%A5%D0%B0%D0%B1%D1%80%D0%B0%D1%85%D0%B0%D0%B1%D1%80_files/rle.txt" alt="" height="1" width="1">
+</span>
+<!-- adriver counter end //-->
+
+
+    
+
+    <!-- Хабр не резиновый! -->
+  
+
+<div id="AutocompleteContainter_e7495" style="position: absolute; z-index: 9999; top: 2px; left: 0px;"><div class="autocomplete-w1"><div class="autocomplete" id="Autocomplete_e7495" style="display: none; width: 300px; max-height: 400px;"></div></div></div><div id="AutocompleteContainter_6f6e7" style="position: absolute; z-index: 9999; top: 2px; left: 0px;"><div class="autocomplete-w1"><div class="autocomplete" id="Autocomplete_6f6e7" style="display: none; width: 300px; max-height: 400px;"></div></div></div><div id="xpanel"><a href="#refresh" class="refresh"></a><a style="display: none;" href="#prev_new" class="prev_new" title="По клику (горячая клавиша - k) переходит к предыдущему непрочитанному комментарию.">↑</a><a style="display: none;" href="#new" class="new" title="Количество новых комментариев. По клику (горячая клавиша - f) переходит к первому непрочитанному комментарию.">0</a><a style="display: none;" href="#next_new" class="next_new" title="По клику (горячая клавиша - j) переходит к следующему непрочитанному комментарию.">↓</a></div><iframe style="width: 10px; height: 10px; position: absolute; top: -10000px; left: -10000px;" src="Riak%20%E2%80%94%20%D0%B2%D0%B5%D0%B1-%D0%BE%D1%80%D0%B8%D0%B5%D0%BD%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%BD%D0%B0%D1%8F%20%D1%81%D0%B8%D1%81%D1%82%D0%B5%D0%BC%D0%B0%20%D1%85%D1%80%D0%B0%D0%BD%D0%B5%D0%BD%D0%B8%D1%8F%20%D0%B4%D0%B0%D0%BD%D0%BD%D1%8B%D1%85%20_%20%D0%A5%D0%B0%D0%B1%D1%80%D0%B0%D1%85%D0%B0%D0%B1%D1%80_files/3.html"></iframe><iframe style="width: 10px; height: 10px; position: absolute; top: -10000px; left: -10000px;" src="Riak%20%E2%80%94%20%D0%B2%D0%B5%D0%B1-%D0%BE%D1%80%D0%B8%D0%B5%D0%BD%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%BD%D0%B0%D1%8F%20%D1%81%D0%B8%D1%81%D1%82%D0%B5%D0%BC%D0%B0%20%D1%85%D1%80%D0%B0%D0%BD%D0%B5%D0%BD%D0%B8%D1%8F%20%D0%B4%D0%B0%D0%BD%D0%BD%D1%8B%D1%85%20_%20%D0%A5%D0%B0%D0%B1%D1%80%D0%B0%D1%85%D0%B0%D0%B1%D1%80_files/3_002.html"></iframe><iframe style="width: 10px; height: 10px; position: absolute; top: -10000px; left: -10000px;" src="Riak%20%E2%80%94%20%D0%B2%D0%B5%D0%B1-%D0%BE%D1%80%D0%B8%D0%B5%D0%BD%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%BD%D0%B0%D1%8F%20%D1%81%D0%B8%D1%81%D1%82%D0%B5%D0%BC%D0%B0%20%D1%85%D1%80%D0%B0%D0%BD%D0%B5%D0%BD%D0%B8%D1%8F%20%D0%B4%D0%B0%D0%BD%D0%BD%D1%8B%D1%85%20_%20%D0%A5%D0%B0%D0%B1%D1%80%D0%B0%D1%85%D0%B0%D0%B1%D1%80_files/3_003.html"></iframe></body></html>

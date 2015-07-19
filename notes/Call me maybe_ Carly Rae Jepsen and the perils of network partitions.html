@@ -1,0 +1,359 @@
+<html><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <title>Call me maybe: Carly Rae Jepsen and the perils of network partitions</title>
+  <link rel="stylesheet" type="text/css" href="Call%20me%20maybe_%20Carly%20Rae%20Jepsen%20and%20the%20perils%20of%20network%20partitions_files/css.css">
+  <script src="Call%20me%20maybe_%20Carly%20Rae%20Jepsen%20and%20the%20perils%20of%20network%20partitions_files/ga.js" async="" type="text/javascript"></script><script src="Call%20me%20maybe_%20Carly%20Rae%20Jepsen%20and%20the%20perils%20of%20network%20partitions_files/js"></script>
+</head>
+<body>
+  <div id="adminbar">
+    <form id="login" action="/login" method="post">
+      <label for="admin_login">Login</label>
+      <input name="login" id="admin_login" type="text">
+      
+      <label for="admin_password">Password</label>
+      <input name="password" id="admin_password" type="password">
+      <input name="action" value="Log in" type="submit">
+    </form>
+  <div class="clear"></div>
+</div>
+
+
+  <header>
+    <nav>
+      <h1><a href="https://aphyr.com/">Aphyr</a></h1>
+      <ul>
+        <li><a href="https://aphyr.com/posts">Blog</a></li>
+        <li><a href="https://aphyr.com/photos">Photography</a></li>
+        <li><a href="http://github.com/aphyr">Code</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <div id="content">
+    
+
+    
+<article class="primary post">
+  <div class="backdrop">
+    <div class="bar">
+      <h1>Call me maybe: Carly Rae Jepsen and the perils of network partitions</h1>
+
+      <div class="meta">
+        <time datetime="2013-05-17T23:06:02-05:00" pubdate="">2013/05/17</time>
+        
+        <ul class="tags"><li><a href="https://aphyr.com/tags/software">Software</a></li><li><a href="https://aphyr.com/tags/network">Network</a></li><li><a href="https://aphyr.com/tags/Distributed-Systems">Distributed Systems</a></li><li><a href="https://aphyr.com/tags/Jepsen">Jepsen</a></li></ul>
+      </div>
+    </div>
+
+    <div class="body">
+      <div style="clear: both"></div>
+
+<p><em>This article is part of <a href="https://aphyr.com/tags/jepsen">Jepsen</a>,
+ a series on network partitions. We're going to learn about distributed 
+consensus, discuss the CAP theorem's implications, and demonstrate how 
+different databases behave under partition.</em></p>
+
+<iframe src="Call%20me%20maybe_%20Carly%20Rae%20Jepsen%20and%20the%20perils%20of%20network%20partitions_files/fWNaR-rxAic.html" allowfullscreen="" style="margin-bottom: 1em" frameborder="0" height="506" width="900"></iframe>
+
+<p>Carly Rae Jepsen may be singing about the cute guy next door, but 
+she's also telling a story about the struggle to communicate with 
+someone who doesn't even know you're alive. The suspense of observation:
+ did he see me? Did he see me see him? The risks of speaking your mind 
+and being shot down–or worse, ignored. The fundamental unknowability of 
+The Other, as Lacan would have it. In short, this is a song about 
+distributed systems.</p>
+
+<div class="right"><img class="attachment" src="Call%20me%20maybe_%20Carly%20Rae%20Jepsen%20and%20the%20perils%20of%20network%20partitions_files/-004.jpg" alt="-004.jpg" title="-004.jpg"></div>
+
+<p>Modern software systems are composed of dozens of components which 
+communicate over an asynchronous, unreliable network. Understanding the <em>reliability</em>
+ of a distributed system's dynamics requires careful analysis of the 
+network itself. Like most hard problems in computer science, this one 
+comes down to shared state. A set of nodes separated by the network must
+ exchange information: “Did I like that post?” “Was my write 
+successful?” “Will you thumbnail my image?” “How much is in my account?”</p>
+
+<p>At the end of one of these requests, you might guarantee that the requested operation…</p>
+
+<ul>
+<li>will be visible to everyone from now on</li>
+<li>will be visible to your connection now, and others later</li>
+<li>may not yet be visible, but is causally connected to some
+future state of the system</li>
+<li>is visible now, but might not be later</li>
+<li>may or may not be visible: ERRNO_YOLO</li>
+</ul>
+
+<p>These are some examples of the complex interplay between <em>consistency</em> and <em>durability</em>
+ in distributed systems. For instance, if you're writing CRDTs to one of
+ two geographically replicated Riak clusters with W=2 and DW=1, you can 
+guarantee that write…</p>
+
+<ul>
+<li>is causally connected to some future state of the system</li>
+<li>will survive the total failure of one node</li>
+<li>will survive a power failure (assuming fsync works) of all nodes</li>
+<li>will survive the destruction of an entire datacenter, given a few minutes to replicate</li>
+</ul>
+
+<p>If you're writing to ZooKeeper, you might have a stronger set of guarantees: the write is visible <em>now</em> to <em>all</em>
+ participants, for instance, and that the write will survive the total 
+failure of up to n/2 - 1 nodes. If you write to Postgres, depending on 
+your transaction's consistency level, you might be able to guarantee 
+that the write will be visible to everyone, just to yourself, or 
+“eventually”.</p>
+
+<p>These guarantees are particularly tricky to understand when the network is unreliable.</p>
+
+<h2>Partitions</h2>
+
+<p>Formal proofs of distributed systems often assume that the network is <em>asynchronous</em>,
+ which means the network may arbitrarily duplicate, drop, delay, or 
+reorder messages between nodes. This is a weak hypothesis: some physical
+ networks can do <em>better</em> than this, but in practice IP networks 
+will encounter all of these failure modes, so the theoretical 
+limitations of the asynchronous network apply to real-world systems as 
+well.</p>
+
+<div class="right"><img class="attachment" src="Call%20me%20maybe_%20Carly%20Rae%20Jepsen%20and%20the%20perils%20of%20network%20partitions_files/-006.jpg" alt="-006.jpg" title="-006.jpg"></div>
+
+<p>In <em>practice</em>, the TCP state machine allows nodes to 
+reconstruct “reliable” ordered delivery of messages between nodes. TCP 
+sockets guarantee that our messages will arrive without drops, 
+duplication, or reordering. However, there can still be arbitrary <em>delays</em>–which would ordinarily cause the distributed system to <em>lock</em> indefinitely. Since computers have finite memory and latency bounds, we introduce <em>timeouts</em>, which close the connection when expected messages fail to arrive within a given time frame. Calls to <code>read()</code> on sockets will simply block, then fail.</p>
+
+<div class="right"><img class="attachment" src="Call%20me%20maybe_%20Carly%20Rae%20Jepsen%20and%20the%20perils%20of%20network%20partitions_files/-008.jpg" alt="-008.jpg" title="-008.jpg"></div>
+
+<p>Detecting network failures is <em>hard</em>. Since our only knowledge
+ of the other nodes passes through the network, delays are 
+indistinguishible from failure.  This is the fundamental problem of the <em>network partition</em>: latency high enough to be considered a failure. When partitions arise, we have no way to determine <em>what</em>
+ happened on the other nodes: are they alive? Dead? Did they receive our
+ message? Did they try to respond? Literally no one knows. When the 
+network finally heals, we'll have to re-establish the connection and try
+ to work out what happened–perhaps recovering from an inconsistent 
+state.</p>
+
+<p>Many systems handle partitions by entering a special <em>degraded</em> mode of operation. The CAP theorem tells us that we can either have consistency (technically, <em>linearizability</em>
+ for a read-write register), or availability (all nodes can continue to 
+handle requests), but not both. What's more, few databases come close to
+ CAP's theoretical limitations; many simply drop data.</p>
+
+<p>In this series, I'm going to demonstrate how some real distributed 
+systems behave when the network fails. We'll start by setting up a 
+cluster and a simple application. In each subsequent post, we'll explore
+ that application written for a particular database, and how that system
+ behaves under partition.</p>
+
+<h2>Setting up a cluster</h2>
+
+<div class="right"><img class="attachment" src="Call%20me%20maybe_%20Carly%20Rae%20Jepsen%20and%20the%20perils%20of%20network%20partitions_files/-011.jpg" alt="-011.jpg" title="-011.jpg"></div>
+
+<p>You can create partitions at home! For these demonstrations, I'm 
+going to be running a five node cluster of Ubuntu 12.10 machines, 
+virtualized using LXC–but you can use real computers, virtual private 
+servers, EC2, etc. I've named the nodes n1, n2, n3, n4, and n5: it's 
+probably easiest to add these entries to <code>/etc/hosts</code> on your computer and on each of the nodes themselves.</p>
+
+<p>We're going to need some configuration for the cluster, and client applications to test their behavior. You can clone <a href="http://github.com/aphyr/jepsen">http://github.com/aphyr/jepsen</a> to follow along.</p>
+
+<p>To run commands across the cluster, I'm using Salticid (<a href="http://github.com/aphyr/salticid">http://github.com/aphyr/salticid</a>). I've set my <code>~/.salticidrc</code> to point to configuration in the Jepsen repo:</p>
+<code class="block"><span class="nb">load</span> <span class="no">ENV</span><span class="o">[</span><span class="s1">'HOME'</span><span class="o">]</span> <span class="o">+</span> <span class="s1">'/jepsen/salticid/*.rb'</span></code>
+<p>If you take a look at this file, you'll see that it defines a group called <code>:jepsen</code>,
+ with hosts n1 … n5. The user and password for each node is 
+'ubuntu'–you'll probably want to change this if you're running your 
+nodes on the public internet.</p>
+
+<p>Try <code>salticid -s salticid</code> to see all the groups, hosts, and roles defined by the current configuration:</p>
+<code class="block">$ salticid -s salticid
+Groups
+  jepsen
+
+Hosts:
+  n1
+  n2
+  n3
+  n4
+  n5
+
+Roles
+  base
+  riak
+  mongo
+  redis
+  postgres
+  jepsen
+  net
+
+Top-level tasks</code>
+<p>First off, let's set up these nodes with some common software–compilers, network tools, etc.</p>
+<code class="block">salticid base.setup</code>
+<p>The <code>base</code> role defines some basic operating system functions. <code>base.reboot</code> will reboot the cluster, and <code>base.shutdown</code> will unpower it.</p>
+
+<p>The <code>jepsen</code> role defines tasks for simulating network failures. To cause a partition, run <code>salticid jepsen.partition</code>. That command causes nodes n1 and n2 to drop IP traffic from n3, n4, and n5–essentially by running</p>
+<code class="block">iptables -A INPUT -s n3 -j DROP
+iptables -A INPUT -s n4 -j DROP
+iptables -A INPUT -s n5 -j DROP</code>
+<p>That's it, really. To check the current network status, run <code>jepsen.status</code>.  <code>jepsen.heal</code> will reset the iptables chains to their defaults, resolving the partition.</p>
+
+<p>To simulate slow networks, or networks which drop packets, we can use <code>tc</code> to adjust the ethernet interface. Jepsen assumes the inter-node interface is <code>eth0</code>. <code>salticid jepsen.slow</code> will add latency to the network, making it easier to reproduce bugs which rely on a particular message being dropped.  <code>salticid jepsen.flaky</code> will probabilistically <em>drop</em>
+ messages. Adjusting the inter-node latency and lossiness simulates the 
+behavior of real-world networks under congestion, and helps expose 
+timing dependencies in distributed algorithms–like database replication.</p>
+
+<h2>A simple distributed system</h2>
+
+<div class="right"><img class="attachment" src="Call%20me%20maybe_%20Carly%20Rae%20Jepsen%20and%20the%20perils%20of%20network%20partitions_files/-010.jpg" alt="-010.jpg" title="-010.jpg"></div>
+
+<p>In order to test a distributed system, we need a workload–a set of 
+clients which make requests and record their results for analysis. For 
+these posts, we're going to work with a simple application which writes 
+several numbers to a list in a database. Each client app will 
+independently write some integers to the DB. With five clients, client 0
+ writes 0, 5, 10, 15, …; client 1 writes 1, 6, 11, and so on.</p>
+
+<p>For each write we record whether the database <em>acknowledged</em> 
+the write successfully or whether there was an error. At the end of the 
+run, we ask the database for the full set. If acknowledged writes are 
+missing, or unacknowledged writes are present, we know that the system 
+was <em>inconsistent</em> in some way: that the client application and the database disagreed about the state of the system.</p>
+
+<p>In this series of blog posts, we're going to run this app against 
+several distributed databases, and cause partitions during its run. In 
+each case, we'll see how the system responds to the uncertainty of 
+dropped messages. As the song might go:</p>
+
+<div style="clear: both"></div>
+
+<div class="left"><img class="attachment" src="Call%20me%20maybe_%20Carly%20Rae%20Jepsen%20and%20the%20perils%20of%20network%20partitions_files/-012.jpg" alt="-012.jpg" title="-012.jpg"></div>
+
+<div class="right"><img class="attachment" src="Call%20me%20maybe_%20Carly%20Rae%20Jepsen%20and%20the%20perils%20of%20network%20partitions_files/-013.jpg" alt="-013.jpg" title="-013.jpg"></div>
+
+<p>I've written several implementations of this workload in Clojure. <code>jepsen/src/jepsen/set_app.clj</code> defines the application. <code>(defprotocol SetApp ...)</code> lists the functions an app has to implement, and <code>(run n apps)</code>
+ sets up the apps and runs them in parallel, collects results, and shows
+ any inconsistencies. Particular implementations live in <code>src/jepsen/riak.clj</code>, <code>pg.clj,</code>redis.clj, and so forth.</p>
+
+<p>You'll need a JVM and <a href="https://github.com/technomancy/leiningen">Leiningen 2</a> to run this code. Once you've installed lein, and added it to your path, we're ready to go!</p>
+
+<p><em>Next up on <a href="http://aphyr.com/tags/jepsen">Jepsen</a>, we take a look at how <a href="http://aphyr.com/posts/282-call-me-maybe-postgres">Postgresql's transaction protocol</a> handles network failures.</em></p>
+
+    </div>
+  </div>
+</article>
+
+<div class="comment-channel">
+  <a id="comments"></a>
+
+  <div id="comment-552" class="comment anonymous ">
+    <div class="avatar">
+      <img src="Call%20me%20maybe_%20Carly%20Rae%20Jepsen%20and%20the%20perils%20of%20network%20partitions_files/294de3557d9d00b3d2d8a1e6aab028cf.png" alt="Tom Stuart" title="Tom Stuart">
+    </div>
+    <div class="body">
+      <div class="meta">
+        Tom Stuart, on
+        <a href="https://aphyr.com/posts/281-call-me-maybe-carly-rae-jepsen-and-the-perils-of-network-partitions#comment-552">
+         <time datetime="2013-05-30T07:57:04-05:00" pubdate="">2013/05/30</time>
+        </a>
+
+      </div>
+
+      <p>‘If you write to Postgres, depending on your transaction’s 
+consistency level, you might be able to guarantee that the write will be
+ visible to everyone, just to yourself, or “eventually”.’</p>
+
+<p>Doesn’t this depend on your <em>readers'</em> transaction isolation levels?</p>
+
+    </div>
+  </div>
+  <div id="comment-563" class="comment anonymous ">
+    <div class="avatar">
+      <img src="Call%20me%20maybe_%20Carly%20Rae%20Jepsen%20and%20the%20perils%20of%20network%20partitions_files/d22d9bdd162450e1ec322a9356b0300b.png" alt="Bogdan Matei" title="Bogdan Matei">
+    </div>
+    <div class="body">
+      <div class="meta">
+        Bogdan Matei, on
+        <a href="https://aphyr.com/posts/281-call-me-maybe-carly-rae-jepsen-and-the-perils-of-network-partitions#comment-563">
+         <time datetime="2013-06-22T18:32:23-05:00" pubdate="">2013/06/22</time>
+        </a>
+
+      </div>
+
+      <p>Hello! First of all I would like to present you my respect for your work!</p>
+
+<p>Then I would like to ask you something (as I’m not familiar with 
+Closure). Where do those clients 0 - 4 connect in order to try to make 
+those insert operations? On “n1”? If you partition “n1” out, then your 
+clients should fail until it gets back. Then what’s the point to discuss
+ the elections of a new “master”? Sorry, I guess I’m missing your 
+clustering model and how your clients interact with your cluster. Thank 
+you.</p>
+
+    </div>
+  </div>
+
+  <form class="comment-form" action="/comments" method="post">
+  <h2>Post a Comment</h2>
+  <a id="post-comment"></a>
+
+
+    <p class="dont-read-me">
+      Please avoid writing anything here unless you are a computer:
+      <label for="captcha">Captcha</label>
+      <input name="captcha" id="captcha" type="text">
+
+      This is also a trap:
+      <label for="comment">Comment</label>
+      <textarea name="comment" id="comment"></textarea>
+    </p>
+
+      <p class=" error"><label for="name">Name</label><input name="name" id="name" type="text"></p>
+
+      <p class=" error"><label for="email">Email</label><input name="email" id="email" type="text"></p>
+
+      <p class=" error"><label for="http">Http</label><input name="http" id="http" type="text"></p>
+
+
+    <p class=" error"><label class="textarea" for="body">Body<br></label><textarea name="body" id="body"></textarea></p>
+
+
+    <p class="meta">Supports github-flavored markdown for
+    [links](http://foo.com/), *emphasis*, _underline_, `code`, and &gt;
+    blockquotes. Use ```clj on its own line to start a Clojure code block,
+    and ``` to end the block.</p>
+
+    <p class=" error"><input name="comment_id" id="comment_id" value="" type="hidden"></p>
+
+    <p class=" error"><input name="post_id" id="post_id" value="281" type="hidden"></p>
+
+    <p class=" error"><input name="photograph_id" id="photograph_id" value="" type="hidden"></p>
+
+    <p class=" error"><input name="page_id" id="page_id" value="" type="hidden"></p>
+
+    <input value="Post Comment" type="submit">
+  </form>
+</div>
+
+</div>
+
+  
+
+  <div id="colophon">
+    Copyright © 2015 Kyle Kingsbury.<br> 
+    Non-commercial re-use with attribution encouraged; all other rights reserved.<br>
+    Comments are the property of respective posters.
+  </div>
+
+  <script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-9527251-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+   var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+   ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+   var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+   })();
+  </script>
+
+
+</body></html>
