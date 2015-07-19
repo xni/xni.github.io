@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <title>xni TechBlog - Tips</title>
+        <link rel="stylesheet" href="/theme/css/main.css" />
+
+        <!--[if IE]>
+            <script src="https://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="/">xni TechBlog </a></h1>
+                <nav><ul>
+                    <li><a href="/category/review.html">Review</a></li>
+                    <li class="active"><a href="/category/tips.html">Tips</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+
+            <aside id="featured" class="body">
+                <article>
+                    <h1 class="entry-title"><a href="/concatenate-and-groupby.html">Concatenate and GroupBy</a></h1>
+<footer class="post-info">
+        <abbr class="published" title="2014-01-19T10:00:00+04:00">
+                Published: вс 19 января 2014
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/konstantin-nikitin.html">Konstantin Nikitin</a>
+        </address>
+<p>In <a href="/category/tips.html">Tips</a>.</p>
+
+</footer><!-- /.post-info --><p>I’ve just faced with some problem: there is a table with price monitoring data.</p>
+<div class="highlight"><pre>CREATE TABLE prices(date VARCHAR(10),
+                    model_id INTEGER,
+                    service_id INTEGER,
+                    value INTEGER,
+                    currency VARCHAR(3));
+</pre></div>
+
+
+<p>and your task is to provide information about currencies, which each service operates with.</p>
+<p>At first, let’s fill our database (RDBMS-agnostic) with some test data.</p>
+<div class="highlight"><pre>INSERT INTO prices VALUES(&#39;2014-01-01&#39;, 1, 1, 100, &#39;USD&#39;);
+INSERT INTO prices VALUES(&#39;2014-01-02&#39;, 1, 1, 101, &#39;USD&#39;);
+INSERT INTO prices VALUES(&#39;2014-01-01&#39;, 2, 1, 200, &#39;USD&#39;);
+INSERT INTO prices VALUES(&#39;2014-01-02&#39;, 2, 1, 199, &#39;USD&#39;);
+INSERT INTO prices VALUES(&#39;2014-01-01&#39;, 3, 1, 1000, &#39;RUR&#39;);
+INSERT INTO prices VALUES(&#39;2014-01-02&#39;, 3, 1, 980, &#39;RUR&#39;);
+INSERT INTO prices VALUES(&#39;2014-01-01&#39;, 4, 1, 10, &#39;EUR&#39;);
+INSERT INTO prices VALUES(&#39;2014-01-02&#39;, 4, 1, 11, &#39;EUR&#39;);
+</pre></div>
+
+
+<p>To accomplish the task, in SQLite3 I wrote this kind of statement:</p>
+<div class="highlight"><pre>sqlite&gt; select service_id, group_concat(distinct currency) from prices group by service_id;
+1|USD,RUR,EUR
+</pre></div>
+
+
+<p>The same works and for MySQL:</p>
+<div class="highlight"><pre>mysql&gt; select service_id, group_concat(distinct currency) from prices group by service_id;
++------------+---------------------------------+
+| service_id | group_concat(distinct currency) |
++------------+---------------------------------+
+|          1 | USD,RUR,EUR                     |
++------------+---------------------------------+
+1 row in set (0.00 sec)
+</pre></div>
+
+
+<p>But fails for PostgreSQL:</p>
+<div class="highlight"><pre><span class="err">#</span> <span class="nx">select</span> <span class="nx">service_id</span><span class="p">,</span> <span class="nx">group_concat</span><span class="p">(</span><span class="nx">distinct</span> <span class="nx">currency</span><span class="p">)</span> <span class="nx">from</span> <span class="nx">prices</span> <span class="nx">group</span> <span class="nx">by</span> <span class="nx">service_id</span><span class="p">;</span>
+<span class="nx">ERROR</span><span class="o">:</span>  <span class="kd">function</span> <span class="nx">group_concat</span><span class="p">(</span><span class="nx">character</span> <span class="nx">varying</span><span class="p">)</span> <span class="nx">does</span> <span class="nx">not</span> <span class="nx">exist</span>
+<span class="nx">LINE</span> <span class="mi">1</span><span class="o">:</span> <span class="nx">select</span> <span class="nx">service_id</span><span class="p">,</span> <span class="nx">group_concat</span><span class="p">(</span><span class="nx">distinct</span> <span class="nx">currency</span><span class="p">)</span> <span class="nx">from</span> <span class="nx">pric</span><span class="p">...</span>
+                           <span class="o">^</span>
+<span class="nx">HINT</span><span class="o">:</span>  <span class="nx">No</span> <span class="kd">function</span> <span class="nx">matches</span> <span class="nx">the</span> <span class="nx">given</span> <span class="nx">name</span> <span class="nx">and</span> <span class="nx">argument</span> <span class="nx">types</span><span class="p">.</span> <span class="nx">You</span> <span class="nx">might</span> <span class="nx">need</span> <span class="nx">to</span> <span class="nx">add</span> <span class="nx">explicit</span> <span class="nx">type</span> <span class="nx">casts</span><span class="p">.</span>
+</pre></div>
+
+
+<p>In case of PostgreSQL you probably want to use this statement:</p>
+<div class="highlight"><pre># select service_id, array_to_string(array_agg(distinct currency), &#39;,&#39;) from prices group by service_id;
+ service_id | array_to_string 
+------------+-----------------
+          1 | EUR,RUR,USD
+(1 row)
+</pre></div>
+
+
+<p>But I’d like to use PostgreSQL for production environment and SQLite for running tests on my local machine.
+And I’m cowardly enough to support 3 condition-dependant branches of code for this task.</p>
+<p>So, I suggest a cross-RDBMS solution:</p>
+<div class="highlight"><pre>sqlite&gt; select distinct service_id, currency from prices;
+1|USD
+1|RUR
+1|EUR
+
+mysql&gt; select distinct service_id, currency from prices;
++------------+----------+
+| service_id | currency |
++------------+----------+
+|          1 | USD      |
+|          1 | RUR      |
+|          1 | EUR      |
++------------+----------+
+3 rows in set (0.00 sec)
+# select distinct service_id, currency from prices;
+
+ service_id | currency 
+------------+----------
+          1 | USD
+          1 | RUR
+          1 | EUR
+(3 rows)
+</pre></div>
+
+
+<p>Penalty of extra service_id for each record for my purpose is not huge, but I got a nice, simple and common solution:</p>
+<div class="highlight"><pre>select distinct service_id, currency from prices
+</pre></div>
+
+
+<p>And a python script to aggregate this data:</p>
+<div class="highlight"><pre><span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">defaultdict</span>
+
+<span class="n">result</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">list</span><span class="p">)</span>
+<span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+    <span class="n">rows</span> <span class="o">=</span> <span class="n">cursor</span><span class="o">.</span><span class="n">fetchmany</span><span class="p">()</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">rows</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">break</span>
+    <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">rows</span><span class="p">:</span>
+        <span class="n">service_id</span><span class="p">,</span> <span class="n">currency</span> <span class="o">=</span> <span class="n">row</span>
+        <span class="n">result</span><span class="p">[</span><span class="n">service_id</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">currency</span><span class="p">)</span>
+</pre></div>                </article>
+<p class="paginator">
+    Page 1 / 1
+</p>
+            </aside><!-- /#featured -->
+        <section id="extras" class="body">
+                <div class="blogroll">
+                        <h2>blogroll</h2>
+                        <ul>
+                            <li><a href="http://getpelican.com/">Pelican</a></li>
+                            <li><a href="http://python.org/">Python.org</a></li>
+                            <li><a href="http://jinja.pocoo.org/">Jinja2</a></li>
+                            <li><a href="#">You can modify those links in your config file</a></li>
+                        </ul>
+                </div><!-- /.blogroll -->
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+
+                            <li><a href="#">You can add links in your config file</a></li>
+                            <li><a href="#">Another social link</a></li>
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>
