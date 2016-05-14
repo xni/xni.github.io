@@ -450,8 +450,6 @@ var IntervalInput = React.createClass({
   render: function() {
     var intervals = this.state.value.map(function(interval) {
       var maxPrice = this.findRelated(this.props.baseValue, interval);
-      if (maxPrice === null)
-        return (<div>Internal Error</div>);
       return (
         <li key={interval.b}>
           Начиная с {interval.b} [до {interval.e || this.props.e_descr}] {this.props.unit}
@@ -472,8 +470,6 @@ var ServicesInput = React.createClass({
   render: function() {
     var services = this.state.value.map(function(service) {
       var maxService = this.findRelated(this.props.baseValue, service);
-      if (maxService === null)
-        return (<div>Internal Error</div>);
       return (
         <li key={service.t}>{service.t}
           <ConstrainedInput constraint='max'
@@ -493,8 +489,6 @@ var SpecialTaximeterInput = React.createClass({
   render: function() {
     var zones = this.state.value.map(function(st) {
       var maxSt = this.findRelated(this.props.baseValue, st);
-      if (maxSt === null)
-        return (<div>Internal Error</div>);
       return (
         <div key={st.z}>
           <h4>{st.z}</h4>
@@ -524,8 +518,6 @@ var TransfersInput = React.createClass({
   render: function() {
     var transfers = this.state.value.map(function(trans) {
       var maxTrans = this.findRelated(this.props.baseValue, trans);
-      if (maxTrans === null)
-        return (<div>Internal Error</div>);
       return (
         <div key={trans.src + '-' + trans.dst}>
           <h4>{trans.src} &rarr; {trans.dst}</h4>
