@@ -373,22 +373,25 @@ var parkTariff = JSON.parse(JSON.stringify(mrt_tariff));
     <script type="text/babel">
       
 var ConstrainedInput = React.createClass({
-  getInitialState: function() {
-    return {
-      isOk: 'clear',
-      value: this.props.value,
-    }
-  },
-  handleValueChange: function(event) {
-    var value = parseFloat(event.target.value);
+  checkValue: function(value) {
     var isOk = (
       !isNaN(value) && value >= 0 && (
         (value <= this.props.baseValue && this.props.constraint == 'max') ||
         (value >= this.props.baseValue && this.props.constraint == 'min')
       )
     );
+    return isOk ? 'clear' : 'error';
+  },
+  getInitialState: function() {
+    return {
+      isOk: this.checkValue(this.props.value),
+      value: this.props.value,
+    }
+  },
+  handleValueChange: function(event) {
+    var value = parseFloat(event.target.value);
     this.setState({
-      isOk: isOk ? 'clear' : 'error',
+      isOk: this.checkValue(value),
       value: !isNaN(value) ? value : '',
     });
 
@@ -536,7 +539,7 @@ var TransfersInput = React.createClass({
             Цена поездки не меньше:
             <ConstrainedInput constraint='max'
                               value={trans.p.minimal || 0}
-                              baseValue={maxTrans.p.minimal}
+                              baseValue={maxTrans.p.minimal || 0}
                               setter={this.setValue.bind(this, trans, 'p.minimal')} />
           </p>
         </div>
@@ -555,7 +558,6 @@ var CategoryEditor = React.createClass({
     }
   },
   setRootValue: function(property_name, value) {
-    console.log('setRV', property_name, value);
     if (value !== null) {
       tariffAccessor.setRootValue(this.props.category.id, property_name, value);
       this.props.editor.setHasErrors(false);
@@ -621,6 +623,7 @@ var TariffEditor = React.createClass({
   getInitialState: function() {
     return {
       hasErrors: false,
+      hasFatalError: false,
       tariff: {categories: []},
       maxTariff: {categories: []},
     }
@@ -630,17 +633,19 @@ var TariffEditor = React.createClass({
     currentState.hasErrors = flag;
     this.setState(currentState);
   },
+  eqFun: function(a, b) {
+    return a.name === b.name &&
+           a.from_time === b.from_time &&
+           a.to_time === b.to_time &&
+           a.dt === b.dt &&
+           a.currency === b.currency;      
+  },
   findRelatedCategory: function(data, category) {
     for (var categoryIndex = 0; categoryIndex < data.length; ++categoryIndex) {
       var curCategory = data[categoryIndex];
       // Do not compare IDs, they differ.
-      if (curCategory.name === category.name &&
-          curCategory.from_time === category.from_time &&
-          curCategory.to_time === category.to_time &&
-          curCategory.dt === category.dt
-      ) {
+      if (this.eqFun(curCategory, category))
         return curCategory;
-      }
     }
     console.error(
         'Unable to find maxCategory for ' + category.name + ' ' + category.from_time + ' ' +
@@ -648,11 +653,75 @@ var TariffEditor = React.createClass({
     );
     return null;
   },
+  checkKeySubset: function(a, b, eqFun) {
+    if (a === null || a === undefined)
+      return true;
+
+    for (var i = 0; i < a.length; ++i) {
+      var found = false;
+      for (var j = 0; j < b.length; ++j) {
+        if (eqFun(a[i], b[j]))
+          found = true;
+      }
+      if (!found)
+        return false;
+    }
+    return true;
+  },
+  isTariffSchemeEqual: function(parkTariff, mrtTariff) {
+    // Required for future checks.
+    if (!this.checkKeySubset(parkTariff.categories, mrtTariff.categories, this.eqFun))
+      return false;
+
+    for (var categoryIndex = 0; categoryIndex < parkTariff.categories.length; ++categoryIndex) {
+      var curCategory = parkTariff.categories[categoryIndex];
+      var mrtCategory = this.findRelatedCategory(mrtTariff.categories, curCategory);
+      
+      if (!this.checkKeySubset(curCategory.pddpi, mrtCategory.pddpi, IntervalInput.prototype.eqFun))
+        return false;
+      if (!this.checkKeySubset(curCategory.dpi, mrtCategory.dpi, IntervalInput.prototype.eqFun))
+        return false;
+      if (!this.checkKeySubset(curCategory.tpi, mrtCategory.tpi, IntervalInput.prototype.eqFun))
+        return false;
+      if (!this.checkKeySubset(curCategory.req_prices, mrtCategory.req_prices, ServicesInput.prototype.eqFun))
+        return false;
+        
+      if (!this.checkKeySubset(curCategory.st, mrtCategory.st, SpecialTaximeterInput.prototype.eqFun))
+        return false;
+      var comparator = {eqFun: SpecialTaximeterInput.prototype.eqFun};
+      for (var stI = 0; stI < curCategory.st.length; ++stI) {
+        var curSt = curCategory.st[stI];
+        var mrtSt = GroupInput.findRelated.call(comparator, mrtCategory.st, curSt);
+        if (!this.checkKeySubset(curSt.p.tpi, mrtSt.p.tpi, IntervalInput.prototype.eqFun))
+          return false;
+        if (!this.checkKeySubset(curSt.p.dpi, mrtSt.p.dpi, IntervalInput.prototype.eqFun))
+          return false;
+      }
+      
+      if (!this.checkKeySubset(curCategory.zp, mrtCategory.zp, TransfersInput.prototype.eqFun))
+        return;
+      var comparator = {eqFun: TransfersInput.prototype.eqFun};
+      for (var zpI = 0; zpI < curCategory.zp.length; ++zpI) {
+        var curZp = curCategory.zp[zpI];
+        var mrtZp = GroupInput.findRelated.call(comparator, mrtCategory.zp, curZp);
+        if (!this.checkKeySubset(curZp.p.tpi, mrtZp.p.tpi, IntervalInput.prototype.eqFun))
+          return false;
+        if (!this.checkKeySubset(curZp.p.dpi, mrtZp.p.dpi, IntervalInput.prototype.eqFun))
+          return false;
+      }
+      
+      return true;
+    }
+  },
   generatePage: function(event) {
     var parkTariff = JSON.parse(document.getElementById('park-tariff').value);
     var mrtTariff = JSON.parse(document.getElementById('mrt-tariff').value);
+    
+    var isTariffSchemeEqual = this.isTariffSchemeEqual(parkTariff, mrtTariff);
+    
     this.setState({
       hasErrors: false,
+      hasFatalError: !isTariffSchemeEqual,
       tariff: parkTariff,
       maxTariff: mrtTariff,
     });
@@ -664,6 +733,12 @@ var TariffEditor = React.createClass({
     event.preventDefault();
   },
   render: function() {
+    if (this.state.hasFatalError)
+      return (<div>
+        <h1>Ошибка!</h1>
+        <p>Данные находятся в несогласованном состоянии. Просьба <em>срочно</em> связаться со службой тех. поддежрки.</p>
+      </div>
+    );
     var editor = this;
     var categories = this.state.tariff.categories.map(function(child) {
       var maxCategory = this.findRelatedCategory(this.state.maxTariff.categories, child);
@@ -684,7 +759,7 @@ var TariffEditor = React.createClass({
         <h1>Редактирование тарифа в зоне <span className="zone-name">{this.state.tariff.home_zone}</span></h1>
         {categories}
         <form onSubmit={this.handleSubmit}>
-          <input type="submit" disabled={this.state.hasErrors} />
+          <input type="submit" disabled={this.state.hasFatalError || this.state.hasErrors} />
         </form>
       </div>
     );
