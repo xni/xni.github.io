@@ -450,7 +450,7 @@ var IntervalInput = React.createClass({
         return (<div>Internal Error</div>);
       return (
         <li key={interval.b}>
-          Начиная с {interval.b} {this.props.unit}
+          Начиная с {interval.b} [до {interval.e || 'окончания поездки'}] {this.props.unit}
           <ConstrainedInput constraint='max'
                             value={interval.p}
                             baseValue={maxPrice.p}
@@ -553,6 +553,7 @@ var CategoryEditor = React.createClass({
     }
   },
   setRootValue: function(property_name, value) {
+    console.log('setRV', property_name, value);
     if (value !== null) {
       tariffAccessor.setRootValue(this.props.category.id, property_name, value);
       this.props.editor.setHasErrors(false);
@@ -650,6 +651,7 @@ var TariffEditor = React.createClass({
       tariff: parkTariff,
       maxTariff: mrtTariff,
     });
+    tariffAccessor = new TariffAccessor(parkTariff);
     event.preventDefault();
   },
   handleSubmit: function(event) {
