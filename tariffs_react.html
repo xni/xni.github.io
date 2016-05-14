@@ -390,8 +390,9 @@ var ConstrainedInput = React.createClass({
   },
   handleValueChange: function(event) {
     var value = parseFloat(event.target.value);
+    var isOk = this.checkValue(value);
     this.setState({
-      isOk: this.checkValue(value),
+      isOk: isOk,
       value: !isNaN(value) ? value : '',
     });
 
