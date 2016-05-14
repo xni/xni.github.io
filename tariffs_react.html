@@ -450,7 +450,7 @@ var IntervalInput = React.createClass({
         return (<div>Internal Error</div>);
       return (
         <li key={interval.b}>
-          Начиная с {interval.b} [до {interval.e || 'окончания поездки'}] {this.props.unit}
+          Начиная с {interval.b} [до {interval.e || this.props.e_descr}] {this.props.unit}
           <ConstrainedInput constraint='max'
                             value={interval.p}
                             baseValue={maxPrice.p}
@@ -498,12 +498,14 @@ var SpecialTaximeterInput = React.createClass({
           <IntervalInput value={st.p.dpi} 
                          baseValue={maxSt.p.dpi}
                          unit='км'
+                         e_descr='окончания поездки по зоне'
                          setter={this.setValue.bind(this, st, 'p.dpi')} />
           
           <p>Цена за минуту:</p>
           <IntervalInput value={st.p.tpi}
                          baseValue={maxSt.p.tpi}
                          unit='мин'
+                         e_descr='окончания поездки по зоне'
                          setter={this.setValue.bind(this, st, 'p.tpi')} />
         </div>
       );
@@ -578,12 +580,14 @@ var CategoryEditor = React.createClass({
           <IntervalInput value={category.dpi} 
                          baseValue={maxCategory.dpi}
                          unit='км'
+                         e_descr='окончания поездки'
                          setter={this.setRootValue.bind(this, 'dpi')} />
           
           <p>Цена за минуту:</p>
           <IntervalInput value={category.tpi}
                          baseValue={maxCategory.tpi}
                          unit='мин'
+                         e_descr='окончания поездки'
                          setter={this.setRootValue.bind(this, 'tpi')} />
           
           <h3>Надбавки за дополнительные услуги:</h3>
@@ -591,6 +595,7 @@ var CategoryEditor = React.createClass({
           <IntervalInput value={category.pddpi}
                          baseValue={maxCategory.pddpi}
                          unit='км'
+                         e_descr='момента подачи'
                          setter={this.setRootValue.bind(this, 'pddpi')} />
 
           <ServicesInput value={category.req_prices}
