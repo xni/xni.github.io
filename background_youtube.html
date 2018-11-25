@@ -1,0 +1,26 @@
+<!doctype html>
+<html>
+    <body>
+        <p>
+            <label for="youtube-url">YouTube URL</label>
+            <input type="text" onchange="javascript:update()" />
+        </p>
+        <p id="error-msg"></p>
+        <iframe width="560" height="315" id="frame" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        <script type="text/javascript">
+            const frame = window.document.getElementById('frame');
+            const errorDialog = window.document.getElementById('error-msg');
+            const update = () => {
+                const insertedURL = window.event.target.value;
+                const videoId = insertedURL.match(/=([A-Za-z0-9]+)$/);
+                if (videoId !== null) {
+                    frame.src = `https://www.youtube.com/embed/${videoId[1]}`;
+                    errorDialog.innerHTML = '';
+                } else {
+                    frame.src = '';
+                    errorDialog.innerHTML = "Invalid URL";
+                }
+            };
+        </script>
+    </body>
+</html>
