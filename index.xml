@@ -1,23 +1,23 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Kostya&#39;s Blog</title>
-    <link>http://example.org/</link>
+    <link>https://xni.github.io/</link>
     <description>Recent content on Kostya&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Mon, 06 Apr 2020 22:17:11 +0100</lastBuildDate>
     
-        <atom:link href="http://example.org/index.xml" rel="self" type="application/rss+xml" />
+        <atom:link href="https://xni.github.io/index.xml" rel="self" type="application/rss+xml" />
     
     
     
         <item>
         <title>Will the exchanges survive?</title>
-        <link>http://example.org/finance/will-exchange-survive/</link>
+        <link>https://xni.github.io/finance/will-exchange-survive/</link>
         <pubDate>Mon, 06 Apr 2020 22:17:11 +0100</pubDate>
         
-        <guid>http://example.org/finance/will-exchange-survive/</guid>
-        <description>Kostya&#39;s Blog http://example.org/finance/will-exchange-survive/ -&lt;p&gt;Citadel Securuties &lt;a href=&#34;https://www.bloomberg.com/news/articles/2020-04-01/ken-griffin-s-virus-plan-now-includes-emergency-site-in-florida&#34;&gt;placed&lt;/a&gt; its high profile traders to the isolated hotel in Florida. I am not saying this post will be truth. It is just a reflection of my knowledge about finance, how I have connected the dots of facts known by me to a broader picture. Probably, some guys like Ray Dalio etc etc has a better clarity about all of these, but I will try.&lt;/p&gt;
+        <guid>https://xni.github.io/finance/will-exchange-survive/</guid>
+        <description>Kostya&#39;s Blog https://xni.github.io/finance/will-exchange-survive/ -&lt;p&gt;Citadel Securuties &lt;a href=&#34;https://www.bloomberg.com/news/articles/2020-04-01/ken-griffin-s-virus-plan-now-includes-emergency-site-in-florida&#34;&gt;placed&lt;/a&gt; its high profile traders to the isolated hotel in Florida. I am not saying this post will be truth. It is just a reflection of my knowledge about finance, how I have connected the dots of facts known by me to a broader picture. Probably, some guys like Ray Dalio etc etc has a better clarity about all of these, but I will try.&lt;/p&gt;
 &lt;p&gt;So, why the exchanges remained open during the coronavirus outbreak?
 I think the answer lies in the realization how deep we are drawn into the &amp;lsquo;investments&amp;rsquo;.&lt;/p&gt;
 &lt;p&gt;Investments were there for a very long time. Mostly in the form of fundraising:
@@ -53,7 +53,7 @@ need some money spoiling habits, because they free some money from the system,
 it is a way to create slavery from the people who prefer to spend now rather than
 to spend. Please, love them. They and their children will work in order to
 make your retirement smooth and happy.&lt;/p&gt;
-- http://example.org/finance/will-exchange-survive/ - </description>
+- https://xni.github.io/finance/will-exchange-survive/ - </description>
         </item>
     
     

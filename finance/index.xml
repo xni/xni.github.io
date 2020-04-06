@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Finances on Kostya&#39;s Blog</title>
-    <link>http://example.org/finance/</link>
+    <link>https://xni.github.io/finance/</link>
     <description>Recent content in Finances on Kostya&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Mon, 06 Apr 2020 22:17:11 +0100</lastBuildDate>
     
-	<atom:link href="http://example.org/finance/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://xni.github.io/finance/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Will the exchanges survive?</title>
-      <link>http://example.org/finance/will-exchange-survive/</link>
+      <link>https://xni.github.io/finance/will-exchange-survive/</link>
       <pubDate>Mon, 06 Apr 2020 22:17:11 +0100</pubDate>
       
-      <guid>http://example.org/finance/will-exchange-survive/</guid>
+      <guid>https://xni.github.io/finance/will-exchange-survive/</guid>
       <description>Citadel Securuties placed its high profile traders to the isolated hotel in Florida. I am not saying this post will be truth. It is just a reflection of my knowledge about finance, how I have connected the dots of facts known by me to a broader picture. Probably, some guys like Ray Dalio etc etc has a better clarity about all of these, but I will try.
 So, why the exchanges remained open during the coronavirus outbreak?</description>
     </item>
