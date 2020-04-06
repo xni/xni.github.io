@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>xni TechBlog</title><link href="https://xni.github.io/" rel="alternate"></link><link href="https://xni.github.io/feeds/all.atom.xml" rel="self"></link><id>https://xni.github.io/</id><updated>2015-07-19T12:30:00+03:00</updated><entry><title>Koding.com is awesome!</title><link href="https://xni.github.io/kodingcom-is-awesome.html" rel="alternate"></link><updated>2015-07-19T12:30:00+03:00</updated><author><name>Konstantin Nikitin</name></author><id>tag:xni.github.io,2015-07-19:kodingcom-is-awesome.html</id><summary type="html">&lt;p&gt;I have just tried &lt;a href="https://koding.com"&gt;koding.com&lt;/a&gt; and it looks like a miracle.
-It gives me an ability to setup some environment, e.g. packages, libraries, scripts,
-and then to share it to my collegues, who can start making changes or experiments
-immediately.&lt;/p&gt;
-&lt;p&gt;Yes, I know, that that kind of functionality may be achieved by using docker,
-docker registry and so on, but it is not so collaborative and cool.&lt;/p&gt;</summary></entry></feed>

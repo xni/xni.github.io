@@ -1,1 +1,0 @@
-crtg_content = ''; (function(){document.cookie = 'cto_rtt=' + escape(crtg_content) + '; path=/; expires=Mon, 23 Mar 2015 20:44:49 GMT; domain=megamozg.ru';})();
