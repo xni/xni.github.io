@@ -22,23 +22,5 @@ Doing this for nearly for the whole week I found couple of tricks.
 Jumping to the end of frame Let&amp;rsquo;s say you have some frame-oriented protocol, like websocket or EUREX ETI. Usually, message in those protocols start from the message_size field, then the message body follows, then the next message and so on.</description>
     </item>
     
-    <item>
-      <title>GDB basics</title>
-      <link>https://xni.github.io/tech/gdb-basics/</link>
-      <pubDate>Thu, 09 Apr 2020 07:50:00 +0100</pubDate>
-      
-      <guid>https://xni.github.io/tech/gdb-basics/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>GDB basics</title>
-      <link>https://xni.github.io/tech/vscode-bash-vs-ssh-bash/</link>
-      <pubDate>Thu, 09 Apr 2020 07:50:00 +0100</pubDate>
-      
-      <guid>https://xni.github.io/tech/vscode-bash-vs-ssh-bash/</guid>
-      <description>VSCode in interpreter returns /bin/bash, ssh - &amp;lsquo;-bash&amp;rsquo;</description>
-    </item>
-    
   </channel>
 </rss>
