@@ -5,9 +5,74 @@
     <description>Recent content on Kostya&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 06 Apr 2020 22:17:11 +0100</lastBuildDate>
+    <lastBuildDate>Thu, 09 Apr 2020 21:14:00 +0100</lastBuildDate>
     
         <atom:link href="https://xni.github.io/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    
+        <item>
+        <title>Reading through HEX</title>
+        <link>https://xni.github.io/tech/hex-reading-interesting-facts/</link>
+        <pubDate>Thu, 09 Apr 2020 21:14:00 +0100</pubDate>
+        
+        <guid>https://xni.github.io/tech/hex-reading-interesting-facts/</guid>
+        <description>Kostya&#39;s Blog https://xni.github.io/tech/hex-reading-interesting-facts/ -&lt;p&gt;Right now I am improving our exchange connectivity libraries.
+And one of the regular activities is anaylzing tcpdumps to validate what was sent over the wire.&lt;/p&gt;
+&lt;p&gt;Doing this for nearly for the whole week I found couple of tricks.&lt;/p&gt;
+&lt;h2 id=&#34;jumping-to-the-end-of-frame&#34;&gt;Jumping to the end of frame&lt;/h2&gt;
+&lt;p&gt;Let&amp;rsquo;s say you have some frame-oriented protocol, like websocket
+or EUREX ETI. Usually, message in those protocols start from the
+&lt;code&gt;message_size&lt;/code&gt; field, then the message body follows, then the next
+message and so on. So, if you want to jump from message N to the
+message N+1 you need to skip message-size bytes.&lt;/p&gt;
+&lt;p&gt;Let&amp;rsquo;s say this is our tcpdump:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;48 00 00 00 01 02 03 04  ab cd ef f0 fe dc ba 98
+00 00 11 12 45 9c 2a 23  62 22 b0 c1 38 52 55 6a
+bb 52 21 01 34 a5 50 32  ba 51 b6 81 84 42 24 bb
+13 ac 52 52 62 12 00 00  11 35 73 ba 51 62 72 31
+58 25 40 00 30 00 00 11  31 00 62 65 bc bc 62 11
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Here &lt;code&gt;48 00 ...&lt;/code&gt; is the message size. Where does the second message starts from?
+Before figuring out the first hack I was doing the following: 48 hex = 72 dec.
+Ok, let&amp;rsquo;s count 72 characters&amp;hellip; so the next message is &lt;code&gt;31 00 ...&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;What I figured out eventually is that hexdump renders 16 bytes per line, so
+48 in hex actually means - to find the beginning of a next message skip 4 rows
+and 8 columns. That&amp;rsquo;s it!&lt;/p&gt;
+&lt;h2 id=&#34;decoding-ascii-from-hex-in-mind&#34;&gt;Decoding ascii from hex in mind&lt;/h2&gt;
+&lt;p&gt;Some of the protocols are binary, but some are textual. &lt;code&gt;hexdump -C&lt;/code&gt; is a nice thing
+display both, but from time to time there are situations where you have just a wall
+of hex bytes. Turned out that there are some easy rules you can decode text from the
+ascii bytes.&lt;/p&gt;
+&lt;p&gt;So, what I ended up with: 30 in hex actually means &amp;lsquo;0&amp;rsquo;. It is very convinient. All of
+the hex numbers in the range 30-39, just drop &amp;lsquo;3&amp;rsquo;, and you have a digit.
+40 - is a character &amp;lsquo;before&amp;rsquo; the alphabet. So that &amp;ldquo;the first letter&amp;rdquo; - so 40 + 1, is &amp;lsquo;A&amp;rsquo;.
+So, it is easy to decode 41-46 as &amp;lsquo;A&amp;rsquo;, &amp;lsquo;B&amp;rsquo;, &amp;lsquo;C&amp;rsquo;, &amp;lsquo;D&amp;rsquo;, &amp;lsquo;E&amp;rsquo; accordingly. 60 - is a character
+&amp;lsquo;before&amp;rsquo; the lower-case alhpabet. 61 is &amp;lsquo;a&amp;rsquo;.&lt;/p&gt;
+- https://xni.github.io/tech/hex-reading-interesting-facts/ - </description>
+        </item>
+    
+    
+    
+        <item>
+        <title>GDB basics</title>
+        <link>https://xni.github.io/tech/gdb-basics/</link>
+        <pubDate>Thu, 09 Apr 2020 07:50:00 +0100</pubDate>
+        
+        <guid>https://xni.github.io/tech/gdb-basics/</guid>
+        <description>Kostya&#39;s Blog https://xni.github.io/tech/gdb-basics/ -- https://xni.github.io/tech/gdb-basics/ - </description>
+        </item>
+    
+    
+    
+        <item>
+        <title>GDB basics</title>
+        <link>https://xni.github.io/tech/vscode-bash-vs-ssh-bash/</link>
+        <pubDate>Thu, 09 Apr 2020 07:50:00 +0100</pubDate>
+        
+        <guid>https://xni.github.io/tech/vscode-bash-vs-ssh-bash/</guid>
+        <description>Kostya&#39;s Blog https://xni.github.io/tech/vscode-bash-vs-ssh-bash/ -&lt;p&gt;VSCode in interpreter returns /bin/bash, ssh - &amp;lsquo;-bash&amp;rsquo;&lt;/p&gt;
+- https://xni.github.io/tech/vscode-bash-vs-ssh-bash/ - </description>
+        </item>
     
     
     
