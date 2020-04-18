@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html><head>
+<title>GDB basics</title>
+
+<meta charset="utf-8">
+<meta name="X-UA-Compatible" content="IE=edge">
+<meta name="google-site-verification" content="">
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+<meta content="telephone=no" name="format-detection">
+<meta name="description" content="">
+<meta name="renderer" content="webkit">
+<meta name="theme-color" content="#ffffff">
+
+
+
+
+
+<script src="/vendor/js/jquery.min.js" ></script>
+<script src="/vendor/js/popper.min.js" ></script>
+<script src="/vendor/js/bootstrap.min.js" ></script>
+<script src="/vendor/js/smooth-scroll.polyfills.min.js" ></script>
+<link type="text/css" rel="stylesheet" href="/vendor/css/bootstrap.min.css">
+<script src="/vendor/js/vue.min.js" ></script>
+
+
+
+
+<link rel="stylesheet" href="https://xni.github.io/scss/journal.min.5c667e74038e21ddbb9024b67930f8544e02af62491281cf73fdb817eec2947e.css" integrity="sha256-XGZ&#43;dAOOId27kCS2eTD4VE4Cr2JJEoHPc/24F&#43;7ClH4=" media="screen">
+
+<script src="https://xni.github.io//js/loadCSS.js"></script>
+<script src="https://xni.github.io//js/table.js"></script>
+
+
+<script src="https://xni.github.io//js/toc.js"></script>
+
+
+<script>
+    loadCSS("https://fonts.googleapis.com/css?family=Lora|Montserrat|Fira+Mono|Noto+Serif+SC|Material+Icons");
+</script>
+
+
+
+
+
+
+</head>
+<body>
+    	<div id="app"><div ref="sideContainer" class="side-container">
+    
+    <a class="a-block nav-head false" href="https://xni.github.io/">
+    
+        <div class="nav-title">
+            Kostya&#39;s Blog
+        </div>
+        
+    </a>
+
+    <div class="nav-link-list">
+        
+        
+    </div>
+
+    
+
+    <div class="nav-footer">
+        
+Hugo Theme <a href="https://github.com/amazingrise/hugo-theme-diary">Diary</a> by <a href="https://amazingrise.net">Rise</a>
+<br>
+Ported from <a href="https://mak1t0.cc/" target="_blank" rel="noreferrer noopener">Makito</a>'s <a href="https://github.com/SumiMakito/hexo-theme-journal/" target="_blank" rel="noreferrer noopener">Journal.</a> <br>
+<br>
+
+&copy;
+	
+	2020 Kostya&#39;s Blog
+	
+    </div>
+    
+</div><div ref="extraContainer" class="extra-container">
+    
+    <div class="toc animated-visibility" :class="{ invisible: scrollY <= 140 }">
+
+
+	<div class="toc-content">
+	
+		
+		
+		
+		<center>- CATALOG -</center>
+			
+				
+				
+					
+						
+						
+							<ul>
+						
+							<ul>
+						
+						
+								<li>
+				 					<a href="#things-to-remember" v-on:click="closeDrawer" id="things-to-remember-nav">
+										 Things to remember
+									</a>
+								</li>
+						
+							</ul>
+						
+							</ul>
+						
+					
+				
+			
+	</div>
+
+</div>
+    
+    <div class="pagination">
+        <a id="globalBackToTop" class="pagination-action animated-visibility" href="#top" :class="{ invisible: scrollY == 0 }">
+            <i class="material-icons pagination-action-icon">
+                keyboard_arrow_up
+            </i>
+        </a>
+        
+    </div>
+</div><div class="single-column-drawer-container" ref="drawer"
+     v-bind:class="{ 'single-column-drawer-container-active': isDrawerOpen }">
+    <div class="drawer-content">
+        <div class="drawer-menu">
+            
+            
+            
+            <div class="toc">
+
+
+	<div class="toc-content">
+	
+		
+		
+		
+		<center>- CATALOG -</center>
+			
+				
+				
+					
+						
+						
+							<ul>
+						
+							<ul>
+						
+						
+								<li>
+				 					<a href="#things-to-remember" v-on:click="closeDrawer" id="things-to-remember-nav">
+										 Things to remember
+									</a>
+								</li>
+						
+							</ul>
+						
+							</ul>
+						
+					
+				
+			
+	</div>
+
+</div>
+            
+        </div>
+    </div>
+</div>
+<transition name="fade">
+    <div v-bind:class="{ 'single-column-drawer-mask': mounted }" v-if="isDrawerOpen" v-on:click="toggleDrawer"></div>
+</transition>
+<nav ref="navBar" class="navbar sticky-top navbar-light single-column-nav-container">
+    <div ref="navBackground" class="nav-background"></div>
+    <div class="container container-narrow nav-content">
+        <button id="nav_dropdown_btn" class="nav-dropdown-toggle" type="button" v-on:click="toggleDrawer">
+            <i class="material-icons">
+                menu
+            </i>
+        </button>
+        <a ref="navTitle" class="navbar-brand" href="https://xni.github.io/">
+            Kostya&#39;s Blog
+        </a>
+    </div>
+</nav>
+<div class="single-column-header-container" ref="pageHead"
+     v-bind:style="{ transform: 'translateZ(0px) translateY('+.3*scrollY+'px)', opacity: 1-navOpacity }">
+    <a href="https://xni.github.io/">
+        <div class="single-column-header-title">Kostya&#39;s Blog</div>
+        
+
+    </a>
+</div>
+            <div id="content">
+<div ref="streamContainer" class="stream-container">
+    <div class="post-list-container post-list-container-shadow">
+        <div class="post">
+            
+            
+            
+
+            <div class="post-head-wrapper-text-only"
+                 style="background-image: url('/')">
+                <div class="post-title">
+                    GDB basics
+                    
+                    <div class="post-meta">
+                        
+                        <time itemprop="datePublished">
+                            2020-04-18 14:30
+                        </time>
+                        
+
+                        
+
+                        
+                    </div>
+                </div>
+            </div>
+            
+            <div class="post-body-wrapper">
+                <div class="post-body">
+                    <p>I need to confess: I have&rsquo;t use GDB any how seriously before. May be just some basics
+like start an app, wait for it to crash, and then do <code>bt</code> to figure out that
+<code>this</code> was equal to 0. So this article is going to be a very entry level, gentle
+intro in GDB for C++.</p>
+<p>In my current company we are using GDB a lot. The easiest way to debug things
+is now a debugger! In this short article I&rsquo;m going to show how I am using gdb
+right now. It if mostly dedicated to breakpoints, and not a reference anyhow.</p>
+<p>We will write a simple application and then we will use gdb to explore a couple
+of bugs.</p>
+<p>This will be an application source:</p>
+<pre><code>#include &lt;iostream&gt;
+#include &lt;cstring&gt;
+#include &lt;string&gt;
+#include &lt;experimental/string_view&gt;
+
+template &lt;typename A, typename B&gt;
+class RequestProcessor {
+public:
+  std::experimental::string_view extractField(std::experimental::string_view field, std::experimental::string_view req) {
+      const auto pEq = req.find(field) + field.size() + 1;
+      const auto pSp = req.find(' ', pEq);
+      return req.substr(pEq, pSp - pEq);
+  }
+
+  bool isAllowed(std::experimental::string_view req) {
+      return extractField(&quot;Name=&quot;, req) == &quot;Kate&quot;;
+  }
+
+  void processRequest(std::experimental::string_view req) {
+    if (!isAllowed(req))
+        return;
+    if (extractField(&quot;Data=&quot;, req) == &quot;4&quot;) {
+        std::cout &lt;&lt; &quot;You are here\n&quot;;
+    }
+  }
+};
+
+
+int main() {
+    RequestProcessor&lt;int, std::string&gt; p;
+    p.processRequest(&quot;Name=John Data=1 &quot;);
+    p.processRequest(&quot;Name=John Data=2 &quot;);
+    p.processRequest(&quot;Name=John Data=3 &quot;);
+    p.processRequest(&quot;Name=John Data=4 &quot;);
+}
+</code></pre><p>So we would like to see &ldquo;You are here&rdquo; in the terminal.
+But it is not what&rsquo;s happening:</p>
+<pre><code>root@b004b64b9456:/# g++ -std=c++17 -g main.cpp 
+root@b004b64b9456:/# ./a.out 
+root@b004b64b9456:/# 
+</code></pre><p>What I will try to do first is to create a setup where it is
+easy to achieve the state of my application where the possible
+bug is. In this current situation I would like to create a breakpoint
+before executing the line <code>if (extractField(&quot;Data=&quot;, req) == &quot;4&quot;)</code>,
+because we probably have a bug in the <code>extractField</code> method.
+Also, to make things easier, we would like to skip 3 other crossings
+of this breakpoint and stop only of the fouth. Let&rsquo;s do it!</p>
+<pre><code>root@b004b64b9456:/# gdb a.out 
+GNU gdb (Ubuntu 9.1-0ubuntu1) 9.1
+Copyright (C) 2020 Free Software Foundation, Inc.
+License GPLv3+: GNU GPL version 3 or later &lt;http://gnu.org/licenses/gpl.html&gt;
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.
+Type &quot;show copying&quot; and &quot;show warranty&quot; for details.
+This GDB was configured as &quot;x86_64-linux-gnu&quot;.
+Type &quot;show configuration&quot; for configuration details.
+For bug reporting instructions, please see:
+&lt;http://www.gnu.org/software/gdb/bugs/&gt;.
+Find the GDB manual and other documentation resources online at:
+    &lt;http://www.gnu.org/software/gdb/documentation/&gt;.
+
+For help, type &quot;help&quot;.
+Type &quot;apropos word&quot; to search for commands related to &quot;word&quot;...
+Reading symbols from a.out...
+
+(gdb) break main.cpp:22
+Breakpoint 1 at 0x18f8: file main.cpp, line 22.
+
+(gdb) ignore 1 3
+Will ignore next 3 crossings of breakpoint 1.
+
+(gdb) r
+Starting program: /a.out 
+warning: Error disabling address space randomization: Operation not permitted
+[Inferior 1 (process 1161) exited normally]
+(gdb) 
+</code></pre><p>Oh, wow, as you can see, something went wrong, our program exited without
+stopping on a breakpoint. Looking more carefully into the code, you can see,
+that probably the issue is with an <code>isAllowed</code> method. Let&rsquo;s say that we
+know for sure that in production this method is not an issue and we don&rsquo;t
+want to fight with it in our development environment. We just want it to
+return true. Easy! We are continuing our debugging session:</p>
+<pre><code>(gdb) rbreak isAllowed
+Breakpoint 2 at 0x55e93008e994: file main.cpp, line 15.
+bool RequestProcessor&lt;int, std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt; &gt;::isAllowed(std::experimental::fundamentals_v1::basic_string_view&lt;char, std::char_traits&lt;char&gt; &gt;);
+
+(gdb) commands 2
+Type commands for breakpoint(s) 2, one per line.
+End with a line saying just &quot;end&quot;.
+&gt;return true
+&gt;continue
+&gt;end
+
+(gdb) r
+Starting program: /a.out 
+warning: Error disabling address space randomization: Operation not permitted
+
+Breakpoint 2, RequestProcessor&lt;int, std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt; &gt;::isAllowed (
+    this=0x7f5760c566bf &lt;std::num_get&lt;wchar_t, std::istreambuf_iterator&lt;wchar_t, std::char_traits&lt;wchar_t&gt; &gt; &gt; const&amp; std::use_facet&lt;std::num_get&lt;wchar_t, std::istreambuf_iterator&lt;wchar_t, std::char_traits&lt;wchar_t&gt; &gt; &gt; &gt;(std::locale const&amp;)+63&gt;, 
+    req=&quot;\220I\316`W\177\000\000\000\000\000\000\000\000\000\000\270I\316`W\177\000\000\006&quot;, '\000' &lt;repeats 15 times&gt;, &quot;\002\020&quot;, '\000' &lt;repeats 158 times&gt;...) at main.cpp:15
+15	  bool isAllowed(std::experimental::string_view req) {
+
+Breakpoint 2, RequestProcessor&lt;int, std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt; &gt;::isAllowed (this=0x7fffd673f570, req=&quot;&quot;)
+    at main.cpp:15
+15	  bool isAllowed(std::experimental::string_view req) {
+
+Breakpoint 2, RequestProcessor&lt;int, std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt; &gt;::isAllowed (this=0x7fffd673f570, req=&quot;&quot;)
+    at main.cpp:15
+15	  bool isAllowed(std::experimental::string_view req) {
+
+Breakpoint 2, RequestProcessor&lt;int, std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt; &gt;::isAllowed (this=0x7fffd673f570, req=&quot;&quot;)
+    at main.cpp:15
+15	  bool isAllowed(std::experimental::string_view req) {
+
+Breakpoint 1, RequestProcessor&lt;int, std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt; &gt;::processRequest (this=0x7fffd673f62f, 
+    req=&quot;Name=John Data=4 &quot;) at main.cpp:22
+22	    if (extractField(&quot;Data=&quot;, req) == &quot;4&quot;) {
+</code></pre><p>It works!</p>
+<p>Here I&rsquo;ve used <code>rbreak</code> command. It creates a breakpoint by a part of a function name (<code>isAllowed</code> in our case).
+You can also use <code>break</code> and specify the full name, but the full name, as you can see, is not
+really straighforward, because templated arguments and a class name are also a part of a full name for gdb.</p>
+<p>Now we have a setup, which allows us to stop near the expected bug. And I do want to save this setup
+in order to return to the debugging session later, or to be able to easily restart the application.</p>
+<pre><code>(gdb) save breakpoints my_debugging  
+Saved to file 'my_debugging'.
+</code></pre><p>If we quit the debugger and re-enter it again we can easily restore this setup:</p>
+<pre><code>root@b004b64b9456:/# gdb a.out 
+GNU gdb (Ubuntu 9.1-0ubuntu1) 9.1
+Copyright (C) 2020 Free Software Foundation, Inc.
+License GPLv3+: GNU GPL version 3 or later &lt;http://gnu.org/licenses/gpl.html&gt;
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.
+Type &quot;show copying&quot; and &quot;show warranty&quot; for details.
+This GDB was configured as &quot;x86_64-linux-gnu&quot;.
+Type &quot;show configuration&quot; for configuration details.
+For bug reporting instructions, please see:
+&lt;http://www.gnu.org/software/gdb/bugs/&gt;.
+Find the GDB manual and other documentation resources online at:
+    &lt;http://www.gnu.org/software/gdb/documentation/&gt;.
+
+For help, type &quot;help&quot;.
+Type &quot;apropos word&quot; to search for commands related to &quot;word&quot;...
+Reading symbols from a.out...
+
+(gdb) source my_debugging 
+Breakpoint 1 at 0x18f8: file main.cpp, line 22.
+Breakpoint 2 at 0x1994: file main.cpp, line 15.
+
+(gdb) info breakpoints 
+Num     Type           Disp Enb Address            What
+1       breakpoint     keep y   0x00000000000018f8 in RequestProcessor&lt;int, std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt; &gt;::processRequest(std::experimental::fundamentals_v1::basic_string_view&lt;char, std::char_traits&lt;char&gt; &gt;) at main.cpp:22
+2       breakpoint     keep y   0x0000000000001994 in RequestProcessor&lt;int, std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt; &gt;::isAllowed(std::experimental::fundamentals_v1::basic_string_view&lt;char, std::char_traits&lt;char&gt; &gt;) at main.cpp:15
+        return true
+        continue
+
+(gdb) r
+Starting program: /a.out 
+warning: Error disabling address space randomization: Operation not permitted
+
+Breakpoint 2, RequestProcessor&lt;int, std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt; &gt;::isAllowed (
+    this=0x7f47c00756bf &lt;std::num_get&lt;wchar_t, std::istreambuf_iterator&lt;wchar_t, std::char_traits&lt;wchar_t&gt; &gt; &gt; const&amp; std::use_facet&lt;std::num_get&lt;wchar_t, std::istreambuf_iterator&lt;wchar_t, std::char_traits&lt;wchar_t&gt; &gt; &gt; &gt;(std::locale const&amp;)+63&gt;, req=&quot;&quot;) at main.cpp:15
+15	  bool isAllowed(std::experimental::string_view req) {
+
+Breakpoint 1, RequestProcessor&lt;int, std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt; &gt;::processRequest (this=0x7ffe6da9202f, 
+    req=&quot;Name=John Data=1 &quot;) at main.cpp:22
+22	    if (extractField(&quot;Data=&quot;, req) == &quot;4&quot;) {
+</code></pre><p>As you can see, <code>source</code> command restored all of the breakpoints, with their settings:
+<code>info breakpoints</code> shows it.</p>
+<p>And now let&rsquo;s jump into the <code>extractField</code> method. In order to do so, we are calling <code>step</code>,
+which means &ldquo;execute until the control flow will change to another line&rdquo; Another useful
+command is <code>next</code>, &ldquo;execute until the control flow will reach the NEXT line&rdquo;. As you
+can see, in the presense of nested instructions, if you want to follow them, you need a <code>step</code>.</p>
+<pre><code>(gdb) step
+std::experimental::fundamentals_v1::basic_string_view&lt;char, std::char_traits&lt;char&gt; &gt;::basic_string_view (this=0x7f47c0109ee0 &lt;std::wcerr&gt;, 
+    __str=0x7f47c0109ee0 &lt;std::wcerr&gt; &quot;0D\020\300G\177&quot;) at /usr/include/c++/9/experimental/string_view:108
+108	      constexpr basic_string_view(const _CharT* __str)
+
+(gdb) finish
+Run till exit from #0  std::experimental::fundamentals_v1::basic_string_view&lt;char, std::char_traits&lt;char&gt; &gt;::basic_string_view (
+    this=0x7f47c0109ee0 &lt;std::wcerr&gt;, __str=0x7f47c0109ee0 &lt;std::wcerr&gt; &quot;0D\020\300G\177&quot;) at /usr/include/c++/9/experimental/string_view:108
+0x000055e3b205a90b in RequestProcessor&lt;int, std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt; &gt;::processRequest (
+    this=0x7ffe6da9202f, req=&quot;Name=John Data=1 &quot;) at main.cpp:22
+22	    if (extractField(&quot;Data=&quot;, req) == &quot;4&quot;) {
+
+(gdb) step
+std::experimental::fundamentals_v1::basic_string_view&lt;char, std::char_traits&lt;char&gt; &gt;::basic_string_view (this=0x7ffe6da91fe0, __str=0x55e3b205b050 &quot;4&quot;)
+    at /usr/include/c++/9/experimental/string_view:108
+108	      constexpr basic_string_view(const _CharT* __str)
+
+(gdb) finish
+Run till exit from #0  std::experimental::fundamentals_v1::basic_string_view&lt;char, std::char_traits&lt;char&gt; &gt;::basic_string_view (this=0x7ffe6da91fe0, 
+    __str=0x55e3b205b050 &quot;4&quot;) at /usr/include/c++/9/experimental/string_view:108
+0x000055e3b205a91e in RequestProcessor&lt;int, std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt; &gt;::processRequest (
+    this=0x7ffe6da9202f, req=&quot;Name=John Data=1 &quot;) at main.cpp:22
+22	    if (extractField(&quot;Data=&quot;, req) == &quot;4&quot;) {
+
+(gdb) step
+RequestProcessor&lt;int, std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt; &gt;::extractField (this=0x55e3b205b052, field=&quot;&quot;, req=&quot;&quot;)
+    at main.cpp:9
+9	  std::experimental::string_view extractField(std::experimental::string_view field, std::experimental::string_view req) {
+</code></pre><p>So, before we were able to reach <code>extractField</code>, we had visited two constructors for <code>string_view</code>, that makes perfect sense.
+When during the <code>step</code> invocation you are jumping into the function you are not interested in, just type <code>finish</code>,
+to let this function to finish, and return to the point, where you can type <code>step</code> again.</p>
+<p>Let&rsquo;s execute two subsequent lines and check what&rsquo;s going on:</p>
+<pre><code>(gdb) n
+10	      const auto pEq = req.find(field) + field.size() + 1;
+(gdb) n
+11	      const auto pSp = req.find(' ', pEq);
+(gdb) n
+12	      return req.substr(pEq, pSp - pEq);
+(gdb) p field
+$1 = &quot;Data=&quot;
+(gdb) p req
+$2 = &quot;Name=John Data=4 &quot;
+(gdb) p pEq
+$3 = 16
+(gdb) p pSp
+$4 = 16
+(gdb) 
+</code></pre><p>Doesn&rsquo;t look right. <code>pEq</code> was expected to be the index of the first character after <code>Data=</code> in <code>req</code>.
+Which is 15. If we restart session and jump into the <code>find</code>, and then use <code>finish</code> we can see that
+<code>find</code> returns <code>10</code>:</p>
+<pre><code>(gdb) n
+10	      const auto pEq = req.find(field) + field.size() + 1;
+(gdb) s
+std::experimental::fundamentals_v1::basic_string_view&lt;char, std::char_traits&lt;char&gt; &gt;::find (this=0xa, 
+    __str=&lt;error: Cannot access memory at address 0x360016734595d100&gt;, __pos=1) at /usr/include/c++/9/experimental/string_view:323
+323	      find(basic_string_view __str, size_type __pos = 0) const noexcept
+(gdb) fin
+Run till exit from #0  std::experimental::fundamentals_v1::basic_string_view&lt;char, std::char_traits&lt;char&gt; &gt;::find (this=0xa, 
+    __str=&lt;error: Cannot access memory at address 0x360016734595d100&gt;, __pos=1) at /usr/include/c++/9/experimental/string_view:323
+0x0000561939cc9a96 in RequestProcessor&lt;int, std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt; &gt;::extractField (
+    this=0x7ffc4d20ff8f, field=&quot;Data=&quot;, req=&quot;Name=John Data=4 &quot;) at main.cpp:10
+10	      const auto pEq = req.find(field) + field.size() + 1;
+Value returned is $1 = 10
+</code></pre><p>The issue is in <code>+ 1</code>. Let&rsquo;s modify the value of <code>pEq</code> on the fly, before entering
+the computation of <code>pSp</code>. In order to do it, we can use <code>set</code> command.</p>
+<pre><code>(gdb) p pEq
+$2 = 16
+(gdb) set pEq = 15
+(gdb) p pEq
+$3 = 15
+(gdb) fin
+Run till exit from #0  RequestProcessor&lt;int, std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt; &gt;::extractField (
+    this=0x7ffc4d20ff8f, field=&quot;Data=&quot;, req=&quot;Name=John Data=4 &quot;) at main.cpp:12
+0x0000561939cc993d in RequestProcessor&lt;int, std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt; &gt;::processRequest (
+    this=0x7ffc4d20ff8f, req=&quot;Name=John Data=4 &quot;) at main.cpp:22
+22	    if (extractField(&quot;Data=&quot;, req) == &quot;4&quot;) {
+Value returned is $4 = &quot;4&quot;
+</code></pre><p>Now we can see that the value returned from <code>extractField</code> was correct, we can continue
+the execution:</p>
+<pre><code>(gdb) c
+Continuing.
+You are here
+</code></pre><p>Yay! We saw our log line. Without recompiling the code and any extra log lines. This is very nice,
+when you compilation takes a while.</p>
+<p>I have remove the section about the conditional breakpoints, but in general, it is another powerful
+addition to the <code>ignore</code>.</p>
+<h2 id="things-to-remember">Things to remember</h2>
+<p>If you are a freak like me, you should have a flash cards for every book, blog post and podcast.
+To make things easier to you I am summarizing the content of this article:</p>
+<ul>
+<li><strong>Create a breakpoint by file name and line</strong>? <code>break filename:line</code></li>
+<li><strong>Create a breakpoint by exact function name</strong>? <code>break long::function&lt;name, with&gt;::templates(and, parameters)</code></li>
+<li><strong>Create a breakpoint by a partial function name</strong>? <code>rbreak partial_function_name</code></li>
+<li><strong>Ignore the next X crossing of breakpoint Y</strong>? <code>ignore Y X</code></li>
+<li><strong>Execute until the next line</strong>? <code>next</code></li>
+<li><strong>Execute until the line is changed</strong>? <code>step</code></li>
+<li><strong>Execute until the end of the function</strong>? <code>finish</code></li>
+<li><strong>Return some other value from the function without executing it</strong>? <code>return</code></li>
+<li><strong>Do something when you hit a breakpoint Y</strong>? <code>commands Y</code></li>
+<li><strong>Conditional breakpoint</strong>? <code>condition X &lt;expression&gt;</code></li>
+<li><strong>Print the value of a variable</strong>? <code>p</code></li>
+<li><strong>Update the value of a variable</strong>? <code>set</code></li>
+<li><strong>Save all breakpoints</strong>? <code>save breakpoints &lt;file&gt;</code></li>
+<li><strong>Load breakpoints</strong>? <code>source &lt;file&gt;</code></li>
+</ul>
+
+                    
+                    <HR width="100%" id="EOF">
+                    <p style="color:#777;">Last modified on 2020-04-18</p>
+                    
+                </div>
+            </div>
+            
+            
+            <nav class="post-pagination">
+
+                
+                <a class="newer-posts">
+                    Next<br>No newer posts.
+                </a>
+                
+                
+                
+                <a class="older-posts" href="https://xni.github.io/tech/hex-reading-interesting-facts/">
+                    Previous<br>Reading through HEX
+                </a>
+                
+            </nav>
+            <div class="post-comment-wrapper">
+                
+
+
+
+
+
+
+            </div>
+        </div>
+    </div>
+</div>
+
+            </div><div id="single-column-footer">
+Hugo Theme <a href="https://github.com/amazingrise/hugo-theme-diary">Diary</a> by <a href="https://amazingrise.net">Rise</a>
+<br>
+Ported from <a href="https://mak1t0.cc/" target="_blank" rel="noreferrer noopener">Makito</a>'s <a href="https://github.com/SumiMakito/hexo-theme-journal/" target="_blank" rel="noreferrer noopener">Journal.</a> <br>
+<br>
+
+&copy;
+	
+	2020 Kostya&#39;s Blog
+	</div>
+    	</div>
+    <script src="https://xni.github.io//js/journal.js"></script>
+    </body>
+</html>
