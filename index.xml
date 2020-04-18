@@ -5,9 +5,307 @@
     <description>Recent content on Kostya&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 09 Apr 2020 21:14:00 +0100</lastBuildDate>
+    <lastBuildDate>Sat, 18 Apr 2020 14:30:00 +0100</lastBuildDate>
     
         <atom:link href="https://xni.github.io/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    
+        <item>
+        <title>GDB basics</title>
+        <link>https://xni.github.io/tech/gdb-basics/</link>
+        <pubDate>Sat, 18 Apr 2020 14:30:00 +0100</pubDate>
+        
+        <guid>https://xni.github.io/tech/gdb-basics/</guid>
+        <description>Kostya&#39;s Blog https://xni.github.io/tech/gdb-basics/ -&lt;p&gt;I need to confess: I have&amp;rsquo;t use GDB any how seriously before. May be just some basics
+like start an app, wait for it to crash, and then do &lt;code&gt;bt&lt;/code&gt; to figure out that
+&lt;code&gt;this&lt;/code&gt; was equal to 0. So this article is going to be a very entry level, gentle
+intro in GDB for C++.&lt;/p&gt;
+&lt;p&gt;In my current company we are using GDB a lot. The easiest way to debug things
+is now a debugger! In this short article I&amp;rsquo;m going to show how I am using gdb
+right now. It if mostly dedicated to breakpoints, and not a reference anyhow.&lt;/p&gt;
+&lt;p&gt;We will write a simple application and then we will use gdb to explore a couple
+of bugs.&lt;/p&gt;
+&lt;p&gt;This will be an application source:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;#include &amp;lt;iostream&amp;gt;
+#include &amp;lt;cstring&amp;gt;
+#include &amp;lt;string&amp;gt;
+#include &amp;lt;experimental/string_view&amp;gt;
+
+template &amp;lt;typename A, typename B&amp;gt;
+class RequestProcessor {
+public:
+  std::experimental::string_view extractField(std::experimental::string_view field, std::experimental::string_view req) {
+      const auto pEq = req.find(field) + field.size() + 1;
+      const auto pSp = req.find(&#39; &#39;, pEq);
+      return req.substr(pEq, pSp - pEq);
+  }
+
+  bool isAllowed(std::experimental::string_view req) {
+      return extractField(&amp;quot;Name=&amp;quot;, req) == &amp;quot;Kate&amp;quot;;
+  }
+
+  void processRequest(std::experimental::string_view req) {
+    if (!isAllowed(req))
+        return;
+    if (extractField(&amp;quot;Data=&amp;quot;, req) == &amp;quot;4&amp;quot;) {
+        std::cout &amp;lt;&amp;lt; &amp;quot;You are here\n&amp;quot;;
+    }
+  }
+};
+
+
+int main() {
+    RequestProcessor&amp;lt;int, std::string&amp;gt; p;
+    p.processRequest(&amp;quot;Name=John Data=1 &amp;quot;);
+    p.processRequest(&amp;quot;Name=John Data=2 &amp;quot;);
+    p.processRequest(&amp;quot;Name=John Data=3 &amp;quot;);
+    p.processRequest(&amp;quot;Name=John Data=4 &amp;quot;);
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;So we would like to see &amp;ldquo;You are here&amp;rdquo; in the terminal.
+But it is not what&amp;rsquo;s happening:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;root@b004b64b9456:/# g++ -std=c++17 -g main.cpp 
+root@b004b64b9456:/# ./a.out 
+root@b004b64b9456:/# 
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;What I will try to do first is to create a setup where it is
+easy to achieve the state of my application where the possible
+bug is. In this current situation I would like to create a breakpoint
+before executing the line &lt;code&gt;if (extractField(&amp;quot;Data=&amp;quot;, req) == &amp;quot;4&amp;quot;)&lt;/code&gt;,
+because we probably have a bug in the &lt;code&gt;extractField&lt;/code&gt; method.
+Also, to make things easier, we would like to skip 3 other crossings
+of this breakpoint and stop only of the fouth. Let&amp;rsquo;s do it!&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;root@b004b64b9456:/# gdb a.out 
+GNU gdb (Ubuntu 9.1-0ubuntu1) 9.1
+Copyright (C) 2020 Free Software Foundation, Inc.
+License GPLv3+: GNU GPL version 3 or later &amp;lt;http://gnu.org/licenses/gpl.html&amp;gt;
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.
+Type &amp;quot;show copying&amp;quot; and &amp;quot;show warranty&amp;quot; for details.
+This GDB was configured as &amp;quot;x86_64-linux-gnu&amp;quot;.
+Type &amp;quot;show configuration&amp;quot; for configuration details.
+For bug reporting instructions, please see:
+&amp;lt;http://www.gnu.org/software/gdb/bugs/&amp;gt;.
+Find the GDB manual and other documentation resources online at:
+    &amp;lt;http://www.gnu.org/software/gdb/documentation/&amp;gt;.
+
+For help, type &amp;quot;help&amp;quot;.
+Type &amp;quot;apropos word&amp;quot; to search for commands related to &amp;quot;word&amp;quot;...
+Reading symbols from a.out...
+
+(gdb) break main.cpp:22
+Breakpoint 1 at 0x18f8: file main.cpp, line 22.
+
+(gdb) ignore 1 3
+Will ignore next 3 crossings of breakpoint 1.
+
+(gdb) r
+Starting program: /a.out 
+warning: Error disabling address space randomization: Operation not permitted
+[Inferior 1 (process 1161) exited normally]
+(gdb) 
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Oh, wow, as you can see, something went wrong, our program exited without
+stopping on a breakpoint. Looking more carefully into the code, you can see,
+that probably the issue is with an &lt;code&gt;isAllowed&lt;/code&gt; method. Let&amp;rsquo;s say that we
+know for sure that in production this method is not an issue and we don&amp;rsquo;t
+want to fight with it in our development environment. We just want it to
+return true. Easy! We are continuing our debugging session:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;(gdb) rbreak isAllowed
+Breakpoint 2 at 0x55e93008e994: file main.cpp, line 15.
+bool RequestProcessor&amp;lt;int, std::__cxx11::basic_string&amp;lt;char, std::char_traits&amp;lt;char&amp;gt;, std::allocator&amp;lt;char&amp;gt; &amp;gt; &amp;gt;::isAllowed(std::experimental::fundamentals_v1::basic_string_view&amp;lt;char, std::char_traits&amp;lt;char&amp;gt; &amp;gt;);
+
+(gdb) commands 2
+Type commands for breakpoint(s) 2, one per line.
+End with a line saying just &amp;quot;end&amp;quot;.
+&amp;gt;return true
+&amp;gt;continue
+&amp;gt;end
+
+(gdb) r
+Starting program: /a.out 
+warning: Error disabling address space randomization: Operation not permitted
+
+Breakpoint 2, RequestProcessor&amp;lt;int, std::__cxx11::basic_string&amp;lt;char, std::char_traits&amp;lt;char&amp;gt;, std::allocator&amp;lt;char&amp;gt; &amp;gt; &amp;gt;::isAllowed (
+    this=0x7f5760c566bf &amp;lt;std::num_get&amp;lt;wchar_t, std::istreambuf_iterator&amp;lt;wchar_t, std::char_traits&amp;lt;wchar_t&amp;gt; &amp;gt; &amp;gt; const&amp;amp; std::use_facet&amp;lt;std::num_get&amp;lt;wchar_t, std::istreambuf_iterator&amp;lt;wchar_t, std::char_traits&amp;lt;wchar_t&amp;gt; &amp;gt; &amp;gt; &amp;gt;(std::locale const&amp;amp;)+63&amp;gt;, 
+    req=&amp;quot;\220I\316`W\177\000\000\000\000\000\000\000\000\000\000\270I\316`W\177\000\000\006&amp;quot;, &#39;\000&#39; &amp;lt;repeats 15 times&amp;gt;, &amp;quot;\002\020&amp;quot;, &#39;\000&#39; &amp;lt;repeats 158 times&amp;gt;...) at main.cpp:15
+15	  bool isAllowed(std::experimental::string_view req) {
+
+Breakpoint 2, RequestProcessor&amp;lt;int, std::__cxx11::basic_string&amp;lt;char, std::char_traits&amp;lt;char&amp;gt;, std::allocator&amp;lt;char&amp;gt; &amp;gt; &amp;gt;::isAllowed (this=0x7fffd673f570, req=&amp;quot;&amp;quot;)
+    at main.cpp:15
+15	  bool isAllowed(std::experimental::string_view req) {
+
+Breakpoint 2, RequestProcessor&amp;lt;int, std::__cxx11::basic_string&amp;lt;char, std::char_traits&amp;lt;char&amp;gt;, std::allocator&amp;lt;char&amp;gt; &amp;gt; &amp;gt;::isAllowed (this=0x7fffd673f570, req=&amp;quot;&amp;quot;)
+    at main.cpp:15
+15	  bool isAllowed(std::experimental::string_view req) {
+
+Breakpoint 2, RequestProcessor&amp;lt;int, std::__cxx11::basic_string&amp;lt;char, std::char_traits&amp;lt;char&amp;gt;, std::allocator&amp;lt;char&amp;gt; &amp;gt; &amp;gt;::isAllowed (this=0x7fffd673f570, req=&amp;quot;&amp;quot;)
+    at main.cpp:15
+15	  bool isAllowed(std::experimental::string_view req) {
+
+Breakpoint 1, RequestProcessor&amp;lt;int, std::__cxx11::basic_string&amp;lt;char, std::char_traits&amp;lt;char&amp;gt;, std::allocator&amp;lt;char&amp;gt; &amp;gt; &amp;gt;::processRequest (this=0x7fffd673f62f, 
+    req=&amp;quot;Name=John Data=4 &amp;quot;) at main.cpp:22
+22	    if (extractField(&amp;quot;Data=&amp;quot;, req) == &amp;quot;4&amp;quot;) {
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;It works!&lt;/p&gt;
+&lt;p&gt;Here I&amp;rsquo;ve used &lt;code&gt;rbreak&lt;/code&gt; command. It creates a breakpoint by a part of a function name (&lt;code&gt;isAllowed&lt;/code&gt; in our case).
+You can also use &lt;code&gt;break&lt;/code&gt; and specify the full name, but the full name, as you can see, is not
+really straighforward, because templated arguments and a class name are also a part of a full name for gdb.&lt;/p&gt;
+&lt;p&gt;Now we have a setup, which allows us to stop near the expected bug. And I do want to save this setup
+in order to return to the debugging session later, or to be able to easily restart the application.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;(gdb) save breakpoints my_debugging  
+Saved to file &#39;my_debugging&#39;.
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;If we quit the debugger and re-enter it again we can easily restore this setup:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;root@b004b64b9456:/# gdb a.out 
+GNU gdb (Ubuntu 9.1-0ubuntu1) 9.1
+Copyright (C) 2020 Free Software Foundation, Inc.
+License GPLv3+: GNU GPL version 3 or later &amp;lt;http://gnu.org/licenses/gpl.html&amp;gt;
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.
+Type &amp;quot;show copying&amp;quot; and &amp;quot;show warranty&amp;quot; for details.
+This GDB was configured as &amp;quot;x86_64-linux-gnu&amp;quot;.
+Type &amp;quot;show configuration&amp;quot; for configuration details.
+For bug reporting instructions, please see:
+&amp;lt;http://www.gnu.org/software/gdb/bugs/&amp;gt;.
+Find the GDB manual and other documentation resources online at:
+    &amp;lt;http://www.gnu.org/software/gdb/documentation/&amp;gt;.
+
+For help, type &amp;quot;help&amp;quot;.
+Type &amp;quot;apropos word&amp;quot; to search for commands related to &amp;quot;word&amp;quot;...
+Reading symbols from a.out...
+
+(gdb) source my_debugging 
+Breakpoint 1 at 0x18f8: file main.cpp, line 22.
+Breakpoint 2 at 0x1994: file main.cpp, line 15.
+
+(gdb) info breakpoints 
+Num     Type           Disp Enb Address            What
+1       breakpoint     keep y   0x00000000000018f8 in RequestProcessor&amp;lt;int, std::__cxx11::basic_string&amp;lt;char, std::char_traits&amp;lt;char&amp;gt;, std::allocator&amp;lt;char&amp;gt; &amp;gt; &amp;gt;::processRequest(std::experimental::fundamentals_v1::basic_string_view&amp;lt;char, std::char_traits&amp;lt;char&amp;gt; &amp;gt;) at main.cpp:22
+2       breakpoint     keep y   0x0000000000001994 in RequestProcessor&amp;lt;int, std::__cxx11::basic_string&amp;lt;char, std::char_traits&amp;lt;char&amp;gt;, std::allocator&amp;lt;char&amp;gt; &amp;gt; &amp;gt;::isAllowed(std::experimental::fundamentals_v1::basic_string_view&amp;lt;char, std::char_traits&amp;lt;char&amp;gt; &amp;gt;) at main.cpp:15
+        return true
+        continue
+
+(gdb) r
+Starting program: /a.out 
+warning: Error disabling address space randomization: Operation not permitted
+
+Breakpoint 2, RequestProcessor&amp;lt;int, std::__cxx11::basic_string&amp;lt;char, std::char_traits&amp;lt;char&amp;gt;, std::allocator&amp;lt;char&amp;gt; &amp;gt; &amp;gt;::isAllowed (
+    this=0x7f47c00756bf &amp;lt;std::num_get&amp;lt;wchar_t, std::istreambuf_iterator&amp;lt;wchar_t, std::char_traits&amp;lt;wchar_t&amp;gt; &amp;gt; &amp;gt; const&amp;amp; std::use_facet&amp;lt;std::num_get&amp;lt;wchar_t, std::istreambuf_iterator&amp;lt;wchar_t, std::char_traits&amp;lt;wchar_t&amp;gt; &amp;gt; &amp;gt; &amp;gt;(std::locale const&amp;amp;)+63&amp;gt;, req=&amp;quot;&amp;quot;) at main.cpp:15
+15	  bool isAllowed(std::experimental::string_view req) {
+
+Breakpoint 1, RequestProcessor&amp;lt;int, std::__cxx11::basic_string&amp;lt;char, std::char_traits&amp;lt;char&amp;gt;, std::allocator&amp;lt;char&amp;gt; &amp;gt; &amp;gt;::processRequest (this=0x7ffe6da9202f, 
+    req=&amp;quot;Name=John Data=1 &amp;quot;) at main.cpp:22
+22	    if (extractField(&amp;quot;Data=&amp;quot;, req) == &amp;quot;4&amp;quot;) {
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;As you can see, &lt;code&gt;source&lt;/code&gt; command restored all of the breakpoints, with their settings:
+&lt;code&gt;info breakpoints&lt;/code&gt; shows it.&lt;/p&gt;
+&lt;p&gt;And now let&amp;rsquo;s jump into the &lt;code&gt;extractField&lt;/code&gt; method. In order to do so, we are calling &lt;code&gt;step&lt;/code&gt;,
+which means &amp;ldquo;execute until the control flow will change to another line&amp;rdquo; Another useful
+command is &lt;code&gt;next&lt;/code&gt;, &amp;ldquo;execute until the control flow will reach the NEXT line&amp;rdquo;. As you
+can see, in the presense of nested instructions, if you want to follow them, you need a &lt;code&gt;step&lt;/code&gt;.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;(gdb) step
+std::experimental::fundamentals_v1::basic_string_view&amp;lt;char, std::char_traits&amp;lt;char&amp;gt; &amp;gt;::basic_string_view (this=0x7f47c0109ee0 &amp;lt;std::wcerr&amp;gt;, 
+    __str=0x7f47c0109ee0 &amp;lt;std::wcerr&amp;gt; &amp;quot;0D\020\300G\177&amp;quot;) at /usr/include/c++/9/experimental/string_view:108
+108	      constexpr basic_string_view(const _CharT* __str)
+
+(gdb) finish
+Run till exit from #0  std::experimental::fundamentals_v1::basic_string_view&amp;lt;char, std::char_traits&amp;lt;char&amp;gt; &amp;gt;::basic_string_view (
+    this=0x7f47c0109ee0 &amp;lt;std::wcerr&amp;gt;, __str=0x7f47c0109ee0 &amp;lt;std::wcerr&amp;gt; &amp;quot;0D\020\300G\177&amp;quot;) at /usr/include/c++/9/experimental/string_view:108
+0x000055e3b205a90b in RequestProcessor&amp;lt;int, std::__cxx11::basic_string&amp;lt;char, std::char_traits&amp;lt;char&amp;gt;, std::allocator&amp;lt;char&amp;gt; &amp;gt; &amp;gt;::processRequest (
+    this=0x7ffe6da9202f, req=&amp;quot;Name=John Data=1 &amp;quot;) at main.cpp:22
+22	    if (extractField(&amp;quot;Data=&amp;quot;, req) == &amp;quot;4&amp;quot;) {
+
+(gdb) step
+std::experimental::fundamentals_v1::basic_string_view&amp;lt;char, std::char_traits&amp;lt;char&amp;gt; &amp;gt;::basic_string_view (this=0x7ffe6da91fe0, __str=0x55e3b205b050 &amp;quot;4&amp;quot;)
+    at /usr/include/c++/9/experimental/string_view:108
+108	      constexpr basic_string_view(const _CharT* __str)
+
+(gdb) finish
+Run till exit from #0  std::experimental::fundamentals_v1::basic_string_view&amp;lt;char, std::char_traits&amp;lt;char&amp;gt; &amp;gt;::basic_string_view (this=0x7ffe6da91fe0, 
+    __str=0x55e3b205b050 &amp;quot;4&amp;quot;) at /usr/include/c++/9/experimental/string_view:108
+0x000055e3b205a91e in RequestProcessor&amp;lt;int, std::__cxx11::basic_string&amp;lt;char, std::char_traits&amp;lt;char&amp;gt;, std::allocator&amp;lt;char&amp;gt; &amp;gt; &amp;gt;::processRequest (
+    this=0x7ffe6da9202f, req=&amp;quot;Name=John Data=1 &amp;quot;) at main.cpp:22
+22	    if (extractField(&amp;quot;Data=&amp;quot;, req) == &amp;quot;4&amp;quot;) {
+
+(gdb) step
+RequestProcessor&amp;lt;int, std::__cxx11::basic_string&amp;lt;char, std::char_traits&amp;lt;char&amp;gt;, std::allocator&amp;lt;char&amp;gt; &amp;gt; &amp;gt;::extractField (this=0x55e3b205b052, field=&amp;quot;&amp;quot;, req=&amp;quot;&amp;quot;)
+    at main.cpp:9
+9	  std::experimental::string_view extractField(std::experimental::string_view field, std::experimental::string_view req) {
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;So, before we were able to reach &lt;code&gt;extractField&lt;/code&gt;, we had visited two constructors for &lt;code&gt;string_view&lt;/code&gt;, that makes perfect sense.
+When during the &lt;code&gt;step&lt;/code&gt; invocation you are jumping into the function you are not interested in, just type &lt;code&gt;finish&lt;/code&gt;,
+to let this function to finish, and return to the point, where you can type &lt;code&gt;step&lt;/code&gt; again.&lt;/p&gt;
+&lt;p&gt;Let&amp;rsquo;s execute two subsequent lines and check what&amp;rsquo;s going on:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;(gdb) n
+10	      const auto pEq = req.find(field) + field.size() + 1;
+(gdb) n
+11	      const auto pSp = req.find(&#39; &#39;, pEq);
+(gdb) n
+12	      return req.substr(pEq, pSp - pEq);
+(gdb) p field
+$1 = &amp;quot;Data=&amp;quot;
+(gdb) p req
+$2 = &amp;quot;Name=John Data=4 &amp;quot;
+(gdb) p pEq
+$3 = 16
+(gdb) p pSp
+$4 = 16
+(gdb) 
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Doesn&amp;rsquo;t look right. &lt;code&gt;pEq&lt;/code&gt; was expected to be the index of the first character after &lt;code&gt;Data=&lt;/code&gt; in &lt;code&gt;req&lt;/code&gt;.
+Which is 15. If we restart session and jump into the &lt;code&gt;find&lt;/code&gt;, and then use &lt;code&gt;finish&lt;/code&gt; we can see that
+&lt;code&gt;find&lt;/code&gt; returns &lt;code&gt;10&lt;/code&gt;:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;(gdb) n
+10	      const auto pEq = req.find(field) + field.size() + 1;
+(gdb) s
+std::experimental::fundamentals_v1::basic_string_view&amp;lt;char, std::char_traits&amp;lt;char&amp;gt; &amp;gt;::find (this=0xa, 
+    __str=&amp;lt;error: Cannot access memory at address 0x360016734595d100&amp;gt;, __pos=1) at /usr/include/c++/9/experimental/string_view:323
+323	      find(basic_string_view __str, size_type __pos = 0) const noexcept
+(gdb) fin
+Run till exit from #0  std::experimental::fundamentals_v1::basic_string_view&amp;lt;char, std::char_traits&amp;lt;char&amp;gt; &amp;gt;::find (this=0xa, 
+    __str=&amp;lt;error: Cannot access memory at address 0x360016734595d100&amp;gt;, __pos=1) at /usr/include/c++/9/experimental/string_view:323
+0x0000561939cc9a96 in RequestProcessor&amp;lt;int, std::__cxx11::basic_string&amp;lt;char, std::char_traits&amp;lt;char&amp;gt;, std::allocator&amp;lt;char&amp;gt; &amp;gt; &amp;gt;::extractField (
+    this=0x7ffc4d20ff8f, field=&amp;quot;Data=&amp;quot;, req=&amp;quot;Name=John Data=4 &amp;quot;) at main.cpp:10
+10	      const auto pEq = req.find(field) + field.size() + 1;
+Value returned is $1 = 10
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;The issue is in &lt;code&gt;+ 1&lt;/code&gt;. Let&amp;rsquo;s modify the value of &lt;code&gt;pEq&lt;/code&gt; on the fly, before entering
+the computation of &lt;code&gt;pSp&lt;/code&gt;. In order to do it, we can use &lt;code&gt;set&lt;/code&gt; command.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;(gdb) p pEq
+$2 = 16
+(gdb) set pEq = 15
+(gdb) p pEq
+$3 = 15
+(gdb) fin
+Run till exit from #0  RequestProcessor&amp;lt;int, std::__cxx11::basic_string&amp;lt;char, std::char_traits&amp;lt;char&amp;gt;, std::allocator&amp;lt;char&amp;gt; &amp;gt; &amp;gt;::extractField (
+    this=0x7ffc4d20ff8f, field=&amp;quot;Data=&amp;quot;, req=&amp;quot;Name=John Data=4 &amp;quot;) at main.cpp:12
+0x0000561939cc993d in RequestProcessor&amp;lt;int, std::__cxx11::basic_string&amp;lt;char, std::char_traits&amp;lt;char&amp;gt;, std::allocator&amp;lt;char&amp;gt; &amp;gt; &amp;gt;::processRequest (
+    this=0x7ffc4d20ff8f, req=&amp;quot;Name=John Data=4 &amp;quot;) at main.cpp:22
+22	    if (extractField(&amp;quot;Data=&amp;quot;, req) == &amp;quot;4&amp;quot;) {
+Value returned is $4 = &amp;quot;4&amp;quot;
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Now we can see that the value returned from &lt;code&gt;extractField&lt;/code&gt; was correct, we can continue
+the execution:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;(gdb) c
+Continuing.
+You are here
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Yay! We saw our log line. Without recompiling the code and any extra log lines. This is very nice,
+when you compilation takes a while.&lt;/p&gt;
+&lt;p&gt;I have remove the section about the conditional breakpoints, but in general, it is another powerful
+addition to the &lt;code&gt;ignore&lt;/code&gt;.&lt;/p&gt;
+&lt;h2 id=&#34;things-to-remember&#34;&gt;Things to remember&lt;/h2&gt;
+&lt;p&gt;If you are a freak like me, you should have a flash cards for every book, blog post and podcast.
+To make things easier to you I am summarizing the content of this article:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Create a breakpoint by file name and line&lt;/strong&gt;? &lt;code&gt;break filename:line&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Create a breakpoint by exact function name&lt;/strong&gt;? &lt;code&gt;break long::function&amp;lt;name, with&amp;gt;::templates(and, parameters)&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Create a breakpoint by a partial function name&lt;/strong&gt;? &lt;code&gt;rbreak partial_function_name&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Ignore the next X crossing of breakpoint Y&lt;/strong&gt;? &lt;code&gt;ignore Y X&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Execute until the next line&lt;/strong&gt;? &lt;code&gt;next&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Execute until the line is changed&lt;/strong&gt;? &lt;code&gt;step&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Execute until the end of the function&lt;/strong&gt;? &lt;code&gt;finish&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Return some other value from the function without executing it&lt;/strong&gt;? &lt;code&gt;return&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Do something when you hit a breakpoint Y&lt;/strong&gt;? &lt;code&gt;commands Y&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Conditional breakpoint&lt;/strong&gt;? &lt;code&gt;condition X &amp;lt;expression&amp;gt;&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Print the value of a variable&lt;/strong&gt;? &lt;code&gt;p&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Update the value of a variable&lt;/strong&gt;? &lt;code&gt;set&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Save all breakpoints&lt;/strong&gt;? &lt;code&gt;save breakpoints &amp;lt;file&amp;gt;&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Load breakpoints&lt;/strong&gt;? &lt;code&gt;source &amp;lt;file&amp;gt;&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+- https://xni.github.io/tech/gdb-basics/ - </description>
+        </item>
     
     
     

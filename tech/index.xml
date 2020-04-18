@@ -6,10 +6,20 @@
     <description>Recent content in Teches on Kostya&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 09 Apr 2020 21:14:00 +0100</lastBuildDate>
+    <lastBuildDate>Sat, 18 Apr 2020 14:30:00 +0100</lastBuildDate>
     
 	<atom:link href="https://xni.github.io/tech/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>GDB basics</title>
+      <link>https://xni.github.io/tech/gdb-basics/</link>
+      <pubDate>Sat, 18 Apr 2020 14:30:00 +0100</pubDate>
+      
+      <guid>https://xni.github.io/tech/gdb-basics/</guid>
+      <description>I need to confess: I have&amp;rsquo;t use GDB any how seriously before. May be just some basics like start an app, wait for it to crash, and then do bt to figure out that this was equal to 0. So this article is going to be a very entry level, gentle intro in GDB for C++.
+In my current company we are using GDB a lot. The easiest way to debug things is now a debugger!</description>
+    </item>
     
     <item>
       <title>Reading through HEX</title>
