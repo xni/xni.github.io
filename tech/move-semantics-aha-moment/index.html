@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html><head>
+<title>C&#43;&#43; Move Semantics: my &#39;Aha!&#39; moment</title>
+
+<meta charset="utf-8">
+<meta name="X-UA-Compatible" content="IE=edge">
+<meta name="google-site-verification" content="">
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+<meta content="telephone=no" name="format-detection">
+<meta name="description" content="">
+<meta name="renderer" content="webkit">
+<meta name="theme-color" content="#ffffff">
+
+
+
+
+
+<script src="/vendor/js/jquery.min.js" ></script>
+<script src="/vendor/js/popper.min.js" ></script>
+<script src="/vendor/js/bootstrap.min.js" ></script>
+<script src="/vendor/js/smooth-scroll.polyfills.min.js" ></script>
+<link type="text/css" rel="stylesheet" href="/vendor/css/bootstrap.min.css">
+<script src="/vendor/js/vue.min.js" ></script>
+
+
+
+
+<link rel="stylesheet" href="https://xni.github.io/scss/journal.min.5c667e74038e21ddbb9024b67930f8544e02af62491281cf73fdb817eec2947e.css" integrity="sha256-XGZ&#43;dAOOId27kCS2eTD4VE4Cr2JJEoHPc/24F&#43;7ClH4=" media="screen">
+
+<script src="https://xni.github.io//js/loadCSS.js"></script>
+<script src="https://xni.github.io//js/table.js"></script>
+
+
+<script src="https://xni.github.io//js/toc.js"></script>
+
+
+<script>
+    loadCSS("https://fonts.googleapis.com/css?family=Lora|Montserrat|Fira+Mono|Noto+Serif+SC|Material+Icons");
+</script>
+
+
+
+
+
+
+</head>
+<body>
+    	<div id="app"><div ref="sideContainer" class="side-container">
+    
+    <a class="a-block nav-head false" href="https://xni.github.io/">
+    
+        <div class="nav-title">
+            Kostya&#39;s Blog
+        </div>
+        
+    </a>
+
+    <div class="nav-link-list">
+        
+        
+    </div>
+
+    
+
+    <div class="nav-footer">
+        
+Hugo Theme <a href="https://github.com/amazingrise/hugo-theme-diary">Diary</a> by <a href="https://amazingrise.net">Rise</a>
+<br>
+Ported from <a href="https://mak1t0.cc/" target="_blank" rel="noreferrer noopener">Makito</a>'s <a href="https://github.com/SumiMakito/hexo-theme-journal/" target="_blank" rel="noreferrer noopener">Journal.</a> <br>
+<br>
+
+&copy;
+	
+	2020 Kostya&#39;s Blog
+	
+    </div>
+    
+</div><div ref="extraContainer" class="extra-container">
+    
+    <div class="toc animated-visibility" :class="{ invisible: scrollY <= 140 }">
+
+
+</div>
+    
+    <div class="pagination">
+        <a id="globalBackToTop" class="pagination-action animated-visibility" href="#top" :class="{ invisible: scrollY == 0 }">
+            <i class="material-icons pagination-action-icon">
+                keyboard_arrow_up
+            </i>
+        </a>
+        
+    </div>
+</div><div class="single-column-drawer-container" ref="drawer"
+     v-bind:class="{ 'single-column-drawer-container-active': isDrawerOpen }">
+    <div class="drawer-content">
+        <div class="drawer-menu">
+            
+            
+            
+            <div class="toc">
+
+
+</div>
+            
+        </div>
+    </div>
+</div>
+<transition name="fade">
+    <div v-bind:class="{ 'single-column-drawer-mask': mounted }" v-if="isDrawerOpen" v-on:click="toggleDrawer"></div>
+</transition>
+<nav ref="navBar" class="navbar sticky-top navbar-light single-column-nav-container">
+    <div ref="navBackground" class="nav-background"></div>
+    <div class="container container-narrow nav-content">
+        <button id="nav_dropdown_btn" class="nav-dropdown-toggle" type="button" v-on:click="toggleDrawer">
+            <i class="material-icons">
+                menu
+            </i>
+        </button>
+        <a ref="navTitle" class="navbar-brand" href="https://xni.github.io/">
+            Kostya&#39;s Blog
+        </a>
+    </div>
+</nav>
+<div class="single-column-header-container" ref="pageHead"
+     v-bind:style="{ transform: 'translateZ(0px) translateY('+.3*scrollY+'px)', opacity: 1-navOpacity }">
+    <a href="https://xni.github.io/">
+        <div class="single-column-header-title">Kostya&#39;s Blog</div>
+        
+
+    </a>
+</div>
+            <div id="content">
+<div ref="streamContainer" class="stream-container">
+    <div class="post-list-container post-list-container-shadow">
+        <div class="post">
+            
+            
+            
+
+            <div class="post-head-wrapper-text-only"
+                 style="background-image: url('/')">
+                <div class="post-title">
+                    C&#43;&#43; Move Semantics: my &#39;Aha!&#39; moment
+                    
+                    <div class="post-meta">
+                        
+                        <time itemprop="datePublished">
+                            2020-05-31 07:50
+                        </time>
+                        
+
+                        
+
+                        
+                    </div>
+                </div>
+            </div>
+            
+            <div class="post-body-wrapper">
+                <div class="post-body">
+                    <p>As a C++ developer I learned that rvalue referece becomes lvalue right after passing it
+as an argument. And I just accepted it, learned it and tried to never think about it,
+because for me it didn&rsquo;t make any sense. Until recently. Now I understood the motives why
+it was done and I&rsquo;m going to share this with you!</p>
+<p>OK, I&rsquo;m going to shut up and show you the code!</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;iostream&gt;</span><span style="color:#75715e">
+</span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;vector&gt;</span><span style="color:#75715e">
+</span><span style="color:#75715e"></span>
+<span style="color:#66d9ef">struct</span> <span style="color:#a6e22e">S</span> {
+    S() <span style="color:#f92672">:</span> x(<span style="color:#ae81ff">1</span>) {}
+    S(<span style="color:#66d9ef">const</span> S<span style="color:#f92672">&amp;</span> s) {
+        std<span style="color:#f92672">::</span>cout <span style="color:#f92672">&lt;&lt;</span> __PRETTY_FUNCTION__ <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>
+                  <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34; S.x = &#34;</span> <span style="color:#f92672">&lt;&lt;</span> s.x <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>;
+    }
+    S(S<span style="color:#f92672">&amp;&amp;</span> s) {
+        std<span style="color:#f92672">::</span>cout <span style="color:#f92672">&lt;&lt;</span> __PRETTY_FUNCTION__ <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>
+                  <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34; S.x = &#34;</span> <span style="color:#f92672">&lt;&lt;</span> s.x <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>;
+        s.x <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
+    }
+    <span style="color:#66d9ef">int</span> x;
+};
+
+<span style="color:#66d9ef">void</span> <span style="color:#a6e22e">SubProcess</span>(S s) {
+}
+
+<span style="color:#66d9ef">void</span> <span style="color:#a6e22e">Process</span>(S<span style="color:#f92672">&amp;&amp;</span> s) {
+    SubProcess(s);
+}
+
+<span style="color:#66d9ef">int</span> <span style="color:#a6e22e">main</span>() {
+    Process(S());
+}
+</code></pre></div><p>This will produce <code>S::S(const S &amp;) S.x = 1</code> output. And just as a reminder, if you have received
+rvalue as an argument, and want to pass it forward, you need you use <code>std::move</code> (or <code>std::forward</code> if you
+are <a href="https://habr.com/ru/post/242639/">using</a> special type deduction rules). And that was always confusing
+to me.</p>
+<p>So, in most of the cases my code looked like that (added <code>std::move(s)</code> on the line 22)</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;iostream&gt;</span><span style="color:#75715e">
+</span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;vector&gt;</span><span style="color:#75715e">
+</span><span style="color:#75715e"></span>
+<span style="color:#66d9ef">struct</span> <span style="color:#a6e22e">S</span> {
+    S() <span style="color:#f92672">:</span> x(<span style="color:#ae81ff">1</span>) {}
+    S(<span style="color:#66d9ef">const</span> S<span style="color:#f92672">&amp;</span> s) {
+        std<span style="color:#f92672">::</span>cout <span style="color:#f92672">&lt;&lt;</span> __PRETTY_FUNCTION__ <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>
+                  <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34; S.x = &#34;</span> <span style="color:#f92672">&lt;&lt;</span> s.x <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>;
+    }
+    S(S<span style="color:#f92672">&amp;&amp;</span> s) {
+        std<span style="color:#f92672">::</span>cout <span style="color:#f92672">&lt;&lt;</span> __PRETTY_FUNCTION__ <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>
+                  <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34; S.x = &#34;</span> <span style="color:#f92672">&lt;&lt;</span> s.x <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>;
+        s.x <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
+    }
+    <span style="color:#66d9ef">int</span> x;
+};
+
+<span style="color:#66d9ef">void</span> <span style="color:#a6e22e">SubProcess</span>(S s) {
+}
+
+<span style="color:#66d9ef">void</span> <span style="color:#a6e22e">Process</span>(S<span style="color:#f92672">&amp;&amp;</span> s) {
+    SubProcess(std<span style="color:#f92672">::</span>move(s));
+}
+
+<span style="color:#66d9ef">int</span> <span style="color:#a6e22e">main</span>() {
+    Process(S());
+}
+</code></pre></div><p>Output now is: <code>S::S(S &amp;&amp;) S.x = 1</code>, i.e. by adding <code>std::move</code> we passed rvalue as rvalue. What&rsquo;s the hell!
+And I was thinking: &ldquo;OK, I have to do it like that, because someone created that stupid rule&rdquo;.</p>
+<p>This was my mindset until recently, where I had to write some library function to schedule
+delayed function calls with as few copies as possible. I will not give sources of that scheduler,
+but there were some interesting things I faced during working on it. I will reflect them in my example.</p>
+<p>Let&rsquo;s say that now I need to call <code>SubProcess</code> from <code>Process</code> twice. Let&rsquo;s see what will happen
+in the original (without an extra <code>std::move()</code>) version:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;iostream&gt;</span><span style="color:#75715e">
+</span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;vector&gt;</span><span style="color:#75715e">
+</span><span style="color:#75715e"></span>
+<span style="color:#66d9ef">struct</span> <span style="color:#a6e22e">S</span> {
+    S() <span style="color:#f92672">:</span> x(<span style="color:#ae81ff">1</span>) {}
+    S(<span style="color:#66d9ef">const</span> S<span style="color:#f92672">&amp;</span> s) {
+        std<span style="color:#f92672">::</span>cout <span style="color:#f92672">&lt;&lt;</span> __PRETTY_FUNCTION__ <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>
+                  <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34; S.x = &#34;</span> <span style="color:#f92672">&lt;&lt;</span> s.x <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>;
+    }
+    S(S<span style="color:#f92672">&amp;&amp;</span> s) {
+        std<span style="color:#f92672">::</span>cout <span style="color:#f92672">&lt;&lt;</span> __PRETTY_FUNCTION__ <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>
+                  <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34; S.x = &#34;</span> <span style="color:#f92672">&lt;&lt;</span> s.x <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>;
+        s.x <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
+    }
+    <span style="color:#66d9ef">int</span> x;
+};
+
+<span style="color:#66d9ef">void</span> <span style="color:#a6e22e">SubProcess</span>(S s) {
+}
+
+<span style="color:#66d9ef">void</span> <span style="color:#a6e22e">Process</span>(S<span style="color:#f92672">&amp;&amp;</span> s) {
+    SubProcess(s);
+    SubProcess(s);
+}
+
+<span style="color:#66d9ef">int</span> <span style="color:#a6e22e">main</span>() {
+    Process(S());
+}
+</code></pre></div><p>The output is:</p>
+<pre><code>S::S(const S &amp;)
+ S.x = 1
+S::S(const S &amp;)
+ S.x = 1 
+</code></pre><p>Well, nothing special, right. But now, let&rsquo;s imagine that our rvalue were staying as rvalues!</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;iostream&gt;</span><span style="color:#75715e">
+</span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;vector&gt;</span><span style="color:#75715e">
+</span><span style="color:#75715e"></span>
+<span style="color:#66d9ef">struct</span> <span style="color:#a6e22e">S</span> {
+    S() <span style="color:#f92672">:</span> x(<span style="color:#ae81ff">1</span>) {}
+    S(<span style="color:#66d9ef">const</span> S<span style="color:#f92672">&amp;</span> s) {
+        std<span style="color:#f92672">::</span>cout <span style="color:#f92672">&lt;&lt;</span> __PRETTY_FUNCTION__ <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>
+                  <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34; S.x = &#34;</span> <span style="color:#f92672">&lt;&lt;</span> s.x <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>;
+    }
+    S(S<span style="color:#f92672">&amp;&amp;</span> s) {
+        std<span style="color:#f92672">::</span>cout <span style="color:#f92672">&lt;&lt;</span> __PRETTY_FUNCTION__ <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>
+                  <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34; S.x = &#34;</span> <span style="color:#f92672">&lt;&lt;</span> s.x <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>;
+        s.x <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
+    }
+    <span style="color:#66d9ef">int</span> x;
+};
+
+<span style="color:#66d9ef">void</span> <span style="color:#a6e22e">SubProcess</span>(S s) {
+}
+
+<span style="color:#66d9ef">void</span> <span style="color:#a6e22e">Process</span>(S<span style="color:#f92672">&amp;&amp;</span> s) {
+    SubProcess(<span style="color:#66d9ef">static_cast</span><span style="color:#f92672">&lt;</span>S<span style="color:#f92672">&amp;&amp;&gt;</span>(s));
+    SubProcess(<span style="color:#66d9ef">static_cast</span><span style="color:#f92672">&lt;</span>S<span style="color:#f92672">&amp;&amp;&gt;</span>(s));
+}
+
+<span style="color:#66d9ef">int</span> <span style="color:#a6e22e">main</span>() {
+    Process(S());
+}
+</code></pre></div><p>And the output is:</p>
+<pre><code>S::S(S &amp;&amp;)
+ S.x = 1
+S::S(S &amp;&amp;)
+ S.x = 0 
+</code></pre><p>That makes perfect sense, because our move constuctor destroyed the <code>x</code> value of <code>s</code>.</p>
+<p>I think that was the motivation behind the rule that rvalue reference is passed as an lvalue
+without std::move. Generally it is some protection, by placing <code>std::move()</code>
+around the argument, you admitting that the value is not required later.</p>
+<p>Things can become even more interesting in case of templates!
+Let&rsquo;s start with current default C++ behaviour:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;iostream&gt;</span><span style="color:#75715e">
+</span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;vector&gt;</span><span style="color:#75715e">
+</span><span style="color:#75715e"></span>
+<span style="color:#66d9ef">struct</span> <span style="color:#a6e22e">S</span> {
+    S() <span style="color:#f92672">:</span> x(<span style="color:#ae81ff">1</span>) {}
+    S(<span style="color:#66d9ef">const</span> S<span style="color:#f92672">&amp;</span> s) {
+        std<span style="color:#f92672">::</span>cout <span style="color:#f92672">&lt;&lt;</span> __PRETTY_FUNCTION__ <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>
+                  <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34; S.x = &#34;</span> <span style="color:#f92672">&lt;&lt;</span> s.x <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>;
+    }
+    S(S<span style="color:#f92672">&amp;&amp;</span> s) {
+        std<span style="color:#f92672">::</span>cout <span style="color:#f92672">&lt;&lt;</span> __PRETTY_FUNCTION__ <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>
+                  <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34; S.x = &#34;</span> <span style="color:#f92672">&lt;&lt;</span> s.x <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>;
+        s.x <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
+    }
+    <span style="color:#66d9ef">int</span> x;
+};
+
+<span style="color:#66d9ef">void</span> <span style="color:#a6e22e">SubProcess</span>(S s) {
+}
+
+<span style="color:#66d9ef">template</span> <span style="color:#f92672">&lt;</span><span style="color:#66d9ef">typename</span> X<span style="color:#f92672">&gt;</span>
+<span style="color:#66d9ef">void</span> Process(X<span style="color:#f92672">&amp;&amp;</span> s) {
+    SubProcess(s);
+    SubProcess(s);
+}
+
+<span style="color:#66d9ef">int</span> <span style="color:#a6e22e">main</span>() {
+    Process(S());
+    S s;
+    Process(s);
+}
+</code></pre></div><p>Output is:</p>
+<pre><code>S::S(const S &amp;)
+ S.x = 1
+S::S(const S &amp;)
+ S.x = 1
+S::S(const S &amp;)
+ S.x = 1
+S::S(const S &amp;)
+ S.x = 1 
+</code></pre><p>And with my &ldquo;improved&rdquo; C++:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;iostream&gt;</span><span style="color:#75715e">
+</span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;vector&gt;</span><span style="color:#75715e">
+</span><span style="color:#75715e"></span>
+<span style="color:#66d9ef">struct</span> <span style="color:#a6e22e">S</span> {
+    S() <span style="color:#f92672">:</span> x(<span style="color:#ae81ff">1</span>) {}
+    S(<span style="color:#66d9ef">const</span> S<span style="color:#f92672">&amp;</span> s) {
+        std<span style="color:#f92672">::</span>cout <span style="color:#f92672">&lt;&lt;</span> __PRETTY_FUNCTION__ <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>
+                  <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34; S.x = &#34;</span> <span style="color:#f92672">&lt;&lt;</span> s.x <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>;
+    }
+    S(S<span style="color:#f92672">&amp;&amp;</span> s) {
+        std<span style="color:#f92672">::</span>cout <span style="color:#f92672">&lt;&lt;</span> __PRETTY_FUNCTION__ <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>
+                  <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34; S.x = &#34;</span> <span style="color:#f92672">&lt;&lt;</span> s.x <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>;
+        s.x <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
+    }
+    <span style="color:#66d9ef">int</span> x;
+};
+
+<span style="color:#66d9ef">void</span> <span style="color:#a6e22e">SubProcess</span>(S s) {
+}
+
+<span style="color:#66d9ef">template</span> <span style="color:#f92672">&lt;</span><span style="color:#66d9ef">typename</span> X<span style="color:#f92672">&gt;</span>
+<span style="color:#66d9ef">void</span> Process(X<span style="color:#f92672">&amp;&amp;</span> s) {
+    SubProcess(std<span style="color:#f92672">::</span>forward<span style="color:#f92672">&lt;</span>X<span style="color:#f92672">&gt;</span>(s));
+    SubProcess(std<span style="color:#f92672">::</span>forward<span style="color:#f92672">&lt;</span>X<span style="color:#f92672">&gt;</span>(s));
+}
+
+<span style="color:#66d9ef">int</span> <span style="color:#a6e22e">main</span>() {
+    Process(S());
+    S s;
+    Process(s);
+}
+</code></pre></div><p>Believe it or not, but the same template function produced two different results!</p>
+<pre><code>S::S(S &amp;&amp;)
+ S.x = 1
+S::S(S &amp;&amp;)
+ S.x = 0
+S::S(const S &amp;)
+ S.x = 1
+S::S(const S &amp;)
+ S.x = 1 
+</code></pre><p>To be honest, this was enough to convince be that <code>std::move</code> and <code>std::forward</code> are
+really a good protection mechanism. Imagine the opposite: if rvalue remains rvalue,
+and you need to do <code>std::dontmove(v)</code> every time when you want to pass <code>v</code>, but you
+need its result later as well!</p>
+<p>Just a couple of side notes, which appeared when I was working on this article.</p>
+<p><strong>Passing the element as an rvalue reference does not call a copy constructor</strong>, it is just like
+passing the element by reference, where the reference has a semantics &ldquo;you know what, caller
+doesn&rsquo;t need my value&rdquo;. It doesn&rsquo;t mean you have to destroy it. You just can, if you want. See:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;iostream&gt;</span><span style="color:#75715e">
+</span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;vector&gt;</span><span style="color:#75715e">
+</span><span style="color:#75715e"></span>
+<span style="color:#66d9ef">struct</span> <span style="color:#a6e22e">S</span> {
+    S() <span style="color:#f92672">:</span> x(<span style="color:#ae81ff">1</span>) {}
+    S(<span style="color:#66d9ef">const</span> S<span style="color:#f92672">&amp;</span> s) {
+        std<span style="color:#f92672">::</span>cout <span style="color:#f92672">&lt;&lt;</span> __PRETTY_FUNCTION__ <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>
+                  <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34; S.x = &#34;</span> <span style="color:#f92672">&lt;&lt;</span> s.x <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>;
+    }
+    S(S<span style="color:#f92672">&amp;&amp;</span> s) {
+        std<span style="color:#f92672">::</span>cout <span style="color:#f92672">&lt;&lt;</span> __PRETTY_FUNCTION__ <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>
+                  <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34; S.x = &#34;</span> <span style="color:#f92672">&lt;&lt;</span> s.x <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>;
+        s.x <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
+    }
+    <span style="color:#66d9ef">int</span> x;
+};
+
+<span style="color:#66d9ef">void</span> <span style="color:#a6e22e">SubProcess</span>(S<span style="color:#f92672">&amp;&amp;</span> s) {
+}
+
+<span style="color:#66d9ef">void</span> <span style="color:#a6e22e">Process</span>(S<span style="color:#f92672">&amp;&amp;</span> s) {
+    std<span style="color:#f92672">::</span>cout <span style="color:#f92672">&lt;&lt;</span> s.x <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34; &#34;</span>;
+    SubProcess(std<span style="color:#f92672">::</span>move(s));
+    std<span style="color:#f92672">::</span>cout <span style="color:#f92672">&lt;&lt;</span> s.x <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34; &#34;</span>;
+    SubProcess(std<span style="color:#f92672">::</span>move(s));
+    std<span style="color:#f92672">::</span>cout <span style="color:#f92672">&lt;&lt;</span> s.x <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34; &#34;</span>;
+}
+
+<span style="color:#66d9ef">int</span> <span style="color:#a6e22e">main</span>() {
+    Process(S());
+}
+</code></pre></div><p>Result is <code>1 1 1</code>, so we have just passed the element as rvalue reference, didn&rsquo;t call a copy
+constructor, the original object remained the same. It will only be broken if it something will
+call a move constructor inside <code>SubProcess</code> function for exmample:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;iostream&gt;</span><span style="color:#75715e">
+</span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;vector&gt;</span><span style="color:#75715e">
+</span><span style="color:#75715e"></span>
+<span style="color:#66d9ef">struct</span> <span style="color:#a6e22e">S</span> {
+    S() <span style="color:#f92672">:</span> x(<span style="color:#ae81ff">1</span>) {}
+    S(<span style="color:#66d9ef">const</span> S<span style="color:#f92672">&amp;</span> s) {
+        std<span style="color:#f92672">::</span>cout <span style="color:#f92672">&lt;&lt;</span> __PRETTY_FUNCTION__ <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>
+                  <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34; S.x = &#34;</span> <span style="color:#f92672">&lt;&lt;</span> s.x <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>;
+    }
+    S(S<span style="color:#f92672">&amp;&amp;</span> s) {
+        std<span style="color:#f92672">::</span>cout <span style="color:#f92672">&lt;&lt;</span> __PRETTY_FUNCTION__ <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>
+                  <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34; S.x = &#34;</span> <span style="color:#f92672">&lt;&lt;</span> s.x <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>;
+        s.x <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
+    }
+    <span style="color:#66d9ef">int</span> x;
+};
+
+<span style="color:#66d9ef">void</span> <span style="color:#a6e22e">SubProcess</span>(S<span style="color:#f92672">&amp;&amp;</span> s) {
+    S cpy(std<span style="color:#f92672">::</span>move(s));
+}
+
+<span style="color:#66d9ef">void</span> <span style="color:#a6e22e">Process</span>(S<span style="color:#f92672">&amp;&amp;</span> s) {
+    std<span style="color:#f92672">::</span>cout <span style="color:#f92672">&lt;&lt;</span> s.x <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34; &#34;</span>;
+    SubProcess(std<span style="color:#f92672">::</span>move(s));
+    std<span style="color:#f92672">::</span>cout <span style="color:#f92672">&lt;&lt;</span> s.x <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34; &#34;</span>;
+    SubProcess(std<span style="color:#f92672">::</span>move(s));
+    std<span style="color:#f92672">::</span>cout <span style="color:#f92672">&lt;&lt;</span> s.x <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34; &#34;</span>;
+}
+
+<span style="color:#66d9ef">int</span> <span style="color:#a6e22e">main</span>() {
+    Process(S());
+}
+</code></pre></div><p>Output is:</p>
+<pre><code>1 S::S(S &amp;&amp;)
+ S.x = 1
+0 S::S(S &amp;&amp;)
+ S.x = 0
+0 
+</code></pre><p>Passing by rvalue reference does not steal the value, it just allows the value to be stolen!
+But actually you can even &ldquo;steal&rdquo; a lvalue!</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;iostream&gt;</span><span style="color:#75715e">
+</span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;vector&gt;</span><span style="color:#75715e">
+</span><span style="color:#75715e"></span>
+<span style="color:#66d9ef">struct</span> <span style="color:#a6e22e">S</span> {
+    S() <span style="color:#f92672">:</span> x(<span style="color:#ae81ff">1</span>) {}
+    S(<span style="color:#66d9ef">const</span> S<span style="color:#f92672">&amp;</span> s) {
+        std<span style="color:#f92672">::</span>cout <span style="color:#f92672">&lt;&lt;</span> __PRETTY_FUNCTION__ <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>
+                  <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34; S.x = &#34;</span> <span style="color:#f92672">&lt;&lt;</span> s.x <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>;
+    }
+    S(S<span style="color:#f92672">&amp;&amp;</span> s) {
+        std<span style="color:#f92672">::</span>cout <span style="color:#f92672">&lt;&lt;</span> __PRETTY_FUNCTION__ <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>
+                  <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34; S.x = &#34;</span> <span style="color:#f92672">&lt;&lt;</span> s.x <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>;
+        s.x <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
+    }
+    <span style="color:#66d9ef">int</span> x;
+};
+
+<span style="color:#66d9ef">void</span> <span style="color:#a6e22e">SubProcess</span>(S<span style="color:#f92672">&amp;&amp;</span> s) {
+    S cpy(std<span style="color:#f92672">::</span>move(s));
+}
+
+<span style="color:#66d9ef">void</span> <span style="color:#a6e22e">Process</span>(S<span style="color:#f92672">&amp;</span> s) {
+    SubProcess(std<span style="color:#f92672">::</span>move(s));
+    SubProcess(std<span style="color:#f92672">::</span>move(s));
+}
+
+<span style="color:#66d9ef">int</span> <span style="color:#a6e22e">main</span>() {
+    S s;
+    Process(s);
+    std<span style="color:#f92672">::</span>cout <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34;S.x=&#34;</span> <span style="color:#f92672">&lt;&lt;</span> s.x <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>;
+}
+</code></pre></div><p>Output:</p>
+<pre><code>S::S(S &amp;&amp;)
+ S.x = 1
+S::S(S &amp;&amp;)
+ S.x = 0
+S.x=0  
+</code></pre><p>So, rvalue reference is only a feature for overload selection and nothing more than that.</p>
+<p>Also, constructing rvalue reference from rvalue reference and storing it somewhere - also acts as lvalue.
+In other worlds, stored rvalue reference is actually an lvalue:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;iostream&gt;</span><span style="color:#75715e">
+</span><span style="color:#75715e">#include</span> <span style="color:#75715e">&lt;vector&gt;</span><span style="color:#75715e">
+</span><span style="color:#75715e"></span>
+<span style="color:#66d9ef">struct</span> <span style="color:#a6e22e">S</span> {
+    S() <span style="color:#f92672">:</span> x(<span style="color:#ae81ff">1</span>) {}
+    S(<span style="color:#66d9ef">const</span> S<span style="color:#f92672">&amp;</span> s) {
+        std<span style="color:#f92672">::</span>cout <span style="color:#f92672">&lt;&lt;</span> __PRETTY_FUNCTION__ <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>
+                  <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34; S.x = &#34;</span> <span style="color:#f92672">&lt;&lt;</span> s.x <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>;
+    }
+    S(S<span style="color:#f92672">&amp;&amp;</span> s) {
+        std<span style="color:#f92672">::</span>cout <span style="color:#f92672">&lt;&lt;</span> __PRETTY_FUNCTION__ <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>
+                  <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34; S.x = &#34;</span> <span style="color:#f92672">&lt;&lt;</span> s.x <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>;
+        s.x <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
+    }
+    <span style="color:#66d9ef">int</span> x;
+};
+
+<span style="color:#66d9ef">void</span> <span style="color:#a6e22e">SubProcess</span>(S s) {
+}
+
+<span style="color:#66d9ef">void</span> <span style="color:#a6e22e">Process</span>(S<span style="color:#f92672">&amp;&amp;</span> s) {
+    S<span style="color:#f92672">&amp;&amp;</span> s1 <span style="color:#f92672">=</span> std<span style="color:#f92672">::</span>move(s);
+    SubProcess(s1);
+}
+
+<span style="color:#66d9ef">int</span> <span style="color:#a6e22e">main</span>() {
+    Process(S());
+}
+</code></pre></div><p>Output: <code>S::S(const S &amp;) S.x = 1</code>.</p>
+<p><strong>Summary</strong>: there is no such a thing as &ldquo;stored rvalue reference&rdquo;, this concept
+only needed to select the right overload. And this is may look weird at a first sight,
+but without it, amount of bugs in our code will increase significantly, because in that
+case the Committee chosen safer and slower behaviour as a default.</p>
+<p>If you learned something new from this article, why not to support the author by buying
+them a cuppa?</p>
+
+                    <p>If you learned something new from this article, why not to support the author by buying
+                    them a cuppa? 
+                    <style>.bmc-button img{height: 34px !important;width: 35px !important;margin-bottom: 1px !important;box-shadow: none !important;border: none !important;vertical-align: middle !important;}.bmc-button{padding: 7px 15px 7px 10px !important;line-height: 35px !important;height:51px !important;text-decoration: none !important;display:inline-flex !important;color:#FFFFFF !important;background-color:#FF813F !important;border-radius: 5px !important;border: 1px solid transparent !important;padding: 7px 15px 7px 10px !important;font-size: 22px !important;letter-spacing: 0.6px !important;box-shadow: 0px 1px 2px rgba(190, 190, 190, 0.5) !important;-webkit-box-shadow: 0px 1px 2px 2px rgba(190, 190, 190, 0.5) !important;margin: 0 auto !important;font-family:'Cookie', cursive !important;-webkit-box-sizing: border-box !important;box-sizing: border-box !important;}.bmc-button:hover, .bmc-button:active, .bmc-button:focus {-webkit-box-shadow: 0px 1px 2px 2px rgba(190, 190, 190, 0.5) !important;text-decoration: none !important;box-shadow: 0px 1px 2px 2px rgba(190, 190, 190, 0.5) !important;opacity: 0.85 !important;color:#FFFFFF !important;}</style><link href="https://fonts.googleapis.com/css?family=Cookie" rel="stylesheet"><a class="bmc-button" target="_blank" href="https://www.buymeacoffee.com/kostya"><img src="https://cdn.buymeacoffee.com/buttons/bmc-new-btn-logo.svg" alt="Buy me a coffee"><span style="margin-left:5px;font-size:28px !important;">Buy me a coffee</span></a>
+                    </p>
+                    
+                    <HR width="100%" id="EOF">
+                    <p style="color:#777;">Last modified on 2020-05-31</p>
+                    
+                </div>
+            </div>
+            
+            
+            <nav class="post-pagination">
+
+                
+                <a class="newer-posts">
+                    Next<br>No newer posts.
+                </a>
+                
+                
+                
+                <a class="older-posts" href="https://xni.github.io/tech/gdb-basics/">
+                    Previous<br>GDB basics
+                </a>
+                
+            </nav>
+            <div class="post-comment-wrapper">
+                
+
+
+
+
+
+
+            </div>
+        </div>
+    </div>
+</div>
+
+            </div><div id="single-column-footer">
+Hugo Theme <a href="https://github.com/amazingrise/hugo-theme-diary">Diary</a> by <a href="https://amazingrise.net">Rise</a>
+<br>
+Ported from <a href="https://mak1t0.cc/" target="_blank" rel="noreferrer noopener">Makito</a>'s <a href="https://github.com/SumiMakito/hexo-theme-journal/" target="_blank" rel="noreferrer noopener">Journal.</a> <br>
+<br>
+
+&copy;
+	
+	2020 Kostya&#39;s Blog
+	</div>
+    	</div>
+    <script src="https://xni.github.io//js/journal.js"></script>
+    </body>
+</html>
