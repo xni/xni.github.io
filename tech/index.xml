@@ -6,10 +6,22 @@
     <description>Recent content in Teches on Kostya&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 31 May 2020 07:50:00 +0100</lastBuildDate>
+    <lastBuildDate>Fri, 05 Jun 2020 13:30:00 +0100</lastBuildDate>
     
 	<atom:link href="https://xni.github.io/tech/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Competition: C&#43;&#43; delayed call</title>
+      <link>https://xni.github.io/tech/i-like-to-move-it/</link>
+      <pubDate>Fri, 05 Jun 2020 13:30:00 +0100</pubDate>
+      
+      <guid>https://xni.github.io/tech/i-like-to-move-it/</guid>
+      <description>Amount of positive feedback foforious post motivated me to go one step further to put a fat dot on this topic.
+Let&amp;rsquo;s have some fun! I am launching a competition for the fastest code for making a delayed function call.
+The rules are:
+ You are sending me your solution before 14th of June 2020 to smartlemon@protonmail.com I&amp;rsquo;m running some tests for correctness. You don&amp;rsquo;t know my tests. I will reply back to you, if the tests are failing, describing the error.</description>
+    </item>
     
     <item>
       <title>C&#43;&#43; Move Semantics: my &#39;Aha!&#39; moment</title>

@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html><head>
-<title>Reading through HEX</title>
+<title>Competition: C&#43;&#43; delayed call</title>
 
 <meta charset="utf-8">
 <meta name="X-UA-Compatible" content="IE=edge">
@@ -80,61 +80,6 @@ Ported from <a href="https://mak1t0.cc/" target="_blank" rel="noreferrer noopene
     <div class="toc animated-visibility" :class="{ invisible: scrollY <= 140 }">
 
 
-	<div class="toc-content">
-	
-		
-		
-		
-		<center>- CATALOG -</center>
-			
-				
-				
-					
-						
-						
-							<ul>
-						
-							<ul>
-						
-						
-								<li>
-				 					<a href="#jumping-to-the-end-of-frame" v-on:click="closeDrawer" id="jumping-to-the-end-of-frame-nav">
-										 Jumping to the end of frame
-									</a>
-								</li>
-						
-							</ul>
-						
-							</ul>
-						
-					
-				
-			
-				
-				
-					
-						
-						
-							<ul>
-						
-							<ul>
-						
-						
-								<li>
-				 					<a href="#decoding-ascii-from-hex-in-mind" v-on:click="closeDrawer" id="decoding-ascii-from-hex-in-mind-nav">
-										 Decoding ascii from hex in mind
-									</a>
-								</li>
-						
-							</ul>
-						
-							</ul>
-						
-					
-				
-			
-	</div>
-
 </div>
     
     <div class="pagination">
@@ -154,61 +99,6 @@ Ported from <a href="https://mak1t0.cc/" target="_blank" rel="noreferrer noopene
             
             <div class="toc">
 
-
-	<div class="toc-content">
-	
-		
-		
-		
-		<center>- CATALOG -</center>
-			
-				
-				
-					
-						
-						
-							<ul>
-						
-							<ul>
-						
-						
-								<li>
-				 					<a href="#jumping-to-the-end-of-frame" v-on:click="closeDrawer" id="jumping-to-the-end-of-frame-nav">
-										 Jumping to the end of frame
-									</a>
-								</li>
-						
-							</ul>
-						
-							</ul>
-						
-					
-				
-			
-				
-				
-					
-						
-						
-							<ul>
-						
-							<ul>
-						
-						
-								<li>
-				 					<a href="#decoding-ascii-from-hex-in-mind" v-on:click="closeDrawer" id="decoding-ascii-from-hex-in-mind-nav">
-										 Decoding ascii from hex in mind
-									</a>
-								</li>
-						
-							</ul>
-						
-							</ul>
-						
-					
-				
-			
-	</div>
 
 </div>
             
@@ -250,12 +140,12 @@ Ported from <a href="https://mak1t0.cc/" target="_blank" rel="noreferrer noopene
             <div class="post-head-wrapper-text-only"
                  style="background-image: url('/')">
                 <div class="post-title">
-                    Reading through HEX
+                    Competition: C&#43;&#43; delayed call
                     
                     <div class="post-meta">
                         
                         <time itemprop="datePublished">
-                            2020-04-09 21:14
+                            2020-06-05 13:30
                         </time>
                         
 
@@ -268,37 +158,50 @@ Ported from <a href="https://mak1t0.cc/" target="_blank" rel="noreferrer noopene
             
             <div class="post-body-wrapper">
                 <div class="post-body">
-                    <p>Right now I am improving our exchange connectivity libraries.
-And one of the regular activities is anaylzing tcpdumps to validate what was sent over the wire.</p>
-<p>Doing this for nearly for the whole week I found couple of tricks.</p>
-<h2 id="jumping-to-the-end-of-frame">Jumping to the end of frame</h2>
-<p>Let&rsquo;s say you have some frame-oriented protocol, like websocket
-or EUREX ETI. Usually, message in those protocols start from the
-<code>message_size</code> field, then the message body follows, then the next
-message and so on. So, if you want to jump from message N to the
-message N+1 you need to skip message-size bytes.</p>
-<p>Let&rsquo;s say this is our tcpdump:</p>
-<pre><code>48 00 00 00 01 02 03 04  ab cd ef f0 fe dc ba 98
-00 00 11 12 45 9c 2a 23  62 22 b0 c1 38 52 55 6a
-bb 52 21 01 34 a5 50 32  ba 51 b6 81 84 42 24 bb
-13 ac 52 52 62 12 00 00  11 35 73 ba 51 62 72 31
-58 25 40 00 30 00 00 11  31 00 62 65 bc bc 62 11
-</code></pre><p>Here <code>48 00 ...</code> is the message size. Where does the second message starts from?
-Before figuring out the first hack I was doing the following: 48 hex = 72 dec.
-Ok, let&rsquo;s count 72 characters&hellip; so the next message is <code>31 00 ...</code></p>
-<p>What I figured out eventually is that hexdump renders 16 bytes per line, so
-48 in hex actually means - to find the beginning of a next message skip 4 rows
-and 8 columns. That&rsquo;s it!</p>
-<h2 id="decoding-ascii-from-hex-in-mind">Decoding ascii from hex in mind</h2>
-<p>Some of the protocols are binary, but some are textual. <code>hexdump -C</code> is a nice thing
-display both, but from time to time there are situations where you have just a wall
-of hex bytes. Turned out that there are some easy rules you can decode text from the
-ascii bytes.</p>
-<p>So, what I ended up with: 30 in hex actually means &lsquo;0&rsquo;. It is very convinient. All of
-the hex numbers in the range 30-39, just drop &lsquo;3&rsquo;, and you have a digit.
-40 - is a character &lsquo;before&rsquo; the alphabet. So that &ldquo;the first letter&rdquo; - so 40 + 1, is &lsquo;A&rsquo;.
-So, it is easy to decode 41-46 as &lsquo;A&rsquo;, &lsquo;B&rsquo;, &lsquo;C&rsquo;, &lsquo;D&rsquo;, &lsquo;E&rsquo; accordingly. 60 - is a character
-&lsquo;before&rsquo; the lower-case alhpabet. 61 is &lsquo;a&rsquo;.</p>
+                    <p>Amount of positive feedback foforious post motivated me to
+go one step further to put a fat dot on this topic.</p>
+<p>Let&rsquo;s have some fun! I am launching a competition for the fastest code
+for making a delayed function call.</p>
+<p>The rules are:</p>
+<ol>
+<li>You are sending me your solution before 14th of June 2020 to
+<a href="mailto:smartlemon@protonmail.com">smartlemon@protonmail.com</a></li>
+<li>I&rsquo;m running some tests for correctness. You don&rsquo;t know my tests.
+I will reply back to you, if the tests are failing, describing the error.
+Each submission which fails test adds you 1 yellow card.</li>
+<li>Amongs all of the correct submissions (passing every test), sent to me before 2020-06-14 23:59:59 UTC
+I will select the fastest one using a pretty trivial set of cases.
+I will select the fastest by creating a benchmark on quick-bench. If there are multiple
+fastest solutions, one with the least amount of yellow cards will win.</li>
+<li>The winner will receive my congratulations and respect from other participants.</li>
+</ol>
+<p>Now about the task. You need to use C++17. You need to write a templated C++ class, <code>MaybeDelayedCall</code>.
+Constructor accepts at least 2 arguments, the argument <code>arg</code> to pass to the function <code>F</code>,
+and a boolean param <code>now</code>. Function <code>F</code>, which needs to be called can be passed
+as an argument as well, or using <code>auto</code> template parameter. If you are using <code>auto</code>
+template parameter, you are allowed to have one failed submission without a yellow card.
+If you are using C++17 template type auto deduction for classes, you are allowed to have
+one failed submission without a yellow card.
+If <code>now</code> param is <code>true</code>, function <code>F</code> should be called with <code>arg</code> immediately.
+If <code>now</code> param is <code>false</code>, <code>MaybeDelayedCall</code> should store the argument (in other words,
+if <code>arg</code> was passed as a reference, you are not allowed to save that reference, because
+our delayed call can not guarantee lifetime expectations for the agrument), and call function <code>F</code>
+only when the method <code>OnTime()</code> of <code>MaybeDelayedCall</code> is invoked.
+It is guaranteed that in every test, where I&rsquo;m going to do <code>MaybeDelayedCall&lt;...&gt; x(arg, now)</code>,
+it is correct to write <code>F(arg)</code>, in other words, <code>MaybeDelayedCall</code> should not deal with
+a problem that <code>arg</code> is not compatible with <code>F</code>.</p>
+<p>Also important note: the performance tests will have a following structure</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-cpp" data-lang="cpp"><span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">TestForKostya</span>()
+{
+    <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>; i <span style="color:#f92672">&lt;</span> <span style="color:#ae81ff">10000</span>; <span style="color:#f92672">++</span>i) {
+        MaybeDelayedCall<span style="color:#f92672">&lt;</span>...<span style="color:#f92672">&gt;</span> x(arg, now);
+        x.OnTime();
+    }
+}
+</code></pre></div><p>so you don&rsquo;t have to deal with delayed calls, we are just measuring the effeciency
+of a storing/passing. Also important note - object <code>x</code> is allocated on the stack.</p>
+<p>If you have any questions, don&rsquo;t hesitate to reach me by email <a href="mailto:smartlemon@protonmail.com">smartlemon@protonmail.com</a>.</p>
+<p>Good luck!</p>
 
                     <p>If you learned something new from this article, why not to support the author?
                     <a href='https://ko-fi.com/F1F51S4NV' target='_blank'><img height='36' style='border:0px;height:36px;' src='https://cdn.ko-fi.com/cdn/kofi2.png?v=2' border='0' alt='Buy Me a Coffee at ko-fi.com' /></a>
@@ -308,7 +211,7 @@ So, it is easy to decode 41-46 as &lsquo;A&rsquo;, &lsquo;B&rsquo;, &lsquo;C&rsq
                     or <a href="https://www.linkedin.com/in/konstantin1988/">LinkedIn</a>.
                     
                     <HR width="100%" id="EOF">
-                    <p style="color:#777;">Last modified on 2020-04-09</p>
+                    <p style="color:#777;">Last modified on 2020-06-05</p>
                     
                 </div>
             </div>
@@ -317,14 +220,14 @@ So, it is easy to decode 41-46 as &lsquo;A&rsquo;, &lsquo;B&rsquo;, &lsquo;C&rsq
             <nav class="post-pagination">
 
                 
-                <a class="newer-posts" href="https://xni.github.io/tech/gdb-basics/">
-                    Next<br>GDB basics
+                <a class="newer-posts">
+                    Next<br>No newer posts.
                 </a>
                 
                 
                 
-                <a class="older-posts" href="https://xni.github.io/finance/will-exchange-survive/">
-                    Previous<br>Will the exchanges survive?
+                <a class="older-posts" href="https://xni.github.io/tech/move-semantics-aha-moment/">
+                    Previous<br>C&#43;&#43; Move Semantics: my &#39;Aha!&#39; moment
                 </a>
                 
             </nav>

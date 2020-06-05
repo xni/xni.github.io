@@ -5,9 +5,64 @@
     <description>Recent content on Kostya&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 31 May 2020 07:50:00 +0100</lastBuildDate>
+    <lastBuildDate>Fri, 05 Jun 2020 13:30:00 +0100</lastBuildDate>
     
         <atom:link href="https://xni.github.io/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    
+        <item>
+        <title>Competition: C&#43;&#43; delayed call</title>
+        <link>https://xni.github.io/tech/i-like-to-move-it/</link>
+        <pubDate>Fri, 05 Jun 2020 13:30:00 +0100</pubDate>
+        
+        <guid>https://xni.github.io/tech/i-like-to-move-it/</guid>
+        <description>Kostya&#39;s Blog https://xni.github.io/tech/i-like-to-move-it/ -&lt;p&gt;Amount of positive feedback foforious post motivated me to
+go one step further to put a fat dot on this topic.&lt;/p&gt;
+&lt;p&gt;Let&amp;rsquo;s have some fun! I am launching a competition for the fastest code
+for making a delayed function call.&lt;/p&gt;
+&lt;p&gt;The rules are:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;You are sending me your solution before 14th of June 2020 to
+&lt;a href=&#34;mailto:smartlemon@protonmail.com&#34;&gt;smartlemon@protonmail.com&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;I&amp;rsquo;m running some tests for correctness. You don&amp;rsquo;t know my tests.
+I will reply back to you, if the tests are failing, describing the error.
+Each submission which fails test adds you 1 yellow card.&lt;/li&gt;
+&lt;li&gt;Amongs all of the correct submissions (passing every test), sent to me before 2020-06-14 23:59:59 UTC
+I will select the fastest one using a pretty trivial set of cases.
+I will select the fastest by creating a benchmark on quick-bench. If there are multiple
+fastest solutions, one with the least amount of yellow cards will win.&lt;/li&gt;
+&lt;li&gt;The winner will receive my congratulations and respect from other participants.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;Now about the task. You need to use C++17. You need to write a templated C++ class, &lt;code&gt;MaybeDelayedCall&lt;/code&gt;.
+Constructor accepts at least 2 arguments, the argument &lt;code&gt;arg&lt;/code&gt; to pass to the function &lt;code&gt;F&lt;/code&gt;,
+and a boolean param &lt;code&gt;now&lt;/code&gt;. Function &lt;code&gt;F&lt;/code&gt;, which needs to be called can be passed
+as an argument as well, or using &lt;code&gt;auto&lt;/code&gt; template parameter. If you are using &lt;code&gt;auto&lt;/code&gt;
+template parameter, you are allowed to have one failed submission without a yellow card.
+If you are using C++17 template type auto deduction for classes, you are allowed to have
+one failed submission without a yellow card.
+If &lt;code&gt;now&lt;/code&gt; param is &lt;code&gt;true&lt;/code&gt;, function &lt;code&gt;F&lt;/code&gt; should be called with &lt;code&gt;arg&lt;/code&gt; immediately.
+If &lt;code&gt;now&lt;/code&gt; param is &lt;code&gt;false&lt;/code&gt;, &lt;code&gt;MaybeDelayedCall&lt;/code&gt; should store the argument (in other words,
+if &lt;code&gt;arg&lt;/code&gt; was passed as a reference, you are not allowed to save that reference, because
+our delayed call can not guarantee lifetime expectations for the agrument), and call function &lt;code&gt;F&lt;/code&gt;
+only when the method &lt;code&gt;OnTime()&lt;/code&gt; of &lt;code&gt;MaybeDelayedCall&lt;/code&gt; is invoked.
+It is guaranteed that in every test, where I&amp;rsquo;m going to do &lt;code&gt;MaybeDelayedCall&amp;lt;...&amp;gt; x(arg, now)&lt;/code&gt;,
+it is correct to write &lt;code&gt;F(arg)&lt;/code&gt;, in other words, &lt;code&gt;MaybeDelayedCall&lt;/code&gt; should not deal with
+a problem that &lt;code&gt;arg&lt;/code&gt; is not compatible with &lt;code&gt;F&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;Also important note: the performance tests will have a following structure&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-cpp&#34; data-lang=&#34;cpp&#34;&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;static&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;void&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;TestForKostya&lt;/span&gt;()
+{
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;for&lt;/span&gt; (&lt;span style=&#34;color:#66d9ef&#34;&gt;int&lt;/span&gt; i &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;; i &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;10000&lt;/span&gt;; &lt;span style=&#34;color:#f92672&#34;&gt;++&lt;/span&gt;i) {
+        MaybeDelayedCall&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;...&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt; x(arg, now);
+        x.OnTime();
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;so you don&amp;rsquo;t have to deal with delayed calls, we are just measuring the effeciency
+of a storing/passing. Also important note - object &lt;code&gt;x&lt;/code&gt; is allocated on the stack.&lt;/p&gt;
+&lt;p&gt;If you have any questions, don&amp;rsquo;t hesitate to reach me by email &lt;a href=&#34;mailto:smartlemon@protonmail.com&#34;&gt;smartlemon@protonmail.com&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Good luck!&lt;/p&gt;
+- https://xni.github.io/tech/i-like-to-move-it/ - </description>
+        </item>
     
     
     
